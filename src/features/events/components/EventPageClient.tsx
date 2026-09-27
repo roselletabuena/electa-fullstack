@@ -10,6 +10,7 @@ import type { ContestantDto as RichContestantDto } from "@/features/contestants/
 import { DraftPreviewBanner } from "./DraftPreviewBanner";
 import { EventBanner } from "./EventBanner";
 import { EventCountdown } from "./EventCountdown";
+import { EventVotingRulesBanner } from "./EventVotingRulesBanner";
 import type { EventOperationalState, PublicEventDto } from "../types";
 
 export interface EventPageClientProps {
@@ -90,6 +91,11 @@ export function EventPageClient({
         )}
 
         <EventBanner event={event} />
+
+        <EventVotingRulesBanner
+          isFreeVotingEnabled={event.isFreeVotingEnabled}
+          dailyFreeVoteLimit={event.dailyFreeVoteLimit}
+        />
 
         <EventCountdown
           operationalState={event.operationalState}

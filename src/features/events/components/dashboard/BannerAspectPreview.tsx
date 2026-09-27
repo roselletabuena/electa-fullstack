@@ -84,7 +84,7 @@ export function BannerAspectPreview({
       <div
         className={cn(
           "relative w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-900/90 transition-all duration-300 dark:border-slate-800",
-          aspectRatio === "16:9" ? "aspect-video" : "aspect-[21/9]",
+          aspectRatio === "16:9" ? "aspect-video" : "aspect-21/9",
         )}
       >
         {isValidUrl && !hasError ? (

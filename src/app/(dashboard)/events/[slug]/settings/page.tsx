@@ -9,7 +9,7 @@ import { OrganizerDashboardHeader } from "@/features/events/components/dashboard
 import { SettingsTabNav } from "@/features/events/components/dashboard/SettingsTabNav";
 import { GeneralBrandingForm } from "@/features/events/components/dashboard/GeneralBrandingForm";
 import { ScheduleSettingsSummaryCard } from "@/features/events/components/dashboard/ScheduleSettingsSummaryCard";
-import { VotingRulesSettingsSummaryCard } from "@/features/events/components/dashboard/VotingRulesSettingsSummaryCard";
+import { VotingRulesForm } from "@/features/events/components/dashboard/VotingRulesForm";
 import { ForbiddenAccessCard } from "@/features/events/components/dashboard/ForbiddenAccessCard";
 
 interface SettingsPageProps {
@@ -74,7 +74,7 @@ export default async function EventSettingsPage({
           <section aria-labelledby={`tab-${tab}`} id={`panel-${tab}`} tabIndex={0}>
             {tab === "general" && <GeneralBrandingForm event={event} />}
             {tab === "schedule" && <ScheduleSettingsSummaryCard event={event} />}
-            {tab === "voting-rules" && <VotingRulesSettingsSummaryCard event={event} />}
+            {tab === "voting-rules" && <VotingRulesForm event={event} />}
           </section>
         </div>
       </main>

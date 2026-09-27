@@ -44,6 +44,7 @@ import {
 import {
   scheduleLifecycleFormSchema,
   type ScheduleLifecycleFormValues,
+  type ScheduleLifecycleFormInput,
 } from "@/lib/validations/event-schedule-lifecycle";
 import { updateScheduleLifecycleAction } from "@/features/events/actions/update-schedule-lifecycle";
 import type { Event, EventPublicationStatus } from "@/generated/client/client";
@@ -143,7 +144,7 @@ export function ScheduleLifecycleForm({
     reset,
     formState: { errors, isDirty, isSubmitting },
     setError,
-  } = useForm<ScheduleLifecycleFormValues>({
+  } = useForm<ScheduleLifecycleFormInput, unknown, ScheduleLifecycleFormValues>({
     resolver: zodResolver(scheduleLifecycleFormSchema),
     defaultValues,
   });
@@ -297,7 +298,7 @@ export function ScheduleLifecycleForm({
 
             {/* Section 1: Voting Operational Window */}
             <div className="space-y-4">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
                   <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
                     Operational Voting Window
@@ -307,7 +308,7 @@ export function ScheduleLifecycleForm({
                   </p>
                 </div>
                 {durationText && (
-                  <span className="inline-flex items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/60 dark:bg-indigo-950/40 dark:text-indigo-300">
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/60 dark:bg-indigo-950/40 dark:text-indigo-300">
                     <Clock className="size-3.5" />
                     Duration: {durationText}
                   </span>

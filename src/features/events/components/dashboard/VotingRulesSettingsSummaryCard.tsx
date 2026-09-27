@@ -15,14 +15,14 @@ export function VotingRulesSettingsSummaryCard({
     <div className="space-y-6">
       <Card>
         <CardHeader>
-          <div className="flex items-center justify-between">
+          <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <CardTitle>Voting Rules & Tabulation Policy</CardTitle>
               <CardDescription>
                 Ballot security parameters and post-event results disclosure rules.
               </CardDescription>
             </div>
-            <Badge variant="outline" className="text-xs">
+            <Badge variant="outline" className="w-fit text-xs">
               Standard Ballot Policy
             </Badge>
           </div>

@@ -76,3 +76,9 @@ export interface PreviewAuthResponse {
   previewToken: string;
   expiresAt: string;
 }
+
+export type ActionResponse<T> =
+  | { success: true; data: T; message?: string }
+  | { success: false; error: string; fieldErrors?: Record<string, string[]> };
+
+export type { UpdateEventBrandingInput } from "@/lib/validations/event-branding";

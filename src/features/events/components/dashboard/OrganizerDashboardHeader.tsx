@@ -2,6 +2,7 @@ import React from "react";
 import Link from "next/link";
 import { ExternalLink, ShieldCheck, Calendar, ArrowLeft } from "lucide-react";
 import { EventStateBadge } from "../EventStateBadge";
+import { CopySlugButton } from "./CopySlugButton";
 import { deriveEventState } from "../../utils/derive-event-state";
 import type { Event } from "@/generated/client/client";
 import type { UserSession } from "@/lib/auth/get-session";
@@ -60,6 +61,7 @@ export function OrganizerDashboardHeader({
           </div>
 
           <div className="flex items-center gap-3">
+            <CopySlugButton slug={event.slug} />
             <Link
               href={`/events/${event.slug}`}
               target="_blank"

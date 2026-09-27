@@ -19,7 +19,7 @@ export function EventVotingRulesBanner({
     return (
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-amber-300/80 bg-gradient-to-r from-amber-500/10 via-amber-400/5 to-transparent p-4 sm:p-5 dark:border-amber-700/50 dark:from-amber-950/40 dark:via-amber-900/20",
+          "relative overflow-hidden rounded-2xl border border-amber-300/80 bg-linear-to-r from-amber-500/10 via-amber-400/5 to-transparent p-4 sm:p-5 dark:border-amber-700/50 dark:from-amber-950/40 dark:via-amber-900/20",
           className,
         )}
       >
@@ -51,7 +51,7 @@ export function EventVotingRulesBanner({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-gradient-to-r from-indigo-500/10 via-indigo-400/5 to-transparent p-4 sm:p-5 dark:border-indigo-800/60 dark:from-indigo-950/40 dark:via-indigo-900/20",
+        "relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-linear-to-r from-indigo-500/10 via-indigo-400/5 to-transparent p-4 sm:p-5 dark:border-indigo-800/60 dark:from-indigo-950/40 dark:via-indigo-900/20",
         className,
       )}
     >

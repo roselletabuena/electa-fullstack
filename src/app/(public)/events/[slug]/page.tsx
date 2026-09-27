@@ -5,9 +5,12 @@ import type { Metadata } from "next";
 
 import { EventPageClient } from "@/features/events/components/EventPageClient";
 import { DraftPassphraseModal } from "@/features/events/components/DraftPassphraseModal";
-import { getMockEventBySlug } from "@/features/events/utils/mock-data";
 import { verifyPreviewToken } from "@/features/events/utils/preview-token";
 import { getSession } from "@/lib/auth/get-session";
+import { db } from "@/lib/db";
+import { deriveEventState } from "@/features/events/utils/derive-event-state";
+import { getMockEventBySlug } from "@/features/events/utils/mock-data";
+import type { PublicEventDto } from "@/features/events/types";
 import EventLoading from "./loading";
 
 interface PageProps {
@@ -16,9 +19,59 @@ interface PageProps {
   }>;
 }
 
+async function getPublicEvent(slug: string): Promise<PublicEventDto | null> {
+  try {
+    const event = await db.event.findUnique({
+      where: { slug },
+      include: {
+        contestants: {
+          where: { status: "ACTIVE" },
+          orderBy: { contestantNumber: "asc" },
+        },
+      },
+    });
+
+    if (event) {
+      const operationalState = deriveEventState({
+        publicationStatus: event.publicationStatus,
+        startsAt: event.startsAt,
+        endsAt: event.endsAt,
+      });
+
+      return {
+        id: event.id,
+        slug: event.slug,
+        title: event.title,
+        description: event.description,
+        bannerUrl: event.bannerUrl,
+        startsAt: event.startsAt.toISOString(),
+        endsAt: event.endsAt.toISOString(),
+        serverTime: new Date().toISOString(),
+        operationalState,
+        showResultsOnClose: event.showResultsOnClose,
+        isFreeVotingEnabled: event.isFreeVotingEnabled,
+        dailyFreeVoteLimit: event.dailyFreeVoteLimit,
+        contestants: event.contestants.map((c) => ({
+          id: c.id,
+          contestantNumber: c.contestantNumber,
+          name: c.name,
+          bio: c.bio || "",
+          avatarUrl: c.avatarUrl,
+          voteCount: null,
+        })),
+      };
+    }
+  } catch (error) {
+    console.error(`Error fetching event by slug "${slug}":`, error);
+  }
+
+  // Fallback to static mock data if present
+  return getMockEventBySlug(slug) || null;
+}
+
 export async function generateMetadata(props: PageProps): Promise<Metadata> {
   const { slug } = await props.params;
-  const event = getMockEventBySlug(slug);
+  const event = await getPublicEvent(slug);
 
   if (!event) {
     return {
@@ -47,7 +100,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
 
 export default async function EventPage(props: PageProps): Promise<React.JSX.Element> {
   const { slug } = await props.params;
-  const event = getMockEventBySlug(slug);
+  const event = await getPublicEvent(slug);
 
   if (!event) {
     notFound();

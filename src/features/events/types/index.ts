@@ -145,3 +145,13 @@ export type {
   CreateAwardCategoryInput,
   UpdateAwardCategoryInput,
 } from "@/lib/validations/category-awards";
+
+export type { CreateEventInput, CheckSlugQuery } from "@/lib/validations/event";
+
+export interface CheckSlugResult {
+  available: boolean;
+  slug: string;
+  reason?: string | undefined;
+}
+
+export type CreateEventResult = ActionResponse<Event>;

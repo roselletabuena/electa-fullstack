@@ -42,3 +42,8 @@ next-env.d.ts
 
 # graphify
 graphify-out/
+
+# mockups
+/mockups/
+/mockup/
+

@@ -30,6 +30,7 @@ describe("eventSettingsTabQuerySchema", () => {
     expect(eventSettingsTabQuerySchema.parse({ tab: "general" }).tab).toBe("general");
     expect(eventSettingsTabQuerySchema.parse({ tab: "schedule" }).tab).toBe("schedule");
     expect(eventSettingsTabQuerySchema.parse({ tab: "voting-rules" }).tab).toBe("voting-rules");
+    expect(eventSettingsTabQuerySchema.parse({ tab: "categories" }).tab).toBe("categories");
   });
 
   it("defaults and catches invalid or missing tabs to 'general'", () => {

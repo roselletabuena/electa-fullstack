@@ -101,4 +101,36 @@ describe("Contestant Category & Division Filtering Logic", () => {
     expect(femalePeoplesChoice.length).toBe(1);
     expect(femalePeoplesChoice[0]?.name).toBe("Maria Clara");
   });
+
+  it("dynamically matches custom division names to contestant division values", () => {
+    const _customDivisions = [
+      { id: "div-f", name: "Female Category" },
+      { id: "div-m", name: "Male Division" },
+    ];
+
+    const matchDivision = (contestantDiv: string, selectedDiv: string) => {
+      if (selectedDiv === "ALL") return true;
+      const matchExact = contestantDiv.toLowerCase() === selectedDiv.toLowerCase();
+      const isFemaleFilter = selectedDiv.toLowerCase().includes("female");
+      const isMaleFilter = !isFemaleFilter && selectedDiv.toLowerCase().includes("male");
+      const matchNormalized =
+        (contestantDiv === "FEMALE" && isFemaleFilter) ||
+        (contestantDiv === "MALE" && isMaleFilter) ||
+        (contestantDiv === "LGBTQ" && selectedDiv.toLowerCase().includes("lgbt")) ||
+        (contestantDiv === "TEEN" && selectedDiv.toLowerCase().includes("teen"));
+      return matchExact || matchNormalized;
+    };
+
+    const femaleFiltered = sampleContestants.filter(
+      (c) => c.status === "ACTIVE" && matchDivision(c.division, "Female Category"),
+    );
+    expect(femaleFiltered.length).toBe(1);
+    expect(femaleFiltered[0]?.name).toBe("Maria Clara");
+
+    const maleFiltered = sampleContestants.filter(
+      (c) => c.status === "ACTIVE" && matchDivision(c.division, "Male Division"),
+    );
+    expect(maleFiltered.length).toBe(1);
+    expect(maleFiltered[0]?.name).toBe("Crisostomo Ibarra");
+  });
 });

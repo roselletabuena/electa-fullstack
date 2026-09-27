@@ -30,7 +30,15 @@ export function BannerAspectPreview({
   }
 
   const trimmedUrl = imageUrl?.trim();
-  const isValidUrl = Boolean(trimmedUrl && /^https?:\/\//i.test(trimmedUrl));
+  let isValidUrl = false;
+  if (trimmedUrl) {
+    try {
+      const parsed = new URL(trimmedUrl);
+      isValidUrl = parsed.protocol === "http:" || parsed.protocol === "https:";
+    } catch {
+      isValidUrl = false;
+    }
+  }
 
   return (
     <div className={cn("space-y-3", className)}>

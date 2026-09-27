@@ -5,3 +5,6 @@ export * from "./actions/update-event-branding";
 export * from "./actions/update-schedule-lifecycle";
 export * from "./actions/update-voting-rules";
 export * from "./services/create-event";
+export * from "./hooks/useDebouncedSlugCheck";
+export * from "./components/SlugAvailabilityBadge";
+export * from "./components/CreateEventForm";

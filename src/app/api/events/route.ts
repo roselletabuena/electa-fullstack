@@ -1,9 +1,10 @@
 import type { NextRequest, NextResponse } from "next/server";
 
-import { saveEventAction } from "@/features/events/actions/save-event";
-import { saveEventSchema } from "@/lib/validations/event";
+import { createEvent } from "@/features/events/services/create-event";
+import { createEventSchema, type CreateEventInput } from "@/lib/validations/event";
 import { apiError, apiSuccess, type ApiResponse } from "@/lib/api/response";
-import type { PublicEventDto, SaveEventInput } from "@/features/events/types";
+import type { PublicEventDto } from "@/features/events/types";
+import type { Event } from "@/generated/client/client";
 import {
   mockScheduledEvent,
   mockActiveEvent,
@@ -14,21 +15,25 @@ export async function GET(): Promise<NextResponse<ApiResponse<PublicEventDto[]>>
   return apiSuccess([mockScheduledEvent, mockActiveEvent, mockClosedEvent]);
 }
 
-export async function POST(
-  request: NextRequest,
-): Promise<NextResponse<ApiResponse<PublicEventDto>>> {
+export async function POST(request: NextRequest): Promise<NextResponse<ApiResponse<Event>>> {
   try {
-    const body = (await request.json()) as SaveEventInput;
-    const validation = saveEventSchema.safeParse(body);
+    const body = (await request.json()) as CreateEventInput;
+    const validation = createEventSchema.safeParse(body);
 
     if (!validation.success) {
       return apiError(validation.error.issues.map((i) => i.message).join(", "), 400);
     }
 
-    const result = await saveEventAction(validation.data);
+    const result = await createEvent(validation.data);
 
-    if (!result.success || !result.data) {
-      return apiError(result.error || "Failed to create event", 400);
+    if (!result.success) {
+      if (result.error.includes("Unauthorized")) {
+        return apiError(result.error, 401);
+      }
+      if (result.error.includes("already exists")) {
+        return apiError(result.error, 409);
+      }
+      return apiError(result.error, 400);
     }
 
     return apiSuccess(result.data, 201);

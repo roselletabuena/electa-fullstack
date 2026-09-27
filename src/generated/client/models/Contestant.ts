@@ -43,6 +43,7 @@ export type ContestantMinAggregateOutputType = {
   contestantNumber: number | null;
   name: string | null;
   division: $Enums.ContestantDivision | null;
+  divisionId: string | null;
   status: $Enums.ContestantStatus | null;
   hometown: string | null;
   heightCm: number | null;
@@ -63,6 +64,7 @@ export type ContestantMaxAggregateOutputType = {
   contestantNumber: number | null;
   name: string | null;
   division: $Enums.ContestantDivision | null;
+  divisionId: string | null;
   status: $Enums.ContestantStatus | null;
   hometown: string | null;
   heightCm: number | null;
@@ -83,6 +85,7 @@ export type ContestantCountAggregateOutputType = {
   contestantNumber: number;
   name: number;
   division: number;
+  divisionId: number;
   status: number;
   hometown: number;
   heightCm: number;
@@ -116,6 +119,7 @@ export type ContestantMinAggregateInputType = {
   contestantNumber?: true;
   name?: true;
   division?: true;
+  divisionId?: true;
   status?: true;
   hometown?: true;
   heightCm?: true;
@@ -136,6 +140,7 @@ export type ContestantMaxAggregateInputType = {
   contestantNumber?: true;
   name?: true;
   division?: true;
+  divisionId?: true;
   status?: true;
   hometown?: true;
   heightCm?: true;
@@ -156,6 +161,7 @@ export type ContestantCountAggregateInputType = {
   contestantNumber?: true;
   name?: true;
   division?: true;
+  divisionId?: true;
   status?: true;
   hometown?: true;
   heightCm?: true;
@@ -265,6 +271,7 @@ export type ContestantGroupByOutputType = {
   contestantNumber: number;
   name: string;
   division: $Enums.ContestantDivision;
+  divisionId: string | null;
   status: $Enums.ContestantStatus;
   hometown: string | null;
   heightCm: number | null;
@@ -305,6 +312,7 @@ export type ContestantWhereInput = {
   contestantNumber?: Prisma.IntFilter<"Contestant"> | number;
   name?: Prisma.StringFilter<"Contestant"> | string;
   division?: Prisma.EnumContestantDivisionFilter<"Contestant"> | $Enums.ContestantDivision;
+  divisionId?: Prisma.StringNullableFilter<"Contestant"> | string | null;
   status?: Prisma.EnumContestantStatusFilter<"Contestant"> | $Enums.ContestantStatus;
   hometown?: Prisma.StringNullableFilter<"Contestant"> | string | null;
   heightCm?: Prisma.IntNullableFilter<"Contestant"> | number | null;
@@ -318,6 +326,10 @@ export type ContestantWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
+  divisionRef?: Prisma.XOR<
+    Prisma.DivisionNullableScalarRelationFilter,
+    Prisma.DivisionWhereInput
+  > | null;
   media?: Prisma.ContestantMediaListRelationFilter;
   categories?: Prisma.ContestantCategoryAssignmentListRelationFilter;
 };
@@ -328,6 +340,7 @@ export type ContestantOrderByWithRelationInput = {
   contestantNumber?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   division?: Prisma.SortOrder;
+  divisionId?: Prisma.SortOrderInput | Prisma.SortOrder;
   status?: Prisma.SortOrder;
   hometown?: Prisma.SortOrderInput | Prisma.SortOrder;
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -341,6 +354,7 @@ export type ContestantOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   event?: Prisma.EventOrderByWithRelationInput;
+  divisionRef?: Prisma.DivisionOrderByWithRelationInput;
   media?: Prisma.ContestantMediaOrderByRelationAggregateInput;
   categories?: Prisma.ContestantCategoryAssignmentOrderByRelationAggregateInput;
 };
@@ -356,6 +370,7 @@ export type ContestantWhereUniqueInput = Prisma.AtLeast<
     contestantNumber?: Prisma.IntFilter<"Contestant"> | number;
     name?: Prisma.StringFilter<"Contestant"> | string;
     division?: Prisma.EnumContestantDivisionFilter<"Contestant"> | $Enums.ContestantDivision;
+    divisionId?: Prisma.StringNullableFilter<"Contestant"> | string | null;
     status?: Prisma.EnumContestantStatusFilter<"Contestant"> | $Enums.ContestantStatus;
     hometown?: Prisma.StringNullableFilter<"Contestant"> | string | null;
     heightCm?: Prisma.IntNullableFilter<"Contestant"> | number | null;
@@ -369,6 +384,10 @@ export type ContestantWhereUniqueInput = Prisma.AtLeast<
     createdAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
     event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
+    divisionRef?: Prisma.XOR<
+      Prisma.DivisionNullableScalarRelationFilter,
+      Prisma.DivisionWhereInput
+    > | null;
     media?: Prisma.ContestantMediaListRelationFilter;
     categories?: Prisma.ContestantCategoryAssignmentListRelationFilter;
   },
@@ -381,6 +400,7 @@ export type ContestantOrderByWithAggregationInput = {
   contestantNumber?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   division?: Prisma.SortOrder;
+  divisionId?: Prisma.SortOrderInput | Prisma.SortOrder;
   status?: Prisma.SortOrder;
   hometown?: Prisma.SortOrderInput | Prisma.SortOrder;
   heightCm?: Prisma.SortOrderInput | Prisma.SortOrder;
@@ -414,6 +434,7 @@ export type ContestantScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"Contestant"> | string;
   division?:
     Prisma.EnumContestantDivisionWithAggregatesFilter<"Contestant"> | $Enums.ContestantDivision;
+  divisionId?: Prisma.StringNullableWithAggregatesFilter<"Contestant"> | string | null;
   status?: Prisma.EnumContestantStatusWithAggregatesFilter<"Contestant"> | $Enums.ContestantStatus;
   hometown?: Prisma.StringNullableWithAggregatesFilter<"Contestant"> | string | null;
   heightCm?: Prisma.IntNullableWithAggregatesFilter<"Contestant"> | number | null;
@@ -446,6 +467,7 @@ export type ContestantCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   event: Prisma.EventCreateNestedOneWithoutContestantsInput;
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput;
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput;
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput;
 };
@@ -456,6 +478,7 @@ export type ContestantUncheckedCreateInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -490,6 +513,7 @@ export type ContestantUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput;
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput;
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput;
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput;
 };
@@ -500,6 +524,7 @@ export type ContestantUncheckedUpdateInput = {
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
   hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
@@ -522,6 +547,7 @@ export type ContestantCreateManyInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -561,6 +587,7 @@ export type ContestantUncheckedUpdateManyInput = {
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
   hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
@@ -597,6 +624,7 @@ export type ContestantCountOrderByAggregateInput = {
   contestantNumber?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   division?: Prisma.SortOrder;
+  divisionId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   hometown?: Prisma.SortOrder;
   heightCm?: Prisma.SortOrder;
@@ -623,6 +651,7 @@ export type ContestantMaxOrderByAggregateInput = {
   contestantNumber?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   division?: Prisma.SortOrder;
+  divisionId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   hometown?: Prisma.SortOrder;
   heightCm?: Prisma.SortOrder;
@@ -643,6 +672,7 @@ export type ContestantMinOrderByAggregateInput = {
   contestantNumber?: Prisma.SortOrder;
   name?: Prisma.SortOrder;
   division?: Prisma.SortOrder;
+  divisionId?: Prisma.SortOrder;
   status?: Prisma.SortOrder;
   hometown?: Prisma.SortOrder;
   heightCm?: Prisma.SortOrder;
@@ -754,6 +784,92 @@ export type ContestantUncheckedUpdateManyWithoutEventNestedInput = {
   deleteMany?: Prisma.ContestantScalarWhereInput | Prisma.ContestantScalarWhereInput[];
 };
 
+export type ContestantCreateNestedManyWithoutDivisionRefInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ContestantCreateWithoutDivisionRefInput,
+        Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+      >
+    | Prisma.ContestantCreateWithoutDivisionRefInput[]
+    | Prisma.ContestantUncheckedCreateWithoutDivisionRefInput[];
+  connectOrCreate?:
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput[];
+  createMany?: Prisma.ContestantCreateManyDivisionRefInputEnvelope;
+  connect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+};
+
+export type ContestantUncheckedCreateNestedManyWithoutDivisionRefInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ContestantCreateWithoutDivisionRefInput,
+        Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+      >
+    | Prisma.ContestantCreateWithoutDivisionRefInput[]
+    | Prisma.ContestantUncheckedCreateWithoutDivisionRefInput[];
+  connectOrCreate?:
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput[];
+  createMany?: Prisma.ContestantCreateManyDivisionRefInputEnvelope;
+  connect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+};
+
+export type ContestantUpdateManyWithoutDivisionRefNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ContestantCreateWithoutDivisionRefInput,
+        Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+      >
+    | Prisma.ContestantCreateWithoutDivisionRefInput[]
+    | Prisma.ContestantUncheckedCreateWithoutDivisionRefInput[];
+  connectOrCreate?:
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput[];
+  upsert?:
+    | Prisma.ContestantUpsertWithWhereUniqueWithoutDivisionRefInput
+    | Prisma.ContestantUpsertWithWhereUniqueWithoutDivisionRefInput[];
+  createMany?: Prisma.ContestantCreateManyDivisionRefInputEnvelope;
+  set?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  disconnect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  delete?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  connect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  update?:
+    | Prisma.ContestantUpdateWithWhereUniqueWithoutDivisionRefInput
+    | Prisma.ContestantUpdateWithWhereUniqueWithoutDivisionRefInput[];
+  updateMany?:
+    | Prisma.ContestantUpdateManyWithWhereWithoutDivisionRefInput
+    | Prisma.ContestantUpdateManyWithWhereWithoutDivisionRefInput[];
+  deleteMany?: Prisma.ContestantScalarWhereInput | Prisma.ContestantScalarWhereInput[];
+};
+
+export type ContestantUncheckedUpdateManyWithoutDivisionRefNestedInput = {
+  create?:
+    | Prisma.XOR<
+        Prisma.ContestantCreateWithoutDivisionRefInput,
+        Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+      >
+    | Prisma.ContestantCreateWithoutDivisionRefInput[]
+    | Prisma.ContestantUncheckedCreateWithoutDivisionRefInput[];
+  connectOrCreate?:
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput
+    | Prisma.ContestantCreateOrConnectWithoutDivisionRefInput[];
+  upsert?:
+    | Prisma.ContestantUpsertWithWhereUniqueWithoutDivisionRefInput
+    | Prisma.ContestantUpsertWithWhereUniqueWithoutDivisionRefInput[];
+  createMany?: Prisma.ContestantCreateManyDivisionRefInputEnvelope;
+  set?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  disconnect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  delete?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  connect?: Prisma.ContestantWhereUniqueInput | Prisma.ContestantWhereUniqueInput[];
+  update?:
+    | Prisma.ContestantUpdateWithWhereUniqueWithoutDivisionRefInput
+    | Prisma.ContestantUpdateWithWhereUniqueWithoutDivisionRefInput[];
+  updateMany?:
+    | Prisma.ContestantUpdateManyWithWhereWithoutDivisionRefInput
+    | Prisma.ContestantUpdateManyWithWhereWithoutDivisionRefInput[];
+  deleteMany?: Prisma.ContestantScalarWhereInput | Prisma.ContestantScalarWhereInput[];
+};
+
 export type EnumContestantDivisionFieldUpdateOperationsInput = {
   set?: $Enums.ContestantDivision;
 };
@@ -839,6 +955,7 @@ export type ContestantCreateWithoutEventInput = {
   voteCount?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput;
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput;
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput;
 };
@@ -848,6 +965,7 @@ export type ContestantUncheckedCreateWithoutEventInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -914,6 +1032,7 @@ export type ContestantScalarWhereInput = {
   contestantNumber?: Prisma.IntFilter<"Contestant"> | number;
   name?: Prisma.StringFilter<"Contestant"> | string;
   division?: Prisma.EnumContestantDivisionFilter<"Contestant"> | $Enums.ContestantDivision;
+  divisionId?: Prisma.StringNullableFilter<"Contestant"> | string | null;
   status?: Prisma.EnumContestantStatusFilter<"Contestant"> | $Enums.ContestantStatus;
   hometown?: Prisma.StringNullableFilter<"Contestant"> | string | null;
   heightCm?: Prisma.IntNullableFilter<"Contestant"> | number | null;
@@ -926,6 +1045,91 @@ export type ContestantScalarWhereInput = {
   voteCount?: Prisma.IntFilter<"Contestant"> | number;
   createdAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Contestant"> | Date | string;
+};
+
+export type ContestantCreateWithoutDivisionRefInput = {
+  id?: string;
+  contestantNumber: number;
+  name: string;
+  division?: $Enums.ContestantDivision;
+  status?: $Enums.ContestantStatus;
+  hometown?: string | null;
+  heightCm?: number | null;
+  bio?: string | null;
+  advocacy?: string | null;
+  avatarUrl: string;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
+  facebookUrl?: string | null;
+  voteCount?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  event: Prisma.EventCreateNestedOneWithoutContestantsInput;
+  media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput;
+  categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput;
+};
+
+export type ContestantUncheckedCreateWithoutDivisionRefInput = {
+  id?: string;
+  eventId: string;
+  contestantNumber: number;
+  name: string;
+  division?: $Enums.ContestantDivision;
+  status?: $Enums.ContestantStatus;
+  hometown?: string | null;
+  heightCm?: number | null;
+  bio?: string | null;
+  advocacy?: string | null;
+  avatarUrl: string;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
+  facebookUrl?: string | null;
+  voteCount?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput;
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput;
+};
+
+export type ContestantCreateOrConnectWithoutDivisionRefInput = {
+  where: Prisma.ContestantWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.ContestantCreateWithoutDivisionRefInput,
+    Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+  >;
+};
+
+export type ContestantCreateManyDivisionRefInputEnvelope = {
+  data: Prisma.ContestantCreateManyDivisionRefInput | Prisma.ContestantCreateManyDivisionRefInput[];
+  skipDuplicates?: boolean;
+};
+
+export type ContestantUpsertWithWhereUniqueWithoutDivisionRefInput = {
+  where: Prisma.ContestantWhereUniqueInput;
+  update: Prisma.XOR<
+    Prisma.ContestantUpdateWithoutDivisionRefInput,
+    Prisma.ContestantUncheckedUpdateWithoutDivisionRefInput
+  >;
+  create: Prisma.XOR<
+    Prisma.ContestantCreateWithoutDivisionRefInput,
+    Prisma.ContestantUncheckedCreateWithoutDivisionRefInput
+  >;
+};
+
+export type ContestantUpdateWithWhereUniqueWithoutDivisionRefInput = {
+  where: Prisma.ContestantWhereUniqueInput;
+  data: Prisma.XOR<
+    Prisma.ContestantUpdateWithoutDivisionRefInput,
+    Prisma.ContestantUncheckedUpdateWithoutDivisionRefInput
+  >;
+};
+
+export type ContestantUpdateManyWithWhereWithoutDivisionRefInput = {
+  where: Prisma.ContestantScalarWhereInput;
+  data: Prisma.XOR<
+    Prisma.ContestantUpdateManyMutationInput,
+    Prisma.ContestantUncheckedUpdateManyWithoutDivisionRefInput
+  >;
 };
 
 export type ContestantCreateWithoutMediaInput = {
@@ -946,6 +1150,7 @@ export type ContestantCreateWithoutMediaInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   event: Prisma.EventCreateNestedOneWithoutContestantsInput;
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput;
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput;
 };
 
@@ -955,6 +1160,7 @@ export type ContestantUncheckedCreateWithoutMediaInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -1016,6 +1222,7 @@ export type ContestantUpdateWithoutMediaInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput;
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput;
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput;
 };
 
@@ -1025,6 +1232,7 @@ export type ContestantUncheckedUpdateWithoutMediaInput = {
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
   hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
@@ -1058,6 +1266,7 @@ export type ContestantCreateWithoutCategoriesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   event: Prisma.EventCreateNestedOneWithoutContestantsInput;
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput;
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput;
 };
 
@@ -1067,6 +1276,7 @@ export type ContestantUncheckedCreateWithoutCategoriesInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -1128,6 +1338,7 @@ export type ContestantUpdateWithoutCategoriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput;
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput;
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput;
 };
 
@@ -1137,6 +1348,7 @@ export type ContestantUncheckedUpdateWithoutCategoriesInput = {
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
   hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
@@ -1157,6 +1369,7 @@ export type ContestantCreateManyEventInput = {
   contestantNumber: number;
   name: string;
   division?: $Enums.ContestantDivision;
+  divisionId?: string | null;
   status?: $Enums.ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -1188,12 +1401,98 @@ export type ContestantUpdateWithoutEventInput = {
   voteCount?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput;
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput;
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput;
 };
 
 export type ContestantUncheckedUpdateWithoutEventInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput;
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput;
+};
+
+export type ContestantUncheckedUpdateManyWithoutEventInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+};
+
+export type ContestantCreateManyDivisionRefInput = {
+  id?: string;
+  eventId: string;
+  contestantNumber: number;
+  name: string;
+  division?: $Enums.ContestantDivision;
+  status?: $Enums.ContestantStatus;
+  hometown?: string | null;
+  heightCm?: number | null;
+  bio?: string | null;
+  advocacy?: string | null;
+  avatarUrl: string;
+  instagramUrl?: string | null;
+  tiktokUrl?: string | null;
+  facebookUrl?: string | null;
+  voteCount?: number;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+};
+
+export type ContestantUpdateWithoutDivisionRefInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
+  name?: Prisma.StringFieldUpdateOperationsInput | string;
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus;
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null;
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput;
+  media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput;
+  categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput;
+};
+
+export type ContestantUncheckedUpdateWithoutDivisionRefInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string;
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
@@ -1213,8 +1512,9 @@ export type ContestantUncheckedUpdateWithoutEventInput = {
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput;
 };
 
-export type ContestantUncheckedUpdateManyWithoutEventInput = {
+export type ContestantUncheckedUpdateManyWithoutDivisionRefInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string;
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string;
   contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number;
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision;
@@ -1287,6 +1587,7 @@ export type ContestantSelect<
     contestantNumber?: boolean;
     name?: boolean;
     division?: boolean;
+    divisionId?: boolean;
     status?: boolean;
     hometown?: boolean;
     heightCm?: boolean;
@@ -1300,6 +1601,7 @@ export type ContestantSelect<
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+    divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
     media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>;
     categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>;
     _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1316,6 +1618,7 @@ export type ContestantSelectCreateManyAndReturn<
     contestantNumber?: boolean;
     name?: boolean;
     division?: boolean;
+    divisionId?: boolean;
     status?: boolean;
     hometown?: boolean;
     heightCm?: boolean;
@@ -1329,6 +1632,7 @@ export type ContestantSelectCreateManyAndReturn<
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+    divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
   },
   ExtArgs["result"]["contestant"]
 >;
@@ -1342,6 +1646,7 @@ export type ContestantSelectUpdateManyAndReturn<
     contestantNumber?: boolean;
     name?: boolean;
     division?: boolean;
+    divisionId?: boolean;
     status?: boolean;
     hometown?: boolean;
     heightCm?: boolean;
@@ -1355,6 +1660,7 @@ export type ContestantSelectUpdateManyAndReturn<
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+    divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
   },
   ExtArgs["result"]["contestant"]
 >;
@@ -1365,6 +1671,7 @@ export type ContestantSelectScalar = {
   contestantNumber?: boolean;
   name?: boolean;
   division?: boolean;
+  divisionId?: boolean;
   status?: boolean;
   hometown?: boolean;
   heightCm?: boolean;
@@ -1387,6 +1694,7 @@ export type ContestantOmit<
   | "contestantNumber"
   | "name"
   | "division"
+  | "divisionId"
   | "status"
   | "hometown"
   | "heightCm"
@@ -1405,6 +1713,7 @@ export type ContestantInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+  divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
   media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>;
   categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>;
   _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1413,11 +1722,13 @@ export type ContestantIncludeCreateManyAndReturn<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+  divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
 };
 export type ContestantIncludeUpdateManyAndReturn<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
+  divisionRef?: boolean | Prisma.Contestant$divisionRefArgs<ExtArgs>;
 };
 
 export type $ContestantPayload<
@@ -1426,6 +1737,7 @@ export type $ContestantPayload<
   name: "Contestant";
   objects: {
     event: Prisma.$EventPayload<ExtArgs>;
+    divisionRef: Prisma.$DivisionPayload<ExtArgs> | null;
     media: Prisma.$ContestantMediaPayload<ExtArgs>[];
     categories: Prisma.$ContestantCategoryAssignmentPayload<ExtArgs>[];
   };
@@ -1436,6 +1748,7 @@ export type $ContestantPayload<
       contestantNumber: number;
       name: string;
       division: $Enums.ContestantDivision;
+      divisionId: string | null;
       status: $Enums.ContestantStatus;
       hometown: string | null;
       heightCm: number | null;
@@ -2000,6 +2313,19 @@ export interface Prisma__ContestantClient<
     ExtArgs,
     GlobalOmitOptions
   >;
+  divisionRef<T extends Prisma.Contestant$divisionRefArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Contestant$divisionRefArgs<ExtArgs>>,
+  ): Prisma.Prisma__DivisionClient<
+    runtime.Types.Result.GetResult<
+      Prisma.$DivisionPayload<ExtArgs>,
+      T,
+      "findUniqueOrThrow",
+      GlobalOmitOptions
+    > | null,
+    null,
+    ExtArgs,
+    GlobalOmitOptions
+  >;
   media<T extends Prisma.Contestant$mediaArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.Contestant$mediaArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
@@ -2058,6 +2384,7 @@ export interface ContestantFieldRefs {
   readonly contestantNumber: Prisma.FieldRef<"Contestant", "Int">;
   readonly name: Prisma.FieldRef<"Contestant", "String">;
   readonly division: Prisma.FieldRef<"Contestant", "ContestantDivision">;
+  readonly divisionId: Prisma.FieldRef<"Contestant", "String">;
   readonly status: Prisma.FieldRef<"Contestant", "ContestantStatus">;
   readonly hometown: Prisma.FieldRef<"Contestant", "String">;
   readonly heightCm: Prisma.FieldRef<"Contestant", "Int">;
@@ -2501,6 +2828,27 @@ export type ContestantDeleteManyArgs<
    * Limit how many Contestants to delete.
    */
   limit?: number;
+};
+
+/**
+ * Contestant.divisionRef
+ */
+export type Contestant$divisionRefArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Division
+   */
+  select?: Prisma.DivisionSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Division
+   */
+  omit?: Prisma.DivisionOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DivisionInclude<ExtArgs> | null;
+  where?: Prisma.DivisionWhereInput;
 };
 
 /**

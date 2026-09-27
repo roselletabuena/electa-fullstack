@@ -391,6 +391,7 @@ type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRe
 
 export const ModelName = {
   Event: "Event",
+  Division: "Division",
   Contestant: "Contestant",
   ContestantMedia: "ContestantMedia",
   AwardCategory: "AwardCategory",
@@ -417,6 +418,7 @@ export type TypeMap<
   meta: {
     modelProps:
       | "event"
+      | "division"
       | "contestant"
       | "contestantMedia"
       | "awardCategory"
@@ -496,6 +498,80 @@ export type TypeMap<
         count: {
           args: Prisma.EventCountArgs<ExtArgs>;
           result: runtime.Types.Utils.Optional<Prisma.EventCountAggregateOutputType> | number;
+        };
+      };
+    };
+    Division: {
+      payload: Prisma.$DivisionPayload<ExtArgs>;
+      fields: Prisma.DivisionFieldRefs;
+      operations: {
+        findUnique: {
+          args: Prisma.DivisionFindUniqueArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload> | null;
+        };
+        findUniqueOrThrow: {
+          args: Prisma.DivisionFindUniqueOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        findFirst: {
+          args: Prisma.DivisionFindFirstArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload> | null;
+        };
+        findFirstOrThrow: {
+          args: Prisma.DivisionFindFirstOrThrowArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        findMany: {
+          args: Prisma.DivisionFindManyArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>[];
+        };
+        create: {
+          args: Prisma.DivisionCreateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        createMany: {
+          args: Prisma.DivisionCreateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        createManyAndReturn: {
+          args: Prisma.DivisionCreateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>[];
+        };
+        delete: {
+          args: Prisma.DivisionDeleteArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        update: {
+          args: Prisma.DivisionUpdateArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        deleteMany: {
+          args: Prisma.DivisionDeleteManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateMany: {
+          args: Prisma.DivisionUpdateManyArgs<ExtArgs>;
+          result: BatchPayload;
+        };
+        updateManyAndReturn: {
+          args: Prisma.DivisionUpdateManyAndReturnArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>[];
+        };
+        upsert: {
+          args: Prisma.DivisionUpsertArgs<ExtArgs>;
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$DivisionPayload>;
+        };
+        aggregate: {
+          args: Prisma.DivisionAggregateArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.AggregateDivision>;
+        };
+        groupBy: {
+          args: Prisma.DivisionGroupByArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.DivisionGroupByOutputType>[];
+        };
+        count: {
+          args: Prisma.DivisionCountArgs<ExtArgs>;
+          result: runtime.Types.Utils.Optional<Prisma.DivisionCountAggregateOutputType> | number;
         };
       };
     };
@@ -933,12 +1009,26 @@ export const EventScalarFieldEnum = {
 
 export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum];
 
+export const DivisionScalarFieldEnum = {
+  id: "id",
+  eventId: "eventId",
+  name: "name",
+  description: "description",
+  displayOrder: "displayOrder",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type DivisionScalarFieldEnum =
+  (typeof DivisionScalarFieldEnum)[keyof typeof DivisionScalarFieldEnum];
+
 export const ContestantScalarFieldEnum = {
   id: "id",
   eventId: "eventId",
   contestantNumber: "contestantNumber",
   name: "name",
   division: "division",
+  divisionId: "divisionId",
   status: "status",
   hometown: "hometown",
   heightCm: "heightCm",
@@ -978,6 +1068,7 @@ export const AwardCategoryScalarFieldEnum = {
   name: "name",
   description: "description",
   isVotingOpen: "isVotingOpen",
+  displayOrder: "displayOrder",
   createdAt: "createdAt",
   updatedAt: "updatedAt",
 } as const;
@@ -1338,6 +1429,7 @@ export type PrismaClientOptions =
   PrismaClientOptionsWithAccelerateUrl | PrismaClientOptionsWithAdapter;
 export type GlobalOmitConfig = {
   event?: Prisma.EventOmit;
+  division?: Prisma.DivisionOmit;
   contestant?: Prisma.ContestantOmit;
   contestantMedia?: Prisma.ContestantMediaOmit;
   awardCategory?: Prisma.AwardCategoryOmit;

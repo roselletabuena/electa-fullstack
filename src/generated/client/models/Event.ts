@@ -294,6 +294,7 @@ export type EventWhereInput = {
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
   contestants?: Prisma.ContestantListRelationFilter;
+  divisions?: Prisma.DivisionListRelationFilter;
   awardCategories?: Prisma.AwardCategoryListRelationFilter;
   auditLogs?: Prisma.EventAuditLogListRelationFilter;
 };
@@ -315,6 +316,7 @@ export type EventOrderByWithRelationInput = {
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   contestants?: Prisma.ContestantOrderByRelationAggregateInput;
+  divisions?: Prisma.DivisionOrderByRelationAggregateInput;
   awardCategories?: Prisma.AwardCategoryOrderByRelationAggregateInput;
   auditLogs?: Prisma.EventAuditLogOrderByRelationAggregateInput;
 };
@@ -341,6 +343,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<
     createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
     contestants?: Prisma.ContestantListRelationFilter;
+    divisions?: Prisma.DivisionListRelationFilter;
     awardCategories?: Prisma.AwardCategoryListRelationFilter;
     auditLogs?: Prisma.EventAuditLogListRelationFilter;
   },
@@ -409,6 +412,7 @@ export type EventCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput;
 };
@@ -430,6 +434,7 @@ export type EventUncheckedCreateInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput;
 };
@@ -452,6 +457,7 @@ export type EventUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput;
 };
@@ -474,6 +480,7 @@ export type EventUncheckedUpdateInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput;
 };
@@ -629,6 +636,32 @@ export type IntFieldUpdateOperationsInput = {
   divide?: number;
 };
 
+export type EventCreateNestedOneWithoutDivisionsInput = {
+  create?: Prisma.XOR<
+    Prisma.EventCreateWithoutDivisionsInput,
+    Prisma.EventUncheckedCreateWithoutDivisionsInput
+  >;
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutDivisionsInput;
+  connect?: Prisma.EventWhereUniqueInput;
+};
+
+export type EventUpdateOneRequiredWithoutDivisionsNestedInput = {
+  create?: Prisma.XOR<
+    Prisma.EventCreateWithoutDivisionsInput,
+    Prisma.EventUncheckedCreateWithoutDivisionsInput
+  >;
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutDivisionsInput;
+  upsert?: Prisma.EventUpsertWithoutDivisionsInput;
+  connect?: Prisma.EventWhereUniqueInput;
+  update?: Prisma.XOR<
+    Prisma.XOR<
+      Prisma.EventUpdateToOneWithWhereWithoutDivisionsInput,
+      Prisma.EventUpdateWithoutDivisionsInput
+    >,
+    Prisma.EventUncheckedUpdateWithoutDivisionsInput
+  >;
+};
+
 export type EventCreateNestedOneWithoutContestantsInput = {
   create?: Prisma.XOR<
     Prisma.EventCreateWithoutContestantsInput,
@@ -707,6 +740,120 @@ export type EventUpdateOneRequiredWithoutAuditLogsNestedInput = {
   >;
 };
 
+export type EventCreateWithoutDivisionsInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  description: string;
+  bannerUrl: string;
+  startsAt: Date | string;
+  endsAt: Date | string;
+  publicationStatus?: $Enums.EventPublicationStatus;
+  draftPassphraseHash?: string | null;
+  showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
+  organizerId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput;
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput;
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput;
+};
+
+export type EventUncheckedCreateWithoutDivisionsInput = {
+  id?: string;
+  slug: string;
+  title: string;
+  description: string;
+  bannerUrl: string;
+  startsAt: Date | string;
+  endsAt: Date | string;
+  publicationStatus?: $Enums.EventPublicationStatus;
+  draftPassphraseHash?: string | null;
+  showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
+  organizerId: string;
+  createdAt?: Date | string;
+  updatedAt?: Date | string;
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput;
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput;
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput;
+};
+
+export type EventCreateOrConnectWithoutDivisionsInput = {
+  where: Prisma.EventWhereUniqueInput;
+  create: Prisma.XOR<
+    Prisma.EventCreateWithoutDivisionsInput,
+    Prisma.EventUncheckedCreateWithoutDivisionsInput
+  >;
+};
+
+export type EventUpsertWithoutDivisionsInput = {
+  update: Prisma.XOR<
+    Prisma.EventUpdateWithoutDivisionsInput,
+    Prisma.EventUncheckedUpdateWithoutDivisionsInput
+  >;
+  create: Prisma.XOR<
+    Prisma.EventCreateWithoutDivisionsInput,
+    Prisma.EventUncheckedCreateWithoutDivisionsInput
+  >;
+  where?: Prisma.EventWhereInput;
+};
+
+export type EventUpdateToOneWithWhereWithoutDivisionsInput = {
+  where?: Prisma.EventWhereInput;
+  data: Prisma.XOR<
+    Prisma.EventUpdateWithoutDivisionsInput,
+    Prisma.EventUncheckedUpdateWithoutDivisionsInput
+  >;
+};
+
+export type EventUpdateWithoutDivisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  description?: Prisma.StringFieldUpdateOperationsInput | string;
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publicationStatus?:
+    Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput;
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput;
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput;
+};
+
+export type EventUncheckedUpdateWithoutDivisionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string;
+  slug?: Prisma.StringFieldUpdateOperationsInput | string;
+  title?: Prisma.StringFieldUpdateOperationsInput | string;
+  description?: Prisma.StringFieldUpdateOperationsInput | string;
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string;
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  publicationStatus?:
+    Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput;
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput;
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput;
+};
+
 export type EventCreateWithoutContestantsInput = {
   id?: string;
   slug: string;
@@ -723,6 +870,7 @@ export type EventCreateWithoutContestantsInput = {
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput;
 };
@@ -743,6 +891,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput;
 };
@@ -792,6 +941,7 @@ export type EventUpdateWithoutContestantsInput = {
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput;
 };
@@ -813,6 +963,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput;
 };
@@ -834,6 +985,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput;
 };
 
@@ -854,6 +1006,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput;
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput;
 };
 
@@ -903,6 +1056,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput;
 };
 
@@ -924,6 +1078,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput;
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput;
 };
 
@@ -944,6 +1099,7 @@ export type EventCreateWithoutAuditLogsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput;
 };
 
@@ -964,6 +1120,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput;
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput;
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput;
 };
 
@@ -1013,6 +1170,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput;
 };
 
@@ -1034,6 +1192,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput;
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput;
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput;
 };
 
@@ -1043,6 +1202,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
 
 export type EventCountOutputType = {
   contestants: number;
+  divisions: number;
   awardCategories: number;
   auditLogs: number;
 };
@@ -1051,6 +1211,7 @@ export type EventCountOutputTypeSelect<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   contestants?: boolean | EventCountOutputTypeCountContestantsArgs;
+  divisions?: boolean | EventCountOutputTypeCountDivisionsArgs;
   awardCategories?: boolean | EventCountOutputTypeCountAwardCategoriesArgs;
   auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs;
 };
@@ -1074,6 +1235,15 @@ export type EventCountOutputTypeCountContestantsArgs<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   where?: Prisma.ContestantWhereInput;
+};
+
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountDivisionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  where?: Prisma.DivisionWhereInput;
 };
 
 /**
@@ -1114,6 +1284,7 @@ export type EventSelect<
     createdAt?: boolean;
     updatedAt?: boolean;
     contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>;
+    divisions?: boolean | Prisma.Event$divisionsArgs<ExtArgs>;
     awardCategories?: boolean | Prisma.Event$awardCategoriesArgs<ExtArgs>;
     auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>;
     _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1209,6 +1380,7 @@ export type EventInclude<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = {
   contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>;
+  divisions?: boolean | Prisma.Event$divisionsArgs<ExtArgs>;
   awardCategories?: boolean | Prisma.Event$awardCategoriesArgs<ExtArgs>;
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>;
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>;
@@ -1226,6 +1398,7 @@ export type $EventPayload<
   name: "Event";
   objects: {
     contestants: Prisma.$ContestantPayload<ExtArgs>[];
+    divisions: Prisma.$DivisionPayload<ExtArgs>[];
     awardCategories: Prisma.$AwardCategoryPayload<ExtArgs>[];
     auditLogs: Prisma.$EventAuditLogPayload<ExtArgs>[];
   };
@@ -1767,6 +1940,17 @@ export interface Prisma__EventClient<
       >
     | Null
   >;
+  divisions<T extends Prisma.Event$divisionsArgs<ExtArgs> = {}>(
+    args?: Prisma.Subset<T, Prisma.Event$divisionsArgs<ExtArgs>>,
+  ): Prisma.PrismaPromise<
+    | runtime.Types.Result.GetResult<
+        Prisma.$DivisionPayload<ExtArgs>,
+        T,
+        "findMany",
+        GlobalOmitOptions
+      >
+    | Null
+  >;
   awardCategories<T extends Prisma.Event$awardCategoriesArgs<ExtArgs> = {}>(
     args?: Prisma.Subset<T, Prisma.Event$awardCategoriesArgs<ExtArgs>>,
   ): Prisma.PrismaPromise<
@@ -2278,6 +2462,32 @@ export type Event$contestantsArgs<
   take?: number;
   skip?: number;
   distinct?: Prisma.ContestantScalarFieldEnum | Prisma.ContestantScalarFieldEnum[];
+};
+
+/**
+ * Event.divisions
+ */
+export type Event$divisionsArgs<
+  ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
+> = {
+  /**
+   * Select specific fields to fetch from the Division
+   */
+  select?: Prisma.DivisionSelect<ExtArgs> | null;
+  /**
+   * Omit specific fields from the Division
+   */
+  omit?: Prisma.DivisionOmit<ExtArgs> | null;
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.DivisionInclude<ExtArgs> | null;
+  where?: Prisma.DivisionWhereInput;
+  orderBy?: Prisma.DivisionOrderByWithRelationInput | Prisma.DivisionOrderByWithRelationInput[];
+  cursor?: Prisma.DivisionWhereUniqueInput;
+  take?: number;
+  skip?: number;
+  distinct?: Prisma.DivisionScalarFieldEnum | Prisma.DivisionScalarFieldEnum[];
 };
 
 /**

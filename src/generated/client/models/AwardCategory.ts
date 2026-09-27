@@ -20,8 +20,18 @@ export type AwardCategoryModel =
 
 export type AggregateAwardCategory = {
   _count: AwardCategoryCountAggregateOutputType | null;
+  _avg: AwardCategoryAvgAggregateOutputType | null;
+  _sum: AwardCategorySumAggregateOutputType | null;
   _min: AwardCategoryMinAggregateOutputType | null;
   _max: AwardCategoryMaxAggregateOutputType | null;
+};
+
+export type AwardCategoryAvgAggregateOutputType = {
+  displayOrder: number | null;
+};
+
+export type AwardCategorySumAggregateOutputType = {
+  displayOrder: number | null;
 };
 
 export type AwardCategoryMinAggregateOutputType = {
@@ -30,6 +40,7 @@ export type AwardCategoryMinAggregateOutputType = {
   name: string | null;
   description: string | null;
   isVotingOpen: boolean | null;
+  displayOrder: number | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -40,6 +51,7 @@ export type AwardCategoryMaxAggregateOutputType = {
   name: string | null;
   description: string | null;
   isVotingOpen: boolean | null;
+  displayOrder: number | null;
   createdAt: Date | null;
   updatedAt: Date | null;
 };
@@ -50,9 +62,18 @@ export type AwardCategoryCountAggregateOutputType = {
   name: number;
   description: number;
   isVotingOpen: number;
+  displayOrder: number;
   createdAt: number;
   updatedAt: number;
   _all: number;
+};
+
+export type AwardCategoryAvgAggregateInputType = {
+  displayOrder?: true;
+};
+
+export type AwardCategorySumAggregateInputType = {
+  displayOrder?: true;
 };
 
 export type AwardCategoryMinAggregateInputType = {
@@ -61,6 +82,7 @@ export type AwardCategoryMinAggregateInputType = {
   name?: true;
   description?: true;
   isVotingOpen?: true;
+  displayOrder?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -71,6 +93,7 @@ export type AwardCategoryMaxAggregateInputType = {
   name?: true;
   description?: true;
   isVotingOpen?: true;
+  displayOrder?: true;
   createdAt?: true;
   updatedAt?: true;
 };
@@ -81,6 +104,7 @@ export type AwardCategoryCountAggregateInputType = {
   name?: true;
   description?: true;
   isVotingOpen?: true;
+  displayOrder?: true;
   createdAt?: true;
   updatedAt?: true;
   _all?: true;
@@ -127,6 +151,18 @@ export type AwardCategoryAggregateArgs<
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
+   * Select which fields to average
+   **/
+  _avg?: AwardCategoryAvgAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
+   * Select which fields to sum
+   **/
+  _sum?: AwardCategorySumAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
    * Select which fields to find the minimum value
    **/
   _min?: AwardCategoryMinAggregateInputType;
@@ -158,6 +194,8 @@ export type AwardCategoryGroupByArgs<
   take?: number;
   skip?: number;
   _count?: AwardCategoryCountAggregateInputType | true;
+  _avg?: AwardCategoryAvgAggregateInputType;
+  _sum?: AwardCategorySumAggregateInputType;
   _min?: AwardCategoryMinAggregateInputType;
   _max?: AwardCategoryMaxAggregateInputType;
 };
@@ -168,9 +206,12 @@ export type AwardCategoryGroupByOutputType = {
   name: string;
   description: string | null;
   isVotingOpen: boolean;
+  displayOrder: number;
   createdAt: Date;
   updatedAt: Date;
   _count: AwardCategoryCountAggregateOutputType | null;
+  _avg: AwardCategoryAvgAggregateOutputType | null;
+  _sum: AwardCategorySumAggregateOutputType | null;
   _min: AwardCategoryMinAggregateOutputType | null;
   _max: AwardCategoryMaxAggregateOutputType | null;
 };
@@ -197,6 +238,7 @@ export type AwardCategoryWhereInput = {
   name?: Prisma.StringFilter<"AwardCategory"> | string;
   description?: Prisma.StringNullableFilter<"AwardCategory"> | string | null;
   isVotingOpen?: Prisma.BoolFilter<"AwardCategory"> | boolean;
+  displayOrder?: Prisma.IntFilter<"AwardCategory"> | number;
   createdAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
@@ -209,6 +251,7 @@ export type AwardCategoryOrderByWithRelationInput = {
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrderInput | Prisma.SortOrder;
   isVotingOpen?: Prisma.SortOrder;
+  displayOrder?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   event?: Prisma.EventOrderByWithRelationInput;
@@ -226,6 +269,7 @@ export type AwardCategoryWhereUniqueInput = Prisma.AtLeast<
     name?: Prisma.StringFilter<"AwardCategory"> | string;
     description?: Prisma.StringNullableFilter<"AwardCategory"> | string | null;
     isVotingOpen?: Prisma.BoolFilter<"AwardCategory"> | boolean;
+    displayOrder?: Prisma.IntFilter<"AwardCategory"> | number;
     createdAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
     event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>;
@@ -240,11 +284,14 @@ export type AwardCategoryOrderByWithAggregationInput = {
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrderInput | Prisma.SortOrder;
   isVotingOpen?: Prisma.SortOrder;
+  displayOrder?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   _count?: Prisma.AwardCategoryCountOrderByAggregateInput;
+  _avg?: Prisma.AwardCategoryAvgOrderByAggregateInput;
   _max?: Prisma.AwardCategoryMaxOrderByAggregateInput;
   _min?: Prisma.AwardCategoryMinOrderByAggregateInput;
+  _sum?: Prisma.AwardCategorySumOrderByAggregateInput;
 };
 
 export type AwardCategoryScalarWhereWithAggregatesInput = {
@@ -260,6 +307,7 @@ export type AwardCategoryScalarWhereWithAggregatesInput = {
   name?: Prisma.StringWithAggregatesFilter<"AwardCategory"> | string;
   description?: Prisma.StringNullableWithAggregatesFilter<"AwardCategory"> | string | null;
   isVotingOpen?: Prisma.BoolWithAggregatesFilter<"AwardCategory"> | boolean;
+  displayOrder?: Prisma.IntWithAggregatesFilter<"AwardCategory"> | number;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"AwardCategory"> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"AwardCategory"> | Date | string;
 };
@@ -269,6 +317,7 @@ export type AwardCategoryCreateInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   event: Prisma.EventCreateNestedOneWithoutAwardCategoriesInput;
@@ -281,6 +330,7 @@ export type AwardCategoryUncheckedCreateInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutAwardCategoryInput;
@@ -291,6 +341,7 @@ export type AwardCategoryUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   event?: Prisma.EventUpdateOneRequiredWithoutAwardCategoriesNestedInput;
@@ -303,6 +354,7 @@ export type AwardCategoryUncheckedUpdateInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutAwardCategoryNestedInput;
@@ -314,6 +366,7 @@ export type AwardCategoryCreateManyInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -323,6 +376,7 @@ export type AwardCategoryUpdateManyMutationInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -333,6 +387,7 @@ export type AwardCategoryUncheckedUpdateManyInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -358,8 +413,13 @@ export type AwardCategoryCountOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   isVotingOpen?: Prisma.SortOrder;
+  displayOrder?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+};
+
+export type AwardCategoryAvgOrderByAggregateInput = {
+  displayOrder?: Prisma.SortOrder;
 };
 
 export type AwardCategoryMaxOrderByAggregateInput = {
@@ -368,6 +428,7 @@ export type AwardCategoryMaxOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   isVotingOpen?: Prisma.SortOrder;
+  displayOrder?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
 };
@@ -378,8 +439,13 @@ export type AwardCategoryMinOrderByAggregateInput = {
   name?: Prisma.SortOrder;
   description?: Prisma.SortOrder;
   isVotingOpen?: Prisma.SortOrder;
+  displayOrder?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+};
+
+export type AwardCategorySumOrderByAggregateInput = {
+  displayOrder?: Prisma.SortOrder;
 };
 
 export type AwardCategoryScalarRelationFilter = {
@@ -504,6 +570,7 @@ export type AwardCategoryCreateWithoutEventInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutAwardCategoryInput;
@@ -514,6 +581,7 @@ export type AwardCategoryUncheckedCreateWithoutEventInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutAwardCategoryInput;
@@ -569,6 +637,7 @@ export type AwardCategoryScalarWhereInput = {
   name?: Prisma.StringFilter<"AwardCategory"> | string;
   description?: Prisma.StringNullableFilter<"AwardCategory"> | string | null;
   isVotingOpen?: Prisma.BoolFilter<"AwardCategory"> | boolean;
+  displayOrder?: Prisma.IntFilter<"AwardCategory"> | number;
   createdAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"AwardCategory"> | Date | string;
 };
@@ -578,6 +647,7 @@ export type AwardCategoryCreateWithoutContestantsInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
   event: Prisma.EventCreateNestedOneWithoutAwardCategoriesInput;
@@ -589,6 +659,7 @@ export type AwardCategoryUncheckedCreateWithoutContestantsInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -626,6 +697,7 @@ export type AwardCategoryUpdateWithoutContestantsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   event?: Prisma.EventUpdateOneRequiredWithoutAwardCategoriesNestedInput;
@@ -637,6 +709,7 @@ export type AwardCategoryUncheckedUpdateWithoutContestantsInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -646,6 +719,7 @@ export type AwardCategoryCreateManyEventInput = {
   name: string;
   description?: string | null;
   isVotingOpen?: boolean;
+  displayOrder?: number;
   createdAt?: Date | string;
   updatedAt?: Date | string;
 };
@@ -655,6 +729,7 @@ export type AwardCategoryUpdateWithoutEventInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutAwardCategoryNestedInput;
@@ -665,6 +740,7 @@ export type AwardCategoryUncheckedUpdateWithoutEventInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   contestants?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutAwardCategoryNestedInput;
@@ -675,6 +751,7 @@ export type AwardCategoryUncheckedUpdateManyWithoutEventInput = {
   name?: Prisma.StringFieldUpdateOperationsInput | string;
   description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
 };
@@ -723,6 +800,7 @@ export type AwardCategorySelect<
     name?: boolean;
     description?: boolean;
     isVotingOpen?: boolean;
+    displayOrder?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
@@ -741,6 +819,7 @@ export type AwardCategorySelectCreateManyAndReturn<
     name?: boolean;
     description?: boolean;
     isVotingOpen?: boolean;
+    displayOrder?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
@@ -757,6 +836,7 @@ export type AwardCategorySelectUpdateManyAndReturn<
     name?: boolean;
     description?: boolean;
     isVotingOpen?: boolean;
+    displayOrder?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
     event?: boolean | Prisma.EventDefaultArgs<ExtArgs>;
@@ -770,6 +850,7 @@ export type AwardCategorySelectScalar = {
   name?: boolean;
   description?: boolean;
   isVotingOpen?: boolean;
+  displayOrder?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
 };
@@ -777,7 +858,14 @@ export type AwardCategorySelectScalar = {
 export type AwardCategoryOmit<
   ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs,
 > = runtime.Types.Extensions.GetOmit<
-  "id" | "eventId" | "name" | "description" | "isVotingOpen" | "createdAt" | "updatedAt",
+  | "id"
+  | "eventId"
+  | "name"
+  | "description"
+  | "isVotingOpen"
+  | "displayOrder"
+  | "createdAt"
+  | "updatedAt",
   ExtArgs["result"]["awardCategory"]
 >;
 export type AwardCategoryInclude<
@@ -813,6 +901,7 @@ export type $AwardCategoryPayload<
       name: string;
       description: string | null;
       isVotingOpen: boolean;
+      displayOrder: number;
       createdAt: Date;
       updatedAt: Date;
     },
@@ -1415,6 +1504,7 @@ export interface AwardCategoryFieldRefs {
   readonly name: Prisma.FieldRef<"AwardCategory", "String">;
   readonly description: Prisma.FieldRef<"AwardCategory", "String">;
   readonly isVotingOpen: Prisma.FieldRef<"AwardCategory", "Boolean">;
+  readonly displayOrder: Prisma.FieldRef<"AwardCategory", "Int">;
   readonly createdAt: Prisma.FieldRef<"AwardCategory", "DateTime">;
   readonly updatedAt: Prisma.FieldRef<"AwardCategory", "DateTime">;
 }

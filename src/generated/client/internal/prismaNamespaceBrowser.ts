@@ -49,6 +49,7 @@ export const AnyNull = runtime.AnyNull;
 
 export const ModelName = {
   Event: "Event",
+  Division: "Division",
   Contestant: "Contestant",
   ContestantMedia: "ContestantMedia",
   AwardCategory: "AwardCategory",
@@ -92,12 +93,26 @@ export const EventScalarFieldEnum = {
 
 export type EventScalarFieldEnum = (typeof EventScalarFieldEnum)[keyof typeof EventScalarFieldEnum];
 
+export const DivisionScalarFieldEnum = {
+  id: "id",
+  eventId: "eventId",
+  name: "name",
+  description: "description",
+  displayOrder: "displayOrder",
+  createdAt: "createdAt",
+  updatedAt: "updatedAt",
+} as const;
+
+export type DivisionScalarFieldEnum =
+  (typeof DivisionScalarFieldEnum)[keyof typeof DivisionScalarFieldEnum];
+
 export const ContestantScalarFieldEnum = {
   id: "id",
   eventId: "eventId",
   contestantNumber: "contestantNumber",
   name: "name",
   division: "division",
+  divisionId: "divisionId",
   status: "status",
   hometown: "hometown",
   heightCm: "heightCm",
@@ -137,6 +152,7 @@ export const AwardCategoryScalarFieldEnum = {
   name: "name",
   description: "description",
   isVotingOpen: "isVotingOpen",
+  displayOrder: "displayOrder",
   createdAt: "createdAt",
   updatedAt: "updatedAt",
 } as const;

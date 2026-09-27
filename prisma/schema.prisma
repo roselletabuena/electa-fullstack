@@ -57,6 +57,7 @@ model Event {
   updatedAt           DateTime               @updatedAt
 
   contestants         Contestant[]
+  divisions           Division[]
   awardCategories     AwardCategory[]
   auditLogs           EventAuditLog[]
 
@@ -65,12 +66,30 @@ model Event {
   @@index([publicationStatus, startsAt, endsAt])
 }
 
+model Division {
+  id           String       @id @default(uuid())
+  eventId      String
+  name         String
+  description  String?
+  displayOrder Int          @default(0)
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  event        Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  contestants  Contestant[]
+
+  @@unique([eventId, name])
+  @@index([eventId])
+  @@index([eventId, displayOrder])
+}
+
 model Contestant {
   id               String                         @id @default(uuid())
   eventId          String
   contestantNumber Int
   name             String
   division         ContestantDivision             @default(FEMALE)
+  divisionId       String?
   status           ContestantStatus               @default(ACTIVE)
   hometown         String?
   heightCm         Int?
@@ -85,6 +104,7 @@ model Contestant {
   updatedAt        DateTime                       @updatedAt
 
   event            Event                          @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  divisionRef      Division?                      @relation(fields: [divisionId], references: [id], onDelete: SetNull)
   media            ContestantMedia[]
   categories       ContestantCategoryAssignment[]
 
@@ -92,6 +112,7 @@ model Contestant {
   @@index([eventId])
   @@index([eventId, status])
   @@index([eventId, division])
+  @@index([eventId, divisionId])
 }
 
 model ContestantMedia {
@@ -117,6 +138,7 @@ model AwardCategory {
   name         String
   description  String?
   isVotingOpen Boolean                        @default(true)
+  displayOrder Int                            @default(0)
   createdAt    DateTime                       @default(now())
   updatedAt    DateTime                       @updatedAt
 
@@ -125,6 +147,7 @@ model AwardCategory {
 
   @@unique([eventId, name])
   @@index([eventId])
+  @@index([eventId, displayOrder])
 }
 
 model ContestantCategoryAssignment {

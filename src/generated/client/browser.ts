@@ -22,6 +22,11 @@ export * from "./enums";
  */
 export type Event = Prisma.EventModel;
 /**
+ * Model Division
+ *
+ */
+export type Division = Prisma.DivisionModel;
+/**
  * Model Contestant
  *
  */

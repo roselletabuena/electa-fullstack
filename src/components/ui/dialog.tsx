@@ -33,7 +33,7 @@ export function DialogContent({
 }: {
   className?: string;
   children: React.ReactNode;
-  onClose?: () => void;
+  onClose?: (() => void) | undefined;
 }) {
   return (
     <div
@@ -58,15 +58,7 @@ export function DialogContent({
 }
 
 export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
-  return (
-    <div
-      className={cn(
-        "flex flex-col space-y-1.5 border-b border-slate-200 pb-4 text-left dark:border-slate-800",
-        className,
-      )}
-      {...props}
-    />
-  );
+  return <div className={cn("flex flex-col space-y-1.5 text-left", className)} {...props} />;
 }
 
 export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {

@@ -58,7 +58,7 @@ export function CopySlugButton({
       onClick={handleCopy}
       aria-label={copied ? "Public link copied to clipboard" : `Copy public link for ${slug}`}
       className={cn(
-        "cursor-pointer transition-all duration-200",
+        "cursor-pointer gap-2 transition-all duration-200",
         copied
           ? "border-emerald-500/50 bg-emerald-500/10 text-emerald-600 dark:text-emerald-400"
           : "hover:border-slate-300 dark:hover:border-slate-700",

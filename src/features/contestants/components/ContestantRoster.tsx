@@ -3,19 +3,26 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Users, AlertCircle } from "lucide-react";
-import type { ContestantDto, ContestantDivision, AwardCategoryDto } from "../types";
+import type { ContestantDto, AwardCategoryDto } from "../types";
 import { ContestantCard } from "./ContestantCard";
 import { ContestantProfileModal } from "./ContestantProfileModal";
 import { CategoryFilterBar } from "./CategoryFilterBar";
 
+export interface DynamicDivisionItem {
+  id?: string | undefined;
+  name: string;
+}
+
 interface ContestantRosterProps {
   initialContestants: ContestantDto[];
-  categories?: AwardCategoryDto[];
-  onVoteClick?: (contestant: ContestantDto) => void;
+  divisions?: DynamicDivisionItem[] | undefined;
+  categories?: AwardCategoryDto[] | undefined;
+  onVoteClick?: ((contestant: ContestantDto) => void) | undefined;
 }
 
 export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   initialContestants,
+  divisions,
   categories = [],
   onVoteClick,
 }) => {
@@ -23,16 +30,31 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
-  const divisionFromUrl = (searchParams.get("division") as ContestantDivision) || "ALL";
+  const divisionFromUrl = searchParams.get("division") || "ALL";
   const categoryFromUrl = searchParams.get("category") || "ALL";
 
-  const [selectedDivision, setSelectedDivision] = useState<ContestantDivision | "ALL">(
-    divisionFromUrl,
-  );
+  const [selectedDivision, setSelectedDivision] = useState<string>(divisionFromUrl);
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | "ALL">(categoryFromUrl);
   const [activeContestant, setActiveContestant] = useState<ContestantDto | null>(null);
 
-  const updateUrlFilters = (division: ContestantDivision | "ALL", categoryId: string | "ALL") => {
+  const formattedDivisions = React.useMemo(() => {
+    if (divisions && divisions.length > 0) {
+      return divisions.map((d) => ({
+        label: d.name,
+        value: d.name,
+      }));
+    }
+    const distinct = Array.from(new Set(initialContestants.map((c) => c.division).filter(Boolean)));
+    if (distinct.length > 0) {
+      return distinct.map((div) => ({
+        label: div.charAt(0).toUpperCase() + div.slice(1).toLowerCase(),
+        value: div,
+      }));
+    }
+    return undefined;
+  }, [divisions, initialContestants]);
+
+  const updateUrlFilters = (division: string, categoryId: string | "ALL") => {
     const params = new URLSearchParams(searchParams.toString());
     if (division && division !== "ALL") {
       params.set("division", division);
@@ -49,7 +71,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
     router.replace(`${pathname}?${params.toString()}`, { scroll: false });
   };
 
-  const handleSelectDivision = (division: ContestantDivision | "ALL") => {
+  const handleSelectDivision = (division: string) => {
     setSelectedDivision(division);
     updateUrlFilters(division, selectedCategoryId);
   };
@@ -62,8 +84,18 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   // Client-side filtering for sub-50ms instant roster response
   const filteredContestants = initialContestants.filter((c) => {
     if (c.status !== "ACTIVE") return false;
-    if (selectedDivision !== "ALL" && c.division !== selectedDivision) {
-      return false;
+    if (selectedDivision !== "ALL") {
+      const matchExact = c.division.toLowerCase() === selectedDivision.toLowerCase();
+      const isFemaleFilter = selectedDivision.toLowerCase().includes("female");
+      const isMaleFilter = !isFemaleFilter && selectedDivision.toLowerCase().includes("male");
+      const matchNormalized =
+        (c.division === "FEMALE" && isFemaleFilter) ||
+        (c.division === "MALE" && isMaleFilter) ||
+        (c.division === "LGBTQ" && selectedDivision.toLowerCase().includes("lgbt")) ||
+        (c.division === "TEEN" && selectedDivision.toLowerCase().includes("teen"));
+      if (!matchExact && !matchNormalized) {
+        return false;
+      }
     }
     if (selectedCategoryId !== "ALL") {
       const isNominated = c.categories.some((cat) => cat.id === selectedCategoryId);
@@ -101,6 +133,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
 
       {/* Division and Category Filter Bar */}
       <CategoryFilterBar
+        divisions={formattedDivisions}
         selectedDivision={selectedDivision}
         onSelectDivision={handleSelectDivision}
         categories={categories}

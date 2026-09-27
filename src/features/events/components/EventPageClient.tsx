@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { ContestantRoster } from "@/features/contestants/components/ContestantRoster";
 import { useContestants } from "@/features/contestants/hooks/use-contestants";
 import { useCategories } from "@/features/contestants/hooks/use-categories";
+import { useEventTaxonomy } from "../hooks/useEventTaxonomy";
 import type { ContestantDto as RichContestantDto } from "@/features/contestants/types";
 import { DraftPreviewBanner } from "./DraftPreviewBanner";
 import { EventBanner } from "./EventBanner";
@@ -29,6 +30,7 @@ export function EventPageClient({
 
   const { data: apiContestants } = useContestants(event.slug);
   const { data: apiCategories } = useCategories(event.slug);
+  const { data: taxonomy } = useEventTaxonomy(event.slug);
 
   const handleStateTransition = (): void => {
     // When countdown hits zero, immediately recalculate state and revalidate
@@ -107,7 +109,8 @@ export function EventPageClient({
 
         <ContestantRoster
           initialContestants={contestantsToDisplay}
-          categories={apiCategories ?? []}
+          divisions={taxonomy?.divisions}
+          categories={taxonomy?.awardCategories ?? apiCategories ?? []}
           onVoteClick={handleSelectCandidate}
         />
       </div>

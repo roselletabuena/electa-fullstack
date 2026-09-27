@@ -110,3 +110,38 @@ export type {
   OrganizerEventItemDto,
   DashboardMetricsDto,
 } from "./dashboard-overview";
+
+export interface DivisionDto {
+  id: string;
+  eventId: string;
+  name: string;
+  description: string | null;
+  displayOrder: number;
+  contestantCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface AwardCategoryDto {
+  id: string;
+  eventId: string;
+  name: string;
+  description: string | null;
+  isVotingOpen: boolean;
+  displayOrder: number;
+  contestantCount?: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface EventTaxonomyDto {
+  divisions: DivisionDto[];
+  awardCategories: AwardCategoryDto[];
+}
+
+export type { CreateDivisionInput, UpdateDivisionInput } from "@/lib/validations/division";
+
+export type {
+  CreateAwardCategoryInput,
+  UpdateAwardCategoryInput,
+} from "@/lib/validations/category-awards";

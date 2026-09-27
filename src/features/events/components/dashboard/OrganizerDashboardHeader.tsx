@@ -103,7 +103,7 @@ export function OrganizerDashboardHeader({
             )}
           >
             <Users className="size-3.5" />
-            Contestants Roster
+            Contestants
           </Link>
         </nav>
       </div>

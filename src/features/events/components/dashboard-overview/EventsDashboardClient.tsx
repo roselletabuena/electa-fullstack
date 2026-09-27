@@ -102,7 +102,7 @@ export function EventsDashboardClient({
               Your Managed Events
             </h2>
             <p className="text-xs text-slate-500 dark:text-slate-400">
-              Select an event to view candidate rosters, manage voting rules, or configure branding.
+              Select an event to view candidates, manage voting rules, or configure branding.
             </p>
           </div>
 

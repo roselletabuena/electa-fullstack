@@ -14,8 +14,8 @@ export function DashboardEmptyState(): React.JSX.Element {
       </h2>
 
       <p className="mt-2 max-w-md text-xs text-slate-500 sm:text-sm dark:text-slate-400">
-        Get started by creating your first voting competition. Configure contestant rosters,
-        divisions, awards, and custom voting quotas in minutes.
+        Get started by creating your first voting competition. Configure contestants, divisions,
+        awards, and custom voting quotas in minutes.
       </p>
 
       <div className="mt-6 flex flex-wrap justify-center gap-4 text-left text-xs text-slate-600 dark:text-slate-300">

@@ -34,7 +34,7 @@ export default async function EventSettingsPage({
 
   if (!authResult.authorized) {
     if (authResult.reason === "UNAUTHENTICATED") {
-      const returnUrl = encodeURIComponent(`/dashboard/events/${slug}/settings`);
+      const returnUrl = encodeURIComponent(`/events/${slug}/settings`);
       redirect(`/login?redirect=${returnUrl}`);
     }
 

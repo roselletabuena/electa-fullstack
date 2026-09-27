@@ -30,11 +30,11 @@ export function OrganizerDashboardHeader({
       <div className="mx-auto max-w-7xl px-4 py-5 sm:px-6 sm:py-6 lg:px-8">
         <div className="mb-4 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <Link
-            href="/dashboard/events"
+            href="/dashboard"
             className="inline-flex items-center gap-1.5 text-xs font-semibold text-slate-500 transition-colors hover:text-slate-800 dark:text-slate-400 dark:hover:text-slate-200"
           >
             <ArrowLeft className="size-3.5" />
-            Back to My Events
+            Back to Dashboard
           </Link>
           <div className="flex items-center gap-2 text-xs text-slate-500 dark:text-slate-400">
             <ShieldCheck className="size-4 shrink-0 text-emerald-500" />

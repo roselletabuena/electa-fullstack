@@ -62,10 +62,10 @@ export function ForbiddenAccessCard({
         </CardContent>
 
         <CardFooter className="flex flex-col gap-2 sm:flex-row">
-          <Link href="/dashboard/events" className="w-full">
+          <Link href="/dashboard" className="w-full">
             <Button variant="outline" className="w-full gap-1.5 text-xs">
               <ArrowLeft className="size-3.5" />
-              My Events
+              Dashboard
             </Button>
           </Link>
           <Link href="/" className="w-full">

@@ -16,6 +16,7 @@ async function main() {
   await prisma.contestantCategoryAssignment.deleteMany({});
   await prisma.contestantMedia.deleteMany({});
   await prisma.awardCategory.deleteMany({});
+  await prisma.division.deleteMany({});
   await prisma.eventAuditLog.deleteMany({});
   await prisma.contestant.deleteMany({});
   await prisma.event.deleteMany({});

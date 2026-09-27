@@ -3,7 +3,6 @@ import { db } from "@/lib/db";
 import { apiError, apiSuccess } from "@/lib/api/response";
 import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
 import { createAwardCategorySchema } from "@/lib/validations/category-awards";
-import type { EventTaxonomyDto } from "@/features/events/types";
 
 interface RouteParams {
   params: Promise<{
@@ -23,39 +22,17 @@ export async function GET(_request: NextRequest, context: RouteParams) {
       return apiError("Event not found", 404);
     }
 
-    const [divisions, categories] = await Promise.all([
-      db.division.findMany({
-        where: { eventId: event.id },
-        orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
-        include: {
-          _count: {
-            select: { contestants: true },
-          },
+    const categories = await db.awardCategory.findMany({
+      where: { eventId: event.id },
+      orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
+      include: {
+        _count: {
+          select: { contestants: true },
         },
-      }),
-      db.awardCategory.findMany({
-        where: { eventId: event.id },
-        orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
-        include: {
-          _count: {
-            select: { contestants: true },
-          },
-        },
-      }),
-    ]);
+      },
+    });
 
-    const formattedDivisions = divisions.map((div) => ({
-      id: div.id,
-      eventId: div.eventId,
-      name: div.name,
-      description: div.description,
-      displayOrder: div.displayOrder,
-      contestantCount: div._count.contestants,
-      createdAt: div.createdAt.toISOString(),
-      updatedAt: div.updatedAt.toISOString(),
-    }));
-
-    const formattedCategories = categories.map((cat) => ({
+    const formatted = categories.map((cat) => ({
       id: cat.id,
       eventId: cat.eventId,
       name: cat.name,
@@ -67,14 +44,9 @@ export async function GET(_request: NextRequest, context: RouteParams) {
       updatedAt: cat.updatedAt.toISOString(),
     }));
 
-    const responseData: EventTaxonomyDto = {
-      divisions: formattedDivisions,
-      awardCategories: formattedCategories,
-    };
-
-    return apiSuccess(responseData);
+    return apiSuccess(formatted);
   } catch (error) {
-    console.error("Failed to list taxonomy:", error);
+    console.error("Failed to list award categories:", error);
     return apiError("Internal server error", 500);
   }
 }

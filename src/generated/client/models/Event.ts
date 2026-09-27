@@ -19,8 +19,18 @@ export type EventModel = runtime.Types.Result.DefaultSelection<Prisma.$EventPayl
 
 export type AggregateEvent = {
   _count: EventCountAggregateOutputType | null;
+  _avg: EventAvgAggregateOutputType | null;
+  _sum: EventSumAggregateOutputType | null;
   _min: EventMinAggregateOutputType | null;
   _max: EventMaxAggregateOutputType | null;
+};
+
+export type EventAvgAggregateOutputType = {
+  dailyFreeVoteLimit: number | null;
+};
+
+export type EventSumAggregateOutputType = {
+  dailyFreeVoteLimit: number | null;
 };
 
 export type EventMinAggregateOutputType = {
@@ -34,6 +44,8 @@ export type EventMinAggregateOutputType = {
   publicationStatus: $Enums.EventPublicationStatus | null;
   draftPassphraseHash: string | null;
   showResultsOnClose: boolean | null;
+  isFreeVotingEnabled: boolean | null;
+  dailyFreeVoteLimit: number | null;
   organizerId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -50,6 +62,8 @@ export type EventMaxAggregateOutputType = {
   publicationStatus: $Enums.EventPublicationStatus | null;
   draftPassphraseHash: string | null;
   showResultsOnClose: boolean | null;
+  isFreeVotingEnabled: boolean | null;
+  dailyFreeVoteLimit: number | null;
   organizerId: string | null;
   createdAt: Date | null;
   updatedAt: Date | null;
@@ -66,10 +80,20 @@ export type EventCountAggregateOutputType = {
   publicationStatus: number;
   draftPassphraseHash: number;
   showResultsOnClose: number;
+  isFreeVotingEnabled: number;
+  dailyFreeVoteLimit: number;
   organizerId: number;
   createdAt: number;
   updatedAt: number;
   _all: number;
+};
+
+export type EventAvgAggregateInputType = {
+  dailyFreeVoteLimit?: true;
+};
+
+export type EventSumAggregateInputType = {
+  dailyFreeVoteLimit?: true;
 };
 
 export type EventMinAggregateInputType = {
@@ -83,6 +107,8 @@ export type EventMinAggregateInputType = {
   publicationStatus?: true;
   draftPassphraseHash?: true;
   showResultsOnClose?: true;
+  isFreeVotingEnabled?: true;
+  dailyFreeVoteLimit?: true;
   organizerId?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -99,6 +125,8 @@ export type EventMaxAggregateInputType = {
   publicationStatus?: true;
   draftPassphraseHash?: true;
   showResultsOnClose?: true;
+  isFreeVotingEnabled?: true;
+  dailyFreeVoteLimit?: true;
   organizerId?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -115,6 +143,8 @@ export type EventCountAggregateInputType = {
   publicationStatus?: true;
   draftPassphraseHash?: true;
   showResultsOnClose?: true;
+  isFreeVotingEnabled?: true;
+  dailyFreeVoteLimit?: true;
   organizerId?: true;
   createdAt?: true;
   updatedAt?: true;
@@ -161,6 +191,18 @@ export type EventAggregateArgs<
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    *
+   * Select which fields to average
+   **/
+  _avg?: EventAvgAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
+   * Select which fields to sum
+   **/
+  _sum?: EventSumAggregateInputType;
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   *
    * Select which fields to find the minimum value
    **/
   _min?: EventMinAggregateInputType;
@@ -190,6 +232,8 @@ export type EventGroupByArgs<
   take?: number;
   skip?: number;
   _count?: EventCountAggregateInputType | true;
+  _avg?: EventAvgAggregateInputType;
+  _sum?: EventSumAggregateInputType;
   _min?: EventMinAggregateInputType;
   _max?: EventMaxAggregateInputType;
 };
@@ -205,10 +249,14 @@ export type EventGroupByOutputType = {
   publicationStatus: $Enums.EventPublicationStatus;
   draftPassphraseHash: string | null;
   showResultsOnClose: boolean;
+  isFreeVotingEnabled: boolean;
+  dailyFreeVoteLimit: number;
   organizerId: string;
   createdAt: Date;
   updatedAt: Date;
   _count: EventCountAggregateOutputType | null;
+  _avg: EventAvgAggregateOutputType | null;
+  _sum: EventSumAggregateOutputType | null;
   _min: EventMinAggregateOutputType | null;
   _max: EventMaxAggregateOutputType | null;
 };
@@ -240,6 +288,8 @@ export type EventWhereInput = {
     Prisma.EnumEventPublicationStatusFilter<"Event"> | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.StringNullableFilter<"Event"> | string | null;
   showResultsOnClose?: Prisma.BoolFilter<"Event"> | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFilter<"Event"> | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFilter<"Event"> | number;
   organizerId?: Prisma.StringFilter<"Event"> | string;
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
@@ -259,6 +309,8 @@ export type EventOrderByWithRelationInput = {
   publicationStatus?: Prisma.SortOrder;
   draftPassphraseHash?: Prisma.SortOrderInput | Prisma.SortOrder;
   showResultsOnClose?: Prisma.SortOrder;
+  isFreeVotingEnabled?: Prisma.SortOrder;
+  dailyFreeVoteLimit?: Prisma.SortOrder;
   organizerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -283,6 +335,8 @@ export type EventWhereUniqueInput = Prisma.AtLeast<
       Prisma.EnumEventPublicationStatusFilter<"Event"> | $Enums.EventPublicationStatus;
     draftPassphraseHash?: Prisma.StringNullableFilter<"Event"> | string | null;
     showResultsOnClose?: Prisma.BoolFilter<"Event"> | boolean;
+    isFreeVotingEnabled?: Prisma.BoolFilter<"Event"> | boolean;
+    dailyFreeVoteLimit?: Prisma.IntFilter<"Event"> | number;
     organizerId?: Prisma.StringFilter<"Event"> | string;
     createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
     updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string;
@@ -304,12 +358,16 @@ export type EventOrderByWithAggregationInput = {
   publicationStatus?: Prisma.SortOrder;
   draftPassphraseHash?: Prisma.SortOrderInput | Prisma.SortOrder;
   showResultsOnClose?: Prisma.SortOrder;
+  isFreeVotingEnabled?: Prisma.SortOrder;
+  dailyFreeVoteLimit?: Prisma.SortOrder;
   organizerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
   _count?: Prisma.EventCountOrderByAggregateInput;
+  _avg?: Prisma.EventAvgOrderByAggregateInput;
   _max?: Prisma.EventMaxOrderByAggregateInput;
   _min?: Prisma.EventMinOrderByAggregateInput;
+  _sum?: Prisma.EventSumOrderByAggregateInput;
 };
 
 export type EventScalarWhereWithAggregatesInput = {
@@ -327,6 +385,8 @@ export type EventScalarWhereWithAggregatesInput = {
     Prisma.EnumEventPublicationStatusWithAggregatesFilter<"Event"> | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.StringNullableWithAggregatesFilter<"Event"> | string | null;
   showResultsOnClose?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean;
+  isFreeVotingEnabled?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean;
+  dailyFreeVoteLimit?: Prisma.IntWithAggregatesFilter<"Event"> | number;
   organizerId?: Prisma.StringWithAggregatesFilter<"Event"> | string;
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string;
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string;
@@ -343,6 +403,8 @@ export type EventCreateInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -362,6 +424,8 @@ export type EventUncheckedCreateInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -382,6 +446,8 @@ export type EventUpdateInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -402,6 +468,8 @@ export type EventUncheckedUpdateInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -421,6 +489,8 @@ export type EventCreateManyInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -438,6 +508,8 @@ export type EventUpdateManyMutationInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -455,6 +527,8 @@ export type EventUncheckedUpdateManyInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -471,9 +545,15 @@ export type EventCountOrderByAggregateInput = {
   publicationStatus?: Prisma.SortOrder;
   draftPassphraseHash?: Prisma.SortOrder;
   showResultsOnClose?: Prisma.SortOrder;
+  isFreeVotingEnabled?: Prisma.SortOrder;
+  dailyFreeVoteLimit?: Prisma.SortOrder;
   organizerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+};
+
+export type EventAvgOrderByAggregateInput = {
+  dailyFreeVoteLimit?: Prisma.SortOrder;
 };
 
 export type EventMaxOrderByAggregateInput = {
@@ -487,6 +567,8 @@ export type EventMaxOrderByAggregateInput = {
   publicationStatus?: Prisma.SortOrder;
   draftPassphraseHash?: Prisma.SortOrder;
   showResultsOnClose?: Prisma.SortOrder;
+  isFreeVotingEnabled?: Prisma.SortOrder;
+  dailyFreeVoteLimit?: Prisma.SortOrder;
   organizerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
@@ -503,9 +585,15 @@ export type EventMinOrderByAggregateInput = {
   publicationStatus?: Prisma.SortOrder;
   draftPassphraseHash?: Prisma.SortOrder;
   showResultsOnClose?: Prisma.SortOrder;
+  isFreeVotingEnabled?: Prisma.SortOrder;
+  dailyFreeVoteLimit?: Prisma.SortOrder;
   organizerId?: Prisma.SortOrder;
   createdAt?: Prisma.SortOrder;
   updatedAt?: Prisma.SortOrder;
+};
+
+export type EventSumOrderByAggregateInput = {
+  dailyFreeVoteLimit?: Prisma.SortOrder;
 };
 
 export type EventScalarRelationFilter = {
@@ -531,6 +619,14 @@ export type NullableStringFieldUpdateOperationsInput = {
 
 export type BoolFieldUpdateOperationsInput = {
   set?: boolean;
+};
+
+export type IntFieldUpdateOperationsInput = {
+  set?: number;
+  increment?: number;
+  decrement?: number;
+  multiply?: number;
+  divide?: number;
 };
 
 export type EventCreateNestedOneWithoutContestantsInput = {
@@ -622,6 +718,8 @@ export type EventCreateWithoutContestantsInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -640,6 +738,8 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -687,6 +787,8 @@ export type EventUpdateWithoutContestantsInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -706,6 +808,8 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -724,6 +828,8 @@ export type EventCreateWithoutAwardCategoriesInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -742,6 +848,8 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -789,6 +897,8 @@ export type EventUpdateWithoutAwardCategoriesInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -808,6 +918,8 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -826,6 +938,8 @@ export type EventCreateWithoutAuditLogsInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -844,6 +958,8 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   publicationStatus?: $Enums.EventPublicationStatus;
   draftPassphraseHash?: string | null;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   organizerId: string;
   createdAt?: Date | string;
   updatedAt?: Date | string;
@@ -891,6 +1007,8 @@ export type EventUpdateWithoutAuditLogsInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -910,6 +1028,8 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
     Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus;
   draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null;
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean;
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number;
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string;
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string;
@@ -988,6 +1108,8 @@ export type EventSelect<
     publicationStatus?: boolean;
     draftPassphraseHash?: boolean;
     showResultsOnClose?: boolean;
+    isFreeVotingEnabled?: boolean;
+    dailyFreeVoteLimit?: boolean;
     organizerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1013,6 +1135,8 @@ export type EventSelectCreateManyAndReturn<
     publicationStatus?: boolean;
     draftPassphraseHash?: boolean;
     showResultsOnClose?: boolean;
+    isFreeVotingEnabled?: boolean;
+    dailyFreeVoteLimit?: boolean;
     organizerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1034,6 +1158,8 @@ export type EventSelectUpdateManyAndReturn<
     publicationStatus?: boolean;
     draftPassphraseHash?: boolean;
     showResultsOnClose?: boolean;
+    isFreeVotingEnabled?: boolean;
+    dailyFreeVoteLimit?: boolean;
     organizerId?: boolean;
     createdAt?: boolean;
     updatedAt?: boolean;
@@ -1052,6 +1178,8 @@ export type EventSelectScalar = {
   publicationStatus?: boolean;
   draftPassphraseHash?: boolean;
   showResultsOnClose?: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: boolean;
   organizerId?: boolean;
   createdAt?: boolean;
   updatedAt?: boolean;
@@ -1070,6 +1198,8 @@ export type EventOmit<
   | "publicationStatus"
   | "draftPassphraseHash"
   | "showResultsOnClose"
+  | "isFreeVotingEnabled"
+  | "dailyFreeVoteLimit"
   | "organizerId"
   | "createdAt"
   | "updatedAt",
@@ -1111,6 +1241,8 @@ export type $EventPayload<
       publicationStatus: $Enums.EventPublicationStatus;
       draftPassphraseHash: string | null;
       showResultsOnClose: boolean;
+      isFreeVotingEnabled: boolean;
+      dailyFreeVoteLimit: number;
       organizerId: string;
       createdAt: Date;
       updatedAt: Date;
@@ -1698,6 +1830,8 @@ export interface EventFieldRefs {
   readonly publicationStatus: Prisma.FieldRef<"Event", "EventPublicationStatus">;
   readonly draftPassphraseHash: Prisma.FieldRef<"Event", "String">;
   readonly showResultsOnClose: Prisma.FieldRef<"Event", "Boolean">;
+  readonly isFreeVotingEnabled: Prisma.FieldRef<"Event", "Boolean">;
+  readonly dailyFreeVoteLimit: Prisma.FieldRef<"Event", "Int">;
   readonly organizerId: Prisma.FieldRef<"Event", "String">;
   readonly createdAt: Prisma.FieldRef<"Event", "DateTime">;
   readonly updatedAt: Prisma.FieldRef<"Event", "DateTime">;

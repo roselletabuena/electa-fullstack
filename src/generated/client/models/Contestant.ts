@@ -754,14 +754,6 @@ export type ContestantUncheckedUpdateManyWithoutEventNestedInput = {
   deleteMany?: Prisma.ContestantScalarWhereInput | Prisma.ContestantScalarWhereInput[];
 };
 
-export type IntFieldUpdateOperationsInput = {
-  set?: number;
-  increment?: number;
-  decrement?: number;
-  multiply?: number;
-  divide?: number;
-};
-
 export type EnumContestantDivisionFieldUpdateOperationsInput = {
   set?: $Enums.ContestantDivision;
 };

@@ -50,6 +50,8 @@ model Event {
   publicationStatus   EventPublicationStatus @default(DRAFT)
   draftPassphraseHash String?
   showResultsOnClose  Boolean                @default(true)
+  isFreeVotingEnabled Boolean                @default(true)
+  dailyFreeVoteLimit  Int                    @default(1)
   organizerId         String
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt

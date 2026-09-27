@@ -83,6 +83,8 @@ export const EventScalarFieldEnum = {
   publicationStatus: "publicationStatus",
   draftPassphraseHash: "draftPassphraseHash",
   showResultsOnClose: "showResultsOnClose",
+  isFreeVotingEnabled: "isFreeVotingEnabled",
+  dailyFreeVoteLimit: "dailyFreeVoteLimit",
   organizerId: "organizerId",
   createdAt: "createdAt",
   updatedAt: "updatedAt",

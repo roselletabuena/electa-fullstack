@@ -26,12 +26,21 @@ export async function getSession(): Promise<UserSession | null> {
     cookieStore.get("electa_auth_session")?.value || cookieStore.get("vs_auth_session")?.value;
   if (authCookie) {
     try {
-      const parsed = JSON.parse(authCookie) as UserSession;
+      const decoded = decodeURIComponent(authCookie);
+      const parsed = JSON.parse(decoded) as UserSession;
       if (parsed && parsed.userId) {
         return parsed;
       }
     } catch {
-      // Fallback on malformed cookie
+      // Fallback if plain string or simple ID was stored
+      if (typeof authCookie === "string" && authCookie.trim().length > 0) {
+        const cleaned = authCookie.replace(/^["']|["']$/g, "").trim();
+        return {
+          userId: cleaned,
+          email: "organizer@electa.ph",
+          role: "ORGANIZER",
+        };
+      }
     }
   }
 

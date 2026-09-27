@@ -6,10 +6,7 @@ import {
   eventSettingsTabQuerySchema,
 } from "@/lib/validations/event-settings";
 import { OrganizerDashboardHeader } from "@/features/events/components/dashboard/OrganizerDashboardHeader";
-import { SettingsTabNav } from "@/features/events/components/dashboard/SettingsTabNav";
-import { GeneralBrandingForm } from "@/features/events/components/dashboard/GeneralBrandingForm";
-import { ScheduleLifecycleForm } from "@/features/events/components/dashboard/ScheduleLifecycleForm";
-import { VotingRulesForm } from "@/features/events/components/dashboard/VotingRulesForm";
+import { SettingsTabsContainer } from "@/features/events/components/dashboard/SettingsTabsContainer";
 import { ForbiddenAccessCard } from "@/features/events/components/dashboard/ForbiddenAccessCard";
 
 interface SettingsPageProps {
@@ -61,22 +58,17 @@ export default async function EventSettingsPage({
     <div className="min-h-screen bg-slate-50/50 pb-16 dark:bg-slate-950">
       <OrganizerDashboardHeader event={event} user={session} />
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
-        <div className="space-y-6">
-          <Suspense
-            fallback={
+      <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <Suspense
+          fallback={
+            <div className="space-y-6">
               <div className="h-12 w-full animate-pulse border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
-            }
-          >
-            <SettingsTabNav initialTab={tab} />
-          </Suspense>
-
-          <section aria-labelledby={`tab-${tab}`} id={`panel-${tab}`} tabIndex={0}>
-            {tab === "general" && <GeneralBrandingForm event={event} />}
-            {tab === "schedule" && <ScheduleLifecycleForm event={event} />}
-            {tab === "voting-rules" && <VotingRulesForm event={event} />}
-          </section>
-        </div>
+              <div className="h-96 w-full animate-pulse rounded-2xl bg-white dark:bg-slate-900" />
+            </div>
+          }
+        >
+          <SettingsTabsContainer event={event} initialTab={tab} />
+        </Suspense>
       </main>
     </div>
   );

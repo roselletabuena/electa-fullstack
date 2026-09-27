@@ -104,3 +104,9 @@ export type {
   ScheduleLifecycleFormValues,
   UpdateScheduleLifecycleInput,
 } from "@/lib/validations/event-schedule-lifecycle";
+
+export type {
+  EventStatusFilter,
+  OrganizerEventItemDto,
+  DashboardMetricsDto,
+} from "./dashboard-overview";

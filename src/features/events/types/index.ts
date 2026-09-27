@@ -155,3 +155,11 @@ export interface CheckSlugResult {
 }
 
 export type CreateEventResult = ActionResponse<Event>;
+
+export type SlugAvailabilityStatus =
+  "idle" | "checking" | "available" | "unavailable" | "reserved" | "invalid";
+
+export interface SlugValidationState {
+  status: SlugAvailabilityStatus;
+  message?: string | undefined;
+}

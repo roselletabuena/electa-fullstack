@@ -23,24 +23,24 @@ export const VideoReelPlayer: React.FC<VideoReelPlayerProps> = ({ media, candida
           href={media.url}
           target="_blank"
           rel="noopener noreferrer"
-          className="mt-3 flex items-center gap-1.5 text-xs text-amber-400 hover:underline"
+          className="mt-3 flex items-center gap-1.5 text-xs text-indigo-600 hover:underline dark:text-indigo-400"
         >
           <span>Watch on external site</span>
-          <ExternalLink className="h-3.5 w-3.5" />
+          <ExternalLink className="size-3.5" />
         </a>
       </div>
     );
   }
 
   return (
-    <div className="relative mx-auto aspect-9/16 max-h-137.5 w-full max-w-sm overflow-hidden rounded-2xl border border-white/10 bg-slate-950 shadow-2xl">
+    <div className="relative mx-auto aspect-9/16 max-h-137.5 w-full max-w-sm overflow-hidden rounded-2xl border border-slate-200 bg-slate-950 shadow-xl dark:border-slate-800">
       {!isPlaying ? (
         <div
           onClick={() => setIsPlaying(true)}
           className="group absolute inset-0 flex cursor-pointer flex-col items-center justify-center bg-linear-to-b from-slate-900 via-slate-950 to-slate-900 p-6 text-center"
         >
-          <div className="flex h-16 w-16 items-center justify-center rounded-full bg-linear-to-tr from-rose-500 to-amber-500 text-white shadow-xl shadow-rose-500/20 transition-transform group-hover:scale-110">
-            <Play className="h-8 w-8 translate-x-0.5 fill-white" />
+          <div className="flex size-16 items-center justify-center rounded-full bg-linear-to-tr from-indigo-600 to-rose-600 text-white shadow-xl shadow-indigo-500/20 transition-transform group-hover:scale-110">
+            <Play className="size-8 translate-x-0.5 fill-white" />
           </div>
 
           <h4 className="mt-4 text-sm font-semibold text-slate-200">

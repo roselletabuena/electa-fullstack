@@ -149,20 +149,20 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
       aria-modal="true"
       className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
     >
-      <div onClick={onClose} className="fixed inset-0 bg-slate-950/80 backdrop-blur-md" />
+      <div onClick={onClose} className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" />
 
-      <div className="relative z-10 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl border border-white/10 bg-slate-900 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-white/10 bg-slate-950/60 px-6 py-4">
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+        <div className="flex items-center justify-between border-b border-slate-100 bg-slate-50/50 px-6 py-4 dark:border-slate-800 dark:bg-slate-900/80">
           <div className="flex items-center gap-2">
-            <Sparkles className="h-4 w-4 text-amber-400" />
-            <h3 className="text-lg font-bold text-white">
+            <Sparkles className="h-4 w-4 text-indigo-600 dark:text-indigo-400" />
+            <h3 className="text-base font-bold text-slate-900 dark:text-slate-100">
               {initialData ? "Edit Contestant Profile" : "Register New Contestant"}
             </h3>
           </div>
           <button
             type="button"
             onClick={onClose}
-            className="rounded-full p-1.5 text-slate-400 hover:text-white"
+            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
           >
             <X className="h-5 w-5" />
           </button>
@@ -170,7 +170,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
 
         <form onSubmit={handleSubmit} className="space-y-6 overflow-y-auto p-6">
           {errorMsg && (
-            <div className="rounded-xl border border-rose-500/20 bg-rose-500/10 p-3 text-xs text-rose-300">
+            <div className="rounded-lg border border-red-200 bg-red-50/80 p-3 text-xs font-medium text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-300">
               {errorMsg}
             </div>
           )}
@@ -178,7 +178,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
           {/* Identity Grid */}
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                 Candidate Number *
               </label>
               <input
@@ -187,30 +187,34 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                 required
                 value={contestantNumber}
                 onChange={(e) => setContestantNumber(Number(e.target.value))}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               />
             </div>
 
             <div className="sm:col-span-2">
-              <label className="mb-1 block text-xs font-semibold text-slate-300">Full Name *</label>
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                Full Name *
+              </label>
               <input
                 type="text"
                 required
                 placeholder="e.g. Maria Clara Santos"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">Division *</label>
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                Division *
+              </label>
               <select
                 value={division}
                 onChange={(e) => setDivision(e.target.value as ContestantDivision)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               >
                 <option value="FEMALE">Female</option>
                 <option value="MALE">Male</option>
@@ -220,7 +224,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                 Hometown / Province
               </label>
               <input
@@ -228,12 +232,14 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                 placeholder="e.g. Vigan, Ilocos Sur"
                 value={hometown}
                 onChange={(e) => setHometown(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               />
             </div>
 
             <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">Height (cm)</label>
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                Height (cm)
+              </label>
               <input
                 type="number"
                 min={50}
@@ -241,18 +247,20 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                 placeholder="e.g. 175"
                 value={heightCm ?? ""}
                 onChange={(e) => setHeightCm(e.target.value ? Number(e.target.value) : undefined)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+                className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               />
             </div>
           </div>
 
           {/* Photo Gallery & Cropper */}
-          <div className="space-y-3">
+          <div className="space-y-3 border-t border-slate-100 pt-5 dark:border-slate-800/80">
             <div className="flex items-center justify-between">
-              <label className="text-xs font-semibold text-slate-300">
+              <label className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                 Photo Gallery (Up to 10 Photos, 4:5 Aspect Ratio)
               </label>
-              <span className="text-[11px] text-slate-400">{galleryUrls.length} / 10 added</span>
+              <span className="text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                {galleryUrls.length} / 10 added
+              </span>
             </div>
 
             {/* Display Current Thumbnails */}
@@ -261,19 +269,19 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                 {galleryUrls.map((url, i) => (
                   <div
                     key={i}
-                    className="group relative aspect-4/5 overflow-hidden rounded-lg border border-white/10 bg-slate-950"
+                    className="group relative aspect-4/5 overflow-hidden rounded-lg border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-950"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img src={url} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
                     <button
                       type="button"
                       onClick={() => handleRemovePhoto(i)}
-                      className="absolute inset-0 flex items-center justify-center bg-rose-950/80 text-rose-300 opacity-0 transition-opacity group-hover:opacity-100"
+                      className="absolute inset-0 flex items-center justify-center bg-red-950/80 text-white opacity-0 transition-opacity group-hover:opacity-100"
                     >
                       <Trash2 className="h-4 w-4" />
                     </button>
                     {i === 0 && (
-                      <span className="absolute bottom-1 left-1 rounded bg-amber-400 px-1 text-[8px] font-bold text-slate-950">
+                      <span className="absolute bottom-1 left-1 rounded bg-indigo-600 px-1 text-[8px] font-bold text-white shadow-xs">
                         Cover
                       </span>
                     )}
@@ -288,8 +296,8 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
           </div>
 
           {/* Video Embed */}
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-300">
+          <div className="border-t border-slate-100 pt-5 dark:border-slate-800/80">
+            <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
               Video Reel URL (YouTube Shorts, TikTok, Instagram Reel, Facebook Video)
             </label>
             <input
@@ -297,43 +305,45 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
               placeholder="https://www.youtube.com/shorts/... or https://tiktok.com/@user/video/..."
               value={videoUrl}
               onChange={(e) => setVideoUrl(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-sm text-white focus:border-amber-400 focus:outline-none"
+              className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
             />
           </div>
 
           {/* Advocacy & Bio */}
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-300">
-              Official Advocacy Statement
-            </label>
-            <textarea
-              rows={2}
-              maxLength={1000}
-              placeholder="Official environmental or cultural advocacy message..."
-              value={advocacy}
-              onChange={(e) => setAdvocacy(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950 p-3 text-sm text-white focus:border-amber-400 focus:outline-none"
-            />
-          </div>
+          <div className="space-y-4 border-t border-slate-100 pt-5 dark:border-slate-800/80">
+            <div>
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                Official Advocacy Statement
+              </label>
+              <textarea
+                rows={2}
+                maxLength={1000}
+                placeholder="Official environmental or cultural advocacy message..."
+                value={advocacy}
+                onChange={(e) => setAdvocacy(e.target.value)}
+                className="w-full resize-none rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+              />
+            </div>
 
-          <div>
-            <label className="mb-1 block text-xs font-semibold text-slate-300">
-              Biography / Fun Facts
-            </label>
-            <textarea
-              rows={3}
-              maxLength={1000}
-              placeholder="Tell the voters more about the candidate..."
-              value={bio}
-              onChange={(e) => setBio(e.target.value)}
-              className="w-full rounded-xl border border-white/10 bg-slate-950 p-3 text-sm text-white focus:border-amber-400 focus:outline-none"
-            />
+            <div>
+              <label className="mb-1 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                Biography / Fun Facts
+              </label>
+              <textarea
+                rows={3}
+                maxLength={1000}
+                placeholder="Tell the voters more about the candidate..."
+                value={bio}
+                onChange={(e) => setBio(e.target.value)}
+                className="w-full resize-none rounded-lg border border-slate-200 bg-white p-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+              />
+            </div>
           </div>
 
           {/* Award Categories Assignment */}
           {categories.length > 0 && (
-            <div>
-              <label className="mb-2 block text-xs font-semibold text-slate-300">
+            <div className="border-t border-slate-100 pt-5 dark:border-slate-800/80">
+              <label className="mb-2 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                 Nominate for Award Categories
               </label>
               <div className="flex flex-wrap gap-2">
@@ -344,10 +354,10 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                       key={cat.id}
                       type="button"
                       onClick={() => handleToggleCategory(cat.id)}
-                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-colors ${
+                      className={`rounded-lg border px-3 py-1.5 text-xs font-medium transition-all ${
                         checked
-                          ? "border-amber-400 bg-amber-400/20 text-amber-300"
-                          : "border-white/10 bg-slate-950 text-slate-400 hover:text-white"
+                          ? "border-indigo-600 bg-indigo-50 text-indigo-700 shadow-xs dark:border-indigo-500 dark:bg-indigo-950/60 dark:text-indigo-300"
+                          : "border-slate-200 bg-white text-slate-600 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                       }`}
                     >
                       {cat.name}
@@ -359,57 +369,62 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
           )}
 
           {/* Social Links */}
-          <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">
-                Instagram Handle/URL
-              </label>
-              <input
-                type="text"
-                placeholder="@username"
-                value={instagramUrl}
-                onChange={(e) => setInstagramUrl(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">
-                TikTok Handle/URL
-              </label>
-              <input
-                type="text"
-                placeholder="@username"
-                value={tiktokUrl}
-                onChange={(e) => setTiktokUrl(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none"
-              />
-            </div>
-            <div>
-              <label className="mb-1 block text-xs font-semibold text-slate-300">
-                Facebook Handle/URL
-              </label>
-              <input
-                type="text"
-                placeholder="facebook.com/..."
-                value={facebookUrl}
-                onChange={(e) => setFacebookUrl(e.target.value)}
-                className="w-full rounded-xl border border-white/10 bg-slate-950 px-3 py-2 text-xs text-white focus:border-amber-400 focus:outline-none"
-              />
+          <div className="border-t border-slate-100 pt-5 dark:border-slate-800/80">
+            <label className="mb-2 block text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+              Social Media Handles
+            </label>
+            <div className="grid grid-cols-1 gap-3 sm:grid-cols-3">
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                  Instagram
+                </label>
+                <input
+                  type="text"
+                  placeholder="@username"
+                  value={instagramUrl}
+                  onChange={(e) => setInstagramUrl(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                  TikTok
+                </label>
+                <input
+                  type="text"
+                  placeholder="@username"
+                  value={tiktokUrl}
+                  onChange={(e) => setTiktokUrl(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
+              <div>
+                <label className="mb-1 block text-[11px] font-medium text-slate-500 dark:text-slate-400">
+                  Facebook
+                </label>
+                <input
+                  type="text"
+                  placeholder="facebook.com/..."
+                  value={facebookUrl}
+                  onChange={(e) => setFacebookUrl(e.target.value)}
+                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
             </div>
           </div>
 
-          <div className="flex items-center justify-end gap-3 border-t border-white/10 pt-4">
+          <div className="flex items-center justify-end gap-3 border-t border-slate-100 pt-4 dark:border-slate-800">
             <button
               type="button"
               onClick={onClose}
-              className="rounded-xl border border-white/10 px-4 py-2 text-xs font-semibold text-slate-300 hover:text-white"
+              className="rounded-lg border border-slate-200 px-4 py-2 text-xs font-semibold text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:border-slate-800 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
             >
               Cancel
             </button>
             <button
               type="submit"
               disabled={isSubmitting}
-              className="rounded-xl bg-amber-400 px-6 py-2.5 text-xs font-bold text-slate-950 transition-colors hover:bg-amber-300 disabled:opacity-50"
+              className="rounded-lg bg-indigo-600 px-6 py-2 text-xs font-semibold text-white shadow-xs transition-colors hover:bg-indigo-700 disabled:opacity-50"
             >
               {isSubmitting ? "Saving..." : initialData ? "Update Profile" : "Register Contestant"}
             </button>

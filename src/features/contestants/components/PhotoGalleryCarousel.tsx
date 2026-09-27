@@ -59,7 +59,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
-          className="absolute top-3 left-3 rounded-full border border-white/10 bg-slate-950/70 p-2 text-slate-200 backdrop-blur-md transition-colors hover:border-amber-400/30 hover:text-amber-400"
+          className="absolute top-3 left-3 rounded-full border border-white/10 bg-slate-950/70 p-2 text-slate-200 backdrop-blur-md transition-colors hover:border-indigo-400/50 hover:text-indigo-300"
           title="Fullscreen View"
         >
           <Maximize2 className="h-4 w-4" />
@@ -90,7 +90,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
 
       {/* Thumbnail Navigation Strip (up to 10 photos) */}
       {photoItems.length > 1 && (
-        <div className="flex scrollbar-thin scrollbar-thumb-white/20 gap-2 overflow-x-auto pt-0.5 pb-1">
+        <div className="flex scrollbar-thin scrollbar-thumb-slate-300 gap-2 overflow-x-auto pt-0.5 pb-1 dark:scrollbar-thumb-slate-700">
           {photoItems.map((item, idx) => (
             <button
               key={item.id || idx}
@@ -98,8 +98,8 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
               onClick={() => setActiveIndex(idx)}
               className={`relative aspect-4/5 h-16 shrink-0 overflow-hidden rounded-lg border transition-all ${
                 idx === activeIndex
-                  ? "scale-105 border-amber-400 opacity-100 ring-2 ring-amber-400/40"
-                  : "border-white/10 opacity-60 hover:opacity-90"
+                  ? "scale-105 border-indigo-600 opacity-100 ring-2 ring-indigo-600/40"
+                  : "border-slate-200 opacity-60 hover:opacity-90 dark:border-slate-800"
               }`}
             >
               <Image

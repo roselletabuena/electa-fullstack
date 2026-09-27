@@ -2,11 +2,14 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Plus, Edit3, Trash2, Sparkles } from "lucide-react";
+import { Plus, Edit3, Trash2, Users } from "lucide-react";
+import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import type { ContestantDto, AwardCategoryDto, ContestantStatus } from "../types";
 import { ContestantFormModal } from "./ContestantFormModal";
 import { useContestantMutations } from "../hooks/use-contestant-mutations";
 import { useContestants } from "../hooks/use-contestants";
+import { cn } from "@/lib/utils";
 
 interface OrganizerContestantTableProps {
   slug: string;
@@ -55,125 +58,167 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
   };
 
   return (
-    <div className="flex flex-col gap-4 rounded-3xl border border-white/10 bg-slate-900/60 p-6 backdrop-blur-md">
-      <div className="flex items-center justify-between">
-        <div>
-          <h3 className="flex items-center gap-2 text-lg font-bold text-white">
-            <Sparkles className="h-4 w-4 text-amber-400" />
-            <span>Contestant Roster Management</span>
-          </h3>
-          <p className="mt-0.5 text-xs text-slate-400">
-            Add official participants, adjust profile data, and control voting statuses.
-          </p>
-        </div>
+    <div className="space-y-6">
+      <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <div className="flex items-center gap-2">
+                <Users className="size-5 text-indigo-600 dark:text-indigo-400" />
+                <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                  Contestant Roster Management
+                </CardTitle>
+              </div>
+              <CardDescription className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Add official participants, adjust profile data, and control voting statuses.
+              </CardDescription>
+            </div>
 
-        <button
-          type="button"
-          onClick={handleOpenAdd}
-          className="flex items-center gap-1.5 rounded-xl bg-amber-400 px-4 py-2 text-xs font-bold text-slate-950 shadow-md transition-colors hover:bg-amber-300"
-        >
-          <Plus className="h-4 w-4" />
-          <span>Add Contestant</span>
-        </button>
-      </div>
+            <Button
+              type="button"
+              onClick={handleOpenAdd}
+              className="gap-1.5 bg-indigo-600 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700"
+            >
+              <Plus className="size-4" />
+              <span>Add Contestant</span>
+            </Button>
+          </div>
+        </CardHeader>
 
-      <div className="overflow-x-auto">
-        <table className="w-full text-left text-xs">
-          <thead className="border-b border-white/10 text-[10px] tracking-wider text-slate-400 uppercase">
-            <tr>
-              <th className="px-2 py-3">No.</th>
-              <th className="px-2 py-3">Candidate</th>
-              <th className="px-2 py-3">Division</th>
-              <th className="px-2 py-3">Nominations</th>
-              <th className="px-2 py-3">Status</th>
-              <th className="px-2 py-3 text-right">Votes</th>
-              <th className="px-2 py-3 text-right">Actions</th>
-            </tr>
-          </thead>
-          <tbody className="divide-y divide-white/5">
-            {contestants.map((c) => (
-              <tr key={c.id} className="transition-colors hover:bg-white/2">
-                <td className="px-2 py-3 font-mono font-bold text-amber-300">
-                  #{String(c.contestantNumber).padStart(2, "0")}
-                </td>
-                <td className="px-2 py-3">
-                  <div className="flex items-center gap-2.5">
-                    <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-md border border-white/10">
-                      <Image
-                        src={c.avatarUrl || "/placeholder-contestant.webp"}
-                        alt={c.name}
-                        fill
-                        className="object-cover"
-                      />
-                    </div>
-                    <div>
-                      <div className="font-semibold text-white">{c.name}</div>
-                      <div className="text-[11px] text-slate-400">{c.hometown || "—"}</div>
-                    </div>
-                  </div>
-                </td>
-                <td className="px-2 py-3 text-slate-300 capitalize">{c.division.toLowerCase()}</td>
-                <td className="px-2 py-3">
-                  <div className="flex max-w-50 flex-wrap gap-1">
-                    {c.categories.length > 0 ? (
-                      c.categories.map((cat) => (
-                        <span
-                          key={cat.id}
-                          className="rounded border border-white/10 bg-white/5 px-1.5 py-0.5 text-[10px] text-slate-300"
+        <CardContent className="p-0">
+          {contestants.length === 0 ? (
+            <div className="flex flex-col items-center justify-center p-12 text-center">
+              <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+                <Users className="size-6" />
+              </div>
+              <h4 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
+                No contestants registered yet
+              </h4>
+              <p className="mt-1 max-w-sm text-xs text-slate-500 dark:text-slate-400">
+                Start building your event roster by adding your first candidate profile and photos.
+              </p>
+              <Button
+                type="button"
+                onClick={handleOpenAdd}
+                className="mt-4 gap-1.5 bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700"
+              >
+                <Plus className="size-3.5" />
+                <span>Add First Contestant</span>
+              </Button>
+            </div>
+          ) : (
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs">
+                <thead className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-semibold tracking-wider text-slate-500 uppercase dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+                  <tr>
+                    <th className="px-5 py-3.5">No.</th>
+                    <th className="px-5 py-3.5">Candidate</th>
+                    <th className="px-5 py-3.5">Division</th>
+                    <th className="px-5 py-3.5">Nominations</th>
+                    <th className="px-5 py-3.5">Status</th>
+                    <th className="px-5 py-3.5 text-right">Votes</th>
+                    <th className="px-5 py-3.5 text-right">Actions</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                  {contestants.map((c) => (
+                    <tr
+                      key={c.id}
+                      className="transition-colors hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
+                    >
+                      <td className="px-5 py-3.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                        #{String(c.contestantNumber).padStart(2, "0")}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex items-center gap-3">
+                          <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+                            <Image
+                              src={c.avatarUrl || "/placeholder-contestant.webp"}
+                              alt={c.name}
+                              fill
+                              className="object-cover"
+                            />
+                          </div>
+                          <div>
+                            <div className="font-semibold text-slate-900 dark:text-slate-100">
+                              {c.name}
+                            </div>
+                            <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                              {c.hometown || "—"}
+                            </div>
+                          </div>
+                        </div>
+                      </td>
+                      <td className="px-5 py-3.5 font-medium text-slate-700 capitalize dark:text-slate-300">
+                        {c.division.toLowerCase()}
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <div className="flex max-w-56 flex-wrap gap-1">
+                          {c.categories.length > 0 ? (
+                            c.categories.map((cat) => (
+                              <span
+                                key={cat.id}
+                                className="rounded-md border border-slate-200 bg-slate-100/80 px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                              >
+                                {cat.name}
+                              </span>
+                            ))
+                          ) : (
+                            <span className="text-slate-400">—</span>
+                          )}
+                        </div>
+                      </td>
+                      <td className="px-5 py-3.5">
+                        <select
+                          value={c.status}
+                          onChange={(e) =>
+                            handleStatusChange(c.id, e.target.value as ContestantStatus)
+                          }
+                          className={cn(
+                            "rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition-colors focus:outline-none",
+                            c.status === "ACTIVE"
+                              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                              : c.status === "HIDDEN"
+                                ? "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                : "border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300",
+                          )}
                         >
-                          {cat.name}
-                        </span>
-                      ))
-                    ) : (
-                      <span className="text-slate-500">—</span>
-                    )}
-                  </div>
-                </td>
-                <td className="px-2 py-3">
-                  <select
-                    value={c.status}
-                    onChange={(e) => handleStatusChange(c.id, e.target.value as ContestantStatus)}
-                    className={`rounded-lg border px-2 py-1 text-[11px] font-semibold ${
-                      c.status === "ACTIVE"
-                        ? "border-emerald-500/30 bg-emerald-500/10 text-emerald-300"
-                        : c.status === "HIDDEN"
-                          ? "border-white/10 bg-slate-800 text-slate-300"
-                          : "border-rose-500/30 bg-rose-500/10 text-rose-300"
-                    }`}
-                  >
-                    <option value="ACTIVE">ACTIVE</option>
-                    <option value="HIDDEN">HIDDEN</option>
-                    <option value="WITHDRAWN">WITHDRAWN</option>
-                  </select>
-                </td>
-                <td className="px-2 py-3 text-right font-mono font-medium text-slate-200">
-                  {c.voteCount.toLocaleString()}
-                </td>
-                <td className="px-2 py-3 text-right">
-                  <div className="flex items-center justify-end gap-1.5">
-                    <button
-                      type="button"
-                      onClick={() => handleOpenEdit(c)}
-                      className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-white/5 hover:text-amber-400"
-                      title="Edit Profile"
-                    >
-                      <Edit3 className="h-3.5 w-3.5" />
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleDelete(c.id, c.name)}
-                      className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-white/5 hover:text-rose-400"
-                      title="Delete Candidate"
-                    >
-                      <Trash2 className="h-3.5 w-3.5" />
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                          <option value="ACTIVE">ACTIVE</option>
+                          <option value="HIDDEN">HIDDEN</option>
+                          <option value="WITHDRAWN">WITHDRAWN</option>
+                        </select>
+                      </td>
+                      <td className="px-5 py-3.5 text-right font-mono font-semibold text-slate-800 dark:text-slate-200">
+                        {c.voteCount.toLocaleString()}
+                      </td>
+                      <td className="px-5 py-3.5 text-right">
+                        <div className="flex items-center justify-end gap-1">
+                          <button
+                            type="button"
+                            onClick={() => handleOpenEdit(c)}
+                            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/50 dark:hover:text-indigo-400"
+                            title="Edit Profile"
+                          >
+                            <Edit3 className="size-4" />
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => handleDelete(c.id, c.name)}
+                            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
+                            title="Delete Candidate"
+                          >
+                            <Trash2 className="size-4" />
+                          </button>
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+        </CardContent>
+      </Card>
 
       <ContestantFormModal
         isOpen={modalOpen}

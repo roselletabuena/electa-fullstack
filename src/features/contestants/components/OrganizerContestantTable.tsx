@@ -66,7 +66,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
               <div className="flex items-center gap-2">
                 <Users className="size-5 text-indigo-600 dark:text-indigo-400" />
                 <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                  Contestant Roster Management
+                  Contestant Management
                 </CardTitle>
               </div>
               <CardDescription className="mt-1 text-sm text-slate-500 dark:text-slate-400">
@@ -95,7 +95,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                 No contestants registered yet
               </h4>
               <p className="mt-1 max-w-sm text-xs text-slate-500 dark:text-slate-400">
-                Start building your event roster by adding your first candidate profile and photos.
+                Start by adding your first candidate profile and photos.
               </p>
               <Button
                 type="button"

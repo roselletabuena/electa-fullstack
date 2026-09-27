@@ -111,7 +111,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
         <div>
           <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-amber-700 uppercase dark:text-amber-400">
             <Users className="h-4 w-4" />
-            <span>Official Candidate Roster</span>
+            <span>Official Candidates</span>
           </div>
           <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
             Meet the Candidates

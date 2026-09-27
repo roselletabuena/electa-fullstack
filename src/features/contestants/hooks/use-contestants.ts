@@ -13,7 +13,7 @@ export function useContestants(slug: string, filters?: ContestantFilters) {
       if (filters?.categoryId && filters.categoryId !== "ALL") {
         params.set("categoryId", filters.categoryId);
       }
-      if (filters?.status && filters.status !== "ALL") {
+      if (filters?.status) {
         params.set("status", filters.status);
       }
 

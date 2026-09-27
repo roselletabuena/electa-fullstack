@@ -37,9 +37,14 @@ export async function GET(request: NextRequest, context: RouteParams) {
     const session = await getSession();
     const isOrganizer = session?.role === "ORGANIZER" || session?.userId === event.organizerId;
 
+    let statusFilter: unknown = "ACTIVE";
+    if (isOrganizer && statusParam) {
+      statusFilter = statusParam === "ALL" ? undefined : statusParam;
+    }
+
     const whereClause: Record<string, unknown> = {
       eventId: event.id,
-      status: statusParam === "ALL" && isOrganizer ? undefined : "ACTIVE",
+      ...(statusFilter !== undefined ? { status: statusFilter } : {}),
     };
 
     if (divisionParam && divisionParam !== "ALL") {

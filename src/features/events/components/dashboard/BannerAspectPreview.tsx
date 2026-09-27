@@ -91,7 +91,7 @@ export function BannerAspectPreview({
       {/* Preview Viewport Container */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-900/90 transition-all duration-300 dark:border-slate-800",
+          "relative w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100/90 transition-all duration-300 dark:border-slate-800 dark:bg-slate-900/90",
           aspectRatio === "16:9" ? "aspect-video" : "aspect-21/9",
         )}
       >
@@ -114,7 +114,7 @@ export function BannerAspectPreview({
               unoptimized
             />
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/50 backdrop-blur-xs">
+              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/20 backdrop-blur-xs dark:bg-slate-900/50">
                 <div className="size-6 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
               </div>
             )}
@@ -123,21 +123,25 @@ export function BannerAspectPreview({
           <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
             {hasError ? (
               <>
-                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-rose-500/10 text-rose-400">
+                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400">
                   <ImageOff className="size-5" />
                 </div>
-                <p className="text-sm font-medium text-slate-200">Unable to load image preview</p>
-                <p className="mt-1 max-w-xs text-xs text-slate-400">
+                <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                  Unable to load image preview
+                </p>
+                <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
                   Please verify that the URL is a reachable, public HTTPS image asset.
                 </p>
               </>
             ) : (
               <>
-                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-slate-800 text-slate-400">
+                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-slate-200/80 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
                   <ImageIcon className="size-5" />
                 </div>
-                <p className="text-sm font-medium text-slate-300">No banner image URL provided</p>
-                <p className="mt-1 max-w-xs text-xs text-slate-500">
+                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  No banner image URL provided
+                </p>
+                <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
                   Enter an HTTPS image URL above to see a live preview in {aspectRatio} format.
                 </p>
               </>
@@ -146,7 +150,7 @@ export function BannerAspectPreview({
         )}
 
         {/* Aspect Ratio Badge Overlay */}
-        <div className="absolute top-2.5 right-2.5 rounded-md bg-black/60 px-2 py-0.5 font-mono text-[10px] font-medium text-slate-200 backdrop-blur-md">
+        <div className="absolute top-2.5 right-2.5 rounded-md bg-slate-900/70 px-2 py-0.5 font-mono text-[10px] font-medium text-slate-100 backdrop-blur-md dark:bg-black/60 dark:text-slate-200">
           {aspectRatio}
         </div>
       </div>

@@ -171,15 +171,15 @@ export function CreateEventForm({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={cn(
-        "rounded-2xl border border-slate-800 bg-slate-900/60 p-6 shadow-xl backdrop-blur-md sm:p-8",
+        "rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm backdrop-blur-md transition-colors sm:p-8 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-xl",
         className,
       )}
     >
       {serverError && (
-        <div className="mb-6 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-500/10 p-4 text-sm text-rose-300">
-          <AlertCircle className="size-5 shrink-0 text-rose-400" />
+        <div className="mb-6 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+          <AlertCircle className="size-5 shrink-0 text-rose-500 dark:text-rose-400" />
           <div className="flex-1">
-            <p className="font-semibold text-rose-200">Event Creation Failed</p>
+            <p className="font-semibold text-rose-900 dark:text-rose-200">Event Creation Failed</p>
             <p className="mt-0.5">{serverError}</p>
           </div>
         </div>
@@ -188,12 +188,17 @@ export function CreateEventForm({
       <div className="space-y-8">
         {/* Basic Event Information */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-white">1. Competition Details</h2>
+          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+            1. Competition Details
+          </h2>
 
           {/* Title */}
           <div>
-            <label htmlFor="event-title" className="block text-sm font-medium text-slate-300">
-              Event Title <span className="text-rose-400">*</span>
+            <label
+              htmlFor="event-title"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+            >
+              Event Title <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <input
               id="event-title"
@@ -206,24 +211,32 @@ export function CreateEventForm({
               })}
               onChange={handleTitleChange}
               className={cn(
-                "mt-1.5 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm text-white placeholder-slate-500 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden",
-                errors.title && "border-rose-500 focus:border-rose-500 focus:ring-rose-500",
+                "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                errors.title &&
+                  "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
             />
-            {errors.title && <p className="mt-1 text-xs text-rose-400">{errors.title.message}</p>}
+            {errors.title && (
+              <p className="mt-1 text-xs text-rose-600 dark:text-rose-400">
+                {errors.title.message}
+              </p>
+            )}
           </div>
 
           {/* Slug & Availability Feedback */}
           <div>
             <div className="flex items-center justify-between">
-              <label htmlFor="event-slug" className="block text-sm font-medium text-slate-300">
-                Public URL Slug <span className="text-rose-400">*</span>
+              <label
+                htmlFor="event-slug"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
+                Public URL Slug <span className="text-rose-500 dark:text-rose-400">*</span>
               </label>
               {isCustomSlug && (
                 <button
                   type="button"
                   onClick={handleResetSlugToTitle}
-                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-violet-400 hover:text-violet-300"
+                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
                 >
                   <RefreshCw className="size-3" />
                   <span>Reset to Title</span>
@@ -231,9 +244,9 @@ export function CreateEventForm({
               )}
             </div>
 
-            <div className="relative mt-1.5 flex rounded-xl border border-slate-700 bg-slate-950 focus-within:border-violet-500 focus-within:ring-1 focus-within:ring-violet-500">
-              <span className="inline-flex items-center rounded-l-xl border-r border-slate-800 bg-slate-900/80 px-3 text-xs text-slate-400 select-none">
-                <Globe className="mr-1.5 size-3.5 text-slate-500" />
+            <div className="relative mt-1.5 flex rounded-xl border border-slate-300 bg-white focus-within:border-violet-500 focus-within:ring-1 focus-within:ring-violet-500 dark:border-slate-700 dark:bg-slate-950">
+              <span className="inline-flex items-center rounded-l-xl border-r border-slate-200 bg-slate-100 px-3 text-xs text-slate-600 select-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400">
+                <Globe className="mr-1.5 size-3.5 text-slate-400 dark:text-slate-500" />
                 /events/
               </span>
               <input
@@ -249,7 +262,7 @@ export function CreateEventForm({
                     shouldValidate: true,
                   });
                 }}
-                className="w-full bg-transparent px-3 py-2.5 text-sm text-white placeholder-slate-500 focus:outline-hidden"
+                className="w-full bg-transparent px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-hidden dark:text-white dark:placeholder-slate-500"
               />
             </div>
 
@@ -258,13 +271,18 @@ export function CreateEventForm({
               <SlugAvailabilityBadge status={slugCheck.status} message={slugCheck.message} />
             </div>
 
-            {errors.slug && <p className="mt-1 text-xs text-rose-400">{errors.slug.message}</p>}
+            {errors.slug && (
+              <p className="mt-1 text-xs text-rose-600 dark:text-rose-400">{errors.slug.message}</p>
+            )}
           </div>
 
           {/* Description */}
           <div>
-            <label htmlFor="event-description" className="block text-sm font-medium text-slate-300">
-              Description <span className="text-rose-400">*</span>
+            <label
+              htmlFor="event-description"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+            >
+              Description <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <textarea
               id="event-description"
@@ -275,32 +293,40 @@ export function CreateEventForm({
                 minLength: { value: 10, message: "Description must be at least 10 characters" },
               })}
               className={cn(
-                "mt-1.5 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm text-white placeholder-slate-500 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden",
-                errors.description && "border-rose-500 focus:border-rose-500 focus:ring-rose-500",
+                "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                errors.description &&
+                  "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
             />
             {errors.description && (
-              <p className="mt-1 text-xs text-rose-400">{errors.description.message}</p>
+              <p className="mt-1 text-xs text-rose-600 dark:text-rose-400">
+                {errors.description.message}
+              </p>
             )}
           </div>
         </div>
 
         {/* Banner Configuration */}
-        <div className="space-y-4 border-t border-slate-800/80 pt-6">
+        <div className="space-y-4 border-t border-slate-200 pt-6 dark:border-slate-800/80">
           <div>
-            <h2 className="text-lg font-semibold text-white">2. Visual Branding</h2>
-            <p className="mt-1 text-xs text-slate-400">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              2. Visual Branding
+            </h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               Provide a high-resolution banner image URL (16:9 recommended, min 1200x675px).
             </p>
           </div>
 
           <div>
-            <label htmlFor="event-banner" className="block text-sm font-medium text-slate-300">
-              Banner Image URL <span className="text-rose-400">*</span>
+            <label
+              htmlFor="event-banner"
+              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+            >
+              Banner Image URL <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
             <div className="relative mt-1.5">
               <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
-                <ImageIcon className="size-4 text-slate-500" />
+                <ImageIcon className="size-4 text-slate-400 dark:text-slate-500" />
               </div>
               <input
                 id="event-banner"
@@ -310,13 +336,16 @@ export function CreateEventForm({
                   required: "Banner image URL is required",
                 })}
                 className={cn(
-                  "w-full rounded-xl border border-slate-700 bg-slate-950 py-2.5 pr-4 pl-10 text-sm text-white placeholder-slate-500 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden",
-                  errors.bannerUrl && "border-rose-500 focus:border-rose-500 focus:ring-rose-500",
+                  "w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                  errors.bannerUrl &&
+                    "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
               />
             </div>
             {errors.bannerUrl && (
-              <p className="mt-1 text-xs text-rose-400">{errors.bannerUrl.message}</p>
+              <p className="mt-1 text-xs text-rose-600 dark:text-rose-400">
+                {errors.bannerUrl.message}
+              </p>
             )}
           </div>
 
@@ -328,10 +357,12 @@ export function CreateEventForm({
         </div>
 
         {/* Schedule & Operational Window */}
-        <div className="space-y-4 border-t border-slate-800/80 pt-6">
+        <div className="space-y-4 border-t border-slate-200 pt-6 dark:border-slate-800/80">
           <div>
-            <h2 className="text-lg font-semibold text-white">3. Operational Schedule</h2>
-            <p className="mt-1 text-xs text-slate-400">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              3. Operational Schedule
+            </h2>
+            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
               Configure when the competition voting window opens and closes (must be at least 1 hour
               duration).
             </p>
@@ -340,10 +371,14 @@ export function CreateEventForm({
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
             {/* Start Time */}
             <div>
-              <label htmlFor="event-starts-at" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="event-starts-at"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="size-4 text-violet-400" />
-                  <span>Voting Starts At</span> <span className="text-rose-400">*</span>
+                  <Calendar className="size-4 text-violet-600 dark:text-violet-400" />
+                  <span>Voting Starts At</span>{" "}
+                  <span className="text-rose-500 dark:text-rose-400">*</span>
                 </span>
               </label>
               <input
@@ -352,16 +387,20 @@ export function CreateEventForm({
                 {...register("startsAt", {
                   required: "Start date is required",
                 })}
-                className="mt-1.5 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm text-white transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden"
+                className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
             </div>
 
             {/* End Time */}
             <div>
-              <label htmlFor="event-ends-at" className="block text-sm font-medium text-slate-300">
+              <label
+                htmlFor="event-ends-at"
+                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              >
                 <span className="flex items-center gap-1.5">
-                  <Clock className="size-4 text-violet-400" />
-                  <span>Voting Ends At</span> <span className="text-rose-400">*</span>
+                  <Clock className="size-4 text-violet-600 dark:text-violet-400" />
+                  <span>Voting Ends At</span>{" "}
+                  <span className="text-rose-500 dark:text-rose-400">*</span>
                 </span>
               </label>
               <input
@@ -371,15 +410,16 @@ export function CreateEventForm({
                   required: "End date is required",
                 })}
                 className={cn(
-                  "mt-1.5 w-full rounded-xl border border-slate-700 bg-slate-950 px-4 py-2.5 text-sm text-white transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden",
-                  isTemporalInvalid && "border-rose-500 focus:border-rose-500 focus:ring-rose-500",
+                  "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white",
+                  isTemporalInvalid &&
+                    "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
               />
             </div>
           </div>
 
           {isTemporalInvalid && (
-            <div className="flex items-center gap-2 rounded-lg bg-rose-500/10 p-3 text-xs text-rose-400">
+            <div className="flex items-center gap-2 rounded-lg bg-rose-50 p-3 text-xs text-rose-700 dark:bg-rose-500/10 dark:text-rose-400">
               <AlertCircle className="size-4 shrink-0" />
               <span>Event end time must be at least 1 hour after the start time.</span>
             </div>
@@ -387,19 +427,19 @@ export function CreateEventForm({
         </div>
 
         {/* Action Controls */}
-        <div className="flex flex-col-reverse items-center justify-end gap-3 border-t border-slate-800/80 pt-6 sm:flex-row">
+        <div className="flex flex-col-reverse items-center justify-end gap-3 border-t border-slate-200 pt-6 sm:flex-row dark:border-slate-800/80">
           {onCancel ? (
             <button
               type="button"
               onClick={onCancel}
-              className="w-full cursor-pointer rounded-xl border border-slate-700 bg-slate-800/60 px-5 py-2.5 text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white sm:w-auto"
+              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </button>
           ) : (
             <Link
               href="/dashboard"
-              className="w-full rounded-xl border border-slate-700 bg-slate-800/60 px-5 py-2.5 text-center text-sm font-medium text-slate-300 transition hover:bg-slate-800 hover:text-white sm:w-auto"
+              className="w-full rounded-xl border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-sm font-medium text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </Link>

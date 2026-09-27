@@ -91,7 +91,7 @@ export async function POST(request: NextRequest, context: RouteParams) {
         eventId: authResult.event.id,
         name: parsed.data.name,
         description: parsed.data.description ?? null,
-        displayOrder: parsed.data.displayOrder,
+        displayOrder: parsed.data.displayOrder ?? 0,
       },
     });
 

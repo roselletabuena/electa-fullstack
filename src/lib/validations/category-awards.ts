@@ -42,4 +42,5 @@ export const updateAwardCategorySchema = z.object({
 });
 
 export type CreateAwardCategoryInput = z.infer<typeof createAwardCategorySchema>;
+export type CreateAwardCategoryFormInput = z.input<typeof createAwardCategorySchema>;
 export type UpdateAwardCategoryInput = z.infer<typeof updateAwardCategorySchema>;

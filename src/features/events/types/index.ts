@@ -5,7 +5,7 @@ export type EventPublicationStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
 export type EventOperationalState = "Draft" | "Scheduled" | "Active" | "Closed";
 
-export const SETTINGS_TABS = ["general", "schedule", "voting-rules"] as const;
+export const SETTINGS_TABS = ["general", "schedule", "voting-rules", "categories"] as const;
 export type SettingsTabId = (typeof SETTINGS_TABS)[number];
 
 export interface SettingsTabConfig {

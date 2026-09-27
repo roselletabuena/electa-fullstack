@@ -40,4 +40,5 @@ export const updateDivisionSchema = z.object({
 });
 
 export type CreateDivisionInput = z.infer<typeof createDivisionSchema>;
+export type CreateDivisionFormInput = z.input<typeof createDivisionSchema>;
 export type UpdateDivisionInput = z.infer<typeof updateDivisionSchema>;

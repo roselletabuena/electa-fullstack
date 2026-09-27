@@ -92,8 +92,8 @@ export async function POST(request: NextRequest, context: RouteParams) {
         eventId: authResult.event.id,
         name: parsed.data.name,
         description: parsed.data.description ?? null,
-        isVotingOpen: parsed.data.isVotingOpen,
-        displayOrder: parsed.data.displayOrder,
+        isVotingOpen: parsed.data.isVotingOpen ?? true,
+        displayOrder: parsed.data.displayOrder ?? 0,
       },
     });
 

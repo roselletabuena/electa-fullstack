@@ -29,56 +29,60 @@ export function EventBanner({ event }: EventBannerProps): React.JSX.Element {
   });
 
   return (
-    <header className="border-border/60 bg-card/60 relative w-full overflow-hidden rounded-3xl border shadow-2xl backdrop-blur-xl">
-      {/* Banner Backdrop Image */}
-      <div className="relative h-72 w-full overflow-hidden md:h-96">
+    <header className="relative w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-950 shadow-md transition-all dark:border-slate-800">
+      {/* Compact Banner Backdrop Image */}
+      <div className="relative h-60 w-full overflow-hidden sm:h-72 md:h-80">
         <Image
           src={event.bannerUrl}
           alt={event.title}
           fill
           priority
           sizes="(max-width: 1200px) 100vw, 1200px"
-          className="scale-105 transform object-cover object-center transition-transform duration-700 hover:scale-100"
+          className="object-cover object-center transition-transform duration-700 hover:scale-105"
         />
-        {/* Sleek Dark Vignette and Gradient Overlay */}
-        <div className="from-background via-background/60 absolute inset-0 bg-linear-to-t to-transparent" />
-        <div className="from-background/80 to-background/40 absolute inset-0 bg-linear-to-r via-transparent" />
+        {/* Dark Vignette / Scrim Overlay (Prevents white glare while preserving vibrant photo details) */}
+        <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/60 to-slate-950/20" />
       </div>
 
-      {/* Content Header Container */}
-      <div className="relative -mt-24 space-y-6 px-6 pb-8 md:-mt-32 md:px-10">
-        <div className="flex flex-wrap items-center gap-3">
+      {/* Overlaid Header Container (Compact & True to Electa Branding) */}
+      <div className="relative -mt-28 space-y-4 px-6 pb-6 sm:-mt-32 sm:px-8 sm:pb-7">
+        {/* Badges */}
+        <div className="flex flex-wrap items-center gap-2.5">
           <EventStateBadge state={event.operationalState} />
-          <span className="bg-secondary/80 text-secondary-foreground border-border/40 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium backdrop-blur-md">
-            <Globe2 className="text-muted-foreground size-3" />
-            electa.ph/events/{event.slug}
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1 font-mono text-xs text-slate-200 backdrop-blur-md">
+            <Globe2 className="size-3 text-slate-400" />
+            <span>electa.ph/events/{event.slug}</span>
           </span>
-          <span className="bg-primary/10 text-primary border-primary/20 inline-flex items-center gap-1.5 rounded-full border px-3 py-1 text-xs font-medium">
-            <Sparkles className="text-primary size-3" />
-            Official Contest
+          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-xs font-semibold text-sky-300 backdrop-blur-md">
+            <Sparkles className="size-3 text-sky-400" />
+            <span>Official Contest</span>
           </span>
         </div>
 
-        <div className="space-y-3">
-          <h1 className="text-foreground text-3xl font-extrabold tracking-tight drop-shadow-sm md:text-5xl">
+        {/* Title & Description */}
+        <div className="space-y-1.5">
+          <h1 className="font-heading text-2xl font-extrabold tracking-tight text-white drop-shadow-sm sm:text-3xl md:text-4xl">
             {event.title}
           </h1>
-          <p className="text-muted-foreground max-w-3xl text-sm leading-relaxed md:text-base">
-            {event.description}
-          </p>
+          {event.description && (
+            <p className="max-w-3xl text-xs leading-relaxed text-slate-300 sm:text-sm">
+              {event.description}
+            </p>
+          )}
         </div>
 
-        <div className="border-border/40 text-muted-foreground flex flex-wrap items-center gap-6 border-t pt-2 text-xs md:text-sm">
+        {/* Operational Schedule Timeline */}
+        <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-3 text-xs text-slate-300">
           <div className="flex items-center gap-2">
-            <Calendar className="text-primary size-4" />
+            <Calendar className="size-3.5 text-sky-400" />
             <span>
-              <strong className="text-foreground">Opens:</strong> {formattedStartsAt}
+              <strong className="text-white">Opens:</strong> {formattedStartsAt}
             </span>
           </div>
           <div className="flex items-center gap-2">
-            <Calendar className="text-primary size-4" />
+            <Calendar className="size-3.5 text-sky-400" />
             <span>
-              <strong className="text-foreground">Closes:</strong> {formattedEndsAt}
+              <strong className="text-white">Closes:</strong> {formattedEndsAt}
             </span>
           </div>
         </div>

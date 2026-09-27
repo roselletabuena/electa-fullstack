@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import Link from "next/link";
 import {
   Calendar,
@@ -69,7 +69,7 @@ export function CreateEventForm({
   const {
     register,
     handleSubmit,
-    watch,
+    control,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<FormRawValues>({
@@ -84,11 +84,11 @@ export function CreateEventForm({
     mode: "onChange",
   });
 
-  const watchedTitle = watch("title");
-  const watchedSlug = watch("slug");
-  const watchedBannerUrl = watch("bannerUrl");
-  const watchedStartsAt = watch("startsAt");
-  const watchedEndsAt = watch("endsAt");
+  const watchedTitle = useWatch({ control, name: "title" }) ?? "";
+  const watchedSlug = useWatch({ control, name: "slug" }) ?? "";
+  const watchedBannerUrl = useWatch({ control, name: "bannerUrl" }) ?? "";
+  const watchedStartsAt = useWatch({ control, name: "startsAt" }) ?? defaultDates.startsAt;
+  const watchedEndsAt = useWatch({ control, name: "endsAt" }) ?? defaultDates.endsAt;
 
   const slugCheck = useDebouncedSlugCheck(watchedSlug);
 

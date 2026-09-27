@@ -139,11 +139,14 @@ describe("CreateEventForm", () => {
     render(<CreateEventForm />);
 
     await user.type(screen.getByLabelText(/Event Title/i), "Super Star 2026");
-    await user.type(
-      screen.getByLabelText(/Description/i),
-      "This is a comprehensive description of the competition with plenty of characters.",
-    );
-    await user.type(screen.getByLabelText(/Banner Image URL/i), "https://example.com/banner.jpg");
+    fireEvent.change(screen.getByLabelText(/Description/i), {
+      target: {
+        value: "This is a comprehensive description of the competition with plenty of characters.",
+      },
+    });
+    fireEvent.change(screen.getByLabelText(/Banner Image URL/i), {
+      target: { value: "https://example.com/banner.jpg" },
+    });
 
     // Wait for slug availability check
     await waitFor(() => {
@@ -171,11 +174,14 @@ describe("CreateEventForm", () => {
     render(<CreateEventForm onSuccess={onSuccessMock} />);
 
     await user.type(screen.getByLabelText(/Event Title/i), "Super Star 2026");
-    await user.type(
-      screen.getByLabelText(/Description/i),
-      "This is a comprehensive description of the competition with plenty of characters.",
-    );
-    await user.type(screen.getByLabelText(/Banner Image URL/i), "https://example.com/banner.jpg");
+    fireEvent.change(screen.getByLabelText(/Description/i), {
+      target: {
+        value: "This is a comprehensive description of the competition with plenty of characters.",
+      },
+    });
+    fireEvent.change(screen.getByLabelText(/Banner Image URL/i), {
+      target: { value: "https://example.com/banner.jpg" },
+    });
 
     await waitFor(() => {
       expect(screen.getByRole("status")).toHaveTextContent(/available/i);

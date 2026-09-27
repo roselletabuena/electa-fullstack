@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { updateEventBrandingAction } from "@/features/events/actions/update-event-branding";
+import { updateVotingRulesAction } from "@/features/events/actions/update-voting-rules";
 import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
 import { db } from "@/lib/db";
 import type { Event } from "@/generated/client/client";
@@ -18,7 +18,7 @@ vi.mock("@/lib/db", () => ({
   },
 }));
 
-describe("updateEventBrandingAction", () => {
+describe("updateVotingRulesAction", () => {
   beforeEach(() => {
     vi.clearAllMocks();
   });
@@ -41,7 +41,7 @@ describe("updateEventBrandingAction", () => {
     updatedAt: new Date(),
   };
 
-  it("successfully updates event branding and creates audit log", async () => {
+  it("successfully updates voting rules and records audit log", async () => {
     vi.mocked(requireEventOwnership).mockResolvedValue({
       authorized: true,
       event: baseEvent,
@@ -53,12 +53,11 @@ describe("updateEventBrandingAction", () => {
 
     const updatedMockEvent: Event = {
       ...baseEvent,
-      title: "Miss Visayas 2026 Coronation",
-      description: "Updated pageant description.",
-      bannerUrl: "https://example.com/new-banner.jpg",
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 3,
     };
 
-    const mockAuditLogCreate = vi.fn().mockResolvedValue({ id: "audit_1" });
+    const mockAuditLogCreate = vi.fn().mockResolvedValue({ id: "audit_vr_1" });
     const mockEventUpdate = vi.fn().mockResolvedValue(updatedMockEvent);
 
     vi.mocked(db.$transaction).mockImplementation((async (
@@ -73,44 +72,92 @@ describe("updateEventBrandingAction", () => {
       });
     }) as unknown as typeof db.$transaction);
 
-    const result = await updateEventBrandingAction("miss-visayas-2026", {
-      title: "Miss Visayas 2026 Coronation",
-      description: "Updated pageant description.",
-      bannerUrl: "https://example.com/new-banner.jpg",
-      reason: "Updated title and imagery",
+    const result = await updateVotingRulesAction("miss-visayas-2026", {
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 3,
+      reason: "Increased free vote quota for preliminary round",
     });
 
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data.title).toBe("Miss Visayas 2026 Coronation");
-      expect(result.message).toBe("Event branding updated successfully");
+      expect(result.data.dailyFreeVoteLimit).toBe(3);
+      expect(result.data.isFreeVotingEnabled).toBe(true);
+      expect(result.message).toBe("Voting rules updated successfully");
     }
 
     expect(mockEventUpdate).toHaveBeenCalledWith({
       where: { id: "evt_123" },
       data: {
-        title: "Miss Visayas 2026 Coronation",
-        description: "Updated pageant description.",
-        bannerUrl: "https://example.com/new-banner.jpg",
+        isFreeVotingEnabled: true,
+        dailyFreeVoteLimit: 3,
       },
     });
 
     expect(mockAuditLogCreate).toHaveBeenCalledWith({
       data: {
         eventId: "evt_123",
-        action: "UPDATE_BRANDING",
+        action: "UPDATE_VOTING_RULES",
         changedBy: "usr_organizer_mock_01",
         previousVal: {
-          title: "Miss Visayas 2026",
-          description: "Annual pageant.",
-          bannerUrl: "https://example.com/banner.jpg",
+          isFreeVotingEnabled: true,
+          dailyFreeVoteLimit: 1,
         },
         newVal: {
-          title: "Miss Visayas 2026 Coronation",
-          description: "Updated pageant description.",
-          bannerUrl: "https://example.com/new-banner.jpg",
+          isFreeVotingEnabled: true,
+          dailyFreeVoteLimit: 3,
         },
-        reason: "Updated title and imagery",
+        reason: "Increased free vote quota for preliminary round",
+      },
+    });
+  });
+
+  it("successfully disables free daily voting for coronation grand finals", async () => {
+    vi.mocked(requireEventOwnership).mockResolvedValue({
+      authorized: true,
+      event: baseEvent,
+      session: {
+        userId: "usr_organizer_mock_01",
+        email: "organizer@electa.ph",
+      },
+    });
+
+    const updatedMockEvent: Event = {
+      ...baseEvent,
+      isFreeVotingEnabled: false,
+      dailyFreeVoteLimit: 1,
+    };
+
+    const mockAuditLogCreate = vi.fn().mockResolvedValue({ id: "audit_vr_2" });
+    const mockEventUpdate = vi.fn().mockResolvedValue(updatedMockEvent);
+
+    vi.mocked(db.$transaction).mockImplementation((async (
+      callback: (tx: {
+        event: { update: typeof mockEventUpdate };
+        eventAuditLog: { create: typeof mockAuditLogCreate };
+      }) => Promise<unknown>,
+    ) => {
+      return callback({
+        event: { update: mockEventUpdate },
+        eventAuditLog: { create: mockAuditLogCreate },
+      });
+    }) as unknown as typeof db.$transaction);
+
+    const result = await updateVotingRulesAction("miss-visayas-2026", {
+      isFreeVotingEnabled: false,
+      dailyFreeVoteLimit: 1,
+      reason: "Free voting disabled for Grand Coronation Finals",
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.isFreeVotingEnabled).toBe(false);
+    }
+
+    expect(mockEventUpdate).toHaveBeenCalledWith({
+      where: { id: "evt_123" },
+      data: {
+        isFreeVotingEnabled: false,
+        dailyFreeVoteLimit: 1,
       },
     });
   });
@@ -121,10 +168,9 @@ describe("updateEventBrandingAction", () => {
       reason: "UNAUTHENTICATED",
     });
 
-    const result = await updateEventBrandingAction("miss-visayas-2026", {
-      title: "New Title",
-      description: "Description",
-      bannerUrl: "https://example.com/banner.jpg",
+    const result = await updateVotingRulesAction("miss-visayas-2026", {
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 2,
     });
 
     expect(result.success).toBe(false);
@@ -137,14 +183,13 @@ describe("updateEventBrandingAction", () => {
     vi.mocked(requireEventOwnership).mockResolvedValue({
       authorized: false,
       reason: "UNAUTHORIZED",
-      session: { userId: "other_user", email: "other@example.com" },
+      session: { userId: "intruder_user", email: "intruder@example.com" },
       eventTitle: "Miss Visayas 2026",
     });
 
-    const result = await updateEventBrandingAction("miss-visayas-2026", {
-      title: "New Title",
-      description: "Description",
-      bannerUrl: "https://example.com/banner.jpg",
+    const result = await updateVotingRulesAction("miss-visayas-2026", {
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 2,
     });
 
     expect(result.success).toBe(false);
@@ -153,24 +198,22 @@ describe("updateEventBrandingAction", () => {
     }
   });
 
-  it("returns validation errors for invalid input", async () => {
+  it("returns validation errors for out-of-range quota", async () => {
     vi.mocked(requireEventOwnership).mockResolvedValue({
       authorized: true,
       event: baseEvent,
       session: { userId: "usr_organizer_mock_01", email: "organizer@electa.ph" },
     });
 
-    const result = await updateEventBrandingAction("miss-visayas-2026", {
-      title: "Ab", // Too short
-      description: "Valid description",
-      bannerUrl: "invalid-url",
+    const result = await updateVotingRulesAction("miss-visayas-2026", {
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 6, // Exceeds max 5
     });
 
     expect(result.success).toBe(false);
     if (!result.success) {
       expect(result.fieldErrors).toBeDefined();
-      expect(result.fieldErrors?.title).toBeDefined();
-      expect(result.fieldErrors?.bannerUrl).toBeDefined();
+      expect(result.fieldErrors?.dailyFreeVoteLimit).toBeDefined();
     }
   });
 });

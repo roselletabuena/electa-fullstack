@@ -14,7 +14,7 @@
 - Q: How should the relationship between contestant divisions and award categories be structured in the data model and UI? → A: Single Division + Multiple Awards: Exactly 1 primary division per contestant (e.g., Female, Male, LGBTQ+, Teen); 0 to N award categories per contestant (e.g., People's Choice, Best in Swimsuit). Candidate numbers are strictly unique per division within an event.
 - Q: What aspect ratio standard should be enforced for contestant photo gallery cropping and roster cards? → A: 4:5 Portrait Standard: Client-side cropper defaults to 4:5 vertical framing; cover photo and gallery thumbnails render in uniform 4:5 aspect ratio to maintain luxury visual elegance and prevent layout shifting.
 - Q: Which external platforms should be supported for embedded candidate video reels and media showcase? → A: YouTube (Shorts & Videos), TikTok, Instagram Reels, and Facebook Videos/Reels: System supports URL parsing, embed generation, and responsive framing across all four major video platforms.
-- Q: How should contestant withdrawal, disqualification, or temporary hiding be handled during an active contest? → A: Soft Status Lifecycle: Contestants maintain lifecycle statuses (`ACTIVE`, `HIDDEN`, `WITHDRAWN`). Non-active candidates are excluded from public voting and rosters while preserving transaction history and audit trails for vote and financial reconciliation.
+- Q: How should contestant withdrawal, disqualification, or temporary hiding be handled during an active contest? → A: Soft Status Lifecycle: Contestants maintain lifecycle statuses (`ACTIVE`, `HIDDEN`, `WITHDRAWN`). On public event views, candidates with status `HIDDEN` or `WITHDRAWN` are hidden from the public roster and voting pages. In organizer contestant management, organizers can view all contestants (including `HIDDEN` and `WITHDRAWN`) with their status badges to adjust profile data, monitor vote tallies, and toggle statuses, while preserving transaction history and audit trails for financial reconciliation.
 
 ---
 
@@ -96,7 +96,7 @@ As an event organizer, I want a dedicated management interface to add, edit, reo
 - **FR-009**: System MUST enforce candidate number uniqueness per division within an individual event.
 - **FR-010**: System MUST enforce authorization checks ensuring only authenticated event organizers can create, modify, or delete contestant profiles and media assets for their assigned events.
 - **FR-011**: Contestant profiles MUST render a dedicated full-view modal or page view featuring full-resolution photo lightbox, video reel tab, complete bio dossier, and quick-action voting trigger.
-- **FR-012**: System MUST restrict public voting and roster visibility for contestants marked as `HIDDEN` or `WITHDRAWN`, while preserving their historical transaction and audit records for financial reconciliation.
+- **FR-012**: System MUST exclude contestants marked as `HIDDEN` or `WITHDRAWN` from public roster views and public voting. In the organizer contestant management panel, contestants of all statuses (including `HIDDEN` and `WITHDRAWN`) MUST remain visible with their current status badge, enabling organizers to view, edit, and adjust statuses while preserving historical transaction and audit records for financial reconciliation.
 
 ---
 

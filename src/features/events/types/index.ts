@@ -41,6 +41,8 @@ export interface PublicEventDto {
   serverTime: string;
   operationalState: EventOperationalState;
   showResultsOnClose: boolean;
+  isFreeVotingEnabled?: boolean;
+  dailyFreeVoteLimit?: number;
   contestants: ContestantDto[];
 }
 
@@ -81,4 +83,13 @@ export type ActionResponse<T> =
   | { success: true; data: T; message?: string }
   | { success: false; error: string; fieldErrors?: Record<string, string[]> };
 
+export interface VotingRulesSnapshot {
+  isFreeVotingEnabled: boolean;
+  dailyFreeVoteLimit: number;
+}
+
+export type {
+  VotingRulesFormValues,
+  UpdateVotingRulesInput,
+} from "@/lib/validations/event-voting-rules";
 export type { UpdateEventBrandingInput } from "@/lib/validations/event-branding";

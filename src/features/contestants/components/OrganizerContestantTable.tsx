@@ -6,6 +6,7 @@ import { Plus, Edit3, Trash2, Sparkles } from "lucide-react";
 import type { ContestantDto, AwardCategoryDto, ContestantStatus } from "../types";
 import { ContestantFormModal } from "./ContestantFormModal";
 import { useContestantMutations } from "../hooks/use-contestant-mutations";
+import { useContestants } from "../hooks/use-contestants";
 
 interface OrganizerContestantTableProps {
   slug: string;
@@ -15,12 +16,13 @@ interface OrganizerContestantTableProps {
 
 export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> = ({
   slug,
-  contestants,
+  contestants: initialContestants,
   categories,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingContestant, setEditingContestant] = useState<ContestantDto | null>(null);
 
+  const { data: contestants = initialContestants } = useContestants(slug, { status: "ALL" });
   const { createContestant, updateContestant, updateStatus, deleteContestant } =
     useContestantMutations(slug);
 

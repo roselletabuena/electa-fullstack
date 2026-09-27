@@ -1,20 +1,23 @@
 import React from "react";
 import Link from "next/link";
-import { ExternalLink, ShieldCheck, Calendar, ArrowLeft } from "lucide-react";
+import { ExternalLink, ShieldCheck, Calendar, ArrowLeft, Settings, Users } from "lucide-react";
 import { EventStateBadge } from "../EventStateBadge";
 import { CopySlugButton } from "./CopySlugButton";
 import { deriveEventState } from "../../utils/derive-event-state";
 import type { Event } from "@/generated/client/client";
 import type { UserSession } from "@/lib/auth/get-session";
+import { cn } from "@/lib/utils";
 
 export interface OrganizerDashboardHeaderProps {
   event: Event;
   user: UserSession;
+  activeSection?: "settings" | "contestants";
 }
 
 export function OrganizerDashboardHeader({
   event,
   user,
+  activeSection = "settings",
 }: OrganizerDashboardHeaderProps): React.JSX.Element {
   const operationalState = deriveEventState({
     publicationStatus: event.publicationStatus,
@@ -75,6 +78,34 @@ export function OrganizerDashboardHeader({
             </Link>
           </div>
         </div>
+
+        {/* Section Navigation */}
+        <nav className="mt-6 flex items-center gap-1 border-t border-slate-100 pt-3 dark:border-slate-800/80">
+          <Link
+            href={`/events/${event.slug}/settings`}
+            className={cn(
+              "inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all",
+              activeSection === "settings"
+                ? "bg-indigo-50 text-indigo-700 shadow-xs dark:bg-indigo-950/60 dark:text-indigo-300"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",
+            )}
+          >
+            <Settings className="size-3.5" />
+            Event Settings
+          </Link>
+          <Link
+            href={`/events/${event.slug}/contestants`}
+            className={cn(
+              "inline-flex items-center gap-2 rounded-lg px-3.5 py-2 text-xs font-semibold transition-all",
+              activeSection === "contestants"
+                ? "bg-indigo-50 text-indigo-700 shadow-xs dark:bg-indigo-950/60 dark:text-indigo-300"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",
+            )}
+          >
+            <Users className="size-3.5" />
+            Contestants Roster
+          </Link>
+        </nav>
       </div>
     </header>
   );

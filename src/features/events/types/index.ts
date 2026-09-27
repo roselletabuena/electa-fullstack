@@ -88,8 +88,19 @@ export interface VotingRulesSnapshot {
   dailyFreeVoteLimit: number;
 }
 
+export interface ScheduleLifecycleSnapshot {
+  startsAt: string;
+  endsAt: string;
+  publicationStatus: EventPublicationStatus;
+  hasDraftPassphrase: boolean;
+}
+
 export type {
   VotingRulesFormValues,
   UpdateVotingRulesInput,
 } from "@/lib/validations/event-voting-rules";
 export type { UpdateEventBrandingInput } from "@/lib/validations/event-branding";
+export type {
+  ScheduleLifecycleFormValues,
+  UpdateScheduleLifecycleInput,
+} from "@/lib/validations/event-schedule-lifecycle";

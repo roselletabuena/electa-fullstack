@@ -42,13 +42,19 @@ export function ScheduleSettingsSummaryCard({
                 <Clock className="size-3.5 text-slate-400" />
                 <span>Voting Starts At</span>
               </div>
-              <p className="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100">
+              <p
+                suppressHydrationWarning
+                className="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100"
+              >
                 {startsAtDate.toLocaleString(undefined, {
                   dateStyle: "medium",
                   timeStyle: "short",
                 })}
               </p>
-              <p className="font-mono text-xs text-slate-500 dark:text-slate-400">
+              <p
+                suppressHydrationWarning
+                className="font-mono text-xs text-slate-500 dark:text-slate-400"
+              >
                 ISO: {startsAtDate.toISOString()}
               </p>
             </div>
@@ -58,13 +64,19 @@ export function ScheduleSettingsSummaryCard({
                 <Clock className="size-3.5 text-slate-400" />
                 <span>Voting Ends At (Cutoff)</span>
               </div>
-              <p className="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100">
+              <p
+                suppressHydrationWarning
+                className="mt-2 text-base font-semibold text-slate-900 dark:text-slate-100"
+              >
                 {endsAtDate.toLocaleString(undefined, {
                   dateStyle: "medium",
                   timeStyle: "short",
                 })}
               </p>
-              <p className="font-mono text-xs text-slate-500 dark:text-slate-400">
+              <p
+                suppressHydrationWarning
+                className="font-mono text-xs text-slate-500 dark:text-slate-400"
+              >
                 ISO: {endsAtDate.toISOString()}
               </p>
             </div>

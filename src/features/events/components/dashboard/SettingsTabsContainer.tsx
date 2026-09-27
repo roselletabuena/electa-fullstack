@@ -6,6 +6,7 @@ import { SettingsTabNav } from "./SettingsTabNav";
 import { GeneralBrandingForm } from "./GeneralBrandingForm";
 import { ScheduleLifecycleForm } from "./ScheduleLifecycleForm";
 import { VotingRulesForm } from "./VotingRulesForm";
+import { CategoryAwardsSettingsForm } from "./CategoryAwardsSettingsForm";
 import { SETTINGS_TABS, type SettingsTabId } from "../../types";
 import type { Event } from "@/generated/client/client";
 
@@ -33,6 +34,7 @@ export function SettingsTabsContainer({
         {activeTab === "general" && <GeneralBrandingForm event={event} />}
         {activeTab === "schedule" && <ScheduleLifecycleForm event={event} />}
         {activeTab === "voting-rules" && <VotingRulesForm event={event} />}
+        {activeTab === "categories" && <CategoryAwardsSettingsForm event={event} />}
       </section>
     </div>
   );

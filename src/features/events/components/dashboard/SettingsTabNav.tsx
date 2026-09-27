@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useQueryState, parseAsStringLiteral } from "nuqs";
-import { Settings, Calendar, Vote } from "lucide-react";
+import { Settings, Calendar, Vote, Layers } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { SETTINGS_TABS, type SettingsTabId } from "../../types";
 
@@ -34,6 +34,12 @@ const TABS: Array<{
     label: "Voting Rules",
     icon: Vote,
     description: "Vote limits & results policy",
+  },
+  {
+    id: "categories",
+    label: "Categories & Awards",
+    icon: Layers,
+    description: "Divisions & award tracks",
   },
 ];
 

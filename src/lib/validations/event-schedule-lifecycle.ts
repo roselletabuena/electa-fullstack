@@ -12,7 +12,7 @@ export const scheduleLifecycleFormSchema = z
       .string()
       .min(1, "Voting end date and time is required")
       .refine((val) => !isNaN(Date.parse(val)), "Invalid end date format"),
-    publicationStatus: eventPublicationStatusSchema,
+    publicationStatus: eventPublicationStatusSchema.default("DRAFT"),
     draftPassphrase: z
       .string()
       .max(100, "Draft passphrase cannot exceed 100 characters")
@@ -47,4 +47,5 @@ export const scheduleLifecycleFormSchema = z
 export const updateScheduleLifecycleSchema = scheduleLifecycleFormSchema;
 
 export type ScheduleLifecycleFormValues = z.infer<typeof scheduleLifecycleFormSchema>;
+export type ScheduleLifecycleFormInput = z.input<typeof scheduleLifecycleFormSchema>;
 export type UpdateScheduleLifecycleInput = z.infer<typeof updateScheduleLifecycleSchema>;

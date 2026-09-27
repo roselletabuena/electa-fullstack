@@ -1,6 +1,25 @@
+import type { Event } from "@/generated/client/client";
+import type { UserSession } from "@/lib/auth/get-session";
+
 export type EventPublicationStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
 export type EventOperationalState = "Draft" | "Scheduled" | "Active" | "Closed";
+
+export const SETTINGS_TABS = ["general", "schedule", "voting-rules"] as const;
+export type SettingsTabId = (typeof SETTINGS_TABS)[number];
+
+export interface SettingsTabConfig {
+  id: SettingsTabId;
+  label: string;
+  description: string;
+  badge?: string;
+}
+
+export type OwnershipCheckResult =
+  | { authorized: true; event: Event; session: UserSession }
+  | { authorized: false; reason: "UNAUTHENTICATED" }
+  | { authorized: false; reason: "NOT_FOUND" }
+  | { authorized: false; reason: "UNAUTHORIZED"; session: UserSession; eventTitle: string };
 
 export interface ContestantDto {
   id: string;

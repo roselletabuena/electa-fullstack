@@ -1,8 +1,9 @@
 import React from "react";
 import Link from "next/link";
-import { Plus, Sparkles } from "lucide-react";
+import { Plus, Sparkles, LogOut } from "lucide-react";
 import type { UserSession } from "@/lib/auth/get-session";
 import type { DashboardMetricsDto } from "../../types/dashboard-overview";
+import { logoutAction } from "@/features/auth/actions/logout-action";
 
 export interface DashboardGreetingBannerProps {
   user: UserSession;
@@ -13,7 +14,7 @@ export function DashboardGreetingBanner({
   user,
   metrics,
 }: DashboardGreetingBannerProps): React.JSX.Element {
-  const displayName = user.email.split("@")[0] || "Organizer";
+  const displayName = user.name || user.email.split("@")[0] || "Organizer";
 
   return (
     <div className="relative overflow-hidden rounded-2xl border border-slate-800 bg-linear-to-r from-slate-900 via-indigo-950 to-slate-900 p-6 text-white shadow-xl shadow-slate-900/10 sm:p-8">
@@ -49,6 +50,17 @@ export function DashboardGreetingBanner({
             <Plus className="size-4 shrink-0" />
             <span>Create New Event</span>
           </Link>
+
+          <form action={logoutAction}>
+            <button
+              type="submit"
+              className="inline-flex cursor-pointer items-center gap-1.5 rounded-xl border border-slate-700 bg-slate-800/80 px-4 py-3 text-xs font-semibold text-slate-300 shadow-sm transition hover:border-slate-600 hover:bg-slate-700 hover:text-white active:scale-95"
+              title="Sign out of organizer account"
+            >
+              <LogOut className="size-3.5" />
+              <span>Sign Out</span>
+            </button>
+          </form>
         </div>
       </div>
 

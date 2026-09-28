@@ -1,9 +1,12 @@
 import { cookies, headers } from "next/headers";
+import { verifyLocalCognitoToken } from "@/features/auth/utils/token-adapter";
 
 export interface UserSession {
   userId: string;
   email: string;
+  name?: string;
   role?: string;
+  expiresAt?: string;
 }
 
 export async function getSession(): Promise<UserSession | null> {
@@ -14,9 +17,21 @@ export async function getSession(): Promise<UserSession | null> {
     const token = authHeader.slice(7);
     if (token === "mock-organizer-token" || token.includes("organizer")) {
       return {
-        userId: "org_12345",
+        userId: "usr_organizer_mock_01",
         email: "organizer@electa.ph",
+        name: "Alex Gonzaga (Organizer)",
         role: "ORGANIZER",
+      };
+    }
+
+    const verifiedFromHeader = verifyLocalCognitoToken(token);
+    if (verifiedFromHeader) {
+      return {
+        userId: verifiedFromHeader.userId,
+        email: verifiedFromHeader.email,
+        name: verifiedFromHeader.name,
+        role: verifiedFromHeader.role,
+        expiresAt: verifiedFromHeader.expiresAt,
       };
     }
   }
@@ -24,7 +39,21 @@ export async function getSession(): Promise<UserSession | null> {
   const cookieStore = await cookies();
   const authCookie =
     cookieStore.get("electa_auth_session")?.value || cookieStore.get("vs_auth_session")?.value;
+
   if (authCookie) {
+    // 1. First try verifying as a Cognito JWT
+    const verified = verifyLocalCognitoToken(authCookie);
+    if (verified) {
+      return {
+        userId: verified.userId,
+        email: verified.email,
+        name: verified.name,
+        role: verified.role,
+        expiresAt: verified.expiresAt,
+      };
+    }
+
+    // 2. Fallback to legacy JSON or plain-string session cookie for backward compatibility
     try {
       const decoded = decodeURIComponent(authCookie);
       const parsed = JSON.parse(decoded) as UserSession;
@@ -32,12 +61,12 @@ export async function getSession(): Promise<UserSession | null> {
         return parsed;
       }
     } catch {
-      // Fallback if plain string or simple ID was stored
       if (typeof authCookie === "string" && authCookie.trim().length > 0) {
         const cleaned = authCookie.replace(/^["']|["']$/g, "").trim();
         return {
           userId: cleaned,
           email: "organizer@electa.ph",
+          name: "Alex Gonzaga (Organizer)",
           role: "ORGANIZER",
         };
       }

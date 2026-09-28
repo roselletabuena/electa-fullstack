@@ -60,6 +60,7 @@ model Event {
   divisions           Division[]
   awardCategories     AwardCategory[]
   auditLogs           EventAuditLog[]
+  votes               Vote[]
 
   @@index([slug])
   @@index([organizerId])
@@ -107,6 +108,7 @@ model Contestant {
   divisionRef      Division?                      @relation(fields: [divisionId], references: [id], onDelete: SetNull)
   media            ContestantMedia[]
   categories       ContestantCategoryAssignment[]
+  votes            Vote[]
 
   @@unique([eventId, division, contestantNumber])
   @@index([eventId])
@@ -177,5 +179,29 @@ model EventAuditLog {
   event       Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
 
   @@index([eventId])
+}
+
+enum VoteType {
+  FREE
+  BOOST
+}
+
+model Vote {
+  id              String        @id @default(uuid())
+  eventId         String
+  contestantId    String
+  voterId         String
+  awardCategoryId String?
+  voteType        VoteType      @default(FREE)
+  voteWeight      Int           @default(1)
+  createdAt       DateTime      @default(now())
+
+  event           Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  contestant      Contestant    @relation(fields: [contestantId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, voterId, createdAt])
+  @@index([eventId, voterId, voteType, createdAt])
+  @@index([contestantId])
+  @@index([eventId, createdAt])
 }
 

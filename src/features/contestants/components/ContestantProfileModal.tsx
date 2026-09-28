@@ -1,10 +1,11 @@
 "use client";
 
 import React, { useState } from "react";
-import { X, Sparkles, MapPin, Ruler, Heart, Video, Image as ImageIcon } from "lucide-react";
+import { X, Sparkles, MapPin, Ruler, Video, Image as ImageIcon } from "lucide-react";
 import type { ContestantDto } from "../types";
 import { PhotoGalleryCarousel } from "./PhotoGalleryCarousel";
 import { VideoReelPlayer } from "./VideoReelPlayer";
+import { FreeVoteButton } from "@/features/voting/components/FreeVoteButton";
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-3.5 h-3.5" }) => (
   <svg
@@ -258,17 +259,20 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                 </p>
               </div>
 
-              <button
-                type="button"
-                onClick={() => {
-                  onClose();
-                  if (onVoteClick) onVoteClick(contestant);
-                }}
-                className="flex items-center gap-2 rounded-xl bg-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-xs transition-all hover:bg-indigo-700 active:scale-95"
-              >
-                <Heart className="size-4 fill-white text-white" />
-                <span>Vote for {contestant.name.split(" ")[0]}</span>
-              </button>
+              <FreeVoteButton
+                eventId={contestant.eventId}
+                contestantId={contestant.id}
+                contestantName={contestant.name}
+                size="lg"
+                onBoostClick={
+                  onVoteClick
+                    ? () => {
+                        onClose();
+                        onVoteClick(contestant);
+                      }
+                    : undefined
+                }
+              />
             </div>
           </div>
         </div>

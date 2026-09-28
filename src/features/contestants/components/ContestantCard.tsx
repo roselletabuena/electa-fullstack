@@ -2,8 +2,9 @@
 
 import React from "react";
 import Image from "next/image";
-import { Heart, Play, Sparkles, MapPin } from "lucide-react";
+import { Play, Sparkles, MapPin } from "lucide-react";
 import type { ContestantDto } from "../types";
+import { FreeVoteButton } from "@/features/voting/components/FreeVoteButton";
 
 interface ContestantCardProps {
   contestant: ContestantDto;
@@ -112,21 +113,13 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
           )}
         </div>
 
-        <button
-          type="button"
-          onClick={(e) => {
-            e.stopPropagation();
-            if (onVoteClick) {
-              onVoteClick(contestant);
-            } else {
-              onSelect(contestant);
-            }
-          }}
-          className="flex items-center gap-1.5 rounded-lg bg-indigo-600 px-3.5 py-1.5 text-xs font-semibold text-white shadow-xs transition-all hover:bg-indigo-700 active:scale-95"
-        >
-          <Heart className="size-3 fill-white text-white" />
-          <span>Vote</span>
-        </button>
+        <FreeVoteButton
+          eventId={contestant.eventId}
+          contestantId={contestant.id}
+          contestantName={contestant.name}
+          size="sm"
+          onBoostClick={onVoteClick ? () => onVoteClick(contestant) : undefined}
+        />
       </div>
     </div>
   );

@@ -449,7 +449,7 @@ export function CreateEventForm({
             type="submit"
             disabled={isSubmitDisabled}
             className={cn(
-              "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:from-violet-500 hover:to-indigo-500 focus:ring-2 focus:ring-violet-400 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto",
+              "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:from-violet-500 hover:to-indigo-500 focus:ring-2 focus:ring-violet-400 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto",
             )}
           >
             {isSubmitting ? (

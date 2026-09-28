@@ -7,6 +7,7 @@ import type { ContestantDto, AwardCategoryDto } from "../types";
 import { ContestantCard } from "./ContestantCard";
 import { ContestantProfileModal } from "./ContestantProfileModal";
 import { CategoryFilterBar } from "./CategoryFilterBar";
+import { FreeVoteCooldownBanner } from "@/features/voting/components/FreeVoteCooldownBanner";
 
 export interface DynamicDivisionItem {
   id?: string | undefined;
@@ -130,6 +131,25 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
           contestants
         </div>
       </div>
+
+      {/* Free Daily Voting Quota & Live Cooldown Status Banner */}
+      {initialContestants.length > 0 && initialContestants[0]?.eventId && (
+        <div className="mt-6">
+          <FreeVoteCooldownBanner
+            eventId={initialContestants[0].eventId}
+            onBoostClick={
+              onVoteClick && initialContestants[0]
+                ? () => {
+                    const candidate = initialContestants[0];
+                    if (candidate) {
+                      onVoteClick(candidate);
+                    }
+                  }
+                : undefined
+            }
+          />
+        </div>
+      )}
 
       {/* Division and Category Filter Bar */}
       <CategoryFilterBar

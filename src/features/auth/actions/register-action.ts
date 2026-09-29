@@ -22,7 +22,7 @@ export async function registerOrganizerAction(
       };
     }
 
-    const { name, email } = validated.data;
+    const { name, email, organizationName } = validated.data;
     const userId = `usr_org_${Buffer.from(email).toString("hex").slice(0, 14)}`;
 
     const userSession: UserSessionDto = {
@@ -30,6 +30,7 @@ export async function registerOrganizerAction(
       email,
       name,
       role: "ORGANIZER",
+      organizationName: organizationName || null,
       expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString(),
     };
 
@@ -39,6 +40,7 @@ export async function registerOrganizerAction(
       email: userSession.email,
       name: userSession.name,
       role: userSession.role,
+      organizationName: userSession.organizationName || undefined,
     });
 
     // Set secure HTTP session cookie

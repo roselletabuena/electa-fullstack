@@ -39,5 +39,10 @@ export const registerOrganizerSchema = z.object({
   organizationName: z.string().trim().max(100).optional(),
 });
 
+export const onboardingFormSchema = z.object({
+  organizationName: z.string().trim().max(100).optional(),
+});
+
 export type LoginFormData = z.infer<typeof loginSchema>;
 export type RegisterFormData = z.infer<typeof registerOrganizerSchema>;
+export type OnboardingFormData = z.infer<typeof onboardingFormSchema>;

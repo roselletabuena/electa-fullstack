@@ -4,9 +4,11 @@ import { verifyLocalCognitoToken } from "@/features/auth/utils/token-adapter";
 export interface UserSession {
   userId: string;
   email: string;
-  name?: string;
-  role?: string;
-  expiresAt?: string;
+  name?: string | undefined;
+  role?: string | undefined;
+  avatarUrl?: string | null | undefined;
+  organizationName?: string | null | undefined;
+  expiresAt?: string | undefined;
 }
 
 export async function getSession(): Promise<UserSession | null> {
@@ -31,6 +33,8 @@ export async function getSession(): Promise<UserSession | null> {
         email: verifiedFromHeader.email,
         name: verifiedFromHeader.name,
         role: verifiedFromHeader.role,
+        avatarUrl: verifiedFromHeader.avatarUrl,
+        organizationName: verifiedFromHeader.organizationName,
         expiresAt: verifiedFromHeader.expiresAt,
       };
     }
@@ -49,6 +53,8 @@ export async function getSession(): Promise<UserSession | null> {
         email: verified.email,
         name: verified.name,
         role: verified.role,
+        avatarUrl: verified.avatarUrl,
+        organizationName: verified.organizationName,
         expiresAt: verified.expiresAt,
       };
     }

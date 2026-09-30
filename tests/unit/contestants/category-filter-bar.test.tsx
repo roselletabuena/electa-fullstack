@@ -84,6 +84,7 @@ describe("CategoryFilterBar - Dynamic Division & Award Pills (VS-38)", () => {
     const teensPill = screen.getByRole("button", { name: "Teens" });
     expect(teensPill.getAttribute("aria-pressed")).toBe("true");
     expect(teensPill.className).toContain("bg-sky-600");
+    expect(teensPill.className).toContain("rounded-none");
   });
 
   it("falls back to default divisions when divisions prop is undefined or empty", () => {

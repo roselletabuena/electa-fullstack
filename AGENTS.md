@@ -149,6 +149,15 @@ import { PollCard } from "./poll-card";
 import type { Poll } from "@/types";
 ```
 
+### Design System & Branding
+
+- **Default to LIGHT MODE**: Base background is Opal Slate-50 `#F8FAFC` (`--background`), text is Slate-900 `#0F172A` (`--foreground`), accent is Sky Blue `#0284C7` (`--accent`).
+- **NEVER default to dark mode**: Dark backgrounds and text must ALWAYS be scoped behind `dark:` variant classes (e.g. `dark:bg-slate-900 dark:text-slate-100`).
+- **Strict Zero-Radius**: Sharp 0px corners (`--radius: 0px`, `rounded-none`) across all cards, buttons, dialogs, badges, and inputs.
+- **Brand Typography**: Outfit (`font-heading`, `heading-font`) for headings/titles, Sora (`font-body`, `font-sans`) for body/UI text, JetBrains Mono (`font-mono`) for code and numbers.
+- **Component Classes**: Use `.btn-primary` (solid flat action button, uppercase, 800 weight, sharp 0px radius) and `.card-style` (white surface with hairline border `#CBD5E1`).
+- **Tailwind CSS v4**: Use `bg-linear-to-*` and native aspect ratio utilities (`aspect-4/5`, `aspect-16/9`).
+
 ### React & Next.js
 
 - **Default to Server Components.** Only add `"use client"` when you need browser APIs, event handlers, or React hooks.

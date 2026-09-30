@@ -61,17 +61,17 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
 
   return (
     <div className="space-y-6">
-      <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
+      <Card className="rounded-none border border-slate-300 shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
+        <CardHeader className="border-b border-slate-200 dark:border-slate-800">
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
               <div className="flex items-center gap-2">
-                <Users className="size-5 text-indigo-600 dark:text-indigo-400" />
-                <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
+                <Users className="size-5 text-sky-600 dark:text-sky-400" />
+                <CardTitle className="font-heading font-extrabold text-lg tracking-tight text-slate-900 dark:text-slate-100">
                   Contestant Management
                 </CardTitle>
               </div>
-              <CardDescription className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              <CardDescription className="mt-1 text-sm text-slate-600 dark:text-slate-400">
                 Add official participants, adjust profile data, and control voting statuses.
               </CardDescription>
             </div>
@@ -79,7 +79,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
             <Button
               type="button"
               onClick={handleOpenAdd}
-              className="gap-1.5 bg-indigo-600 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700"
+              className="btn-primary gap-1.5 px-4 py-2 text-xs"
             >
               <Plus className="size-4" />
               <span>Add Contestant</span>
@@ -90,19 +90,19 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
         <CardContent className="p-0">
           {contestants.length === 0 ? (
             <div className="flex flex-col items-center justify-center p-12 text-center">
-              <div className="flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+              <div className="flex size-12 items-center justify-center rounded-none border border-sky-200 bg-sky-50 text-sky-600 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-400">
                 <Users className="size-6" />
               </div>
-              <h4 className="mt-3 text-sm font-bold text-slate-900 dark:text-slate-100">
+              <h4 className="mt-3 font-heading font-extrabold text-sm text-slate-900 dark:text-slate-100">
                 No contestants registered yet
               </h4>
-              <p className="mt-1 max-w-sm text-xs text-slate-500 dark:text-slate-400">
+              <p className="mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
                 Start by adding your first candidate profile and photos.
               </p>
               <Button
                 type="button"
                 onClick={handleOpenAdd}
-                className="mt-4 gap-1.5 bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700"
+                className="btn-primary mt-4 gap-1.5 px-4 py-2 text-xs"
               >
                 <Plus className="size-3.5" />
                 <span>Add First Contestant</span>
@@ -111,7 +111,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
           ) : (
             <div className="overflow-x-auto">
               <table className="w-full text-left text-xs">
-                <thead className="border-b border-slate-100 bg-slate-50/50 text-[11px] font-semibold tracking-wider text-slate-500 uppercase dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-400">
+                <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold tracking-wider text-slate-700 uppercase dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300">
                   <tr>
                     <th className="px-5 py-3.5">No.</th>
                     <th className="px-5 py-3.5">Candidate</th>
@@ -128,12 +128,12 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                       key={c.id}
                       className="transition-colors hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
                     >
-                      <td className="px-5 py-3.5 font-mono font-bold text-indigo-600 dark:text-indigo-400">
+                      <td className="px-5 py-3.5 font-mono font-bold text-sky-600 dark:text-sky-400">
                         #{String(c.contestantNumber).padStart(2, "0")}
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex items-center gap-3">
-                          <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-md border border-slate-200 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
+                          <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-none border border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
                             <Image
                               src={c.avatarUrl || "/placeholder-contestant.webp"}
                               alt={c.name}
@@ -145,7 +145,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                             <div className="font-semibold text-slate-900 dark:text-slate-100">
                               {c.name}
                             </div>
-                            <div className="text-[11px] text-slate-500 dark:text-slate-400">
+                            <div className="text-[11px] text-slate-600 dark:text-slate-400">
                               {c.hometown || "—"}
                             </div>
                           </div>
@@ -160,7 +160,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                             c.categories.map((cat) => (
                               <span
                                 key={cat.id}
-                                className="rounded-md border border-slate-200 bg-slate-100/80 px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                className="rounded-none border border-slate-300 bg-slate-100/80 px-2 py-0.5 text-[10px] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                               >
                                 {cat.name}
                               </span>
@@ -177,12 +177,12 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                             handleStatusChange(c.id, e.target.value as ContestantStatus)
                           }
                           className={cn(
-                            "rounded-lg border px-2.5 py-1 text-[11px] font-semibold transition-colors focus:outline-none",
+                            "rounded-none border px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors focus:outline-none",
                             c.status === "ACTIVE"
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                              ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                               : c.status === "HIDDEN"
-                                ? "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                                : "border-red-200 bg-red-50 text-red-700 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300",
+                                ? "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                                : "border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300",
                           )}
                         >
                           <option value="ACTIVE">ACTIVE</option>
@@ -198,7 +198,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                           <button
                             type="button"
                             onClick={() => handleOpenEdit(c)}
-                            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-indigo-50 hover:text-indigo-600 dark:hover:bg-indigo-950/50 dark:hover:text-indigo-400"
+                            className="rounded-none p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
                             title="Edit Profile"
                           >
                             <Edit3 className="size-4" />
@@ -206,7 +206,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                           <button
                             type="button"
                             onClick={() => handleDelete(c.id, c.name)}
-                            className="rounded-lg p-1.5 text-slate-400 transition-colors hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/50 dark:hover:text-red-400"
+                            className="rounded-none p-1.5 text-slate-500 transition-colors hover:bg-red-50 hover:text-red-600 dark:text-slate-400 dark:hover:bg-red-950/50 dark:hover:text-red-400"
                             title="Delete Candidate"
                           >
                             <Trash2 className="size-4" />

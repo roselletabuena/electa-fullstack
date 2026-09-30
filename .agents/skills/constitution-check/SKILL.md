@@ -159,6 +159,23 @@ Run each check in sequence. Collect results with `✅ PASS`, `⚠️ WARN`, or `
 
 ---
 
+#### §VII — Brand & Design System Integrity
+
+| Check ID  | Rule                                                                                                  | Severity     |
+| --------- | ----------------------------------------------------------------------------------------------------- | ------------ |
+| `§VII-1`  | Page/component must NOT default to dark backgrounds without `dark:` scoping (e.g. `bg-slate-900`, `bg-black`) | 🔴 VIOLATION |
+| `§VII-2`  | Naked `text-white` or light gray text on base backgrounds without `dark:` scoping                     | 🔴 VIOLATION |
+| `§VII-3`  | Strict Zero-Radius violation: use of `rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-2xl`          | ⚠️ WARN      |
+| `§VII-4`  | Legacy Tailwind gradient syntax `bg-gradient-to-*` instead of Tailwind v4 `bg-linear-to-*`           | ⚠️ WARN      |
+
+**Detection patterns**:
+- Grep for `className=.*(bg-slate-900|bg-black|bg-zinc-950)` without preceding light background or `dark:` scoping
+- Grep for `className=.*(rounded-md|rounded-lg|rounded-xl|rounded-2xl)`
+- Grep for `bg-gradient-to-`
+
+
+---
+
 ### Step 4 — Print the full report
 
 Format the report grouped by section:

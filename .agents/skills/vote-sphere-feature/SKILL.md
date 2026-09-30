@@ -133,6 +133,8 @@ Create the following files under `SPEC_DIR/`:
 | API Responses | `ApiResponse<T>` envelope from `src/lib/api/response.ts`                |
 | Env Vars      | All via `src/env.ts` — never `process.env` directly                     |
 | Styling       | Tailwind CSS 4 `@theme` tokens in `src/app/globals.css`                 |
+| Branding/UI   | Default to Light Mode (Opal `#F8FAFC`), strict zero-radius (`rounded-none`), Outfit & Sora typography |
+
 
 ## Technical Decisions & Rationale
 

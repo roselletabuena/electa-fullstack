@@ -159,6 +159,9 @@ Command ends after Phase 1 design. Report branch, IMPL_PLAN path, and generated 
 
 - Use absolute paths for filesystem operations; use project-relative paths for references in documentation
 - ERROR on gate failures or unresolved clarifications
+- **VoteSphere Constitution Enforcement**: Verify all planned components comply with §I–§VI.
+- **VoteSphere Branding Enforcement**: All UI contracts and components MUST adhere to the design system: default to Light Mode (Opal `#F8FAFC`), strict zero-radius (`--radius: 0px`, `rounded-none`), and brand typography (`--font-heading`: Outfit, `--font-body`: Sora).
+
 
 ## Done When
 

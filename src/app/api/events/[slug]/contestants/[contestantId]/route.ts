@@ -21,6 +21,7 @@ export async function GET(_request: NextRequest, context: RouteParams) {
     const contestant = await db.contestant.findUnique({
       where: { id: contestantId },
       include: {
+        divisionRef: true,
         media: { orderBy: { displayOrder: "asc" } },
         categories: { include: { awardCategory: true } },
       },
@@ -36,6 +37,11 @@ export async function GET(_request: NextRequest, context: RouteParams) {
       contestantNumber: contestant.contestantNumber,
       name: contestant.name,
       division: contestant.division as ContestantDivision,
+      divisionId: contestant.divisionId,
+      divisionName: contestant.divisionRef?.name,
+      divisionRef: contestant.divisionRef
+        ? { id: contestant.divisionRef.id, name: contestant.divisionRef.name }
+        : undefined,
       status: contestant.status,
       hometown: contestant.hometown,
       heightCm: contestant.heightCm,
@@ -106,7 +112,13 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
       (data.contestantNumber && data.contestantNumber !== existing.contestantNumber) ||
       (data.division && data.division !== existing.division)
     ) {
-      const divisionToCheck = data.division || existing.division;
+      const isStandard = data.division
+        ? ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(data.division.toUpperCase())
+        : false;
+      const divisionToCheck: ContestantDivision =
+        data.division && isStandard
+          ? (data.division.toUpperCase() as ContestantDivision)
+          : existing.division;
       const numberToCheck = data.contestantNumber || existing.contestantNumber;
       const duplicate = await db.contestant.findUnique({
         where: {
@@ -135,7 +147,17 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
       const updateData: Parameters<typeof tx.contestant.update>[0]["data"] = {};
       if (data.name !== undefined) updateData.name = data.name;
       if (data.contestantNumber !== undefined) updateData.contestantNumber = data.contestantNumber;
-      if (data.division !== undefined) updateData.division = data.division;
+      if (data.division !== undefined) {
+        const isStandard = ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(
+          data.division.toUpperCase(),
+        );
+        updateData.division = isStandard
+          ? (data.division.toUpperCase() as ContestantDivision)
+          : "FEMALE";
+      }
+      if (data.divisionId !== undefined) {
+        updateData.divisionId = data.divisionId;
+      }
       if (data.hometown !== undefined) updateData.hometown = data.hometown;
       if (data.heightCm !== undefined) updateData.heightCm = data.heightCm;
       if (data.bio !== undefined) updateData.bio = data.bio;

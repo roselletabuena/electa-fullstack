@@ -29,7 +29,6 @@ process.stdin.on("end", () => {
 
     // Only check .ts and .tsx files
     if (!targetFile) {
-      process.stdout.write(JSON.stringify({}) + "\n");
       return;
     }
 
@@ -39,7 +38,6 @@ process.stdin.on("end", () => {
 
     const ext = extname(targetFile);
     if (![".ts", ".tsx"].includes(ext)) {
-      process.stdout.write(JSON.stringify({}) + "\n");
       return;
     }
 
@@ -55,12 +53,10 @@ process.stdin.on("end", () => {
     ];
 
     if (SKIP_PATTERNS.some((p) => relPath.startsWith(p))) {
-      process.stdout.write(JSON.stringify({}) + "\n");
       return;
     }
 
     if (!existsSync(targetFile)) {
-      process.stdout.write(JSON.stringify({}) + "\n");
       return;
     }
 
@@ -87,7 +83,6 @@ process.stdin.on("end", () => {
     }
 
     if (violations.length === 0) {
-      process.stdout.write(JSON.stringify({}) + "\n");
       return;
     }
 

@@ -20,7 +20,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
 
   if (photoItems.length === 0) {
     return (
-      <div className="relative flex aspect-4/5 w-full items-center justify-center rounded-2xl border border-white/10 bg-slate-900 text-sm text-slate-500">
+      <div className="relative flex aspect-4/5 w-full items-center justify-center rounded-none border border-slate-300 bg-slate-900 text-sm text-slate-500 dark:border-white/10">
         No gallery photos available
       </div>
     );
@@ -40,7 +40,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
   return (
     <div className="flex flex-col gap-3">
       {/* Main 4:5 Active Photo Display */}
-      <div className="group relative aspect-4/5 w-full overflow-hidden rounded-2xl border border-white/10 bg-slate-950 shadow-2xl">
+      <div className="group relative aspect-4/5 w-full overflow-hidden rounded-none border border-slate-300 bg-slate-950 shadow-2xl dark:border-white/10">
         <Image
           src={activePhoto.url}
           alt={`${candidateName} - Photo ${activeIndex + 1}`}
@@ -51,7 +51,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
         />
 
         {/* Counter Badge */}
-        <div className="absolute top-3 right-3 rounded-full border border-white/10 bg-slate-950/70 px-3 py-1 font-mono text-xs font-medium text-slate-200 backdrop-blur-md">
+        <div className="absolute top-3 right-3 rounded-none border border-white/20 bg-slate-950/80 px-3 py-1 font-mono text-xs font-medium text-slate-200 backdrop-blur-md">
           {activeIndex + 1} / {photoItems.length}
         </div>
 
@@ -59,7 +59,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
         <button
           type="button"
           onClick={() => setLightboxOpen(true)}
-          className="absolute top-3 left-3 rounded-full border border-white/10 bg-slate-950/70 p-2 text-slate-200 backdrop-blur-md transition-colors hover:border-indigo-400/50 hover:text-indigo-300"
+          className="absolute top-3 left-3 rounded-none border border-white/20 bg-slate-950/80 p-2 text-slate-200 backdrop-blur-md transition-colors hover:border-sky-400/50 hover:text-sky-300"
           title="Fullscreen View"
         >
           <Maximize2 className="h-4 w-4" />
@@ -71,7 +71,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
             <button
               type="button"
               onClick={handlePrev}
-              className="absolute top-1/2 left-2 -translate-y-1/2 rounded-full border border-white/10 bg-slate-950/70 p-2 text-slate-200 opacity-80 backdrop-blur-md transition-all hover:bg-slate-900 hover:opacity-100"
+              className="absolute top-1/2 left-2 -translate-y-1/2 rounded-none border border-white/20 bg-slate-950/80 p-2 text-slate-200 opacity-80 backdrop-blur-md transition-all hover:bg-slate-900 hover:opacity-100"
               aria-label="Previous image"
             >
               <ChevronLeft className="h-5 w-5" />
@@ -79,7 +79,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
             <button
               type="button"
               onClick={handleNext}
-              className="absolute top-1/2 right-2 -translate-y-1/2 rounded-full border border-white/10 bg-slate-950/70 p-2 text-slate-200 opacity-80 backdrop-blur-md transition-all hover:bg-slate-900 hover:opacity-100"
+              className="absolute top-1/2 right-2 -translate-y-1/2 rounded-none border border-white/20 bg-slate-950/80 p-2 text-slate-200 opacity-80 backdrop-blur-md transition-all hover:bg-slate-900 hover:opacity-100"
               aria-label="Next image"
             >
               <ChevronRight className="h-5 w-5" />
@@ -96,10 +96,10 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
               key={item.id || idx}
               type="button"
               onClick={() => setActiveIndex(idx)}
-              className={`relative aspect-4/5 h-16 shrink-0 overflow-hidden rounded-lg border transition-all ${
+              className={`relative aspect-4/5 h-16 shrink-0 overflow-hidden rounded-none border transition-all ${
                 idx === activeIndex
-                  ? "scale-105 border-indigo-600 opacity-100 ring-2 ring-indigo-600/40"
-                  : "border-slate-200 opacity-60 hover:opacity-90 dark:border-slate-800"
+                  ? "scale-105 border-sky-600 opacity-100 ring-2 ring-sky-600/40"
+                  : "border-slate-300 opacity-60 hover:opacity-90 dark:border-slate-800"
               }`}
             >
               <Image

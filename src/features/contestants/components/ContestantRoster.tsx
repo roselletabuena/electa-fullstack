@@ -130,24 +130,24 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   return (
     <section className="w-full py-8">
       {/* Roster Header */}
-      <div className="flex flex-col justify-between gap-4 border-b border-slate-200 pb-4 md:flex-row md:items-end dark:border-white/10">
+      <div className="flex flex-col justify-between gap-4 border-b border-slate-300 pb-4 md:flex-row md:items-end dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-amber-700 uppercase dark:text-amber-400">
+          <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-sky-700 uppercase dark:text-sky-400">
             <Users className="h-4 w-4" />
             <span>Official Candidates</span>
           </div>
-          <h2 className="mt-1 text-2xl font-bold tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+          <h2 className="heading-font mt-1 text-2xl tracking-tight text-slate-900 sm:text-3xl dark:text-white">
             Meet the Candidates
           </h2>
         </div>
 
         <div className="text-xs text-slate-600 dark:text-slate-400">
           Showing{" "}
-          <span className="font-semibold text-slate-900 dark:text-white">
+          <span className="font-mono font-bold text-slate-900 dark:text-white">
             {filteredContestants.length}
           </span>{" "}
           of{" "}
-          <span className="font-semibold text-slate-900 dark:text-white">
+          <span className="font-mono font-bold text-slate-900 dark:text-white">
             {initialContestants.length}
           </span>{" "}
           contestants
@@ -196,9 +196,9 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
           ))}
         </div>
       ) : (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-xs dark:border-white/10 dark:bg-slate-900/40">
+        <div className="mt-12 flex flex-col items-center justify-center rounded-none border border-slate-300 bg-white p-12 text-center shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
           <AlertCircle className="mb-3 h-10 w-10 text-amber-600 dark:text-amber-400/80" />
-          <h3 className="text-lg font-semibold text-slate-900 dark:text-slate-200">
+          <h3 className="heading-font text-lg text-slate-900 dark:text-slate-200">
             No candidates found
           </h3>
           <p className="mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
@@ -211,7 +211,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
               setSelectedCategoryId("ALL");
               updateUrlFilters("ALL", "ALL");
             }}
-            className="mt-4 rounded-lg bg-slate-900 px-4 py-2 text-xs font-semibold text-white transition-colors hover:bg-slate-800 dark:bg-white/10 dark:hover:bg-white/20"
+            className="btn-primary mt-4 px-4 py-2 text-xs"
           >
             Reset Filters
           </button>

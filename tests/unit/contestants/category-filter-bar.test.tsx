@@ -1,4 +1,4 @@
-﻿import { describe, it, expect, vi } from "vitest";
+import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { CategoryFilterBar } from "@/features/contestants/components/CategoryFilterBar";
@@ -82,7 +82,9 @@ describe("CategoryFilterBar - Dynamic Division & Award Pills (VS-38)", () => {
     );
 
     const teensPill = screen.getByRole("button", { name: "Teens" });
-    expect(teensPill.className).toContain("bg-indigo-600");
+    expect(teensPill.getAttribute("aria-pressed")).toBe("true");
+    expect(teensPill.className).toContain("bg-sky-600");
+    expect(teensPill.className).toContain("rounded-none");
   });
 
   it("falls back to default divisions when divisions prop is undefined or empty", () => {

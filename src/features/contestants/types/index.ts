@@ -1,3 +1,7 @@
+import type { DivisionDto } from "@/features/events/types";
+
+export type { DivisionDto };
+
 export type ContestantDivision = "FEMALE" | "MALE" | "LGBTQ" | "TEEN";
 
 export type ContestantStatus = "ACTIVE" | "HIDDEN" | "WITHDRAWN";
@@ -29,12 +33,22 @@ export interface AwardCategoryDto {
   updatedAt?: string | Date;
 }
 
+export interface DynamicDivisionItem {
+  id?: string | undefined;
+  name: string;
+  description?: string | null | undefined;
+  displayOrder?: number | undefined;
+}
+
 export interface ContestantDto {
   id: string;
   eventId: string;
   contestantNumber: number;
   name: string;
-  division: ContestantDivision;
+  division: ContestantDivision | string;
+  divisionId?: string | null | undefined;
+  divisionName?: string | null | undefined;
+  divisionRef?: { id: string; name: string } | null | undefined;
   status: ContestantStatus;
   hometown?: string | null;
   heightCm?: number | null;
@@ -52,7 +66,7 @@ export interface ContestantDto {
 }
 
 export interface ContestantFilters {
-  division?: ContestantDivision | "ALL";
+  division?: ContestantDivision | string | "ALL";
   categoryId?: string | "ALL";
   status?: ContestantStatus | "ALL";
 }
@@ -60,7 +74,8 @@ export interface ContestantFilters {
 export interface CreateContestantInput {
   contestantNumber: number;
   name: string;
-  division: ContestantDivision;
+  division: ContestantDivision | string;
+  divisionId?: string | null | undefined;
   hometown?: string | undefined;
   heightCm?: number | undefined;
   bio?: string | undefined;
@@ -76,7 +91,8 @@ export interface CreateContestantInput {
 export interface UpdateContestantInput {
   contestantNumber?: number | undefined;
   name?: string | undefined;
-  division?: ContestantDivision | undefined;
+  division?: ContestantDivision | string | undefined;
+  divisionId?: string | null | undefined;
   hometown?: string | undefined;
   heightCm?: number | null | undefined;
   bio?: string | undefined;
@@ -88,4 +104,13 @@ export interface UpdateContestantInput {
   categoryIds?: string[] | undefined;
   media?: Omit<ContestantMediaDto, "id" | "contestantId">[] | undefined;
   status?: ContestantStatus | undefined;
+}
+
+export interface ContestantFormModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  onSubmit: (data: CreateContestantInput) => Promise<void>;
+  categories: AwardCategoryDto[];
+  divisions?: DynamicDivisionItem[] | DivisionDto[] | undefined;
+  initialData?: ContestantDto | null | undefined;
 }

@@ -2,24 +2,9 @@
 
 import React, { useState } from "react";
 import { X, Sparkles, Trash2 } from "lucide-react";
-import type {
-  ContestantDto,
-  AwardCategoryDto,
-  ContestantMediaDto,
-  CreateContestantInput,
-  DynamicDivisionItem,
-} from "../types";
+import type { ContestantMediaDto, ContestantFormModalProps } from "../types";
 import { ImageCropper } from "./ImageCropper";
 import { parseVideoEmbedUrl } from "../utils/parse-video-embed";
-
-interface ContestantFormModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onSubmit: (data: CreateContestantInput) => Promise<void>;
-  categories: AwardCategoryDto[];
-  divisions?: DynamicDivisionItem[] | undefined;
-  initialData?: ContestantDto | null;
-}
 
 export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
   isOpen,
@@ -34,7 +19,9 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
       const match =
         (initialData?.divisionId && divisions.find((d) => d.id === initialData.divisionId)) ||
         (initialData?.divisionName &&
-          divisions.find((d) => d.name.toLowerCase() === initialData.divisionName?.toLowerCase())) ||
+          divisions.find(
+            (d) => d.name.toLowerCase() === initialData.divisionName?.toLowerCase(),
+          )) ||
         (initialData?.divisionRef?.name &&
           divisions.find(
             (d) => d.name.toLowerCase() === initialData.divisionRef?.name.toLowerCase(),
@@ -192,7 +179,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
         <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/70 px-6 py-4 dark:border-slate-800 dark:bg-slate-900/80">
           <div className="flex items-center gap-2">
             <Sparkles className="h-4 w-4 text-sky-600 dark:text-sky-400" />
-            <h3 className="font-heading font-extrabold text-base tracking-tight text-slate-900 dark:text-slate-100">
+            <h3 className="font-heading text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
               {initialData ? "Edit Contestant Profile" : "Register New Contestant"}
             </h3>
           </div>
@@ -245,10 +232,14 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
             <div>
-              <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+              <label
+                htmlFor="division-select"
+                className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+              >
                 Division *
               </label>
               <select
+                id="division-select"
                 value={division}
                 onChange={(e) => {
                   const val = e.target.value;
@@ -413,7 +404,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
                       onClick={() => handleToggleCategory(cat.id)}
                       className={`rounded-none px-3 py-1.5 text-xs font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
                         checked
-                          ? "border border-sky-600 bg-sky-600 text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 font-bold"
+                          ? "border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
                           : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
                       }`}
                     >
@@ -474,7 +465,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
             <button
               type="button"
               onClick={onClose}
-              className="rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider uppercase text-slate-700 transition-colors hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
+              className="rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase transition-colors hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-slate-100"
             >
               Cancel
             </button>

@@ -16,6 +16,7 @@ An event organizer registers a new contestant or edits an existing profile via `
 **Why this priority**: Core integration requirement. Without dynamic taxonomy in the contestant form, organizers cannot assign contestants to custom divisions or award categories created in Settings.
 
 **Independent Test**:
+
 1. Create an event with custom divisions "Kids", "Teens", "Adults" and award "People's Choice" in Settings.
 2. Navigate to `/events/[slug]/contestants` and click "Register Candidate".
 3. Verify the division dropdown options match "Kids", "Teens", and "Adults".
@@ -37,6 +38,7 @@ A voter or public visitor navigates to `/events/[slug]` to browse candidates. Th
 **Why this priority**: Directly impacts voter experience and fulfills the primary Jira acceptance criteria for public event roster navigation.
 
 **Independent Test**:
+
 1. Visit the public event page `/events/[slug]` for an event with custom divisions "Kids", "Teens", "Adults".
 2. Verify the `CategoryFilterBar` renders pill tabs: "All Candidates", "Kids", "Teens", "Adults".
 3. Click "Kids" and verify only candidates in the "Kids" division are displayed.

@@ -5,7 +5,13 @@ import Image from "next/image";
 import { Plus, Edit3, Trash2, Users } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { ContestantDto, AwardCategoryDto, ContestantStatus, DynamicDivisionItem } from "../types";
+import type {
+  ContestantDto,
+  AwardCategoryDto,
+  ContestantStatus,
+  DynamicDivisionItem,
+  DivisionDto,
+} from "../types";
 import { ContestantFormModal } from "./ContestantFormModal";
 import { useContestantMutations } from "../hooks/use-contestant-mutations";
 import { useContestants } from "../hooks/use-contestants";
@@ -15,7 +21,7 @@ interface OrganizerContestantTableProps {
   slug: string;
   contestants: ContestantDto[];
   categories: AwardCategoryDto[];
-  divisions?: DynamicDivisionItem[] | undefined;
+  divisions?: DivisionDto[] | DynamicDivisionItem[] | undefined;
 }
 
 export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> = ({
@@ -67,7 +73,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
             <div>
               <div className="flex items-center gap-2">
                 <Users className="size-5 text-sky-600 dark:text-sky-400" />
-                <CardTitle className="font-heading font-extrabold text-lg tracking-tight text-slate-900 dark:text-slate-100">
+                <CardTitle className="font-heading text-lg font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                   Contestant Management
                 </CardTitle>
               </div>
@@ -93,7 +99,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
               <div className="flex size-12 items-center justify-center rounded-none border border-sky-200 bg-sky-50 text-sky-600 dark:border-sky-900/50 dark:bg-sky-950/40 dark:text-sky-400">
                 <Users className="size-6" />
               </div>
-              <h4 className="mt-3 font-heading font-extrabold text-sm text-slate-900 dark:text-slate-100">
+              <h4 className="font-heading mt-3 text-sm font-extrabold text-slate-900 dark:text-slate-100">
                 No contestants registered yet
               </h4>
               <p className="mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
@@ -177,7 +183,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                             handleStatusChange(c.id, e.target.value as ContestantStatus)
                           }
                           className={cn(
-                            "rounded-none border px-2.5 py-1 text-[11px] font-bold uppercase tracking-wider transition-colors focus:outline-none",
+                            "rounded-none border px-2.5 py-1 text-[11px] font-bold tracking-wider uppercase transition-colors focus:outline-none",
                             c.status === "ACTIVE"
                               ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
                               : c.status === "HIDDEN"

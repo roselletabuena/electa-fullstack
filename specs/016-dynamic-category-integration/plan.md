@@ -19,20 +19,20 @@ Integrate dynamic competition divisions and award categories into the organizer 
 **Testing**: Vitest + React Testing Library (`tests/unit/contestants/`)  
 **Target Platform**: Responsive Web (Mobile & Desktop, WCAG 2.1 AA compliant)  
 **Performance Goals**: Instant client-side roster filtering in < 50ms, zero extra network roundtrips on filter toggle  
-**Constraints**: Zero breaking changes to existing contestants with legacy enum divisions; full keyboard navigation & accessibility for filter pills and form dropdowns  
+**Constraints**: Zero breaking changes to existing contestants with legacy enum divisions; full keyboard navigation & accessibility for filter pills and form dropdowns
 
 ---
 
 ## Constitution Check
 
-| Principle | Requirement | Status | Evidence / Notes |
-| :--- | :--- | :--- | :--- |
-| **I. Strict Type Safety** | Zero `any`, explicit interfaces, Zod boundary validation | **PASS** | `ContestantFormModalProps` and `CategoryFilterBarProps` typed with `DivisionDto[]` / `DynamicDivisionItem[]`. |
-| **II. Server-First & Boundary Isolation** | RSC default, `"use client"` only for interactive components | **PASS** | Server components (`/events/[slug]/contestants/page.tsx`) query `db.division.findMany` and pass data down. |
-| **III. State Separation** | Server state via TanStack Query / RSC; URL state for filters | **PASS** | Client filters sync to URL search params (`?division=...&category=...`). |
-| **IV. Secure-by-Design** | Session verification via `requireEventOwnership()` | **PASS** | Contestants management protected by `requireEventOwnership(slug)` and Cognito session checks. |
-| **V. Feature Colocation** | Colocated in `src/features/contestants/` and `src/features/events/` | **PASS** | Components, hooks, types, and tests colocated in their respective feature slices. |
-| **VI. Test-First Quality** | Vitest unit tests verifying ACs before final delivery | **PASS** | Unit tests planned for dynamic modal dropdown and dynamic roster filter pills. |
+| Principle                                 | Requirement                                                         | Status   | Evidence / Notes                                                                                              |
+| :---------------------------------------- | :------------------------------------------------------------------ | :------- | :------------------------------------------------------------------------------------------------------------ |
+| **I. Strict Type Safety**                 | Zero `any`, explicit interfaces, Zod boundary validation            | **PASS** | `ContestantFormModalProps` and `CategoryFilterBarProps` typed with `DivisionDto[]` / `DynamicDivisionItem[]`. |
+| **II. Server-First & Boundary Isolation** | RSC default, `"use client"` only for interactive components         | **PASS** | Server components (`/events/[slug]/contestants/page.tsx`) query `db.division.findMany` and pass data down.    |
+| **III. State Separation**                 | Server state via TanStack Query / RSC; URL state for filters        | **PASS** | Client filters sync to URL search params (`?division=...&category=...`).                                      |
+| **IV. Secure-by-Design**                  | Session verification via `requireEventOwnership()`                  | **PASS** | Contestants management protected by `requireEventOwnership(slug)` and Cognito session checks.                 |
+| **V. Feature Colocation**                 | Colocated in `src/features/contestants/` and `src/features/events/` | **PASS** | Components, hooks, types, and tests colocated in their respective feature slices.                             |
+| **VI. Test-First Quality**                | Vitest unit tests verifying ACs before final delivery               | **PASS** | Unit tests planned for dynamic modal dropdown and dynamic roster filter pills.                                |
 
 ---
 
@@ -61,6 +61,7 @@ flowchart TD
 ```
 
 ### 1. `ContestantFormModal.tsx`
+
 - Add `divisions?: DivisionDto[] | DynamicDivisionItem[]` to `ContestantFormModalProps`.
 - If `divisions && divisions.length > 0`:
   - Render each division as an `<option value={div.name}>{div.name}</option>` (or division ID/name).
@@ -70,12 +71,14 @@ flowchart TD
 - Include `divisionId` in form state and pass to `onSubmit` when matching a custom division.
 
 ### 2. `OrganizerContestantTable.tsx` & `/events/[slug]/contestants/page.tsx`
+
 - Update `/events/[slug]/contestants/page.tsx` to query `db.division.findMany({ where: { eventId: event.id }, orderBy: { displayOrder: "asc" } })`.
 - Pass `divisions` into `OrganizerContestantTable`.
 - Update `OrganizerContestantTable` to pass `divisions` into `ContestantFormModal`.
 - Display the human-readable division name in the table column.
 
 ### 3. `CategoryFilterBar.tsx` & `ContestantRoster.tsx`
+
 - Ensure `CategoryFilterBar` cleanly renders division pills for all passed `divisions`.
 - Update `ContestantRoster.tsx` filter logic so that `selectedDivision` matches:
   - Exact division name (e.g., "Kids", "Teens", "Adults")

@@ -4,9 +4,25 @@ export const CastFreeVoteSchema = z.object({
   eventId: z.string().uuid("Invalid event ID format"),
   contestantId: z.string().uuid("Invalid contestant ID format"),
   awardCategoryId: z.string().uuid("Invalid award category ID format").optional(),
+  turnstileToken: z.string().optional(),
+  deviceFingerprint: z.string().optional(),
+  idempotencyKey: z.string().uuid().optional(),
 });
 
 export type CastFreeVoteInput = z.infer<typeof CastFreeVoteSchema>;
+
+export const CastVoteInputSchema = z.object({
+  eventId: z.string().uuid("Invalid event ID format"),
+  contestantId: z.string().uuid("Invalid contestant ID format"),
+  awardCategoryId: z.string().uuid("Invalid award category ID format").nullable().optional(),
+  voteType: z.enum(["FREE", "BOOST"]).default("FREE"),
+  voteWeight: z.number().int().min(1).max(1000).default(1),
+  turnstileToken: z.string().optional(),
+  deviceFingerprint: z.string().optional(),
+  idempotencyKey: z.string().uuid().optional(),
+});
+
+export type CastVoteInput = z.infer<typeof CastVoteInputSchema>;
 
 export interface VoterQuotaStateDto {
   dailyLimit: number;
@@ -26,6 +42,16 @@ export interface CastFreeVoteResultDto {
   quotaState: VoterQuotaStateDto;
 }
 
+export interface CastVoteResultDto {
+  success: boolean;
+  voteId: string;
+  contestantId: string;
+  newContestantVoteCount: number;
+  voteType: "FREE" | "BOOST";
+  voteWeight: number;
+  quotaState?: VoterQuotaStateDto | undefined;
+}
+
 export interface VotingErrorDto {
   code:
     | "NOT_AUTHENTICATED"
@@ -33,6 +59,9 @@ export interface VotingErrorDto {
     | "FREE_VOTING_DISABLED"
     | "DAILY_QUOTA_EXHAUSTED"
     | "CONTESTANT_NOT_FOUND"
+    | "BOT_DETECTION_FAILED"
+    | "RATE_LIMIT_EXCEEDED"
+    | "DEVICE_ACCOUNT_LIMIT_EXCEEDED"
     | "INTERNAL_ERROR";
   message: string;
   details?: {

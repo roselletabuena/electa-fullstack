@@ -61,6 +61,7 @@ flowchart TD
    - Schema / migration requirements (`prisma/schema.prisma`)
    - API route shells & Zod contracts
    - Component & state management structure
+   - **Branding & Theme Check**: Enforce Light Mode default (Opal `#F8FAFC`), strict zero-radius (`rounded-none`), and brand typography (Outfit/Sora).
 
 ### Phase 5: Task Generation
 1. Invoke `speckit-tasks` to generate `.specify/specs/<feature>/tasks.md`:
@@ -74,6 +75,7 @@ flowchart TD
 ### Phase 7: Test-Driven Implementation
 1. Invoke `speckit-implement` to execute tasks in `tasks.md`:
    - Strictly follow Red-Green-Refactor (TDD).
+   - Enforce VoteSphere branding: Light Mode default, `.btn-primary`, `.card-style`, zero-radius, and scoped `dark:` variants.
    - Update Jira issue statuses (In Progress / Resolved) if Jira MCP is active.
    - Adhere to the Atomic Commit rule (stage and commit logical units individually).
 
@@ -82,7 +84,8 @@ flowchart TD
 2. Append any missed edge cases or incomplete stories to `tasks.md` and complete them.
 
 ### Phase 9: Quality Gate & Knowledge Graph Sync
-1. Run `constitution-check` to ensure no constitutional violations (§I–§VI).
+1. Run `constitution-check` to ensure no constitutional violations (§I–§VI) or brand violations (§VII).
 2. Run `env-validator` to ensure no raw `process.env` leaks.
 3. Run `graphify-auto-sync` (`graphify . --update`) to update AST knowledge graphs.
 4. Perform atomic commits with conventional commit messages.
+

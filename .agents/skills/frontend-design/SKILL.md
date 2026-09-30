@@ -6,6 +6,25 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
+## ⚠️ Core Brand Contract (VoteSphere / Electa)
+
+When building UI in this codebase, **always ground your work in the existing brand design system**:
+1. **Default Theme is LIGHT MODE (Opal System)**:
+   - Primary background: `#F8FAFC` (`--background`), Foreground text: `#0F172A` (`--foreground`), Accent: `#0284C7 Sky Blue` (`--accent`).
+   - **NEVER default to dark mode** (`bg-black`, `bg-slate-900`, `text-white`). Dark mode must ALWAYS be scoped behind `dark:` variant classes with full dual-theme parity.
+2. **Strict Zero-Radius Brutalist-Refined Geometry**:
+   - All interactive controls, cards, inputs, dialogs, badges, and surfaces MUST have sharp corners (`--radius: 0px`, `rounded-none`).
+   - Do NOT use `rounded-md`, `rounded-lg`, `rounded-xl`, or rounded pills (except circular avatar portraits).
+3. **Brand Typography**:
+   - Headings: **Outfit** (`font-heading`, `heading-font`, `font-extrabold`).
+   - Body / UI: **Sora** (`font-body`, `font-sans`).
+   - Monospace / Stats: **JetBrains Mono** (`font-mono`).
+4. **Component Patterns**:
+   - Buttons: `.btn-primary` (solid flat action button, uppercase, letter-spacing `0.08em`, 800 weight, sharp 0px radius).
+   - Cards: `.card-style` (pure white surface in light mode with subtle hairline border `#CBD5E1`).
+
+---
+
 Approach this as the design lead at a small studio known for giving every client a visual identity that could not be mistaken for anyone else's. This client has already rejected proposals that felt templated, and is paying for a distinctive point of view: make deliberate, opinionated choices about palette, typography, and layout that are specific to this brief, and take one real aesthetic risk you can justify.
 
 ## Ground it in the subject

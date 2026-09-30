@@ -1,7 +1,8 @@
 import crypto from "crypto";
+import { env } from "@/env";
 import type { UserSessionDto, UserRole } from "../types";
 
-const AUTH_SECRET = process.env.AUTH_SECRET || "votesphere_local_jwt_secret_dev_32_bytes_long";
+const AUTH_SECRET = env.AUTH_SECRET || "votesphere_local_jwt_secret_dev_32_bytes_long";
 const LOCAL_ISSUER = "https://cognito-idp.ap-southeast-1.amazonaws.com/localstack_pool";
 
 export interface CognitoTokenPayload {

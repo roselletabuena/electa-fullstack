@@ -1,0 +1,76 @@
+{
+  "timestamp": "2026-10-01T01:00:00Z",
+  "sprint": "SCRUM Sprint 2",
+  "queue": [
+    {
+      "rank": 1,
+      "key": "VS-38",
+      "title": "Dynamic Category Integration in Contestant Form & Public Roster Filter Bar",
+      "type": "Story",
+      "priority": "High",
+      "points": 3,
+      "stream": "frontend-roster",
+      "parallelGroup": "GROUP_A",
+      "branchName": "015-dynamic-category-integration",
+      "workingDirectory": "vote-sphere-vs-38",
+      "prerequisites": [],
+      "targetDirectories": [
+        "src/features/contestants/components/",
+        "src/features/contestants/types/",
+        "src/app/(dashboard)/events/[slug]/contestants/"
+      ]
+    },
+    {
+      "rank": 2,
+      "key": "VS-20",
+      "title": "Core Voting Engine, Omnichannel Auth & Anti-Fraud",
+      "type": "Story",
+      "priority": "Highest",
+      "points": 8,
+      "stream": "voting-engine",
+      "parallelGroup": "GROUP_B",
+      "branchName": "015-core-voting-engine",
+      "workingDirectory": "vote-sphere",
+      "prerequisites": [],
+      "targetDirectories": [
+        "src/features/voting/",
+        "src/features/auth/",
+        "src/app/api/voting/"
+      ]
+    },
+    {
+      "rank": 3,
+      "key": "VS-29",
+      "title": "Cloudflare Turnstile & Free-Tier Velocity Bot Mitigation",
+      "type": "Story",
+      "priority": "High",
+      "points": 3,
+      "stream": "security-bot-mitigation",
+      "parallelGroup": "GROUP_B",
+      "branchName": "015-core-voting-engine",
+      "workingDirectory": "vote-sphere",
+      "prerequisites": ["VS-20"],
+      "targetDirectories": [
+        "src/features/voting/utils/turnstile.ts",
+        "src/features/voting/utils/rate-limiter.ts"
+      ]
+    },
+    {
+      "rank": 4,
+      "key": "VS-25",
+      "title": "Viral Social Sharing 'I Voted' Story Generator",
+      "type": "Story",
+      "priority": "Medium",
+      "points": 3,
+      "stream": "social-share",
+      "parallelGroup": "GROUP_A",
+      "branchName": "feature/VS-25-social-share-story-generator",
+      "workingDirectory": "vote-sphere",
+      "prerequisites": ["VS-20"],
+      "targetDirectories": [
+        "src/features/voting/components/StoryCard.tsx",
+        "src/features/voting/components/ShareStoryModal.tsx"
+      ]
+    }
+  ]
+}

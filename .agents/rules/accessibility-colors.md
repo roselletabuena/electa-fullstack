@@ -1,3 +1,8 @@
+---
+trigger: always_on
+description: WCAG 2.1 AA dual-theme contrast rules and dark/light mode parity.
+---
+
 # Accessible Color Contrast & Theme Parity Rules
 
 Every UI component in this repository must comply with **WCAG 2.1 AA** color contrast requirements (minimum 4.5:1 for standard body text, 3:1 for large text and UI components) across **both Light Mode and Dark Mode**.

@@ -3,20 +3,15 @@
 import React, { useState } from "react";
 import { useRouter, useSearchParams, usePathname } from "next/navigation";
 import { Users, AlertCircle } from "lucide-react";
-import type { ContestantDto, AwardCategoryDto } from "../types";
+import type { ContestantDto, AwardCategoryDto, DynamicDivisionItem, DivisionDto } from "../types";
 import { ContestantCard } from "./ContestantCard";
 import { ContestantProfileModal } from "./ContestantProfileModal";
 import { CategoryFilterBar } from "./CategoryFilterBar";
 import { FreeVoteCooldownBanner } from "@/features/voting/components/FreeVoteCooldownBanner";
 
-export interface DynamicDivisionItem {
-  id?: string | undefined;
-  name: string;
-}
-
 interface ContestantRosterProps {
   initialContestants: ContestantDto[];
-  divisions?: DynamicDivisionItem[] | undefined;
+  divisions?: DynamicDivisionItem[] | DivisionDto[] | undefined;
   categories?: AwardCategoryDto[] | undefined;
   onVoteClick?: ((contestant: ContestantDto) => void) | undefined;
 }
@@ -45,11 +40,17 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
         value: d.name,
       }));
     }
-    const distinct = Array.from(new Set(initialContestants.map((c) => c.division).filter(Boolean)));
+    const distinct = Array.from(
+      new Set(
+        initialContestants
+          .map((c) => c.divisionRef?.name || c.divisionName || c.division)
+          .filter(Boolean),
+      ),
+    );
     if (distinct.length > 0) {
       return distinct.map((div) => ({
-        label: div.charAt(0).toUpperCase() + div.slice(1).toLowerCase(),
-        value: div,
+        label: String(div).charAt(0).toUpperCase() + String(div).slice(1).toLowerCase(),
+        value: String(div),
       }));
     }
     return undefined;
@@ -86,15 +87,36 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   const filteredContestants = initialContestants.filter((c) => {
     if (c.status !== "ACTIVE") return false;
     if (selectedDivision !== "ALL") {
-      const matchExact = c.division.toLowerCase() === selectedDivision.toLowerCase();
-      const isFemaleFilter = selectedDivision.toLowerCase().includes("female");
-      const isMaleFilter = !isFemaleFilter && selectedDivision.toLowerCase().includes("male");
+      const targetDiv = selectedDivision.toLowerCase();
+      const matchExact =
+        c.division.toLowerCase() === targetDiv ||
+        (c.divisionName && c.divisionName.toLowerCase() === targetDiv) ||
+        (c.divisionRef?.name && c.divisionRef.name.toLowerCase() === targetDiv) ||
+        (c.divisionId && (c.divisionId === selectedDivision || c.divisionId.toLowerCase() === targetDiv));
+
+      const matchedConfigDivision = divisions?.find(
+        (d) =>
+          d.name.toLowerCase() === targetDiv ||
+          (d.id && (d.id === selectedDivision || d.id.toLowerCase() === targetDiv)),
+      );
+
+      const matchConfigured = matchedConfigDivision
+        ? (c.divisionId && c.divisionId === matchedConfigDivision.id) ||
+          (c.divisionRef?.id && c.divisionRef.id === matchedConfigDivision.id) ||
+          (c.divisionName && c.divisionName.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
+          (c.divisionRef?.name && c.divisionRef.name.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
+          c.division.toLowerCase() === matchedConfigDivision.name.toLowerCase()
+        : false;
+
+      const isFemaleFilter = targetDiv.includes("female");
+      const isMaleFilter = !isFemaleFilter && targetDiv.includes("male");
       const matchNormalized =
         (c.division === "FEMALE" && isFemaleFilter) ||
         (c.division === "MALE" && isMaleFilter) ||
-        (c.division === "LGBTQ" && selectedDivision.toLowerCase().includes("lgbt")) ||
-        (c.division === "TEEN" && selectedDivision.toLowerCase().includes("teen"));
-      if (!matchExact && !matchNormalized) {
+        (c.division === "LGBTQ" && targetDiv.includes("lgbt")) ||
+        (c.division === "TEEN" && targetDiv.includes("teen"));
+
+      if (!matchExact && !matchConfigured && !matchNormalized) {
         return false;
       }
     }

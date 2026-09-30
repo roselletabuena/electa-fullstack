@@ -4,10 +4,10 @@ import React, { useState } from "react";
 import { X, Sparkles, Trash2 } from "lucide-react";
 import type {
   ContestantDto,
-  ContestantDivision,
   AwardCategoryDto,
   ContestantMediaDto,
   CreateContestantInput,
+  DynamicDivisionItem,
 } from "../types";
 import { ImageCropper } from "./ImageCropper";
 import { parseVideoEmbedUrl } from "../utils/parse-video-embed";
@@ -17,6 +17,7 @@ interface ContestantFormModalProps {
   onClose: () => void;
   onSubmit: (data: CreateContestantInput) => Promise<void>;
   categories: AwardCategoryDto[];
+  divisions?: DynamicDivisionItem[] | undefined;
   initialData?: ContestantDto | null;
 }
 
@@ -25,13 +26,48 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
   onClose,
   onSubmit,
   categories,
+  divisions,
   initialData,
 }) => {
+  const resolveInitialDivision = (): { name: string; id: string | undefined } => {
+    if (divisions && divisions.length > 0) {
+      const match =
+        (initialData?.divisionId && divisions.find((d) => d.id === initialData.divisionId)) ||
+        (initialData?.divisionName &&
+          divisions.find((d) => d.name.toLowerCase() === initialData.divisionName?.toLowerCase())) ||
+        (initialData?.divisionRef?.name &&
+          divisions.find(
+            (d) => d.name.toLowerCase() === initialData.divisionRef?.name.toLowerCase(),
+          )) ||
+        (initialData?.division &&
+          divisions.find(
+            (d) =>
+              d.name.toLowerCase() === String(initialData.division).toLowerCase() ||
+              (d.id && d.id === initialData.division),
+          )) ||
+        (initialData?.division &&
+          divisions.find((d) =>
+            d.name.toLowerCase().includes(String(initialData.division).toLowerCase().slice(0, 4)),
+          )) ||
+        divisions[0];
+      return {
+        name: match?.name ?? divisions[0]?.name ?? "FEMALE",
+        id: match?.id ?? divisions[0]?.id ?? undefined,
+      };
+    }
+    return {
+      name: (initialData?.division as string) ?? "FEMALE",
+      id: undefined,
+    };
+  };
+
+  const initialDiv = resolveInitialDivision();
   const [contestantNumber, setContestantNumber] = useState<number>(
     initialData?.contestantNumber ?? 1,
   );
   const [name, setName] = useState(initialData?.name ?? "");
-  const [division, setDivision] = useState<ContestantDivision>(initialData?.division ?? "FEMALE");
+  const [division, setDivision] = useState<string>(initialDiv.name);
+  const [divisionId, setDivisionId] = useState<string | undefined>(initialDiv.id);
   const [hometown, setHometown] = useState(initialData?.hometown ?? "");
   const [heightCm, setHeightCm] = useState<number | undefined>(initialData?.heightCm ?? undefined);
   const [bio, setBio] = useState(initialData?.bio ?? "");
@@ -119,6 +155,7 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
         contestantNumber: Number(contestantNumber),
         name: name.trim(),
         division,
+        divisionId: divisionId ?? undefined,
         hometown: hometown.trim() || undefined,
         heightCm: heightCm ? Number(heightCm) : undefined,
         bio: bio.trim() || undefined,
@@ -213,13 +250,33 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
               </label>
               <select
                 value={division}
-                onChange={(e) => setDivision(e.target.value as ContestantDivision)}
+                onChange={(e) => {
+                  const val = e.target.value;
+                  if (divisions && divisions.length > 0) {
+                    const matched = divisions.find((d) => d.name === val || d.id === val);
+                    setDivision(matched ? matched.name : val);
+                    setDivisionId(matched?.id);
+                  } else {
+                    setDivision(val);
+                    setDivisionId(undefined);
+                  }
+                }}
                 className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100"
               >
-                <option value="FEMALE">Female</option>
-                <option value="MALE">Male</option>
-                <option value="LGBTQ">LGBTQ+</option>
-                <option value="TEEN">Teen</option>
+                {divisions && divisions.length > 0 ? (
+                  divisions.map((d) => (
+                    <option key={d.id ?? d.name} value={d.name}>
+                      {d.name}
+                    </option>
+                  ))
+                ) : (
+                  <>
+                    <option value="FEMALE">Female</option>
+                    <option value="MALE">Male</option>
+                    <option value="LGBTQ">LGBTQ+</option>
+                    <option value="TEEN">Teen</option>
+                  </>
+                )}
               </select>
             </div>
 

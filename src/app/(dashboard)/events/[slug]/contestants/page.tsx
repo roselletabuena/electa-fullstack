@@ -51,11 +51,12 @@ export default async function EventContestantsPage({
 
   const { event, session } = authResult;
 
-  const [contestantsRaw, categoriesRaw] = await Promise.all([
+  const [contestantsRaw, categoriesRaw, divisionsRaw] = await Promise.all([
     db.contestant.findMany({
       where: { eventId: event.id },
       orderBy: { contestantNumber: "asc" },
       include: {
+        divisionRef: true,
         media: { orderBy: { displayOrder: "asc" } },
         categories: { include: { awardCategory: true } },
       },
@@ -63,6 +64,10 @@ export default async function EventContestantsPage({
     db.awardCategory.findMany({
       where: { eventId: event.id },
       orderBy: { name: "asc" },
+    }),
+    db.division.findMany({
+      where: { eventId: event.id },
+      orderBy: { displayOrder: "asc" },
     }),
   ]);
 
@@ -72,6 +77,9 @@ export default async function EventContestantsPage({
     contestantNumber: c.contestantNumber,
     name: c.name,
     division: c.division as ContestantDivision,
+    divisionId: c.divisionId,
+    divisionName: c.divisionRef?.name,
+    divisionRef: c.divisionRef ? { id: c.divisionRef.id, name: c.divisionRef.name } : undefined,
     status: c.status,
     hometown: c.hometown,
     heightCm: c.heightCm,
@@ -117,6 +125,13 @@ export default async function EventContestantsPage({
     updatedAt: cat.updatedAt.toISOString(),
   }));
 
+  const divisions = divisionsRaw.map((d) => ({
+    id: d.id,
+    name: d.name,
+    description: d.description,
+    displayOrder: d.displayOrder,
+  }));
+
   return (
     <div className="min-h-screen bg-slate-50/50 pb-16 dark:bg-slate-950">
       <OrganizerDashboardHeader event={event} user={session} activeSection="contestants" />
@@ -126,6 +141,7 @@ export default async function EventContestantsPage({
           slug={event.slug}
           contestants={contestants}
           categories={categories}
+          divisions={divisions}
         />
       </main>
     </div>

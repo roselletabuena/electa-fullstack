@@ -48,7 +48,14 @@ export async function GET(request: NextRequest, context: RouteParams) {
     };
 
     if (divisionParam && divisionParam !== "ALL") {
-      whereClause.division = divisionParam as ContestantDivision;
+      const isEnumDivision = ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(
+        divisionParam.toUpperCase(),
+      );
+      whereClause.OR = [
+        ...(isEnumDivision ? [{ division: divisionParam.toUpperCase() as ContestantDivision }] : []),
+        { divisionId: divisionParam },
+        { divisionRef: { name: { equals: divisionParam, mode: "insensitive" } } },
+      ];
     }
 
     if (categoryIdParam && categoryIdParam !== "ALL") {
@@ -63,6 +70,7 @@ export async function GET(request: NextRequest, context: RouteParams) {
       where: whereClause,
       orderBy: { contestantNumber: "asc" },
       include: {
+        divisionRef: true,
         media: {
           orderBy: { displayOrder: "asc" },
         },
@@ -80,6 +88,9 @@ export async function GET(request: NextRequest, context: RouteParams) {
       contestantNumber: c.contestantNumber,
       name: c.name,
       division: c.division as ContestantDivision,
+      divisionId: c.divisionId,
+      divisionName: c.divisionRef?.name,
+      divisionRef: c.divisionRef ? { id: c.divisionRef.id, name: c.divisionRef.name } : undefined,
       status: c.status,
       hometown: c.hometown,
       heightCm: c.heightCm,
@@ -147,14 +158,21 @@ export async function POST(request: NextRequest, context: RouteParams) {
 
     const data = parsed.data;
 
+    const isStandardEnum = ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(
+      data.division.toUpperCase(),
+    );
+    const resolvedDivisionEnum: ContestantDivision = isStandardEnum
+      ? (data.division.toUpperCase() as ContestantDivision)
+      : "FEMALE";
+
     // Check duplicate candidate number in the same division
-    const existing = await db.contestant.findUnique({
+    const existing = await db.contestant.findFirst({
       where: {
-        eventId_division_contestantNumber: {
-          eventId: event.id,
-          division: data.division,
-          contestantNumber: data.contestantNumber,
-        },
+        eventId: event.id,
+        contestantNumber: data.contestantNumber,
+        ...(data.divisionId
+          ? { divisionId: data.divisionId }
+          : { division: resolvedDivisionEnum }),
       },
     });
 
@@ -177,7 +195,8 @@ export async function POST(request: NextRequest, context: RouteParams) {
           eventId: event.id,
           contestantNumber: data.contestantNumber,
           name: data.name,
-          division: data.division,
+          division: resolvedDivisionEnum,
+          divisionId: data.divisionId || null,
           hometown: data.hometown || null,
           heightCm: data.heightCm ?? null,
           bio: data.bio || null,

@@ -5,7 +5,7 @@ import Image from "next/image";
 import { Plus, Edit3, Trash2, Users } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import type { ContestantDto, AwardCategoryDto, ContestantStatus } from "../types";
+import type { ContestantDto, AwardCategoryDto, ContestantStatus, DynamicDivisionItem } from "../types";
 import { ContestantFormModal } from "./ContestantFormModal";
 import { useContestantMutations } from "../hooks/use-contestant-mutations";
 import { useContestants } from "../hooks/use-contestants";
@@ -15,12 +15,14 @@ interface OrganizerContestantTableProps {
   slug: string;
   contestants: ContestantDto[];
   categories: AwardCategoryDto[];
+  divisions?: DynamicDivisionItem[] | undefined;
 }
 
 export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> = ({
   slug,
   contestants: initialContestants,
   categories,
+  divisions,
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const [editingContestant, setEditingContestant] = useState<ContestantDto | null>(null);
@@ -150,7 +152,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                         </div>
                       </td>
                       <td className="px-5 py-3.5 font-medium text-slate-700 capitalize dark:text-slate-300">
-                        {c.division.toLowerCase()}
+                        {c.divisionRef?.name || c.divisionName || c.division.toLowerCase()}
                       </td>
                       <td className="px-5 py-3.5">
                         <div className="flex max-w-56 flex-wrap gap-1">
@@ -224,6 +226,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
         categories={categories}
+        divisions={divisions}
         initialData={editingContestant}
         onSubmit={async (data) => {
           await (editingContestant

@@ -1,4 +1,4 @@
-﻿# Tasks: Dynamic Category Integration in Contestant Form & Public Roster Filter Bar (VS-38)
+# Tasks: Dynamic Category Integration in Contestant Form & Public Roster Filter Bar (VS-38)
 
 **Feature Branch**: `015-dynamic-category-integration` | **Spec**: [specs/015-dynamic-category-integration/spec.md](spec.md) | **Plan**: [specs/015-dynamic-category-integration/plan.md](plan.md)  
 **Jira Issue**: [VS-38](https://the-three-devsketeers.atlassian.net/browse/VS-38) | **Parent Epic**: [VS-35](https://the-three-devsketeers.atlassian.net/browse/VS-35)
@@ -48,3 +48,14 @@
 - [x] T009 Run Vitest suite on `tests/unit/contestants/` and ensure 100% pass
 - [x] T010 Run TypeScript typecheck to verify zero type errors
 - [x] T011 Create atomic commits adhering to conventional commits
+
+---
+
+## Phase 6: Convergence
+
+**Purpose**: Close remaining gaps identified by `/speckit-converge` — type divergence, missing URL-sync tests, prop type alignment, and ARIA accessibility.
+
+- [ ] T012 Remove the local `ContestantFormModalProps` interface in `ContestantFormModal.tsx` and import and use the exported `ContestantFormModalProps` from `../types` to eliminate type duplication and restore the full `DivisionDto[] | DynamicDivisionItem[]` union for the `divisions` prop per FR-001 (partial)
+- [ ] T013 Add unit tests for URL search-param-driven division selection: verify that when `ContestantRoster` is rendered with `?division=Kids` in `searchParams`, the "Kids" pill is `aria-pressed="true"` and only matching candidates are displayed, per US2/AC4 (missing)
+- [ ] T014 Update `OrganizerContestantTable` `divisions` prop type from `DynamicDivisionItem[] | undefined` to `DivisionDto[] | DynamicDivisionItem[] | undefined` to match what the contestants `page.tsx` server component produces, preventing future type drift per FR-004 (partial)
+- [ ] T015 Add `id="division-select"` to the Division `<select>` element and `htmlFor="division-select"` to its label in `ContestantFormModal.tsx` to ensure screen readers correctly announce the "Division" label for the combobox, per FR-010 / WCAG 2.1 AA (missing)

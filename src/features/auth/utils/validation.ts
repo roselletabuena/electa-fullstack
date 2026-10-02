@@ -24,7 +24,7 @@ export const loginSchema = z
     },
   );
 
-export const registerOrganizerSchema = z.object({
+export const registerUserSchema = z.object({
   name: z
     .string()
     .trim()
@@ -37,12 +37,15 @@ export const registerOrganizerSchema = z.object({
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
     .regex(/[0-9]/, "Password must contain at least one number"),
   organizationName: z.string().trim().max(100).optional(),
+  returnTo: z.string().optional(),
 });
+
+export const registerOrganizerSchema = registerUserSchema;
 
 export const onboardingFormSchema = z.object({
   organizationName: z.string().trim().max(100).optional(),
 });
 
 export type LoginFormData = z.infer<typeof loginSchema>;
-export type RegisterFormData = z.infer<typeof registerOrganizerSchema>;
+export type RegisterFormData = z.infer<typeof registerUserSchema>;
 export type OnboardingFormData = z.infer<typeof onboardingFormSchema>;

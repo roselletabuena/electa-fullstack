@@ -1,12 +1,12 @@
 import { z } from "zod";
 
-export type UserRole = "ORGANIZER" | "VOTER" | "ADMIN";
+export type UserRole = "USER" | "ORGANIZER" | "VOTER" | "ADMIN";
 
 export interface UserSessionDto {
   userId: string;
   email: string;
   name: string;
-  role: UserRole;
+  role?: UserRole | undefined;
   avatarUrl?: string | null | undefined;
   organizationName?: string | null | undefined;
   isNewUser?: boolean | undefined;
@@ -20,12 +20,15 @@ export interface LoginCredentialsDto {
   returnTo?: string | undefined;
 }
 
-export interface RegisterOrganizerDto {
+export interface RegisterUserDto {
   name: string;
   email: string;
   password?: string | undefined;
   organizationName?: string | undefined;
+  returnTo?: string | undefined;
 }
+
+export type RegisterOrganizerDto = RegisterUserDto;
 
 export type AuthErrorCode =
   | "INVALID_CREDENTIALS"

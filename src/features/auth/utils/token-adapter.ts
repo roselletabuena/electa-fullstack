@@ -2,7 +2,7 @@ import crypto from "crypto";
 import { env } from "@/env";
 import type { UserSessionDto, UserRole } from "../types";
 
-const AUTH_SECRET = env.AUTH_SECRET || "votesphere_local_jwt_secret_dev_32_bytes_long";
+const AUTH_SECRET = env.AUTH_SECRET || "electa_local_jwt_secret_dev_32_bytes_long";
 const LOCAL_ISSUER = "https://cognito-idp.ap-southeast-1.amazonaws.com/localstack_pool";
 
 export interface CognitoTokenPayload {
@@ -59,7 +59,7 @@ export function generateLocalCognitoToken(params: {
     userId,
     email,
     name,
-    role = "ORGANIZER",
+    role = "USER",
     avatarUrl,
     organizationName,
     expiresInSeconds = 60 * 60 * 24 * 7, // 7 days

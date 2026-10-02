@@ -4,8 +4,8 @@ import { z } from "zod";
 export const env = createEnv({
   server: {
     DATABASE_URL: z.string().url().optional(),
-    AUTH_PROVIDER: z.enum(["local", "cognito"]).default("local"),
-    AUTH_SECRET: z.string().min(1).default("votesphere_local_jwt_secret_dev_32_bytes_long"),
+    AUTH_PROVIDER: z.enum(["local", "localstack", "cognito"]).default("local"),
+    AUTH_SECRET: z.string().min(1).default("electa_local_jwt_secret_dev_32_bytes_long"),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     TURNSTILE_SECRET_KEY: z.string().min(1).default("1x0000000000000000000000000000000AA"),
   },

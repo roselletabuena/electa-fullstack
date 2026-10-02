@@ -5,7 +5,7 @@ import { registerOrganizerSchema } from "../utils/validation";
 import { generateLocalCognitoToken } from "../utils/token-adapter";
 import type { AuthActionResult, RegisterOrganizerDto, UserSessionDto } from "../types";
 
-export async function registerOrganizerAction(
+export async function registerUserAction(
   data: RegisterOrganizerDto,
 ): Promise<AuthActionResult<UserSessionDto>> {
   try {
@@ -22,8 +22,8 @@ export async function registerOrganizerAction(
       };
     }
 
-    const { name, email, organizationName } = validated.data;
-    const userId = `usr_org_${Buffer.from(email).toString("hex").slice(0, 14)}`;
+    const { name, email, organizationName, returnTo } = validated.data;
+    const userId = `usr_${Buffer.from(email).toString("hex").slice(0, 14)}`;
 
     const userSession: UserSessionDto = {
       userId,
@@ -53,10 +53,12 @@ export async function registerOrganizerAction(
       maxAge: 60 * 60 * 24 * 7,
     });
 
+    const targetUrl = returnTo && returnTo.startsWith("/") ? returnTo : "/dashboard";
+
     return {
       success: true,
       data: userSession,
-      redirectTo: "/dashboard",
+      redirectTo: targetUrl,
     };
   } catch (error) {
     console.error("Register action error:", error);
@@ -64,8 +66,10 @@ export async function registerOrganizerAction(
       success: false,
       error: {
         code: "AUTH_FAILED",
-        message: "Failed to register organizer account. Please try again.",
+        message: "Failed to register account. Please try again.",
       },
     };
   }
 }
+
+export const registerOrganizerAction = registerUserAction;

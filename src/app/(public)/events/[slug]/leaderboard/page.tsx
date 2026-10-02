@@ -47,6 +47,7 @@ export default async function LeaderboardPage(props: PageProps): Promise<React.J
         include: {
           divisionRef: true,
           categories: true,
+          media: { orderBy: { displayOrder: "asc" } },
         },
         orderBy: { contestantNumber: "asc" },
       },
@@ -79,7 +80,11 @@ export default async function LeaderboardPage(props: PageProps): Promise<React.J
       id: c.id,
       contestantNumber: c.contestantNumber,
       name: c.name,
-      avatarUrl: c.avatarUrl,
+      avatarUrl:
+        c.media?.find((m) => m.isCover && m.mediaType === "PHOTO")?.url ||
+        c.media?.find((m) => m.mediaType === "PHOTO")?.url ||
+        c.avatarUrl ||
+        "/placeholder-contestant.webp",
       divisionId: c.divisionId,
       divisionName: c.divisionRef?.name ?? null,
       voteCount: c.voteCount,

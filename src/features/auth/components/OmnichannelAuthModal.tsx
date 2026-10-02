@@ -17,6 +17,8 @@ import {
   requestPasswordlessOtpAction,
   verifyPasswordlessOtpAction,
 } from "../actions/passwordless-actions";
+import { savePendingVoteIntent } from "@/features/voting/utils/vote-intent";
+import type { PendingVoteIntent } from "@/features/voting/types";
 
 export interface OmnichannelAuthModalProps {
   isOpen: boolean;
@@ -24,6 +26,7 @@ export interface OmnichannelAuthModalProps {
   onSuccess?: (() => void) | undefined;
   title?: string | undefined;
   subtitle?: string | undefined;
+  voteIntent?: Omit<PendingVoteIntent, "timestamp"> | undefined;
 }
 
 type AuthMode = "options" | "email-link" | "phone-otp" | "verify-otp";
@@ -32,8 +35,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   isOpen,
   onClose,
   onSuccess,
-  title = "Sign In to Vote",
+  title = "Sign In to Cast Your Vote",
   subtitle = "Choose your preferred identity provider to cast your free daily votes.",
+  voteIntent,
 }) => {
   const router = useRouter();
   const [mode, setMode] = useState<AuthMode>("options");
@@ -56,10 +60,13 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   };
 
   const handleSocialLogin = (provider: "Google" | "Apple" | "Facebook") => {
+    if (voteIntent) {
+      savePendingVoteIntent(voteIntent);
+    }
+
+    const returnPath = typeof window !== "undefined" ? window.location.pathname : "/events";
     router.push(
-      `/api/auth/cognito/initiate?provider=${provider}&returnTo=${encodeURIComponent(
-        typeof window !== "undefined" ? window.location.pathname : "/events",
-      )}`,
+      `/api/auth/cognito/initiate?provider=${provider}&returnTo=${encodeURIComponent(returnPath)}`,
     );
   };
 
@@ -105,7 +112,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
           handleReset();
           onSuccess?.();
           router.refresh();
-        }, 600);
+        }, 500);
       } else {
         setErrorMessage(res.error || "Verification failed.");
       }
@@ -113,20 +120,25 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   };
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="auth-modal-title"
+      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+    >
       {/* Backdrop */}
       <div
-        className="fixed inset-0 bg-slate-950/70 backdrop-blur-md transition-opacity"
+        className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity"
         onClick={handleReset}
       />
 
-      {/* Modal Card */}
-      <div className="relative w-full max-w-md overflow-hidden rounded-3xl border border-indigo-200/50 bg-white p-6 shadow-2xl backdrop-blur-xl sm:p-8 dark:border-indigo-900/60 dark:bg-slate-900">
+      {/* Modal Card - Zero-Radius Electa Style */}
+      <div className="relative w-full max-w-md border border-slate-300 bg-white p-6 shadow-xl sm:p-8 dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Close Button */}
         <button
           type="button"
           onClick={handleReset}
-          className="absolute top-4 right-4 rounded-full p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+          className="absolute top-4 right-4 p-1.5 text-slate-400 hover:bg-slate-100 hover:text-slate-900 dark:hover:bg-slate-800 dark:hover:text-slate-100"
           aria-label="Close dialog"
         >
           <X className="size-5" />
@@ -134,25 +146,28 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
         {/* Header */}
         <div className="text-center">
-          <div className="mx-auto mb-3 flex size-12 items-center justify-center rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-950/80 dark:text-indigo-400">
+          <div className="mx-auto mb-3 flex size-12 items-center justify-center border border-sky-500/20 bg-sky-50 text-sky-600 dark:border-sky-500/30 dark:bg-sky-950/50 dark:text-sky-400">
             <ShieldCheck className="size-6" />
           </div>
-          <h3 className="text-xl font-bold tracking-tight text-slate-900 dark:text-white">
+          <h3
+            id="auth-modal-title"
+            className="font-heading text-xl font-extrabold tracking-tight text-slate-900 dark:text-white"
+          >
             {title}
           </h3>
-          <p className="mt-1.5 text-xs text-slate-600 dark:text-slate-300">{subtitle}</p>
+          <p className="mt-1.5 font-sans text-xs text-slate-600 dark:text-slate-300">{subtitle}</p>
         </div>
 
         {/* Error / Status Messages */}
         {errorMessage && (
-          <div className="mt-4 flex items-center gap-2 rounded-xl bg-rose-50 p-3 text-xs text-rose-700 dark:bg-rose-950/50 dark:text-rose-300">
+          <div className="mt-4 flex items-center gap-2 border border-rose-300 bg-rose-50 p-3 text-xs text-rose-700 dark:border-rose-900/50 dark:bg-rose-950/50 dark:text-rose-300">
             <AlertCircle className="size-4 shrink-0" />
             <span>{errorMessage}</span>
           </div>
         )}
 
         {statusMessage && (
-          <div className="mt-4 flex items-center gap-2 rounded-xl bg-emerald-50 p-3 text-xs text-emerald-700 dark:bg-emerald-950/50 dark:text-emerald-300">
+          <div className="mt-4 flex items-center gap-2 border border-emerald-300 bg-emerald-50 p-3 text-xs text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/50 dark:text-emerald-300">
             <CheckCircle2 className="size-4 shrink-0" />
             <span>{statusMessage}</span>
           </div>
@@ -160,14 +175,14 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
         {/* Mode 1: Provider Selection */}
         {mode === "options" && (
-          <div className="mt-6 space-y-3">
+          <div className="mt-6 space-y-3 font-sans">
             {/* Google OAuth */}
             <button
               type="button"
               onClick={() => handleSocialLogin("Google")}
-              className="dark:hover:bg-slate-750 flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white py-2.5 text-sm font-semibold text-slate-700 shadow-sm transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
+              className="dark:hover:bg-slate-750 flex w-full items-center justify-center gap-3 border border-slate-300 bg-white py-2.5 text-xs font-bold tracking-wider text-slate-900 uppercase shadow-xs transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
             >
-              <svg className="size-4" viewBox="0 0 24 24">
+              <svg className="size-4 shrink-0" viewBox="0 0 24 24">
                 <path
                   fill="#4285F4"
                   d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
@@ -192,9 +207,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
             <button
               type="button"
               onClick={() => handleSocialLogin("Apple")}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-slate-900 bg-slate-900 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-slate-800 dark:border-slate-800 dark:bg-black dark:hover:bg-slate-900"
+              className="flex w-full items-center justify-center gap-3 border border-slate-900 bg-slate-900 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
-              <svg className="size-4 fill-current" viewBox="0 0 170 170">
+              <svg className="size-4 shrink-0 fill-current" viewBox="0 0 170 170">
                 <path d="M150.37 130.25c-2.45 5.66-5.35 10.87-8.71 15.66-4.58 6.53-8.33 11.05-11.22 13.56-4.48 4.12-9.28 6.23-14.42 6.35-3.69 0-8.14-1.05-13.32-3.18-5.19-2.12-9.97-3.17-14.34-3.17-4.58 0-9.49 1.05-14.75 3.17-5.26 2.13-9.5 3.24-12.74 3.35-4.35.13-9.16-1.9-14.42-6.08-3.69-3.04-7.67-7.81-11.94-14.34-6.3-9.66-11.22-20.73-14.75-33.22-3.53-12.49-5.3-24.16-5.3-35.03 0-14.54 3.73-26.68 11.19-36.42 7.46-9.74 17.07-14.75 28.83-15.02 4.9 0 10.38 1.25 16.44 3.75 6.06 2.5 10.22 3.81 12.48 3.94 1.8.13 6.13-1.25 13-4.14 6.87-2.89 12.63-4.14 17.29-3.75 14.54.91 25.75 6.1 33.63 15.58-13.06 7.9-19.46 18.9-19.2 33 0 11.69 4.35 21.49 13.06 29.38 8.7 7.9 19.01 12.18 30.93 12.84-2.48 7.37-5.61 14.88-9.4 22.54zM119.22 31.02c0-7.37 2.65-14.34 7.96-20.91 5.3-6.58 12.04-10.11 20.21-10.11.26 1.05.39 2.11.39 3.17 0 7.37-2.78 14.47-8.35 21.31-5.56 6.84-12.28 10.51-20.21 11.02z" />
               </svg>
               <span>Continue with Apple</span>
@@ -204,9 +219,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
             <button
               type="button"
               onClick={() => handleSocialLogin("Facebook")}
-              className="flex w-full items-center justify-center gap-3 rounded-xl border border-blue-600 bg-blue-600 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+              className="flex w-full items-center justify-center gap-3 border border-blue-600 bg-blue-600 py-2.5 text-xs font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-blue-700"
             >
-              <svg className="size-4 fill-current" viewBox="0 0 24 24">
+              <svg className="size-4 shrink-0 fill-current" viewBox="0 0 24 24">
                 <path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z" />
               </svg>
               <span>Continue with Facebook</span>
@@ -214,7 +229,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
             <div className="relative my-4 flex items-center justify-center">
               <div className="w-full border-t border-slate-200 dark:border-slate-800" />
-              <span className="absolute bg-white px-3 text-[11px] font-medium tracking-wider text-slate-400 uppercase dark:bg-slate-900">
+              <span className="absolute bg-white px-3 font-mono text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:bg-[#0d1424] dark:text-slate-400">
                 Or passwordless
               </span>
             </div>
@@ -227,9 +242,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 setChannel("email");
                 setDestination("");
               }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="flex w-full items-center justify-center gap-2 border border-slate-300 bg-white py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-transparent dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              <Mail className="size-4" />
+              <Mail className="size-4 text-sky-600 dark:text-sky-400" />
               <span>Email Magic Link / Code</span>
             </button>
 
@@ -241,9 +256,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 setChannel("sms");
                 setDestination("");
               }}
-              className="flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="flex w-full items-center justify-center gap-2 border border-slate-300 bg-white py-2.5 text-xs font-bold text-slate-700 hover:bg-slate-50 dark:border-slate-700 dark:bg-transparent dark:text-slate-300 dark:hover:bg-slate-800"
             >
-              <Phone className="size-4" />
+              <Phone className="size-4 text-sky-600 dark:text-sky-400" />
               <span>Phone OTP (SMS / WhatsApp)</span>
             </button>
           </div>
@@ -251,9 +266,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
         {/* Mode 2: Email Magic Link Form */}
         {mode === "email-link" && (
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-4 font-sans">
             <div>
-              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-slate-900 dark:text-slate-200">
                 Email Address
               </label>
               <input
@@ -261,14 +276,14 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 placeholder="voter@example.com"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                className="mt-1.5 w-full border border-slate-300 bg-white px-3.5 py-2.5 font-sans text-sm text-slate-900 outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               />
             </div>
             <button
               type="button"
               disabled={isPending}
               onClick={() => handleSendOtp("email")}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700 disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 bg-sky-600 py-3 text-xs font-extrabold tracking-wider text-white uppercase shadow-xs hover:bg-sky-700 disabled:opacity-50"
             >
               {isPending ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -282,7 +297,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
             <button
               type="button"
               onClick={() => setMode("options")}
-              className="w-full text-center text-xs text-slate-500 hover:underline"
+              className="w-full text-center text-xs font-semibold text-slate-600 hover:text-slate-900 hover:underline dark:text-slate-400 dark:hover:text-white"
             >
               ← Back to all options
             </button>
@@ -291,9 +306,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
         {/* Mode 3: Phone OTP Form */}
         {mode === "phone-otp" && (
-          <div className="mt-6 space-y-4">
+          <div className="mt-6 space-y-4 font-sans">
             <div>
-              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-slate-900 dark:text-slate-200">
                 Mobile Phone Number
               </label>
               <input
@@ -301,7 +316,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 placeholder="+63 917 123 4567"
                 value={destination}
                 onChange={(e) => setDestination(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                className="mt-1.5 w-full border border-slate-300 bg-white px-3.5 py-2.5 font-mono text-sm text-slate-900 outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               />
             </div>
             <div className="grid grid-cols-2 gap-2">
@@ -309,16 +324,16 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 type="button"
                 disabled={isPending}
                 onClick={() => handleSendOtp("sms")}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-slate-300 py-2.5 text-xs font-semibold text-slate-700 hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="flex items-center justify-center gap-1.5 border border-slate-300 bg-white py-2.5 text-xs font-bold text-slate-900 uppercase hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
               >
-                <Phone className="size-3.5" />
+                <Phone className="size-3.5 text-sky-600 dark:text-sky-400" />
                 <span>Via SMS</span>
               </button>
               <button
                 type="button"
                 disabled={isPending}
                 onClick={() => handleSendOtp("whatsapp")}
-                className="flex items-center justify-center gap-1.5 rounded-xl border border-emerald-500/50 bg-emerald-50/50 py-2.5 text-xs font-semibold text-emerald-700 hover:bg-emerald-100/50 disabled:opacity-50 dark:bg-emerald-950/30 dark:text-emerald-300"
+                className="flex items-center justify-center gap-1.5 border border-emerald-500/50 bg-emerald-50/50 py-2.5 text-xs font-bold text-emerald-800 uppercase hover:bg-emerald-100/50 disabled:opacity-50 dark:bg-emerald-950/40 dark:text-emerald-300"
               >
                 <MessageSquare className="size-3.5" />
                 <span>Via WhatsApp</span>
@@ -327,7 +342,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
             <button
               type="button"
               onClick={() => setMode("options")}
-              className="w-full text-center text-xs text-slate-500 hover:underline"
+              className="w-full text-center text-xs font-semibold text-slate-600 hover:text-slate-900 hover:underline dark:text-slate-400 dark:hover:text-white"
             >
               ← Back to all options
             </button>
@@ -336,9 +351,9 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
 
         {/* Mode 4: 6-Digit OTP Verification Form */}
         {mode === "verify-otp" && (
-          <form onSubmit={handleVerifyOtp} className="mt-6 space-y-4">
+          <form onSubmit={handleVerifyOtp} className="mt-6 space-y-4 font-sans">
             <div>
-              <label className="text-xs font-medium text-slate-700 dark:text-slate-300">
+              <label className="text-xs font-bold text-slate-900 dark:text-slate-200">
                 Enter 6-Digit Code sent to {destination}
               </label>
               <input
@@ -347,13 +362,13 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 placeholder="123456"
                 value={otpCode}
                 onChange={(e) => setOtpCode(e.target.value)}
-                className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-3.5 py-2.5 text-center text-lg font-bold tracking-widest text-slate-900 outline-none focus:border-indigo-600 focus:ring-2 focus:ring-indigo-600/20 dark:border-slate-700 dark:bg-slate-800 dark:text-white"
+                className="mt-1.5 w-full border border-slate-300 bg-white px-3.5 py-2.5 text-center font-mono text-xl font-bold tracking-widest text-slate-900 outline-none focus:border-sky-600 focus:ring-1 focus:ring-sky-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
               />
             </div>
             <button
               type="submit"
               disabled={isPending}
-              className="flex w-full items-center justify-center gap-2 rounded-xl bg-indigo-600 py-3 text-sm font-semibold text-white shadow-md shadow-indigo-600/20 hover:bg-indigo-700 disabled:opacity-50"
+              className="flex w-full items-center justify-center gap-2 bg-sky-600 py-3 text-xs font-extrabold tracking-wider text-white uppercase shadow-xs hover:bg-sky-700 disabled:opacity-50"
             >
               {isPending ? (
                 <Loader2 className="size-4 animate-spin" />
@@ -361,15 +376,19 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
                 <span>Confirm & Sign In</span>
               )}
             </button>
-            <div className="flex justify-between text-xs text-slate-500">
+            <div className="flex justify-between text-xs text-slate-600 dark:text-slate-400">
               <button
                 type="button"
                 onClick={() => handleSendOtp(channel)}
-                className="hover:underline"
+                className="hover:text-slate-900 hover:underline dark:hover:text-white"
               >
                 Resend code
               </button>
-              <button type="button" onClick={() => setMode("options")} className="hover:underline">
+              <button
+                type="button"
+                onClick={() => setMode("options")}
+                className="hover:text-slate-900 hover:underline dark:hover:text-white"
+              >
                 Change method
               </button>
             </div>

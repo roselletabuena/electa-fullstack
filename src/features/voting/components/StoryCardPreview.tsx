@@ -47,18 +47,18 @@ export function StoryCardPreview({
   }, [payload, onGenerated]);
 
   return (
-    <div className="relative mx-auto aspect-9/16 w-full max-w-70 overflow-hidden border-2 border-slate-900 bg-slate-950 shadow-xl sm:max-w-80 dark:border-slate-700">
+    <div className="relative mx-auto aspect-9/16 w-full max-w-52 overflow-hidden border border-slate-300 bg-slate-950 shadow-md sm:max-w-56 dark:border-slate-700">
       {isGenerating && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/80 p-4 text-center text-white backdrop-blur-xs">
-          <Loader2 className="h-8 w-8 animate-spin text-sky-400" />
-          <span className="font-heading mt-3 text-xs font-black tracking-wider uppercase">
-            Rendering 9:16 Story Card...
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/85 p-3 text-center text-white backdrop-blur-xs">
+          <Loader2 className="h-6 w-6 animate-spin text-sky-400" />
+          <span className="mt-2 font-mono text-[10px] font-bold tracking-wider text-slate-300 uppercase">
+            Rendering 9:16 Story...
           </span>
         </div>
       )}
 
       {error && !isGenerating && (
-        <div className="absolute inset-0 flex flex-col items-center justify-center bg-red-950/90 p-4 text-center text-white">
+        <div className="absolute inset-0 flex flex-col items-center justify-center bg-red-950/90 p-3 text-center text-white">
           <p className="font-sans text-xs text-red-200">{error}</p>
         </div>
       )}

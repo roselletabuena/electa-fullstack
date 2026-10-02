@@ -31,6 +31,8 @@ As an active voter, I want an automatic post-vote celebration modal offering a 9
 3. **Given** a user clicking "Download Story", **When** triggered, **Then** a crystal-clear 1080x1920 PNG file downloads immediately with the filename `[event-slug]-candidate-[number]-story.png`.
 4. **Given** a device supporting the Web Share API (mobile Safari / Chrome), **When** clicking "Share Story", **Then** the native OS share sheet opens with the generated image file and pre-filled campaign caption.
 5. **Given** a user clicking "Copy Voting Link", **When** clicked, **Then** the candidate's direct voting link is copied to the clipboard with an interactive toast notification.
+6. **Given** a voter has already cast a vote for a candidate, **When** voting again for the same candidate, **Then** the modal does NOT automatically pop up (toast confirmation only), preventing repetitive interruptions.
+7. **Given** any candidate card in the roster or contestant profile modal, **When** clicking the dedicated "Share Story" button, **Then** the Story Generator modal opens immediately on-demand.
 
 ---
 

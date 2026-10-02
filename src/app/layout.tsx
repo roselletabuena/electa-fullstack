@@ -43,6 +43,13 @@ export default function RootLayout({
       suppressHydrationWarning
       className={`${outfit.variable} ${sora.variable} ${jetbrainsMono.variable} h-full antialiased`}
     >
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `(function(){try{var stored=localStorage.getItem('electa-theme')||localStorage.getItem('votesphere-theme');if(stored==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})();`,
+          }}
+        />
+      </head>
       <body suppressHydrationWarning className="font-body flex min-h-full flex-col">
         <ThemeProvider defaultTheme="light">
           <ReactQueryProvider>

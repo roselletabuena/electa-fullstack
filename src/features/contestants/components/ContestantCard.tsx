@@ -124,6 +124,11 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
           eventId={contestant.eventId}
           contestantId={contestant.id}
           contestantName={contestant.name}
+          contestantNumber={contestant.contestantNumber}
+          contestantAvatarUrl={coverPhoto}
+          divisionName={
+            contestant.divisionRef?.name || contestant.divisionName || contestant.division
+          }
           size="sm"
           onBoostClick={onVoteClick ? () => onVoteClick(contestant) : undefined}
         />

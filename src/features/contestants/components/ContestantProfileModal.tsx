@@ -266,6 +266,11 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                 eventId={contestant.eventId}
                 contestantId={contestant.id}
                 contestantName={contestant.name}
+                contestantNumber={contestant.contestantNumber}
+                contestantAvatarUrl={contestant.avatarUrl || photosMedia[0]?.url}
+                divisionName={
+                  contestant.divisionRef?.name || contestant.divisionName || contestant.division
+                }
                 size="lg"
                 onBoostClick={
                   onVoteClick

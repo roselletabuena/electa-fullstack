@@ -5,33 +5,54 @@ import { Heart, Loader2, Clock, Zap } from "lucide-react";
 import { useFreeVoteQuota } from "../hooks/use-free-vote-quota";
 import { useCastFreeVote } from "../hooks/use-cast-free-vote";
 import { AuthPromptModal } from "./AuthPromptModal";
+import { VoteStoryModal } from "./VoteStoryModal";
 import type { VotingErrorDto } from "../types";
+import type { StoryCardPayload } from "../types/story";
 
 export interface FreeVoteButtonProps {
   eventId: string;
   contestantId: string;
   contestantName: string;
+  contestantNumber?: number | undefined;
+  contestantAvatarUrl?: string | undefined;
+  divisionName?: string | null | undefined;
+  categoryName?: string | null | undefined;
+  eventSlug?: string | undefined;
+  eventTitle?: string | undefined;
   awardCategoryId?: string | undefined;
   size?: ("sm" | "md" | "lg") | undefined;
   className?: string | undefined;
   onBoostClick?: (() => void) | undefined;
+  onVoteSuccess?: (() => void) | undefined;
 }
 
 export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
   eventId,
   contestantId,
   contestantName,
+  contestantNumber,
+  contestantAvatarUrl,
+  divisionName,
+  categoryName,
+  eventSlug,
+  eventTitle,
   awardCategoryId,
   size = "md",
   className = "",
   onBoostClick,
+  onVoteSuccess,
 }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
+  const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
   const [errorToast, setErrorToast] = useState<string | null>(null);
 
   const { quota, isLoading: isQuotaLoading, formattedCountdown } = useFreeVoteQuota(eventId);
 
   const { mutate: castVote, isPending: isCasting } = useCastFreeVote(eventId, {
+    onSuccess: () => {
+      setIsStoryModalOpen(true);
+      onVoteSuccess?.();
+    },
     onError: (err: VotingErrorDto) => {
       if (err.code === "NOT_AUTHENTICATED") {
         setIsAuthModalOpen(true);
@@ -79,6 +100,22 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
     md: "px-3.5 py-1.5 text-xs gap-1.5",
     lg: "px-5 py-2.5 text-sm gap-2",
   }[size];
+
+  const storyPayload: StoryCardPayload = {
+    eventSlug: eventSlug || eventId,
+    eventTitle: eventTitle || "Official Pageant Ballot",
+    candidateId: contestantId,
+    candidateNumber: contestantNumber ?? 1,
+    candidateName: contestantName,
+    candidateAvatarUrl: contestantAvatarUrl || "/placeholder-contestant.webp",
+    divisionName: divisionName ?? null,
+    categoryName: categoryName ?? null,
+    votingUrl:
+      typeof window !== "undefined"
+        ? `${window.location.origin}/events/${eventSlug || eventId}?contestantId=${contestantId}`
+        : `https://electa.app/events/${eventSlug || eventId}?contestantId=${contestantId}`,
+    theme: "midnight",
+  };
 
   return (
     <>
@@ -152,6 +189,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         )}
       </div>
 
+      {/* Auth Prompt Modal if needed */}
       <AuthPromptModal
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
@@ -170,6 +208,13 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             awardCategoryId,
           });
         }}
+      />
+
+      {/* Viral Social Sharing Story Generator Modal */}
+      <VoteStoryModal
+        isOpen={isStoryModalOpen}
+        onClose={() => setIsStoryModalOpen(false)}
+        payload={storyPayload}
       />
     </>
   );

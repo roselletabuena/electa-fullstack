@@ -1,6 +1,7 @@
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
-import { Calendar, Globe2, Sparkles } from "lucide-react";
+import { Calendar, Globe2, Sparkles, Trophy } from "lucide-react";
 
 import { EventStateBadge } from "./EventStateBadge";
 import type { PublicEventDto } from "../types";
@@ -71,20 +72,30 @@ export function EventBanner({ event }: EventBannerProps): React.JSX.Element {
           )}
         </div>
 
-        {/* Operational Schedule Timeline */}
-        <div className="flex flex-wrap items-center gap-6 border-t border-white/10 pt-3 text-xs text-slate-300">
-          <div className="flex items-center gap-2">
-            <Calendar className="size-3.5 text-sky-400" />
-            <span>
-              <strong className="text-white">Opens:</strong> {formattedStartsAt}
-            </span>
+        {/* Operational Schedule Timeline & Live Leaderboard */}
+        <div className="flex flex-wrap items-center justify-between gap-4 border-t border-white/10 pt-3 text-xs text-slate-300">
+          <div className="flex flex-wrap items-center gap-6">
+            <div className="flex items-center gap-2">
+              <Calendar className="size-3.5 text-sky-400" />
+              <span>
+                <strong className="text-white">Opens:</strong> {formattedStartsAt}
+              </span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Calendar className="size-3.5 text-sky-400" />
+              <span>
+                <strong className="text-white">Closes:</strong> {formattedEndsAt}
+              </span>
+            </div>
           </div>
-          <div className="flex items-center gap-2">
-            <Calendar className="size-3.5 text-sky-400" />
-            <span>
-              <strong className="text-white">Closes:</strong> {formattedEndsAt}
-            </span>
-          </div>
+
+          <Link
+            href={`/events/${event.slug}/leaderboard`}
+            className="font-heading inline-flex items-center gap-2 border border-amber-400 bg-amber-500 px-3.5 py-1.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs transition-transform hover:scale-105 hover:bg-amber-400"
+          >
+            <Trophy className="size-3.5" />
+            <span>Live Leaderboard</span>
+          </Link>
         </div>
       </div>
     </header>

@@ -57,7 +57,7 @@ async function getPublicEvent(slug: string): Promise<PublicEventDto | null> {
           name: c.name,
           bio: c.bio || "",
           avatarUrl: c.avatarUrl,
-          voteCount: null,
+          voteCount: c.voteCount,
         })),
       };
     }

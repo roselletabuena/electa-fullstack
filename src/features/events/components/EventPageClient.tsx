@@ -12,6 +12,7 @@ import { DraftPreviewBanner } from "./DraftPreviewBanner";
 import { EventBanner } from "./EventBanner";
 import { EventCountdown } from "./EventCountdown";
 import { EventVotingRulesBanner } from "./EventVotingRulesBanner";
+import { usePendingVoteIntent } from "@/features/voting/hooks/use-pending-vote-intent";
 import type { EventOperationalState, PublicEventDto } from "../types";
 
 export interface EventPageClientProps {
@@ -31,6 +32,13 @@ export function EventPageClient({
   const { data: apiContestants } = useContestants(event.slug);
   const { data: apiCategories } = useCategories(event.slug);
   const { data: taxonomy } = useEventTaxonomy(event.slug);
+
+  usePendingVoteIntent({
+    eventId: event.id,
+    onSuccess: () => {
+      router.refresh();
+    },
+  });
 
   const handleStateTransition = (): void => {
     // When countdown hits zero, immediately recalculate state and revalidate

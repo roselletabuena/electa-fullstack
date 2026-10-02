@@ -54,9 +54,9 @@ export function useCastFreeVote(eventId: string, options?: UseCastFreeVoteOption
     onSuccess: (result) => {
       // Sync fresh quota from server
       queryClient.setQueryData(["voting-quota", eventId], result.quotaState);
-      // Invalidate contestant and event roster queries so vote counts update
-      queryClient.invalidateQueries({ queryKey: ["contestants", eventId] });
-      queryClient.invalidateQueries({ queryKey: ["event", eventId] });
+      // Invalidate contestant and event roster queries so vote counts update immediately
+      queryClient.invalidateQueries({ queryKey: ["contestants"] });
+      queryClient.invalidateQueries({ queryKey: ["event"] });
       options?.onSuccess?.(result);
     },
   });

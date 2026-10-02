@@ -141,7 +141,12 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                         <div className="flex items-center gap-3">
                           <div className="relative h-10 w-8 shrink-0 overflow-hidden rounded-none border border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-800">
                             <Image
-                              src={c.avatarUrl || "/placeholder-contestant.webp"}
+                              src={
+                                c.media?.find((m) => m.isCover && m.mediaType === "PHOTO")?.url ||
+                                c.media?.find((m) => m.mediaType === "PHOTO")?.url ||
+                                c.avatarUrl ||
+                                "/placeholder-contestant.webp"
+                              }
                               alt={c.name}
                               fill
                               className="object-cover"
@@ -229,8 +234,12 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
       </Card>
 
       <ContestantFormModal
+        key={editingContestant ? editingContestant.id : modalOpen ? "new-open" : "closed"}
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={() => {
+          setModalOpen(false);
+          setEditingContestant(null);
+        }}
         categories={categories}
         divisions={divisions}
         initialData={editingContestant}

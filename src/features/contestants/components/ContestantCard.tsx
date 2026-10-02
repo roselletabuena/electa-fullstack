@@ -18,7 +18,14 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
   onVoteClick,
 }) => {
   const hasVideo = contestant.media.some((m) => m.mediaType === "VIDEO_EMBED");
-  const photoCount = contestant.media.filter((m) => m.mediaType === "PHOTO").length || 1;
+  const photosMedia = contestant.media.filter((m) => m.mediaType === "PHOTO");
+  const photoCount = photosMedia.length || 1;
+
+  const coverPhoto =
+    contestant.media.find((m) => m.isCover && m.mediaType === "PHOTO")?.url ||
+    photosMedia[0]?.url ||
+    contestant.avatarUrl ||
+    "/placeholder-contestant.webp";
 
   return (
     <div
@@ -28,7 +35,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
       {/* 4:5 Portrait Image Container */}
       <div className="relative aspect-4/5 w-full overflow-hidden bg-slate-950">
         <Image
-          src={contestant.avatarUrl || "/placeholder-contestant.webp"}
+          src={coverPhoto}
           alt={contestant.name}
           fill
           sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -75,7 +82,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
 
         {/* Candidate Identity Dossier Snippet */}
         <div className="absolute right-3 bottom-3 left-3">
-          <h3 className="font-heading font-extrabold line-clamp-1 text-lg tracking-tight text-white drop-shadow-xs transition-colors group-hover:text-sky-300">
+          <h3 className="font-heading line-clamp-1 text-lg font-extrabold tracking-tight text-white drop-shadow-xs transition-colors group-hover:text-sky-300">
             {contestant.name}
           </h3>
 

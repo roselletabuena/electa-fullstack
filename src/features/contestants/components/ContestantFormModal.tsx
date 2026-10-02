@@ -6,8 +6,7 @@ import type { ContestantMediaDto, ContestantFormModalProps } from "../types";
 import { ImageCropper } from "./ImageCropper";
 import { parseVideoEmbedUrl } from "../utils/parse-video-embed";
 
-export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
-  isOpen,
+const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpen">> = ({
   onClose,
   onSubmit,
   categories,
@@ -74,8 +73,6 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
   );
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
-
-  if (!isOpen) return null;
 
   const handleToggleCategory = (catId: string) => {
     setSelectedCategoryIds((prev) =>
@@ -480,5 +477,20 @@ export const ContestantFormModal: React.FC<ContestantFormModalProps> = ({
         </form>
       </div>
     </div>
+  );
+};
+
+export const ContestantFormModal: React.FC<ContestantFormModalProps> = (props) => {
+  if (!props.isOpen) return null;
+
+  return (
+    <ContestantFormModalContent
+      key={props.initialData?.id ?? "new-contestant"}
+      onClose={props.onClose}
+      onSubmit={props.onSubmit}
+      categories={props.categories}
+      divisions={props.divisions}
+      initialData={props.initialData}
+    />
   );
 };

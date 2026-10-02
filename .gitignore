@@ -50,3 +50,6 @@ graphify-out/
 # git worktrees
 .worktrees/
 
+# scratch scripts
+scratch/
+

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Heart, Loader2, Clock, Zap } from "lucide-react";
+import { Heart, Loader2, Zap, Share2, Check } from "lucide-react";
 import { useFreeVoteQuota } from "../hooks/use-free-vote-quota";
 import { useCastFreeVote } from "../hooks/use-cast-free-vote";
 import { AuthPromptModal } from "./AuthPromptModal";
@@ -22,6 +22,7 @@ export interface FreeVoteButtonProps {
   awardCategoryId?: string | undefined;
   size?: ("sm" | "md" | "lg") | undefined;
   className?: string | undefined;
+  showShareButton?: boolean | undefined;
   onBoostClick?: (() => void) | undefined;
   onVoteSuccess?: (() => void) | undefined;
 }
@@ -39,18 +40,31 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
   awardCategoryId,
   size = "md",
   className = "",
+  showShareButton = false,
   onBoostClick,
   onVoteSuccess,
 }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
   const [errorToast, setErrorToast] = useState<string | null>(null);
+  const [successToast, setSuccessToast] = useState<string | null>(null);
 
   const { quota, isLoading: isQuotaLoading, formattedCountdown } = useFreeVoteQuota(eventId);
 
   const { mutate: castVote, isPending: isCasting } = useCastFreeVote(eventId, {
     onSuccess: () => {
-      setIsStoryModalOpen(true);
+      const storageKey = `vs_story_shown_${eventId}_${contestantId}`;
+      const alreadyShown = typeof window !== "undefined" && localStorage.getItem(storageKey);
+
+      if (!alreadyShown) {
+        if (typeof window !== "undefined") {
+          localStorage.setItem(storageKey, "true");
+        }
+        setIsStoryModalOpen(true);
+      } else {
+        setSuccessToast("Vote cast successfully!");
+        setTimeout(() => setSuccessToast(null), 3000);
+      }
       onVoteSuccess?.();
     },
     onError: (err: VotingErrorDto) => {
@@ -130,31 +144,18 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             <span>Boost Only</span>
           </button>
         ) : isInCooldown ? (
-          <div className="flex items-center gap-1.5">
-            <button
-              type="button"
-              disabled
-              className={`flex cursor-not-allowed items-center justify-center rounded-none border border-slate-300 bg-slate-100 font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-400 ${sizeClasses} ${className}`}
-              title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}`}
-            >
-              <Clock className="size-3.5 text-amber-500" />
-              <span>Quota Used</span>
-            </button>
-
-            {onBoostClick && (
-              <button
-                type="button"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  onBoostClick();
-                }}
-                className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses}`}
-              >
-                <Zap className="size-3.5 fill-white" />
-                <span>Boost</span>
-              </button>
-            )}
-          </div>
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              onBoostClick?.();
+            }}
+            className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
+            title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
+          >
+            <Zap className="size-3.5 fill-white" />
+            <span>Boost</span>
+          </button>
         ) : (
           <button
             type="button"
@@ -181,9 +182,36 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
           </button>
         )}
 
+        {/* On-Demand Story Generator Modal Button */}
+        {showShareButton && (
+          <button
+            type="button"
+            onClick={(e) => {
+              e.stopPropagation();
+              setIsStoryModalOpen(true);
+            }}
+            className={`ml-1.5 flex items-center justify-center border border-slate-300 bg-white text-slate-600 shadow-2xs transition-colors hover:border-sky-500 hover:bg-sky-50 hover:text-sky-600 active:scale-95 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:bg-slate-700 dark:hover:text-sky-400 ${
+              size === "lg" ? "h-10 gap-1.5 px-3 text-xs font-bold" : "h-7 w-7"
+            }`}
+            title="Create & Share Campaign Story Card"
+            aria-label="Create & Share Campaign Story Card"
+          >
+            <Share2 className={size === "lg" ? "size-4" : "size-3.5"} />
+            {size === "lg" && <span>Share Story</span>}
+          </button>
+        )}
+
+        {/* Transient Success Toast */}
+        {successToast && (
+          <div className="animate-in fade-in slide-in-from-bottom-2 absolute -top-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-none bg-emerald-600 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
+            <Check className="size-3.5" />
+            <span>{successToast}</span>
+          </div>
+        )}
+
         {/* Transient Error Toast */}
         {errorToast && (
-          <div className="animate-in fade-in slide-in-from-bottom-2 absolute -top-10 left-1/2 -translate-x-1/2 rounded-lg bg-rose-600 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
+          <div className="animate-in fade-in slide-in-from-bottom-2 absolute -top-10 left-1/2 z-20 -translate-x-1/2 rounded-none bg-rose-600 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
             {errorToast}
           </div>
         )}

@@ -106,32 +106,46 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
       </div>
 
       {/* Card Action Bar */}
-      <div className="flex items-center justify-between border-t border-slate-200 bg-slate-50/70 p-3 dark:border-slate-800 dark:bg-[#0d1424]">
-        <div className="text-xs text-slate-500 dark:text-slate-400">
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className="flex items-center justify-between gap-2 border-t border-slate-200 bg-slate-50/90 px-3 py-2.5 dark:border-slate-800 dark:bg-[#0d1424]"
+      >
+        <div className="flex min-w-0 flex-col justify-center">
           {contestant.voteCount > 0 ? (
-            <span>
-              <strong className="font-mono font-bold text-sky-600 dark:text-sky-400">
+            <div className="flex items-baseline gap-1">
+              <span className="font-mono text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
                 {contestant.voteCount.toLocaleString()}
-              </strong>{" "}
-              votes
-            </span>
+              </span>
+              <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                {contestant.voteCount === 1 ? "vote" : "votes"}
+              </span>
+            </div>
           ) : (
-            <span className="text-slate-400">Official Candidate</span>
+            <div className="flex items-baseline gap-1">
+              <span className="font-mono text-base font-extrabold tracking-tight text-slate-400 dark:text-slate-500">
+                0
+              </span>
+              <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
+                votes
+              </span>
+            </div>
           )}
         </div>
 
-        <FreeVoteButton
-          eventId={contestant.eventId}
-          contestantId={contestant.id}
-          contestantName={contestant.name}
-          contestantNumber={contestant.contestantNumber}
-          contestantAvatarUrl={coverPhoto}
-          divisionName={
-            contestant.divisionRef?.name || contestant.divisionName || contestant.division
-          }
-          size="sm"
-          onBoostClick={onVoteClick ? () => onVoteClick(contestant) : undefined}
-        />
+        <div className="shrink-0">
+          <FreeVoteButton
+            eventId={contestant.eventId}
+            contestantId={contestant.id}
+            contestantName={contestant.name}
+            contestantNumber={contestant.contestantNumber}
+            contestantAvatarUrl={coverPhoto}
+            divisionName={
+              contestant.divisionRef?.name || contestant.divisionName || contestant.division
+            }
+            size="sm"
+            onBoostClick={onVoteClick ? () => onVoteClick(contestant) : undefined}
+          />
+        </div>
       </div>
     </div>
   );

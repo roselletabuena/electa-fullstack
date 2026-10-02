@@ -252,14 +252,18 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
 
             {/* Bottom Modal CTA Bar */}
             <div className="flex items-center justify-between border-t border-slate-200 pt-4 dark:border-slate-800">
-              <div>
-                <span className="text-xs text-slate-500 dark:text-slate-400">Current Standing</span>
-                <p className="font-mono text-lg font-bold text-sky-600 dark:text-sky-400">
-                  {contestant.voteCount.toLocaleString()}{" "}
-                  <span className="text-xs font-normal text-slate-500 dark:text-slate-400">
-                    Votes
+              <div className="flex flex-col justify-center">
+                <span className="text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                  Current Standing
+                </span>
+                <div className="mt-0.5 flex items-baseline gap-1.5">
+                  <span className="font-mono text-2xl font-black tracking-tight text-slate-900 dark:text-slate-50">
+                    {contestant.voteCount.toLocaleString()}
                   </span>
-                </p>
+                  <span className="text-xs font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+                    {contestant.voteCount === 1 ? "vote" : "votes"}
+                  </span>
+                </div>
               </div>
 
               <FreeVoteButton
@@ -272,6 +276,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                   contestant.divisionRef?.name || contestant.divisionName || contestant.division
                 }
                 size="lg"
+                showShareButton={true}
                 onBoostClick={
                   onVoteClick
                     ? () => {

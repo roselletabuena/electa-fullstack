@@ -1,41 +1,41 @@
 {
-  "timestamp": "2026-10-01T01:00:00Z",
+  "timestamp": "2026-10-02T14:50:00Z",
   "sprint": "SCRUM Sprint 2",
+  "scoringModel": "(0.30 * BV) + (0.25 * CP) + (0.20 * DH) + (0.15 * PR) + (0.10 * UR)",
   "queue": [
     {
       "rank": 1,
-      "key": "VS-38",
-      "title": "Dynamic Category Integration in Contestant Form & Public Roster Filter Bar",
+      "key": "VS-27",
+      "title": "Frictionless Voter Authentication Modal",
       "type": "Story",
       "priority": "High",
       "points": 3,
-      "stream": "frontend-roster",
+      "score": 88.5,
+      "stream": "voter-auth-ux",
       "parallelGroup": "GROUP_A",
-      "branchName": "015-dynamic-category-integration",
-      "workingDirectory": "vote-sphere-vs-38",
+      "branchName": "feature/VS-27-frictionless-voter-auth-modal",
       "prerequisites": [],
       "targetDirectories": [
-        "src/features/contestants/components/",
-        "src/features/contestants/types/",
-        "src/app/(dashboard)/events/[slug]/contestants/"
+        "src/features/auth/components/",
+        "src/features/voting/components/"
       ]
     },
     {
       "rank": 2,
-      "key": "VS-20",
-      "title": "Core Voting Engine, Omnichannel Auth & Anti-Fraud",
+      "key": "VS-21",
+      "title": "Philippine Payment Rails & Dynamic QR Ph Engine",
       "type": "Story",
       "priority": "Highest",
       "points": 8,
-      "stream": "voting-engine",
-      "parallelGroup": "GROUP_B",
-      "branchName": "015-core-voting-engine",
-      "workingDirectory": "vote-sphere",
+      "score": 87.5,
+      "stream": "payment-monetization",
+      "parallelGroup": "GROUP_C",
+      "branchName": "feature/VS-21-qrph-payment-rails",
       "prerequisites": [],
       "targetDirectories": [
-        "src/features/voting/",
-        "src/features/auth/",
-        "src/app/api/voting/"
+        "src/features/payments/",
+        "src/app/api/payments/",
+        "src/app/api/webhooks/payment/"
       ]
     },
     {
@@ -45,31 +45,48 @@
       "type": "Story",
       "priority": "High",
       "points": 3,
+      "score": 86.5,
       "stream": "security-bot-mitigation",
       "parallelGroup": "GROUP_B",
-      "branchName": "015-core-voting-engine",
-      "workingDirectory": "vote-sphere",
-      "prerequisites": ["VS-20"],
+      "branchName": "feature/VS-29-cloudflare-turnstile-bot-mitigation",
+      "prerequisites": [],
       "targetDirectories": [
-        "src/features/voting/utils/turnstile.ts",
-        "src/features/voting/utils/rate-limiter.ts"
+        "src/lib/security/",
+        "src/app/api/events/[slug]/vote/"
       ]
     },
     {
       "rank": 4,
+      "key": "VS-22",
+      "title": "Real-Time Live Leaderboard & Stealth Mystery Freeze",
+      "type": "Story",
+      "priority": "High",
+      "points": 5,
+      "score": 81.5,
+      "stream": "live-leaderboard",
+      "parallelGroup": "GROUP_D",
+      "branchName": "feature/VS-22-realtime-live-leaderboard-freeze",
+      "prerequisites": [],
+      "targetDirectories": [
+        "src/features/leaderboard/",
+        "src/features/events/components/"
+      ]
+    },
+    {
+      "rank": 5,
       "key": "VS-25",
       "title": "Viral Social Sharing 'I Voted' Story Generator",
       "type": "Story",
       "priority": "Medium",
       "points": 3,
-      "stream": "social-share",
+      "score": 80.0,
+      "stream": "growth-social-share",
       "parallelGroup": "GROUP_A",
-      "branchName": "feature/VS-25-social-share-story-generator",
-      "workingDirectory": "vote-sphere",
-      "prerequisites": ["VS-20"],
+      "branchName": "feature/VS-25-viral-social-story-generator",
+      "prerequisites": [],
       "targetDirectories": [
-        "src/features/voting/components/StoryCard.tsx",
-        "src/features/voting/components/ShareStoryModal.tsx"
+        "src/features/voting/components/",
+        "src/lib/canvas/"
       ]
     }
   ]

@@ -6,6 +6,7 @@ import { useFreeVoteQuota } from "../hooks/use-free-vote-quota";
 import { useCastFreeVote } from "../hooks/use-cast-free-vote";
 import { AuthPromptModal } from "./AuthPromptModal";
 import { VoteStoryModal } from "./VoteStoryModal";
+import { BoostVoteModal } from "@/features/payments/components/BoostVoteModal";
 import type { VotingErrorDto } from "../types";
 import type { StoryCardPayload } from "../types/story";
 
@@ -46,6 +47,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
 }) => {
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
+  const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
   const [errorToast, setErrorToast] = useState<string | null>(null);
   const [successToast, setSuccessToast] = useState<string | null>(null);
 
@@ -148,7 +150,8 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             type="button"
             onClick={(e) => {
               e.stopPropagation();
-              onBoostClick?.();
+              if (onBoostClick) onBoostClick();
+              else setIsBoostModalOpen(true);
             }}
             className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
             title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
@@ -243,6 +246,24 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         isOpen={isStoryModalOpen}
         onClose={() => setIsStoryModalOpen(false)}
         payload={storyPayload}
+      />
+
+      {/* Power Boost Payment Modal */}
+      <BoostVoteModal
+        isOpen={isBoostModalOpen}
+        onClose={() => setIsBoostModalOpen(false)}
+        eventId={eventId}
+        eventTitle={eventTitle ?? "Event Competition"}
+        contestantId={contestantId}
+        contestantName={contestantName}
+        contestantNumber={contestantNumber ?? 1}
+        contestantAvatarUrl={contestantAvatarUrl}
+        awardCategoryId={awardCategoryId}
+        onSuccess={() => {
+          onVoteSuccess?.();
+          setSuccessToast("Boost Votes Credited!");
+          setTimeout(() => setSuccessToast(null), 3000);
+        }}
       />
     </>
   );

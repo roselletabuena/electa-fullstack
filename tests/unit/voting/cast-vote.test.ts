@@ -309,6 +309,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       awardCategoryId: null,
       voteType: "FREE",
       voteWeight: 1,
+      paymentTransactionId: null,
       createdAt: new Date(),
     });
 

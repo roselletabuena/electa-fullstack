@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { useRouter } from "next/navigation";
-
+import { useQueryClient } from "@tanstack/react-query";
 import { ContestantRoster } from "@/features/contestants/components/ContestantRoster";
 import { useContestants } from "@/features/contestants/hooks/use-contestants";
 import { useCategories } from "@/features/contestants/hooks/use-categories";
@@ -13,6 +13,7 @@ import { EventBanner } from "./EventBanner";
 import { EventCountdown } from "./EventCountdown";
 import { EventVotingRulesBanner } from "./EventVotingRulesBanner";
 import { usePendingVoteIntent } from "@/features/voting/hooks/use-pending-vote-intent";
+import { BoostVoteModal } from "@/features/payments";
 import type { EventOperationalState, PublicEventDto } from "../types";
 
 export interface EventPageClientProps {
@@ -27,7 +28,21 @@ export function EventPageClient({
   accessMode = "guest",
 }: EventPageClientProps): React.JSX.Element {
   const router = useRouter();
-  const [event, setEvent] = useState<PublicEventDto>(initialEvent);
+  const queryClient = useQueryClient();
+  const [operationalStateOverride, setOperationalStateOverride] =
+    useState<EventOperationalState | null>(null);
+  const [prevOperationalState, setPrevOperationalState] = useState(initialEvent.operationalState);
+  const [boostCandidate, setBoostCandidate] = useState<RichContestantDto | null>(null);
+
+  if (prevOperationalState !== initialEvent.operationalState) {
+    setPrevOperationalState(initialEvent.operationalState);
+    setOperationalStateOverride(null);
+  }
+
+  const event: PublicEventDto = {
+    ...initialEvent,
+    operationalState: operationalStateOverride ?? initialEvent.operationalState,
+  };
 
   const { data: apiContestants } = useContestants(event.slug);
   const { data: apiCategories } = useCategories(event.slug);
@@ -45,16 +60,12 @@ export function EventPageClient({
     const nextState: EventOperationalState =
       event.operationalState === "Scheduled" ? "Active" : "Closed";
 
-    setEvent((prev) => ({
-      ...prev,
-      operationalState: nextState,
-    }));
-
+    setOperationalStateOverride(nextState);
     router.refresh();
   };
 
   const handleSelectCandidate = (candidate: RichContestantDto): void => {
-    console.warn(`Selected Candidate #${candidate.contestantNumber} - ${candidate.name}`);
+    setBoostCandidate(candidate);
   };
 
   // Convert initial event contestants to RichContestantDto format as fallback
@@ -121,6 +132,27 @@ export function EventPageClient({
           categories={taxonomy?.awardCategories ?? apiCategories ?? []}
           onVoteClick={handleSelectCandidate}
         />
+
+        {boostCandidate && (
+          <BoostVoteModal
+            isOpen={Boolean(boostCandidate)}
+            onClose={() => setBoostCandidate(null)}
+            eventId={event.id}
+            eventTitle={event.title}
+            contestantId={boostCandidate.id}
+            contestantName={boostCandidate.name}
+            contestantNumber={boostCandidate.contestantNumber}
+            contestantAvatarUrl={boostCandidate.avatarUrl}
+            onSuccess={() => {
+              router.refresh();
+              queryClient.invalidateQueries({ queryKey: ["contestants"] });
+              queryClient.invalidateQueries({ queryKey: ["event"] });
+              queryClient.invalidateQueries({ queryKey: ["events"] });
+              queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
+              queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
+            }}
+          />
+        )}
       </div>
     </div>
   );

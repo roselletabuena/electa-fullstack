@@ -156,6 +156,20 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         isOpen={isAuthModalOpen}
         onClose={() => setIsAuthModalOpen(false)}
         candidateName={contestantName}
+        voteIntent={{
+          eventId,
+          contestantId,
+          contestantName,
+          awardCategoryId,
+          voteType: "FREE",
+        }}
+        onSuccess={() => {
+          castVote({
+            eventId,
+            contestantId,
+            awardCategoryId,
+          });
+        }}
       />
     </>
   );

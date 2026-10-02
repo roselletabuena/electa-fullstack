@@ -2,12 +2,14 @@
 
 import React from "react";
 import { OmnichannelAuthModal } from "@/features/auth/components/OmnichannelAuthModal";
+import type { PendingVoteIntent } from "../types";
 
 export interface AuthPromptModalProps {
   isOpen: boolean;
   onClose: () => void;
   candidateName?: string | undefined;
   onSuccess?: (() => void) | undefined;
+  voteIntent?: Omit<PendingVoteIntent, "timestamp"> | undefined;
 }
 
 export const AuthPromptModal: React.FC<AuthPromptModalProps> = ({
@@ -15,12 +17,14 @@ export const AuthPromptModal: React.FC<AuthPromptModalProps> = ({
   onClose,
   candidateName,
   onSuccess,
+  voteIntent,
 }) => {
   return (
     <OmnichannelAuthModal
       isOpen={isOpen}
       onClose={onClose}
       onSuccess={onSuccess}
+      voteIntent={voteIntent}
       title="Sign In to Cast Your Vote"
       subtitle={
         candidateName

@@ -4,7 +4,9 @@ export * from "./actions/cast-free-vote";
 export * from "./actions/get-voter-quota";
 export * from "./hooks/use-free-vote-quota";
 export * from "./hooks/use-cast-free-vote";
+export * from "./hooks/use-pending-vote-intent";
 export * from "./components/FreeVoteButton";
+
 export * from "./components/FreeVoteCooldownBanner";
 export * from "./components/AuthPromptModal";
 export * from "./components/TurnstileWidget";
@@ -12,3 +14,4 @@ export * from "./utils/quota-calculator";
 export * from "./utils/turnstile";
 export * from "./utils/rate-limiter";
 export * from "./utils/fingerprint";
+export * from "./utils/vote-intent";

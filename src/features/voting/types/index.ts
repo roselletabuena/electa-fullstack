@@ -70,3 +70,12 @@ export interface VotingErrorDto {
     votesUsedIn24h?: number;
   };
 }
+
+export interface PendingVoteIntent {
+  eventId: string;
+  contestantId: string;
+  contestantName?: string | undefined;
+  awardCategoryId?: string | undefined;
+  voteType?: "FREE" | "BOOST" | undefined;
+  timestamp: number;
+}

@@ -87,7 +87,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
           <button
             type="button"
             onClick={handleVoteClick}
-            className={`flex items-center justify-center rounded-xl bg-amber-500 font-semibold text-white shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
+            className={`flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
           >
             <Zap className="size-3.5 fill-white" />
             <span>Boost Only</span>
@@ -97,11 +97,11 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             <button
               type="button"
               disabled
-              className={`flex cursor-not-allowed items-center justify-center rounded-xl border border-slate-200/80 bg-slate-100 font-medium text-slate-500 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-400 ${sizeClasses} ${className}`}
-              title={`Next vote resets in ${formattedCountdown}`}
+              className={`flex cursor-not-allowed items-center justify-center rounded-none border border-slate-300 bg-slate-100 font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-400 ${sizeClasses} ${className}`}
+              title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}`}
             >
-              <Clock className="size-3.5 animate-pulse text-amber-500" />
-              <span>Next: {formattedCountdown}</span>
+              <Clock className="size-3.5 text-amber-500" />
+              <span>Quota Used</span>
             </button>
 
             {onBoostClick && (
@@ -111,7 +111,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
                   e.stopPropagation();
                   onBoostClick();
                 }}
-                className={`flex items-center justify-center rounded-xl bg-linear-to-r from-amber-500 to-rose-500 font-semibold text-white shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses}`}
+                className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses}`}
               >
                 <Zap className="size-3.5 fill-white" />
                 <span>Boost</span>
@@ -123,7 +123,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             type="button"
             disabled={isCasting || isQuotaLoading}
             onClick={handleVoteClick}
-            className={`group/vote flex items-center justify-center rounded-xl bg-indigo-600 font-semibold text-white shadow-md shadow-indigo-600/20 transition-all hover:bg-indigo-700 hover:shadow-lg active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
+            className={`group/vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
           >
             {isCasting ? (
               <>
@@ -135,7 +135,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
                 <Heart className="size-3.5 fill-white text-white transition-transform group-hover/vote:scale-125" />
                 <span>Vote</span>
                 {total > 1 && (
-                  <span className="py-0.2 ml-0.5 rounded-full bg-indigo-700/80 px-1.5 text-[10px] font-bold text-indigo-100">
+                  <span className="py-0.2 ml-0.5 rounded-none bg-sky-800/90 px-1.5 font-mono text-[10px] font-bold text-sky-100">
                     {remaining}/{total}
                   </span>
                 )}

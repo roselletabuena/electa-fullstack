@@ -29,7 +29,7 @@ export function LeaderboardRoster({
 
     if (entry.rank === 1) {
       return (
-        <span className="inline-flex h-8 items-center gap-1 border border-amber-500 bg-amber-500 px-2.5 font-heading text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs">
+        <span className="font-heading inline-flex h-8 items-center gap-1 border border-amber-500 bg-amber-500 px-2.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs">
           <Trophy className="h-3.5 w-3.5" />
           <span>#1 GOLD</span>
         </span>
@@ -38,7 +38,7 @@ export function LeaderboardRoster({
 
     if (entry.rank === 2) {
       return (
-        <span className="inline-flex h-8 items-center gap-1 border border-slate-400 bg-slate-200 px-2.5 font-heading text-xs font-black tracking-wider text-slate-900 uppercase dark:border-slate-600 dark:bg-slate-700 dark:text-white">
+        <span className="font-heading inline-flex h-8 items-center gap-1 border border-slate-400 bg-slate-200 px-2.5 text-xs font-black tracking-wider text-slate-900 uppercase dark:border-slate-600 dark:bg-slate-700 dark:text-white">
           <Medal className="h-3.5 w-3.5" />
           <span>#2 SILVER</span>
         </span>
@@ -47,7 +47,7 @@ export function LeaderboardRoster({
 
     if (entry.rank === 3) {
       return (
-        <span className="inline-flex h-8 items-center gap-1 border border-orange-600 bg-orange-600 px-2.5 font-heading text-xs font-black tracking-wider text-white uppercase dark:border-orange-500 dark:bg-orange-500 dark:text-slate-950">
+        <span className="font-heading inline-flex h-8 items-center gap-1 border border-orange-600 bg-orange-600 px-2.5 text-xs font-black tracking-wider text-white uppercase dark:border-orange-500 dark:bg-orange-500 dark:text-slate-950">
           <Award className="h-3.5 w-3.5" />
           <span>#3 BRONZE</span>
         </span>
@@ -99,9 +99,7 @@ export function LeaderboardRoster({
                 className="transition-colors hover:bg-slate-50/60 dark:hover:bg-slate-800/40"
               >
                 {/* Rank Badge */}
-                <td className="px-5 py-4 align-middle whitespace-nowrap">
-                  {getRankBadge(entry)}
-                </td>
+                <td className="px-5 py-4 align-middle whitespace-nowrap">{getRankBadge(entry)}</td>
 
                 {/* Candidate Info */}
                 <td className="px-5 py-4 align-middle">

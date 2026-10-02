@@ -59,23 +59,6 @@ export function ThemeProvider({ children, defaultTheme = "light" }: ThemeProvide
 
   return (
     <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            (function() {
-              try {
-                var stored = localStorage.getItem('electa-theme') || localStorage.getItem('votesphere-theme');
-                if (stored === 'dark') {
-                  document.documentElement.classList.add('dark');
-                } else {
-                  document.documentElement.classList.remove('dark');
-                  document.documentElement.classList.add('light');
-                }
-              } catch (e) {}
-            })();
-          `,
-        }}
-      />
       {children}
     </ThemeContext.Provider>
   );

@@ -1,11 +1,15 @@
 import { describe, it, expect } from "vitest";
-import { loginSchema, registerOrganizerSchema } from "@/features/auth/utils/validation";
+import {
+  loginSchema,
+  registerOrganizerSchema,
+  registerUserSchema,
+} from "@/features/auth/utils/validation";
 
 describe("auth validation schemas", () => {
   describe("loginSchema", () => {
     it("accepts valid email and password", () => {
       const result = loginSchema.safeParse({
-        email: "organizer@electa.ph",
+        email: "user@electa.ph",
         password: "password123",
       });
       expect(result.success).toBe(true);
@@ -32,7 +36,7 @@ describe("auth validation schemas", () => {
 
     it("rejects short password when not demo login", () => {
       const result = loginSchema.safeParse({
-        email: "organizer@electa.ph",
+        email: "user@electa.ph",
         password: "123",
       });
       expect(result.success).toBe(false);
@@ -42,13 +46,14 @@ describe("auth validation schemas", () => {
     });
   });
 
-  describe("registerOrganizerSchema", () => {
-    it("accepts valid registration data", () => {
-      const result = registerOrganizerSchema.safeParse({
+  describe("registerUserSchema", () => {
+    it("accepts valid registration data with returnTo", () => {
+      const result = registerUserSchema.safeParse({
         name: "Maria Santos",
-        email: "maria.santos@pageants.ph",
+        email: "maria.santos@electa.ph",
         password: "Password123!",
         organizationName: "Miss Visayas Organization",
+        returnTo: "/dashboard/events/new",
       });
       expect(result.success).toBe(true);
     });
@@ -56,7 +61,7 @@ describe("auth validation schemas", () => {
     it("rejects passwords without an uppercase letter", () => {
       const result = registerOrganizerSchema.safeParse({
         name: "Maria Santos",
-        email: "maria.santos@pageants.ph",
+        email: "maria.santos@electa.ph",
         password: "password123",
       });
       expect(result.success).toBe(false);
@@ -65,7 +70,7 @@ describe("auth validation schemas", () => {
     it("rejects passwords without a number", () => {
       const result = registerOrganizerSchema.safeParse({
         name: "Maria Santos",
-        email: "maria.santos@pageants.ph",
+        email: "maria.santos@electa.ph",
         password: "PasswordOnly",
       });
       expect(result.success).toBe(false);
@@ -74,7 +79,7 @@ describe("auth validation schemas", () => {
     it("rejects short names", () => {
       const result = registerOrganizerSchema.safeParse({
         name: "M",
-        email: "maria.santos@pageants.ph",
+        email: "maria.santos@electa.ph",
         password: "Password123",
       });
       expect(result.success).toBe(false);

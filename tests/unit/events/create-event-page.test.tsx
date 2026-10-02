@@ -25,7 +25,7 @@ describe("NewEventPage (/events/new)", () => {
 
     await NewEventPage();
 
-    expect(redirect).toHaveBeenCalledWith("/login?redirect=%2Fevents%2Fnew");
+    expect(redirect).toHaveBeenCalledWith("/login?returnTo=%2Fevents%2Fnew");
   });
 
   it("renders creation page container and form when user is authenticated", async () => {

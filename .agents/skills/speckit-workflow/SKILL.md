@@ -6,18 +6,18 @@ compatibility: Requires spec-kit directory structure and .agents/skills/speckit-
 
 # SpecKit End-to-End Workflow Orchestrator
 
-This skill orchestrates the entire Spec-Driven Development (SDD) lifecycle for VoteSphere, systematically progressing through requirements, architecture, tasks, and test-driven implementation while honoring project constitutional constraints and atomic commits.
+This skill orchestrates the entire Spec-Driven Development (SDD) lifecycle for VoteSphere, systematically progressing through requirements, architecture, tasks, and test-driven implementation while honoring project constitutional constraints, complete 8-artifact spec delivery, and atomic commits.
 
 ---
 
-## Workflow Phases & Execution Matrix
+## Workflow Phases & Complete 8-Artifact Deliverable Matrix
 
 ```mermaid
 flowchart TD
-    A[1. Feature Bootstrap & Spec\nvote-sphere-feature / speckit-specify] --> B[2. Clarification\nspeckit-clarify]
-    B --> C[3. Requirements Checklist\nspeckit-checklist]
-    C --> D[4. Technical Planning\nspeckit-plan]
-    D --> E[5. Task Generation\nspeckit-tasks]
+    A[1. Bootstrap & Spec\nvote-sphere-feature / speckit-specify\nspec.md, research.md] --> B[2. Clarification\nspeckit-clarify]
+    B --> C[3. Quality Checklist\nspeckit-checklist\nchecklists/requirements.md]
+    C --> D[4. Architecture Planning\nspeckit-plan\ndata-model.md, contracts/, quickstart.md, plan.md]
+    D --> E[5. Task Generation\nspeckit-tasks\ntasks.md]
     E --> F[6. Artifact Analysis\nspeckit-analyze]
     F --> G[7. Implementation\nspeckit-implement]
     G --> H[8. Convergence & Verification\nspeckit-converge]
@@ -26,66 +26,52 @@ flowchart TD
 
 ---
 
-## Execution Modes
+## 📁 The 8 Canonical SpecKit Artifacts (Mandatory Gate)
 
-1. **Interactive Mode (Default)**:
-   - Pauses at critical milestones (after Spec, Plan, and Task generation) for user sign-off.
-   - Recommended for complex architecture or novel feature designs.
+Every feature in `specs/<feature>/` MUST produce all 8 artifacts:
 
-2. **Autonomous / Fast-Forward Mode (`--auto` or `--all`)**:
-   - Executes all phases consecutively without pausing unless blockers or high-risk ambiguities are detected.
+1. `spec.md` — User stories, Gherkin acceptance criteria, invariants
+2. `research.md` — Stack constraints, technology decisions, rationale
+3. `data-model.md` — Entity models, DTOs, storage schemas, state machines
+4. `contracts/` — Component and API route validation contracts (Zod)
+5. `checklists/requirements.md` — Requirements quality validation ("Unit tests for English")
+6. `plan.md` — Technical implementation plan and boundary mapping
+7. `quickstart.md` — Verification run guide, walkthrough scenarios
+8. `tasks.md` — Actionable implementation tasks ordered by dependency
 
 ---
 
 ## Phase-by-Phase Execution Guide
 
 ### Phase 1: Bootstrap & Specification
-1. Run `vote-sphere-feature <feature_name>` to create the feature directory shell (`src/features/<feature>`, test directories, and spec directory).
-2. Invoke `speckit-specify` with the user's requirements to generate `.specify/specs/<feature>/spec.md` with:
-   - User stories in Mike Cohn format (`As a... I want... So that...`)
-   - Gherkin acceptance criteria (`Given... When... Then...`)
-   - Non-functional requirements and data invariants.
+1. Run `vote-sphere-feature <feature_name>` to create the full feature slice (`src/features/<feature>`, test directories, and spec directory).
+2. Populate `specs/<feature>/spec.md` and `specs/<feature>/research.md`.
 
 ### Phase 2: Targeted Clarification
-1. Invoke `speckit-clarify` to inspect `spec.md` for ambiguities, edge cases, and edge constraints.
-2. If ambiguities exist, prompt the user with targeted questions or resolve defaults based on VoteSphere Constitution principles (§I–§VI).
-3. Update `spec.md` with the finalized clarifications.
+1. Invoke `speckit-clarify` to inspect `spec.md` for ambiguities and edge cases.
+2. Resolve defaults or prompt user, updating `spec.md`.
 
-### Phase 3: Requirements & Readiness Checklist
-1. Invoke `speckit-checklist` to create or evaluate domain-specific checklists under `.specify/specs/<feature>/checklists/`.
-2. Ensure accessibility, security (VoteSphere Constitution §II), and test coverage requirements are captured.
+### Phase 3: Requirements Quality Checklist
+1. Invoke `speckit-checklist` to create `specs/<feature>/checklists/requirements.md`.
+2. Ensure completeness, clarity, zero-radius Electa branding, and accessibility (WCAG 2.1 AA) criteria are covered.
 
 ### Phase 4: Architecture & Technical Planning
-1. Invoke `speckit-plan` to produce `.specify/specs/<feature>/plan.md`:
-   - Feature boundary mapping (`src/features/<feature>/`)
-   - Schema / migration requirements (`prisma/schema.prisma`)
-   - API route shells & Zod contracts
-   - Component & state management structure
-   - **Branding & Theme Check**: Enforce Light Mode default (Opal `#F8FAFC`), strict zero-radius (`rounded-none`), and brand typography (Outfit/Sora).
+1. Produce `specs/<feature>/data-model.md` (Entities, DTOs, storage structures).
+2. Produce `specs/<feature>/contracts/` (Typed interfaces, Zod schemas).
+3. Produce `specs/<feature>/quickstart.md` (Reproduction steps, validation scenarios).
+4. Produce `specs/<feature>/plan.md` (Boundary mapping, test plan).
 
 ### Phase 5: Task Generation
-1. Invoke `speckit-tasks` to generate `.specify/specs/<feature>/tasks.md`:
-   - Group tasks by dependency phase (Schema ➔ Services/API ➔ UI/Hooks ➔ Integration).
-   - Tag tasks with Jira issue keys if integrated.
+1. Invoke `speckit-tasks` to generate `specs/<feature>/tasks.md` with dependency-ordered phases.
 
 ### Phase 6: Cross-Artifact Analysis
-1. Invoke `speckit-analyze` to verify consistency across `spec.md`, `plan.md`, and `tasks.md`.
-2. Confirm zero dangling requirements or unscheduled dependencies before touching code.
+1. Invoke `speckit-analyze` to confirm zero missing files or unscheduled dependencies before writing code.
 
 ### Phase 7: Test-Driven Implementation
-1. Invoke `speckit-implement` to execute tasks in `tasks.md`:
-   - Strictly follow Red-Green-Refactor (TDD).
-   - Enforce VoteSphere branding: Light Mode default, `.btn-primary`, `.card-style`, zero-radius, and scoped `dark:` variants.
-   - Update Jira issue statuses (In Progress / Resolved) if Jira MCP is active.
-   - Adhere to the Atomic Commit rule (stage and commit logical units individually).
+1. Invoke `speckit-implement` to execute tasks in `tasks.md` (Red-Green-Refactor).
+2. Update Jira ticket status to `In Progress` / `Done` if Jira MCP is active.
+3. Adhere to the Atomic Commit rule.
 
-### Phase 8: Convergence & Gap Detection
-1. Invoke `speckit-converge` to inspect active code against `spec.md` and `plan.md`.
-2. Append any missed edge cases or incomplete stories to `tasks.md` and complete them.
-
-### Phase 9: Quality Gate & Knowledge Graph Sync
-1. Run `constitution-check` to ensure no constitutional violations (§I–§VI) or brand violations (§VII).
-2. Run `env-validator` to ensure no raw `process.env` leaks.
-3. Run `graphify-auto-sync` (`graphify . --update`) to update AST knowledge graphs.
-4. Perform atomic commits with conventional commit messages.
-
+### Phase 8: Convergence & Verification
+1. Run `npm run typecheck`, `npm run lint`, and `npm run test:unit`.
+2. Run `constitution-check` and `graphify-auto-sync`.

@@ -60,20 +60,25 @@ For each ticket key (e.g., `VS-38`):
    - **Pipeline**: Specification ➔ Architecture Plan ➔ Tasks ➔ TDD Implementation
    ```
 
-### Step 3: Run SpecKit Lifecycle
+### Step 3: Run Full SpecKit Lifecycle (Complete 8-Artifact Gate)
 1. **Feature Directory**:
-   Check if feature slice exists under `src/features/<feature>/`. If not, bootstrap using `vote-sphere-feature <feature_name>`.
-2. **Specification (`speckit-specify`)**:
-   Populate `specs/<feature>/spec.md` with:
+   Bootstrap feature using `vote-sphere-feature <feature_name>` to scaffold directory structures and initial templates.
+2. **Specification & Research (`speckit-specify`)**:
+   Populate `specs/<feature>/spec.md` and `specs/<feature>/research.md` with:
    - Mike Cohn user story (`As a... I want... So that...`).
    - Gherkin acceptance criteria matching the Jira ticket AC.
-3. **Technical Plan (`speckit-plan`)**:
-   Produce `specs/<feature>/plan.md` defining:
-   - Data models & Prisma migrations (if applicable).
-   - API route shells and Zod schemas under `src/lib/validations/` or `src/features/<feature>/types/`.
-   - UI component hierarchy and hooks.
-4. **Tasks (`speckit-tasks`)**:
+   - Stack constraints and architecture decisions.
+3. **Requirements Quality Checklist (`speckit-checklist`)**:
+   Generate `specs/<feature>/checklists/requirements.md` ensuring completeness, clarity, zero-radius Electa branding, and accessibility (WCAG 2.1 AA) criteria.
+4. **Data Model, Contracts & Quickstart (`speckit-plan`)**:
+   Produce:
+   - `specs/<feature>/data-model.md` (Entities, DTOs, storage invariants).
+   - `specs/<feature>/contracts/` (Zod validation schemas and component/route interfaces).
+   - `specs/<feature>/quickstart.md` (Verification run guide and test walkthroughs).
+   - `specs/<feature>/plan.md` (Technical architecture, component mapping, and test plan).
+5. **Tasks (`speckit-tasks`)**:
    Generate `specs/<feature>/tasks.md` ordered by dependencies (Schema ➔ Services/API ➔ UI/Hooks ➔ Integration).
+
 
 ### Step 4: TDD Implementation (`speckit-implement`)
 1. Implement in strict Red-Green-Refactor cycles:

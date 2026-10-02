@@ -1,10 +1,12 @@
 "use client";
 
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Sparkles, Trash2 } from "lucide-react";
 import type { ContestantMediaDto, ContestantFormModalProps } from "../types";
 import { ImageCropper } from "./ImageCropper";
 import { parseVideoEmbedUrl } from "../utils/parse-video-embed";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpen">> = ({
   onClose,
@@ -13,6 +15,7 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
   divisions,
   initialData,
 }) => {
+  const isMounted = useIsMounted();
   const resolveInitialDivision = (): { name: string; id: string | undefined } => {
     if (divisions && divisions.length > 0) {
       const match =
@@ -164,7 +167,9 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
     }
   };
 
-  return (
+  if (!isMounted) return null;
+
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -476,7 +481,8 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
           </div>
         </form>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };
 

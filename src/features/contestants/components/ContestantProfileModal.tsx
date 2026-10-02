@@ -1,11 +1,13 @@
 "use client";
 
 import React, { useState } from "react";
+import { createPortal } from "react-dom";
 import { X, Sparkles, MapPin, Ruler, Video, Image as ImageIcon } from "lucide-react";
 import type { ContestantDto } from "../types";
 import { PhotoGalleryCarousel } from "./PhotoGalleryCarousel";
 import { VideoReelPlayer } from "./VideoReelPlayer";
 import { FreeVoteButton } from "@/features/voting/components/FreeVoteButton";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-3.5 h-3.5" }) => (
   <svg
@@ -36,14 +38,15 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
   onClose,
   onVoteClick,
 }) => {
+  const isMounted = useIsMounted();
   const [activeMediaTab, setActiveMediaTab] = useState<"photos" | "video">("photos");
 
-  if (!isOpen || !contestant) return null;
+  if (!isOpen || !contestant || !isMounted) return null;
 
   const videoMedia = contestant.media.find((m) => m.mediaType === "VIDEO_EMBED");
   const photosMedia = contestant.media.filter((m) => m.mediaType === "PHOTO");
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -64,7 +67,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
               <Sparkles className="size-3.5 text-sky-600 dark:text-sky-400" />
               <span>Candidate #{String(contestant.contestantNumber).padStart(2, "0")}</span>
             </div>
-            <span className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-bold tracking-wider uppercase text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <span className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
               {contestant.division.toLowerCase()} Division
             </span>
           </div>
@@ -88,7 +91,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setActiveMediaTab("photos")}
-                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-none py-1.5 text-xs font-bold uppercase tracking-wider transition-all ${
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-none py-1.5 text-xs font-bold tracking-wider uppercase transition-all ${
                     activeMediaTab === "photos"
                       ? "bg-slate-900 text-white shadow-xs dark:bg-slate-100 dark:text-slate-900"
                       : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
@@ -100,7 +103,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                 <button
                   type="button"
                   onClick={() => setActiveMediaTab("video")}
-                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-none py-1.5 text-xs font-bold uppercase tracking-wider transition-all ${
+                  className={`flex flex-1 items-center justify-center gap-1.5 rounded-none py-1.5 text-xs font-bold tracking-wider uppercase transition-all ${
                     activeMediaTab === "video"
                       ? "bg-rose-600 text-white shadow-xs"
                       : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
@@ -277,6 +280,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
           </div>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };

@@ -1,14 +1,14 @@
 ---
 name: "vote-sphere-feature"
-description: "Bootstrap a complete VoteSphere feature from scratch — creates the spec directory, full src/features slice, API route shell, and test folder in a single command. Run this before /speckit-specify."
+description: "Bootstrap a complete VoteSphere feature from scratch — creates the complete spec directory with all canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md), full src/features slice, API route shell, and test folder in a single command."
 metadata:
   author: "VoteSphere Engineering Team"
-  version: "1.0.0"
+  version: "1.1.0"
 ---
 
 # VoteSphere Feature Bootstrap
 
-Bootstrap a complete, convention-compliant VoteSphere feature in one command. This is always the **first step** before running `/skill:speckit-specify`.
+Bootstrap a complete, convention-compliant VoteSphere feature in one command. This is always the **first step** before running `/speckit`. It guarantees that **all 8 canonical SpecKit artifacts** are scaffolded properly.
 
 ## User Input
 
@@ -38,12 +38,11 @@ If `$ARGUMENTS` is empty, **ERROR**: "Provide a feature name in kebab-case. Exam
 
 ---
 
-### Step 2 — Create the spec directory
+### Step 2 — Create the complete spec directory with all 8 canonical artifacts
 
-Create the following files under `SPEC_DIR/`:
+Create the following files and directories under `SPEC_DIR/`:
 
-**`SPEC_DIR/spec.md`** — Feature specification template pre-seeded for VoteSphere:
-
+#### 1. `SPEC_DIR/spec.md` — Feature specification template:
 ```markdown
 # Feature Specification: <FEATURE_NAME_TITLE_CASE>
 
@@ -59,22 +58,16 @@ Create the following files under `SPEC_DIR/`:
 
 ## Actors
 
-<!-- Who interacts with this feature? (e.g., Organizer, Voter, Public Visitor) -->
-
 - **Organizer**: ...
 - **Voter**: ...
 
 ## Functional Requirements
-
-<!-- List testable, user-facing requirements. No implementation details. -->
 
 1. ...
 2. ...
 3. ...
 
 ## User Scenarios & Acceptance Criteria
-
-<!-- Numbered scenarios the feature must satisfy end-to-end. -->
 
 ### Scenario 1: Happy Path
 
@@ -84,34 +77,25 @@ Create the following files under `SPEC_DIR/`:
 
 ## Edge Cases & Constraints
 
-<!-- Boundary conditions, error states, and known limitations. -->
-
 - ...
 
 ## Out of Scope
 
-<!-- Explicitly list what this feature does NOT include. -->
-
 - ...
 
 ## Success Criteria
-
-<!-- Measurable, technology-agnostic outcomes. -->
 
 - Users can ...
 - System handles ...
 
 ## Dependencies & Assumptions
 
-<!-- Other features or systems this relies on. -->
-
 - Relies on: AWS Cognito session via `getSession()`
 - Relies on: Prisma singleton from `src/lib/db.ts`
 - Assumes: ...
 ```
 
-**`SPEC_DIR/research.md`** — Pre-seeded with VoteSphere stack decisions:
-
+#### 2. `SPEC_DIR/research.md` — Pre-seeded with VoteSphere stack decisions:
 ```markdown
 # Research & Architecture Decisions: <FEATURE_NAME_TITLE_CASE>
 
@@ -135,20 +119,100 @@ Create the following files under `SPEC_DIR/`:
 | Styling       | Tailwind CSS 4 `@theme` tokens in `src/app/globals.css`                 |
 | Branding/UI   | Default to Light Mode (Opal `#F8FAFC`), strict zero-radius (`rounded-none`), Outfit & Sora typography |
 
-
 ## Technical Decisions & Rationale
 
-### 1. [Decision Title]
-
+### 1. Architecture Strategy
 - **Decision**: ...
 - **Rationale**: ...
 - **Alternatives Considered**: ...
+```
 
-### 2. [Decision Title]
+#### 3. `SPEC_DIR/data-model.md` — Entity models & storage structures:
+```markdown
+# Data Model: <FEATURE_NAME_TITLE_CASE>
 
-- **Decision**: ...
-- **Rationale**: ...
-- **Alternatives Considered**: ...
+**Feature**: `<FEATURE_SLUG>`
+**Date**: <TODAY_DATE>
+
+## 1. Entities & Data Structures
+
+<!-- Document Prisma models, DTOs, or client session storage types -->
+
+## 2. Invariants & Validation Rules
+
+<!-- Validation bounds, unique constraints, foreign keys -->
+```
+
+#### 4. `SPEC_DIR/contracts/` — API route & component interface contracts:
+Create `SPEC_DIR/contracts/<FEATURE_NAME>.ts` containing request/response TypeScript interfaces and Zod schemas.
+
+#### 5. `SPEC_DIR/checklists/requirements.md` — Requirements quality checklist ("Unit tests for English"):
+```markdown
+# Requirements Quality Checklist: <FEATURE_NAME_TITLE_CASE>
+
+**Feature ID**: `<FEATURE_SLUG>`
+**Purpose**: Requirements Quality Validation
+**Created**: <TODAY_DATE>
+
+## 1. Requirement Completeness
+- [ ] **CHK001** - Are all primary user flows documented? [Completeness]
+- [ ] **CHK002** - Are error and failure response structures specified? [Completeness]
+
+## 2. Requirement Clarity & Measurability
+- [ ] **CHK003** - Are numeric boundaries and performance thresholds quantified? [Clarity]
+
+## 3. Design System & Accessibility Parity
+- [ ] **CHK004** - Are strict zero-radius (`rounded-none`) rules enforced across all components? [Branding]
+- [ ] **CHK005** - Does the UI guarantee WCAG 2.1 AA contrast in both Light Mode (Opal) and Dark Mode? [Accessibility]
+
+## 4. Scenario & Edge Case Coverage
+- [ ] **CHK006** - Are edge cases and unauthenticated fallback states documented? [Edge Cases]
+```
+
+#### 6. `SPEC_DIR/plan.md` — Technical implementation plan:
+```markdown
+# Implementation Plan: <FEATURE_NAME_TITLE_CASE>
+
+**Feature ID**: `<FEATURE_SLUG>`
+
+## 1. Architecture & Component Mapping
+- Components: `src/features/<FEATURE_NAME>/components/`
+- Hooks / Queries: `src/features/<FEATURE_NAME>/hooks/`
+- Server Actions / Routes: `src/features/<FEATURE_NAME>/actions/`
+
+## 2. Test Plan
+- Unit tests under `tests/unit/<FEATURE_NAME>/`
+```
+
+#### 7. `SPEC_DIR/quickstart.md` — Verification & testing run guide:
+```markdown
+# Quickstart & Verification Guide: <FEATURE_NAME_TITLE_CASE>
+
+## 1. Overview & Setup
+<!-- Prerequisites and local config -->
+
+## 2. Verification Scenarios
+### Scenario A: Happy Path Walkthrough
+1. Navigate to ...
+2. Click ...
+3. Verify ...
+
+## 3. Automated Test Suite Execution
+```bash
+npm run typecheck
+npm run lint
+npm run test:unit tests/unit/<FEATURE_NAME>/
+```
+```
+
+#### 8. `SPEC_DIR/tasks.md` — Actionable implementation tasks:
+```markdown
+# Implementation Tasks: <FEATURE_NAME_TITLE_CASE>
+
+- [ ] **Task 1: Core Types & Contracts** `feat(<FEATURE_NAME>): add types and validations`
+- [ ] **Task 2: Backend Services / Actions** `feat(<FEATURE_NAME>): implement server actions and API routes`
+- [ ] **Task 3: UI Components & Electa Branding** `feat(<FEATURE_NAME>): build components with zero-radius Opal design system`
+- [ ] **Task 4: Quality Gate & Verification** `chore(qa): verify test suite, lint, and typecheck`
 ```
 
 ---
@@ -167,59 +231,13 @@ src/features/<FEATURE_NAME>/
 ```
 
 Place a `.gitkeep` in each empty directory so they are tracked by git.
-
-Also create a barrel index at `src/features/<FEATURE_NAME>/index.ts`:
-
-```typescript
-// <FEATURE_NAME> feature — public exports
-// Add named exports here as the feature is built out.
-export {};
-```
+Also create a barrel index at `src/features/<FEATURE_NAME>/index.ts`.
 
 ---
 
 ### Step 4 — Create the API route shell
 
-Create `src/app/api/<FEATURE_NAME>/route.ts` with a typed shell:
-
-```typescript
-import type { NextRequest } from "next/server";
-
-import { getSession } from "@/lib/auth/get-session";
-import { apiError, apiSuccess } from "@/lib/api/response";
-
-/**
- * GET /api/<FEATURE_NAME>
- * TODO: Implement — describe what this returns
- */
-export async function GET(_req: NextRequest) {
-  const session = await getSession();
-  if (!session) {
-    return apiError("Unauthorized", 401);
-  }
-
-  // TODO: implement
-  return apiSuccess({ message: "<FEATURE_NAME> GET — not yet implemented" });
-}
-
-/**
- * POST /api/<FEATURE_NAME>
- * TODO: Implement — describe what this creates/updates
- */
-export async function POST(req: NextRequest) {
-  const session = await getSession();
-  if (!session) {
-    return apiError("Unauthorized", 401);
-  }
-
-  // TODO: parse body with Zod schema from src/features/<FEATURE_NAME>/types/
-  const _body = await req.json();
-
-  return apiSuccess({ message: "<FEATURE_NAME> POST — not yet implemented" });
-}
-```
-
-> **Note**: The agent must replace `<FEATURE_NAME>` with the actual feature name in all file contents.
+Create `src/app/api/<FEATURE_NAME>/route.ts` with typed `ApiResponse<T>` envelope.
 
 ---
 
@@ -239,59 +257,8 @@ Overwrite `.specify/feature.json` with:
 }
 ```
 
-This ensures `speckit-plan`, `speckit-tasks`, and `speckit-implement` automatically pick up this feature.
-
----
-
-### Step 7 — Create `SPEC_DIR/checklists/` directory
-
-Create `SPEC_DIR/checklists/.gitkeep` so `speckit-specify` has a place to write its quality checklist.
-
 ---
 
 ## Completion Report
 
-After completing all steps, output a structured summary:
-
-```
-✅ VoteSphere Feature Bootstrapped: <FEATURE_SLUG>
-
-📁 Spec directory:
-   specs/<FEATURE_SLUG>/
-   ├── spec.md          ← Fill this in with /skill:speckit-specify
-   ├── research.md      ← Pre-seeded with stack context
-   └── checklists/
-
-🧩 Feature slice:
-   src/features/<FEATURE_NAME>/
-   ├── components/
-   ├── hooks/
-   ├── types/
-   ├── actions/
-   ├── utils/
-   └── index.ts
-
-🌐 API route:
-   src/app/api/<FEATURE_NAME>/route.ts
-
-🧪 Test directory:
-   tests/unit/<FEATURE_NAME>/
-
-🔗 .specify/feature.json updated → downstream speckit commands are ready.
-
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-▶ Next step: /skill:speckit-specify <feature description>
-```
-
----
-
-## Done When
-
-- [ ] `specs/<FEATURE_SLUG>/spec.md` created with VoteSphere template
-- [ ] `specs/<FEATURE_SLUG>/research.md` created pre-seeded with stack decisions
-- [ ] `specs/<FEATURE_SLUG>/checklists/.gitkeep` created
-- [ ] `src/features/<FEATURE_NAME>/` created with all 5 subdirectories + `index.ts`
-- [ ] `src/app/api/<FEATURE_NAME>/route.ts` created with typed `ApiResponse<T>` shell
-- [ ] `tests/unit/<FEATURE_NAME>/.gitkeep` created
-- [ ] `.specify/feature.json` updated
-- [ ] Completion report printed with next-step guidance
+After completing all steps, output a structured summary confirming that all 8 SpecKit artifacts have been scaffolded.

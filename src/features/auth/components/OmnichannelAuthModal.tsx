@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState, useTransition } from "react";
+import { createPortal } from "react-dom";
 import { useRouter } from "next/navigation";
 import {
   X,
@@ -19,6 +20,7 @@ import {
 } from "../actions/passwordless-actions";
 import { savePendingVoteIntent } from "@/features/voting/utils/vote-intent";
 import type { PendingVoteIntent } from "@/features/voting/types";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 
 export interface OmnichannelAuthModalProps {
   isOpen: boolean;
@@ -40,6 +42,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   voteIntent,
 }) => {
   const router = useRouter();
+  const isMounted = useIsMounted();
   const [mode, setMode] = useState<AuthMode>("options");
   const [destination, setDestination] = useState("");
   const [channel, setChannel] = useState<"email" | "sms" | "whatsapp">("email");
@@ -48,7 +51,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   const [errorMessage, setErrorMessage] = useState("");
   const [isPending, startTransition] = useTransition();
 
-  if (!isOpen) return null;
+  if (!isOpen || !isMounted) return null;
 
   const handleReset = () => {
     setMode("options");
@@ -119,7 +122,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
     });
   };
 
-  return (
+  return createPortal(
     <div
       role="dialog"
       aria-modal="true"
@@ -395,6 +398,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
           </form>
         )}
       </div>
-    </div>
+    </div>,
+    document.body,
   );
 };

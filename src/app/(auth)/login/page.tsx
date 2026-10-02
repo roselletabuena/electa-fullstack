@@ -6,13 +6,13 @@ import { LoginForm } from "@/features/auth/components/LoginForm";
 import { Loader2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Sign In | Electa Organizer Portal",
-  description: "Secure organizer sign-in for beauty pageant, sports, and voting events management.",
+  title: "Sign In | Electa",
+  description: "Sign in to your Electa universal account to vote and manage events.",
 };
 
 export default async function LoginPage() {
   const session = await getSession();
-  if (session && session.role === "ORGANIZER") {
+  if (session && session.userId) {
     redirect("/dashboard");
   }
 

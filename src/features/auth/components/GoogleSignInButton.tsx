@@ -29,11 +29,10 @@ export function GoogleSignInButton({
       type="button"
       onClick={handleClick}
       disabled={disabled || isLoading}
-      aria-label={label}
-      className="relative flex w-full items-center justify-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm font-medium text-slate-700 shadow-sm transition-all hover:border-slate-300 hover:bg-slate-50 hover:shadow active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+      className="relative flex w-full cursor-pointer items-center justify-center gap-3 rounded-none border border-slate-300 bg-white px-4 py-3 font-sans text-xs font-bold tracking-wider text-slate-700 uppercase shadow-xs transition-all hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 active:scale-[0.99] disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-200 dark:hover:bg-slate-800 dark:hover:text-white"
     >
       {isLoading ? (
-        <Loader2 className="h-5 w-5 animate-spin text-indigo-600" />
+        <Loader2 className="h-4 w-4 animate-spin text-sky-600" />
       ) : (
         <svg className="h-5 w-5" viewBox="0 0 24 24">
           <path

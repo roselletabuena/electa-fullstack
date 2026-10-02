@@ -6,13 +6,13 @@ import { RegisterForm } from "@/features/auth/components/RegisterForm";
 import { Loader2 } from "lucide-react";
 
 export const metadata: Metadata = {
-  title: "Create Organizer Account | Electa",
-  description: "Register as an event organizer to create, manage, and monetize voting events.",
+  title: "Join Electa | Universal Account",
+  description: "Create your Electa account to vote on pageants and organize events.",
 };
 
 export default async function RegisterPage() {
   const session = await getSession();
-  if (session && session.role === "ORGANIZER") {
+  if (session && session.userId) {
     redirect("/dashboard");
   }
 

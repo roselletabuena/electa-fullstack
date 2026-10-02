@@ -16,6 +16,22 @@ const nextConfig: NextConfig = {
         protocol: "https",
         hostname: "avatars.githubusercontent.com",
       },
+      {
+        protocol: "https",
+        hostname: "media.istockphoto.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.istockphoto.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.amazonaws.com",
+      },
+      {
+        protocol: "https",
+        hostname: "**.supabase.co",
+      },
     ],
   },
 };

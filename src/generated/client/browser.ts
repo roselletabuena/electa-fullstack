@@ -57,3 +57,8 @@ export type EventAuditLog = Prisma.EventAuditLogModel
  * 
  */
 export type Vote = Prisma.VoteModel
+/**
+ * Model PaymentTransaction
+ * 
+ */
+export type PaymentTransaction = Prisma.PaymentTransactionModel

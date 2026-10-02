@@ -58,7 +58,8 @@ export const ModelName = {
   AwardCategory: 'AwardCategory',
   ContestantCategoryAssignment: 'ContestantCategoryAssignment',
   EventAuditLog: 'EventAuditLog',
-  Vote: 'Vote'
+  Vote: 'Vote',
+  PaymentTransaction: 'PaymentTransaction'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -197,10 +198,42 @@ export const VoteScalarFieldEnum = {
   awardCategoryId: 'awardCategoryId',
   voteType: 'voteType',
   voteWeight: 'voteWeight',
+  paymentTransactionId: 'paymentTransactionId',
   createdAt: 'createdAt'
 } as const
 
 export type VoteScalarFieldEnum = (typeof VoteScalarFieldEnum)[keyof typeof VoteScalarFieldEnum]
+
+
+export const PaymentTransactionScalarFieldEnum = {
+  id: 'id',
+  referenceNumber: 'referenceNumber',
+  eventId: 'eventId',
+  contestantId: 'contestantId',
+  awardCategoryId: 'awardCategoryId',
+  voterIdentifier: 'voterIdentifier',
+  amountInPhp: 'amountInPhp',
+  amountInCents: 'amountInCents',
+  votesAwarded: 'votesAwarded',
+  bonusVotes: 'bonusVotes',
+  status: 'status',
+  provider: 'provider',
+  paymentChannel: 'paymentChannel',
+  paymongoPaymentIntentId: 'paymongoPaymentIntentId',
+  paymongoPaymentMethodId: 'paymongoPaymentMethodId',
+  paymongoClientKey: 'paymongoClientKey',
+  qrCodeUrl: 'qrCodeUrl',
+  qrCodeString: 'qrCodeString',
+  checkoutUrl: 'checkoutUrl',
+  paidAt: 'paidAt',
+  failedAt: 'failedAt',
+  failureReason: 'failureReason',
+  metadata: 'metadata',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PaymentTransactionScalarFieldEnum = (typeof PaymentTransactionScalarFieldEnum)[keyof typeof PaymentTransactionScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -216,6 +249,14 @@ export const JsonNullValueInput = {
 } as const
 
 export type JsonNullValueInput = (typeof JsonNullValueInput)[keyof typeof JsonNullValueInput]
+
+
+export const NullableJsonNullValueInput = {
+  DbNull: DbNull,
+  JsonNull: JsonNull
+} as const
+
+export type NullableJsonNullValueInput = (typeof NullableJsonNullValueInput)[keyof typeof NullableJsonNullValueInput]
 
 
 export const QueryMode = {

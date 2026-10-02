@@ -333,6 +333,7 @@ export type ContestantWhereInput = {
   media?: Prisma.ContestantMediaListRelationFilter
   categories?: Prisma.ContestantCategoryAssignmentListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }
 
 export type ContestantOrderByWithRelationInput = {
@@ -359,6 +360,7 @@ export type ContestantOrderByWithRelationInput = {
   media?: Prisma.ContestantMediaOrderByRelationAggregateInput
   categories?: Prisma.ContestantCategoryAssignmentOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
+  paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
 }
 
 export type ContestantWhereUniqueInput = Prisma.AtLeast<{
@@ -389,6 +391,7 @@ export type ContestantWhereUniqueInput = Prisma.AtLeast<{
   media?: Prisma.ContestantMediaListRelationFilter
   categories?: Prisma.ContestantCategoryAssignmentListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }, "id" | "eventId_division_contestantNumber">
 
 export type ContestantOrderByWithAggregationInput = {
@@ -463,6 +466,7 @@ export type ContestantCreateInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateInput = {
@@ -487,6 +491,7 @@ export type ContestantUncheckedCreateInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUpdateInput = {
@@ -511,6 +516,7 @@ export type ContestantUpdateInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateInput = {
@@ -535,6 +541,7 @@ export type ContestantUncheckedUpdateInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantCreateManyInput = {
@@ -836,6 +843,20 @@ export type ContestantUpdateOneRequiredWithoutVotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContestantUpdateToOneWithWhereWithoutVotesInput, Prisma.ContestantUpdateWithoutVotesInput>, Prisma.ContestantUncheckedUpdateWithoutVotesInput>
 }
 
+export type ContestantCreateNestedOneWithoutPaymentTransactionsInput = {
+  create?: Prisma.XOR<Prisma.ContestantCreateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedCreateWithoutPaymentTransactionsInput>
+  connectOrCreate?: Prisma.ContestantCreateOrConnectWithoutPaymentTransactionsInput
+  connect?: Prisma.ContestantWhereUniqueInput
+}
+
+export type ContestantUpdateOneRequiredWithoutPaymentTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContestantCreateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedCreateWithoutPaymentTransactionsInput>
+  connectOrCreate?: Prisma.ContestantCreateOrConnectWithoutPaymentTransactionsInput
+  upsert?: Prisma.ContestantUpsertWithoutPaymentTransactionsInput
+  connect?: Prisma.ContestantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContestantUpdateToOneWithWhereWithoutPaymentTransactionsInput, Prisma.ContestantUpdateWithoutPaymentTransactionsInput>, Prisma.ContestantUncheckedUpdateWithoutPaymentTransactionsInput>
+}
+
 export type ContestantCreateWithoutEventInput = {
   id?: string
   contestantNumber: number
@@ -857,6 +878,7 @@ export type ContestantCreateWithoutEventInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateWithoutEventInput = {
@@ -880,6 +902,7 @@ export type ContestantUncheckedCreateWithoutEventInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantCreateOrConnectWithoutEventInput = {
@@ -953,6 +976,7 @@ export type ContestantCreateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateWithoutDivisionRefInput = {
@@ -976,6 +1000,7 @@ export type ContestantUncheckedCreateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantCreateOrConnectWithoutDivisionRefInput = {
@@ -1025,6 +1050,7 @@ export type ContestantCreateWithoutMediaInput = {
   divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateWithoutMediaInput = {
@@ -1048,6 +1074,7 @@ export type ContestantUncheckedCreateWithoutMediaInput = {
   updatedAt?: Date | string
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantCreateOrConnectWithoutMediaInput = {
@@ -1087,6 +1114,7 @@ export type ContestantUpdateWithoutMediaInput = {
   divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutMediaInput = {
@@ -1110,6 +1138,7 @@ export type ContestantUncheckedUpdateWithoutMediaInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantCreateWithoutCategoriesInput = {
@@ -1133,6 +1162,7 @@ export type ContestantCreateWithoutCategoriesInput = {
   divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateWithoutCategoriesInput = {
@@ -1156,6 +1186,7 @@ export type ContestantUncheckedCreateWithoutCategoriesInput = {
   updatedAt?: Date | string
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantCreateOrConnectWithoutCategoriesInput = {
@@ -1195,6 +1226,7 @@ export type ContestantUpdateWithoutCategoriesInput = {
   divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutCategoriesInput = {
@@ -1218,6 +1250,7 @@ export type ContestantUncheckedUpdateWithoutCategoriesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantCreateWithoutVotesInput = {
@@ -1241,6 +1274,7 @@ export type ContestantCreateWithoutVotesInput = {
   divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantUncheckedCreateWithoutVotesInput = {
@@ -1264,6 +1298,7 @@ export type ContestantUncheckedCreateWithoutVotesInput = {
   updatedAt?: Date | string
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
 export type ContestantCreateOrConnectWithoutVotesInput = {
@@ -1303,6 +1338,7 @@ export type ContestantUpdateWithoutVotesInput = {
   divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutVotesInput = {
@@ -1326,6 +1362,119 @@ export type ContestantUncheckedUpdateWithoutVotesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
+}
+
+export type ContestantCreateWithoutPaymentTransactionsInput = {
+  id?: string
+  contestantNumber: number
+  name: string
+  division?: $Enums.ContestantDivision
+  status?: $Enums.ContestantStatus
+  hometown?: string | null
+  heightCm?: number | null
+  bio?: string | null
+  advocacy?: string | null
+  avatarUrl: string
+  instagramUrl?: string | null
+  tiktokUrl?: string | null
+  facebookUrl?: string | null
+  voteCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  event: Prisma.EventCreateNestedOneWithoutContestantsInput
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput
+  media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
+  categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
+  votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+}
+
+export type ContestantUncheckedCreateWithoutPaymentTransactionsInput = {
+  id?: string
+  eventId: string
+  contestantNumber: number
+  name: string
+  division?: $Enums.ContestantDivision
+  divisionId?: string | null
+  status?: $Enums.ContestantStatus
+  hometown?: string | null
+  heightCm?: number | null
+  bio?: string | null
+  advocacy?: string | null
+  avatarUrl: string
+  instagramUrl?: string | null
+  tiktokUrl?: string | null
+  facebookUrl?: string | null
+  voteCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+}
+
+export type ContestantCreateOrConnectWithoutPaymentTransactionsInput = {
+  where: Prisma.ContestantWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContestantCreateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedCreateWithoutPaymentTransactionsInput>
+}
+
+export type ContestantUpsertWithoutPaymentTransactionsInput = {
+  update: Prisma.XOR<Prisma.ContestantUpdateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedUpdateWithoutPaymentTransactionsInput>
+  create: Prisma.XOR<Prisma.ContestantCreateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedCreateWithoutPaymentTransactionsInput>
+  where?: Prisma.ContestantWhereInput
+}
+
+export type ContestantUpdateToOneWithWhereWithoutPaymentTransactionsInput = {
+  where?: Prisma.ContestantWhereInput
+  data: Prisma.XOR<Prisma.ContestantUpdateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedUpdateWithoutPaymentTransactionsInput>
+}
+
+export type ContestantUpdateWithoutPaymentTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput
+  media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
+  categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+}
+
+export type ContestantUncheckedUpdateWithoutPaymentTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantCreateManyEventInput = {
@@ -1369,6 +1518,7 @@ export type ContestantUpdateWithoutEventInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutEventInput = {
@@ -1392,6 +1542,7 @@ export type ContestantUncheckedUpdateWithoutEventInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateManyWithoutEventInput = {
@@ -1455,6 +1606,7 @@ export type ContestantUpdateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutDivisionRefInput = {
@@ -1478,6 +1630,7 @@ export type ContestantUncheckedUpdateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
 export type ContestantUncheckedUpdateManyWithoutDivisionRefInput = {
@@ -1509,12 +1662,14 @@ export type ContestantCountOutputType = {
   media: number
   categories: number
   votes: number
+  paymentTransactions: number
 }
 
 export type ContestantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   media?: boolean | ContestantCountOutputTypeCountMediaArgs
   categories?: boolean | ContestantCountOutputTypeCountCategoriesArgs
   votes?: boolean | ContestantCountOutputTypeCountVotesArgs
+  paymentTransactions?: boolean | ContestantCountOutputTypeCountPaymentTransactionsArgs
 }
 
 /**
@@ -1548,6 +1703,13 @@ export type ContestantCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Type
   where?: Prisma.VoteWhereInput
 }
 
+/**
+ * ContestantCountOutputType without action
+ */
+export type ContestantCountOutputTypeCountPaymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentTransactionWhereInput
+}
+
 
 export type ContestantSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1573,6 +1735,7 @@ export type ContestantSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>
   categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>
   votes?: boolean | Prisma.Contestant$votesArgs<ExtArgs>
+  paymentTransactions?: boolean | Prisma.Contestant$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contestant"]>
 
@@ -1650,6 +1813,7 @@ export type ContestantInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>
   categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>
   votes?: boolean | Prisma.Contestant$votesArgs<ExtArgs>
+  paymentTransactions?: boolean | Prisma.Contestant$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ContestantIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1669,6 +1833,7 @@ export type $ContestantPayload<ExtArgs extends runtime.Types.Extensions.Internal
     media: Prisma.$ContestantMediaPayload<ExtArgs>[]
     categories: Prisma.$ContestantCategoryAssignmentPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
+    paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2088,6 +2253,7 @@ export interface Prisma__ContestantClient<T, Null = never, ExtArgs extends runti
   media<T extends Prisma.Contestant$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestantMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categories<T extends Prisma.Contestant$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestantCategoryAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Contestant$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentTransactions<T extends Prisma.Contestant$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2624,6 +2790,30 @@ export type Contestant$votesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.VoteScalarFieldEnum | Prisma.VoteScalarFieldEnum[]
+}
+
+/**
+ * Contestant.paymentTransactions
+ */
+export type Contestant$paymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentTransaction
+   */
+  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentTransaction
+   */
+  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
+  where?: Prisma.PaymentTransactionWhereInput
+  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
 }
 
 /**

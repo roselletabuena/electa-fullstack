@@ -301,6 +301,7 @@ export type EventWhereInput = {
   awardCategories?: Prisma.AwardCategoryListRelationFilter
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }
 
 export type EventOrderByWithRelationInput = {
@@ -324,6 +325,7 @@ export type EventOrderByWithRelationInput = {
   awardCategories?: Prisma.AwardCategoryOrderByRelationAggregateInput
   auditLogs?: Prisma.EventAuditLogOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
+  paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
 }
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -350,6 +352,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   awardCategories?: Prisma.AwardCategoryListRelationFilter
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }, "id" | "slug">
 
 export type EventOrderByWithAggregationInput = {
@@ -417,6 +420,7 @@ export type EventCreateInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateInput = {
@@ -440,6 +444,7 @@ export type EventUncheckedCreateInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventUpdateInput = {
@@ -463,6 +468,7 @@ export type EventUpdateInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateInput = {
@@ -486,6 +492,7 @@ export type EventUncheckedUpdateInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyInput = {
@@ -707,6 +714,20 @@ export type EventUpdateOneRequiredWithoutVotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutVotesInput, Prisma.EventUpdateWithoutVotesInput>, Prisma.EventUncheckedUpdateWithoutVotesInput>
 }
 
+export type EventCreateNestedOneWithoutPaymentTransactionsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutPaymentTransactionsInput, Prisma.EventUncheckedCreateWithoutPaymentTransactionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutPaymentTransactionsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutPaymentTransactionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutPaymentTransactionsInput, Prisma.EventUncheckedCreateWithoutPaymentTransactionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutPaymentTransactionsInput
+  upsert?: Prisma.EventUpsertWithoutPaymentTransactionsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutPaymentTransactionsInput, Prisma.EventUpdateWithoutPaymentTransactionsInput>, Prisma.EventUncheckedUpdateWithoutPaymentTransactionsInput>
+}
+
 export type EventCreateWithoutDivisionsInput = {
   id?: string
   slug: string
@@ -727,6 +748,7 @@ export type EventCreateWithoutDivisionsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutDivisionsInput = {
@@ -749,6 +771,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutDivisionsInput = {
@@ -787,6 +810,7 @@ export type EventUpdateWithoutDivisionsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutDivisionsInput = {
@@ -809,6 +833,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutContestantsInput = {
@@ -831,6 +856,7 @@ export type EventCreateWithoutContestantsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutContestantsInput = {
@@ -853,6 +879,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutContestantsInput = {
@@ -891,6 +918,7 @@ export type EventUpdateWithoutContestantsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutContestantsInput = {
@@ -913,6 +941,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAwardCategoriesInput = {
@@ -935,6 +964,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAwardCategoriesInput = {
@@ -957,6 +987,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAwardCategoriesInput = {
@@ -995,6 +1026,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
@@ -1017,6 +1049,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAuditLogsInput = {
@@ -1039,6 +1072,7 @@ export type EventCreateWithoutAuditLogsInput = {
   divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAuditLogsInput = {
@@ -1061,6 +1095,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAuditLogsInput = {
@@ -1099,6 +1134,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAuditLogsInput = {
@@ -1121,6 +1157,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutVotesInput = {
@@ -1143,6 +1180,7 @@ export type EventCreateWithoutVotesInput = {
   divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutVotesInput = {
@@ -1165,6 +1203,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutVotesInput = {
@@ -1203,6 +1242,7 @@ export type EventUpdateWithoutVotesInput = {
   divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutVotesInput = {
@@ -1225,6 +1265,115 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutPaymentTransactionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  dailyFreeVoteLimit?: number
+  organizerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  dailyFreeVoteLimit?: number
+  organizerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutPaymentTransactionsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutPaymentTransactionsInput, Prisma.EventUncheckedCreateWithoutPaymentTransactionsInput>
+}
+
+export type EventUpsertWithoutPaymentTransactionsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutPaymentTransactionsInput, Prisma.EventUncheckedUpdateWithoutPaymentTransactionsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutPaymentTransactionsInput, Prisma.EventUncheckedCreateWithoutPaymentTransactionsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutPaymentTransactionsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutPaymentTransactionsInput, Prisma.EventUncheckedUpdateWithoutPaymentTransactionsInput>
+}
+
+export type EventUpdateWithoutPaymentTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 
@@ -1238,6 +1387,7 @@ export type EventCountOutputType = {
   awardCategories: number
   auditLogs: number
   votes: number
+  paymentTransactions: number
 }
 
 export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1246,6 +1396,7 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   awardCategories?: boolean | EventCountOutputTypeCountAwardCategoriesArgs
   auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs
   votes?: boolean | EventCountOutputTypeCountVotesArgs
+  paymentTransactions?: boolean | EventCountOutputTypeCountPaymentTransactionsArgs
 }
 
 /**
@@ -1293,6 +1444,13 @@ export type EventCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Types.Ext
   where?: Prisma.VoteWhereInput
 }
 
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountPaymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PaymentTransactionWhereInput
+}
+
 
 export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1315,6 +1473,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   awardCategories?: boolean | Prisma.Event$awardCategoriesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
+  paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["event"]>
 
@@ -1379,6 +1538,7 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   awardCategories?: boolean | Prisma.Event$awardCategoriesArgs<ExtArgs>
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
+  paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1392,6 +1552,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     awardCategories: Prisma.$AwardCategoryPayload<ExtArgs>[]
     auditLogs: Prisma.$EventAuditLogPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
+    paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1808,6 +1969,7 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   awardCategories<T extends Prisma.Event$awardCategoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$awardCategoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$AwardCategoryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   auditLogs<T extends Prisma.Event$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Event$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  paymentTransactions<T extends Prisma.Event$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2362,6 +2524,30 @@ export type Event$votesArgs<ExtArgs extends runtime.Types.Extensions.InternalArg
   take?: number
   skip?: number
   distinct?: Prisma.VoteScalarFieldEnum | Prisma.VoteScalarFieldEnum[]
+}
+
+/**
+ * Event.paymentTransactions
+ */
+export type Event$paymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PaymentTransaction
+   */
+  select?: Prisma.PaymentTransactionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PaymentTransaction
+   */
+  omit?: Prisma.PaymentTransactionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PaymentTransactionInclude<ExtArgs> | null
+  where?: Prisma.PaymentTransactionWhereInput
+  orderBy?: Prisma.PaymentTransactionOrderByWithRelationInput | Prisma.PaymentTransactionOrderByWithRelationInput[]
+  cursor?: Prisma.PaymentTransactionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
 }
 
 /**

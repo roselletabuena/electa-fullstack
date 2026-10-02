@@ -62,3 +62,34 @@ export const VoteType = {
 } as const
 
 export type VoteType = (typeof VoteType)[keyof typeof VoteType]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  PAID: 'PAID',
+  FAILED: 'FAILED',
+  EXPIRED: 'EXPIRED',
+  REFUNDED: 'REFUNDED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]
+
+
+export const PaymentProvider = {
+  PAYMONGO: 'PAYMONGO',
+  MOCK: 'MOCK'
+} as const
+
+export type PaymentProvider = (typeof PaymentProvider)[keyof typeof PaymentProvider]
+
+
+export const PaymentChannel = {
+  QR_PH: 'QR_PH',
+  GCASH: 'GCASH',
+  MAYA: 'MAYA',
+  CARD: 'CARD',
+  GRAB_PAY: 'GRAB_PAY',
+  ONLINE_BANKING: 'ONLINE_BANKING'
+} as const
+
+export type PaymentChannel = (typeof PaymentChannel)[keyof typeof PaymentChannel]

@@ -8,6 +8,9 @@ export const env = createEnv({
     AUTH_SECRET: z.string().min(1).default("electa_local_jwt_secret_dev_32_bytes_long"),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
     TURNSTILE_SECRET_KEY: z.string().min(1).default("1x0000000000000000000000000000000AA"),
+    PAYMONGO_SECRET_KEY: z.string().optional().default(""),
+    PAYMONGO_PUBLIC_KEY: z.string().optional().default(""),
+    PAYMONGO_WEBHOOK_SECRET_KEY: z.string().optional().default(""),
   },
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),
@@ -18,6 +21,7 @@ export const env = createEnv({
     NEXT_PUBLIC_COGNITO_DOMAIN: z.string().url().optional(),
     NEXT_PUBLIC_APP_URL: z.string().url().default("http://localhost:3000"),
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: z.string().min(1).default("1x00000000000000000000AA"),
+    NEXT_PUBLIC_PAYMONGO_PUBLIC_KEY: z.string().optional().default(""),
   },
   experimental__runtimeEnv: {
     NEXT_PUBLIC_SUPABASE_URL: process.env.NEXT_PUBLIC_SUPABASE_URL,
@@ -28,6 +32,8 @@ export const env = createEnv({
     NEXT_PUBLIC_COGNITO_DOMAIN: process.env.NEXT_PUBLIC_COGNITO_DOMAIN,
     NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL,
     NEXT_PUBLIC_TURNSTILE_SITE_KEY: process.env.NEXT_PUBLIC_TURNSTILE_SITE_KEY,
+    NEXT_PUBLIC_PAYMONGO_PUBLIC_KEY:
+      process.env.NEXT_PUBLIC_PAYMONGO_PUBLIC_KEY ?? process.env.PAYMONGO_PUBLIC_KEY,
   },
   skipValidation: !!process.env.SKIP_ENV_VALIDATION || process.env.NODE_ENV === "test",
 });

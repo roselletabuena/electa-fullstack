@@ -61,6 +61,7 @@ model Event {
   awardCategories     AwardCategory[]
   auditLogs           EventAuditLog[]
   votes               Vote[]
+  paymentTransactions PaymentTransaction[]
 
   @@index([slug])
   @@index([organizerId])
@@ -109,6 +110,7 @@ model Contestant {
   media            ContestantMedia[]
   categories       ContestantCategoryAssignment[]
   votes            Vote[]
+  paymentTransactions PaymentTransaction[]
 
   @@unique([eventId, division, contestantNumber])
   @@index([eventId])
@@ -191,17 +193,83 @@ model Vote {
   eventId         String
   contestantId    String
   voterId         String
-  awardCategoryId String?
-  voteType        VoteType      @default(FREE)
-  voteWeight      Int           @default(1)
-  createdAt       DateTime      @default(now())
+  awardCategoryId      String?
+  voteType             VoteType            @default(FREE)
+  voteWeight           Int                 @default(1)
+  paymentTransactionId String?
+  createdAt            DateTime            @default(now())
 
-  event           Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
-  contestant      Contestant    @relation(fields: [contestantId], references: [id], onDelete: Cascade)
+  event                Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  contestant           Contestant          @relation(fields: [contestantId], references: [id], onDelete: Cascade)
+  paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
 
   @@index([eventId, voterId, createdAt])
   @@index([eventId, voterId, voteType, createdAt])
   @@index([contestantId])
+  @@index([paymentTransactionId])
   @@index([eventId, createdAt])
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  EXPIRED
+  REFUNDED
+}
+
+enum PaymentProvider {
+  PAYMONGO
+  MOCK
+}
+
+enum PaymentChannel {
+  QR_PH
+  GCASH
+  MAYA
+  CARD
+  GRAB_PAY
+  ONLINE_BANKING
+}
+
+model PaymentTransaction {
+  id                      String          @id @default(uuid())
+  referenceNumber         String          @unique
+  eventId                 String
+  contestantId            String
+  awardCategoryId         String?
+  voterIdentifier         String
+  amountInPhp             Decimal         @db.Decimal(10, 2)
+  amountInCents           Int
+  votesAwarded            Int
+  bonusVotes              Int             @default(0)
+  status                  PaymentStatus   @default(PENDING)
+  provider                PaymentProvider @default(PAYMONGO)
+  paymentChannel          PaymentChannel  @default(QR_PH)
+
+  // Gateway metadata
+  paymongoPaymentIntentId String?         @unique
+  paymongoPaymentMethodId String?
+  paymongoClientKey       String?
+  qrCodeUrl               String?
+  qrCodeString            String?         @db.Text
+  checkoutUrl             String?
+  paidAt                  DateTime?
+  failedAt                DateTime?
+  failureReason           String?
+  metadata                Json?
+
+  createdAt               DateTime        @default(now())
+  updatedAt               DateTime        @updatedAt
+
+  event                   Event           @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  contestant              Contestant      @relation(fields: [contestantId], references: [id], onDelete: Cascade)
+  votes                   Vote[]
+
+  @@index([eventId, status])
+  @@index([contestantId])
+  @@index([voterIdentifier])
+  @@index([referenceNumber])
+  @@index([createdAt])
 }
 

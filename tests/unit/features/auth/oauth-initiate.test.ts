@@ -29,4 +29,25 @@ describe("OAuth Initiation & State Generation", () => {
     expect(url.searchParams.get("state")).toBe("mock_state_1234567890123456");
     expect(url.searchParams.get("scope")).toBe("email openid profile");
   });
+
+  it("GET /api/auth/cognito/initiate generates state and redirects with returnTo", async () => {
+    const { GET } = await import("@/app/api/auth/cognito/initiate/route");
+    const { NextRequest } = await import("next/server");
+
+    const req = new NextRequest(
+      "http://localhost:3000/api/auth/cognito/initiate?provider=Google&returnTo=%2Fevents%2Fmiss-universe-philippines-2026",
+    );
+    const res = await GET(req);
+
+    expect(res.status).toBe(307);
+    const location = res.headers.get("location");
+    expect(location).toContain("/oauth2/authorize");
+    expect(location).toContain("identity_provider=Google");
+
+    const cookies = res.cookies.getAll();
+    const stateCookie = cookies.find((c) => c.name === "electa_oauth_state");
+    expect(stateCookie).toBeDefined();
+    const parsedPayload = JSON.parse(stateCookie?.value || "{}");
+    expect(parsedPayload.returnTo).toBe("/events/miss-universe-philippines-2026");
+  });
 });

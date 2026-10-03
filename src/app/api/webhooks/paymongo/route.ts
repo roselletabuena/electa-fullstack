@@ -4,7 +4,7 @@ import crypto from "crypto";
 import { db } from "@/lib/db";
 import { env } from "@/env";
 
-function verifyPayMongoSignature(
+export function verifyPayMongoSignature(
   payload: string,
   signatureHeader: string | null,
   webhookSecret: string,
@@ -61,7 +61,7 @@ export async function POST(req: NextRequest) {
     if (eventType === "payment.paid" || eventType === "payment_intent.succeeded") {
       const intentId = resourceData?.attributes?.payment_intent_id || resourceData?.id;
       const metadata = resourceData?.attributes?.metadata;
-      const referenceNumber = metadata?.referenceNumber;
+      const referenceNumber = metadata?.reference_number || metadata?.referenceNumber;
 
       if (!intentId && !referenceNumber) {
         return NextResponse.json({ received: true, note: "No transaction identifier" });

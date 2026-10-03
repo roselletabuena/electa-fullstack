@@ -1,4 +1,5 @@
-import { type NextRequest, NextResponse } from "next/server";
+import { type NextRequest } from "next/server";
+import { apiError, apiSuccess } from "@/lib/api/response";
 import { createPaymentIntentAction } from "@/features/payments/actions/create-payment-intent";
 
 export async function POST(req: NextRequest) {
@@ -6,16 +7,13 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const result = await createPaymentIntentAction(body);
 
-    if (!result.success) {
-      return NextResponse.json({ success: false, error: result.error }, { status: 400 });
+    if (!result.success || !result.data) {
+      return apiError(result.error ?? "Failed to create payment intent", 400);
     }
 
-    return NextResponse.json(result);
+    return apiSuccess(result.data, 200);
   } catch (error) {
     console.error("API /api/payments/intent error:", error);
-    return NextResponse.json(
-      { success: false, error: error instanceof Error ? error.message : "Internal error" },
-      { status: 500 },
-    );
+    return apiError(error instanceof Error ? error.message : "Internal error", 500);
   }
 }

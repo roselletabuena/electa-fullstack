@@ -2,7 +2,15 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
-import { Clock, RefreshCw, AlertCircle, Zap, ShieldCheck, ArrowLeft } from "lucide-react";
+import {
+  Clock,
+  RefreshCw,
+  AlertCircle,
+  Zap,
+  ShieldCheck,
+  ArrowLeft,
+  Smartphone,
+} from "lucide-react";
 import { useQueryClient } from "@tanstack/react-query";
 import type { PaymentIntentResult, VoterReceipt } from "../types";
 import { PaymentReceiptCard } from "./PaymentReceiptCard";
@@ -32,6 +40,7 @@ export function QrPhPaymentView({
   const [isSimulating, setIsSimulating] = useState<boolean>(false);
   const [receipt, setReceipt] = useState<VoterReceipt | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [handoffMessage, setHandoffMessage] = useState<string | null>(null);
 
   // Expiry Timer Countdown
   useEffect(() => {
@@ -75,9 +84,14 @@ export function QrPhPaymentView({
         });
 
         const res = await response.json();
+        const payload = (res.data ?? res) as {
+          isPaid?: boolean;
+          receipt?: VoterReceipt;
+          error?: string;
+        };
 
-        if (res.success && res.isPaid && res.receipt) {
-          setReceipt(res.receipt);
+        if (res.success && payload.isPaid && payload.receipt) {
+          setReceipt(payload.receipt);
           setIsPolling(false);
 
           // Invalidate all related TanStack Query caches so vote counts and leaderboards update in real-time
@@ -87,9 +101,9 @@ export function QrPhPaymentView({
           queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
           queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
 
-          if (onSuccess) onSuccess(res.receipt);
-        } else if (!res.success && res.error) {
-          setErrorMessage(res.error);
+          if (onSuccess) onSuccess(payload.receipt);
+        } else if (!res.success && (payload.error || res.error)) {
+          setErrorMessage(payload.error ?? res.error);
         }
       } catch (err) {
         console.error("Payment check error:", err);
@@ -100,6 +114,27 @@ export function QrPhPaymentView({
     },
     [intent.referenceNumber, receipt, onSuccess, queryClient],
   );
+
+  const handleMobileWalletHandoff = (wallet: "gcash" | "maya") => {
+    const walletName = wallet === "gcash" ? "GCash" : "Maya";
+    setHandoffMessage(
+      `Redirecting to ${walletName}. Please confirm the payment in your app. Listening for payment confirmation...`,
+    );
+
+    if (intent.checkoutUrl) {
+      window.open(intent.checkoutUrl, "_blank", "noopener,noreferrer");
+    } else {
+      const deepLink =
+        wallet === "gcash"
+          ? `gcash://pay?ref=${intent.referenceNumber}&amount=${intent.amountInPhp}`
+          : `paymaya://pay?ref=${intent.referenceNumber}&amount=${intent.amountInPhp}`;
+      window.open(deepLink, "_blank");
+    }
+
+    setTimeout(() => {
+      checkPaymentStatus(false);
+    }, 2000);
+  };
 
   // Real-time Polling every 3.5 seconds
   useEffect(() => {
@@ -222,6 +257,38 @@ export function QrPhPaymentView({
           <span className="border border-slate-200 bg-slate-50 px-2 py-0.5 dark:border-slate-800 dark:bg-slate-900">
             All Banks
           </span>
+        </div>
+
+        {/* Mobile 1-Tap Wallet Handoff (US2/AC2) */}
+        <div className="mt-4 flex w-full flex-col gap-2 border-t border-dashed border-slate-200 pt-3 dark:border-slate-800">
+          <span className="font-heading text-center text-[10px] font-extrabold tracking-wider text-slate-500 uppercase dark:text-slate-400">
+            Mobile 1-Tap App Handoff
+          </span>
+          <div className="grid grid-cols-2 gap-2">
+            <button
+              type="button"
+              onClick={() => handleMobileWalletHandoff("gcash")}
+              disabled={isExpired}
+              className="font-heading flex items-center justify-center gap-1.5 border border-blue-600 bg-blue-600 px-3 py-2 text-xs font-extrabold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-blue-500 active:scale-[0.98] disabled:opacity-50"
+            >
+              <Smartphone className="h-3.5 w-3.5" />
+              <span>Pay with GCash</span>
+            </button>
+            <button
+              type="button"
+              onClick={() => handleMobileWalletHandoff("maya")}
+              disabled={isExpired}
+              className="font-heading flex items-center justify-center gap-1.5 border border-emerald-600 bg-emerald-600 px-3 py-2 text-xs font-extrabold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-emerald-500 active:scale-[0.98] disabled:opacity-50"
+            >
+              <Smartphone className="h-3.5 w-3.5" />
+              <span>Pay with Maya</span>
+            </button>
+          </div>
+          {handoffMessage && (
+            <div className="mt-1 border border-sky-300 bg-sky-50 p-2 text-center font-sans text-xs text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
+              {handoffMessage}
+            </div>
+          )}
         </div>
       </div>
 

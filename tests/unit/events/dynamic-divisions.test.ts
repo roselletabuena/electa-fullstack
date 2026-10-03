@@ -3,7 +3,7 @@ import { GET, POST } from "@/app/api/events/[slug]/divisions/route";
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
-import type { Event, Division } from "@/generated/client/client";
+import { Prisma, type Event, type Division } from "@/generated/client/client";
 
 vi.mock("@/lib/db", () => ({
   db: {
@@ -85,6 +85,7 @@ describe("POST /api/events/[slug]/divisions", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     createdAt: new Date(),
     updatedAt: new Date(),

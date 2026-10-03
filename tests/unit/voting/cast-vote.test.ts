@@ -3,7 +3,11 @@ import { castVoteAction } from "@/features/voting/actions/cast-vote";
 import { db } from "@/lib/db";
 import { getSession } from "@/lib/auth/get-session";
 import { resetRateLimiterStores } from "@/features/voting/utils/rate-limiter";
-import type { EventPublicationStatus, ContestantStatus } from "@/generated/client/client";
+import {
+  Prisma,
+  type EventPublicationStatus,
+  type ContestantStatus,
+} from "@/generated/client/client";
 
 vi.mock("@/lib/auth/get-session");
 vi.mock("@/lib/db", () => {
@@ -82,6 +86,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       endsAt: new Date(Date.now() + 3600 * 1000),
       isFreeVotingEnabled: true,
       dailyFreeVoteLimit: 1,
+      takeRatePercentage: new Prisma.Decimal(12.0),
       createdAt: new Date(),
       updatedAt: new Date(),
     });

@@ -1,7 +1,7 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
-import React from "react";
+import { Prisma } from "@/generated/client/client";
 import { CreateEventForm } from "@/features/events/components/CreateEventForm";
 import { createEventAction } from "@/features/events/actions/create-event";
 import { useRouter } from "next/navigation";
@@ -125,6 +125,7 @@ describe("CreateEventForm", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     createdAt: new Date(),
     updatedAt: new Date(),
   };

@@ -2,7 +2,7 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 import { updateVotingRulesAction } from "@/features/events/actions/update-voting-rules";
 import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
 import { db } from "@/lib/db";
-import type { Event } from "@/generated/client/client";
+import { Prisma, type Event } from "@/generated/client/client";
 
 vi.mock("@/features/events/utils/ownership-guard", () => ({
   requireEventOwnership: vi.fn(),
@@ -36,6 +36,7 @@ describe("updateVotingRulesAction", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "usr_organizer_mock_01",
     createdAt: new Date(),
     updatedAt: new Date(),

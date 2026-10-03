@@ -1,6 +1,14 @@
 import React from "react";
 import Link from "next/link";
-import { ExternalLink, ShieldCheck, Calendar, ArrowLeft, Settings, Users } from "lucide-react";
+import {
+  ExternalLink,
+  ShieldCheck,
+  Calendar,
+  ArrowLeft,
+  Settings,
+  Users,
+  Wallet,
+} from "lucide-react";
 import { EventStateBadge } from "../EventStateBadge";
 import { CopySlugButton } from "./CopySlugButton";
 import { deriveEventState } from "../../utils/derive-event-state";
@@ -11,7 +19,7 @@ import { cn } from "@/lib/utils";
 export interface OrganizerDashboardHeaderProps {
   event: Event;
   user: UserSession;
-  activeSection?: "settings" | "contestants";
+  activeSection?: "settings" | "contestants" | "revenue";
 }
 
 export function OrganizerDashboardHeader({
@@ -104,6 +112,18 @@ export function OrganizerDashboardHeader({
           >
             <Users className="size-3.5" />
             Contestants
+          </Link>
+          <Link
+            href={`/events/${event.slug}/revenue`}
+            className={cn(
+              "inline-flex items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider uppercase transition-all",
+              activeSection === "revenue"
+                ? "border border-sky-300 bg-sky-50 text-sky-800 shadow-xs dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300"
+                : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",
+            )}
+          >
+            <Wallet className="size-3.5" />
+            Revenue & Payouts
           </Link>
         </nav>
       </div>

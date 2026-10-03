@@ -31,3 +31,11 @@
 
 - [x] Task 5.1: Create automated unit tests in `tests/unit/payments/`.
 - [x] Task 5.2: Run `npm run typecheck`, `npm run lint`, and `npm run test:unit`.
+
+## Phase 6: Convergence
+
+- [x] T018 Eliminate non-null assertion `!` in `BoostVoteModal.tsx` per Constitution I (contradicts)
+- [x] T019 Align payment Route Handlers to return typed `ApiResponse<T>` envelopes via `apiSuccess`/`apiError` and add `"use server"` to `verify-payment.ts` per Constitution II (contradicts)
+- [x] T020 Implement interactive mobile 1-tap wallet handoff buttons for GCash and Maya per US2/AC2 (partial)
+- [x] T021 Add downloadable PNG receipt proof generation to `PaymentReceiptCard.tsx` per US3/AC2 and plan (missing)
+- [x] T022 Create `tests/unit/payments/webhook.test.ts` verifying PayMongo HMAC signature verification and atomic vote allocation idempotency per plan: tests and Constitution VI (missing)

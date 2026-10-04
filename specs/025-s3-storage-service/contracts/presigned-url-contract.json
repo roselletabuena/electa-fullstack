@@ -1,0 +1,71 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "title": "PresignedUrlApiContract",
+  "description": "JSON Schema contract for Electa presigned upload URL requests and responses",
+  "type": "object",
+  "definitions": {
+    "PresignedUploadRequest": {
+      "type": "object",
+      "required": ["fileName", "contentType", "folder"],
+      "properties": {
+        "fileName": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 255,
+          "pattern": "^[^\\\\/]+$",
+          "description": "Name of the file to upload including extension, without directory paths"
+        },
+        "contentType": {
+          "type": "string",
+          "enum": ["image/jpeg", "image/png", "image/webp"],
+          "description": "MIME type strictly restricted to approved web image formats"
+        },
+        "folder": {
+          "type": "string",
+          "minLength": 1,
+          "pattern": "^[a-zA-Z0-9_\\-\\/]+$",
+          "description": "Logical storage partition/prefix (e.g. events/banners, contestants/avatars)"
+        },
+        "fileSize": {
+          "type": "integer",
+          "minimum": 1,
+          "maximum": 10485760,
+          "description": "Optional file size in bytes to enforce maximum upload boundary (up to 10MB)"
+        }
+      },
+      "additionalProperties": false
+    },
+    "PresignedUploadResponse": {
+      "type": "object",
+      "required": ["uploadUrl", "key", "publicUrl", "expiresIn", "contentType"],
+      "properties": {
+        "uploadUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Time-limited pre-authenticated S3 PUT URL"
+        },
+        "key": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Collision-resistant destination S3 object key"
+        },
+        "publicUrl": {
+          "type": "string",
+          "format": "uri",
+          "description": "Canonical public read URL for the stored media asset"
+        },
+        "expiresIn": {
+          "type": "integer",
+          "const": 300,
+          "description": "Validity duration in seconds (exactly 300 seconds / 5 minutes)"
+        },
+        "contentType": {
+          "type": "string",
+          "enum": ["image/jpeg", "image/png", "image/webp"],
+          "description": "Signed Content-Type header that client PUT request must supply"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -15,7 +15,7 @@
 - **Frontend UI Components**:
   - `src/features/payments/components/BoostVoteModal.tsx`: Package selection & custom slider modal.
   - `src/features/payments/components/QrPhPaymentView.tsx`: High-contrast QR code display, timer, sandbox test button.
-  - `src/features/payments/components/PaymentReceiptCard.tsx`: Digital receipt & printable/downloadable proof.
+  - `src/features/payments/components/PaymentReceiptCard.tsx`: Digital receipt & downloadable PNG proof.
 - **Tests**:
   - `tests/unit/payments/pricing.test.ts`
   - `tests/unit/payments/qrph.test.ts`

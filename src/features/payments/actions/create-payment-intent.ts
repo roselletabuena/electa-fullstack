@@ -151,6 +151,7 @@ export async function createPaymentIntentAction(
         status: "PENDING",
         provider: isPayMongoConfigured() ? "PAYMONGO" : "MOCK",
         clientKey: intentOutput.clientKey,
+        checkoutUrl: intentOutput.checkoutUrl ?? null,
       },
     };
   } catch (error) {

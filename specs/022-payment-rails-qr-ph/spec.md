@@ -84,7 +84,7 @@ Scenario: Digital receipt presentation
   Given the payment is confirmed
   When the voter views the completion screen
   Then an official VoteSphere Digital Receipt is displayed
-  And provides a downloadable PNG/PDF proof containing the transaction reference, candidate name, vote weight, and timestamp
+  And provides a downloadable PNG receipt proof containing the transaction reference, candidate name, vote weight, and timestamp
 ```
 
 ---

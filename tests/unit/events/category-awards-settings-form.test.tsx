@@ -3,7 +3,7 @@ import { render, screen, waitFor } from "@testing-library/react";
 import React from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CategoryAwardsSettingsForm } from "@/features/events/components/dashboard/CategoryAwardsSettingsForm";
-import type { Event } from "@/generated/client/client";
+import { type Event, Prisma } from "@/generated/client/client";
 
 describe("CategoryAwardsSettingsForm", () => {
   let queryClient: QueryClient;
@@ -21,6 +21,7 @@ describe("CategoryAwardsSettingsForm", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     createdAt: new Date(),
     updatedAt: new Date(),

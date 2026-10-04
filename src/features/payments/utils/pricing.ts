@@ -86,6 +86,18 @@ export const PRICING_TIERS: PricingTier[] = [
   },
 ];
 
+export const DEFAULT_PRICING_TIER: PricingTier = PRICING_TIERS[1] ?? {
+  id: "tier_popular",
+  name: "Fan Favorite",
+  pricePhp: 100,
+  baseVotes: 10,
+  bonusVotes: 0,
+  totalVotes: 10,
+  bonusPercentage: 0,
+  isPopular: true,
+  badge: "Most Popular",
+};
+
 /**
  * Calculates bonus votes based on base vote count
  */

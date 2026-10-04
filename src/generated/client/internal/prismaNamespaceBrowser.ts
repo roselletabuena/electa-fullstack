@@ -59,7 +59,8 @@ export const ModelName = {
   ContestantCategoryAssignment: 'ContestantCategoryAssignment',
   EventAuditLog: 'EventAuditLog',
   Vote: 'Vote',
-  PaymentTransaction: 'PaymentTransaction'
+  PaymentTransaction: 'PaymentTransaction',
+  PayoutRequest: 'PayoutRequest'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -91,6 +92,7 @@ export const EventScalarFieldEnum = {
   showResultsOnClose: 'showResultsOnClose',
   isFreeVotingEnabled: 'isFreeVotingEnabled',
   dailyFreeVoteLimit: 'dailyFreeVoteLimit',
+  takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -234,6 +236,30 @@ export const PaymentTransactionScalarFieldEnum = {
 } as const
 
 export type PaymentTransactionScalarFieldEnum = (typeof PaymentTransactionScalarFieldEnum)[keyof typeof PaymentTransactionScalarFieldEnum]
+
+
+export const PayoutRequestScalarFieldEnum = {
+  id: 'id',
+  referenceNumber: 'referenceNumber',
+  eventId: 'eventId',
+  organizerId: 'organizerId',
+  amountInPhp: 'amountInPhp',
+  payoutMethod: 'payoutMethod',
+  accountName: 'accountName',
+  accountNumber: 'accountNumber',
+  bankOrProviderName: 'bankOrProviderName',
+  status: 'status',
+  requestedAt: 'requestedAt',
+  processedAt: 'processedAt',
+  adminReferenceNumber: 'adminReferenceNumber',
+  fulfilledByAdminId: 'fulfilledByAdminId',
+  notes: 'notes',
+  rejectionReason: 'rejectionReason',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type PayoutRequestScalarFieldEnum = (typeof PayoutRequestScalarFieldEnum)[keyof typeof PayoutRequestScalarFieldEnum]
 
 
 export const SortOrder = {

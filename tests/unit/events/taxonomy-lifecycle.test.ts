@@ -10,7 +10,7 @@ import {
 import { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
-import type { Event, Division, AwardCategory } from "@/generated/client/client";
+import { Prisma, type Event, type Division, type AwardCategory } from "@/generated/client/client";
 
 vi.mock("@/lib/db", () => ({
   db: {
@@ -47,6 +47,7 @@ describe("Division Lifecycle (PATCH & DELETE)", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     createdAt: new Date(),
     updatedAt: new Date(),
@@ -188,6 +189,7 @@ describe("Award Category Lifecycle (PATCH & DELETE)", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     createdAt: new Date(),
     updatedAt: new Date(),

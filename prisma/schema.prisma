@@ -52,6 +52,7 @@ model Event {
   showResultsOnClose  Boolean                @default(true)
   isFreeVotingEnabled Boolean                @default(true)
   dailyFreeVoteLimit  Int                    @default(1)
+  takeRatePercentage  Decimal                @default(12.00) @db.Decimal(5, 2)
   organizerId         String
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
@@ -62,6 +63,7 @@ model Event {
   auditLogs           EventAuditLog[]
   votes               Vote[]
   paymentTransactions PaymentTransaction[]
+  payoutRequests      PayoutRequest[]
 
   @@index([slug])
   @@index([organizerId])
@@ -269,6 +271,48 @@ model PaymentTransaction {
   @@index([eventId, status])
   @@index([contestantId])
   @@index([voterIdentifier])
+  @@index([referenceNumber])
+  @@index([createdAt])
+}
+
+enum PayoutStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  REJECTED
+}
+
+enum PayoutMethod {
+  BANK_TRANSFER
+  GCASH
+  MAYA
+}
+
+model PayoutRequest {
+  id                   String        @id @default(uuid())
+  referenceNumber      String        @unique
+  eventId              String
+  organizerId          String
+  amountInPhp          Decimal       @db.Decimal(10, 2)
+  payoutMethod         PayoutMethod  @default(BANK_TRANSFER)
+  accountName          String
+  accountNumber        String
+  bankOrProviderName   String?
+  status               PayoutStatus  @default(PENDING)
+  requestedAt          DateTime      @default(now())
+  processedAt          DateTime?
+  adminReferenceNumber String?
+  fulfilledByAdminId   String?
+  notes                String?
+  rejectionReason      String?
+  createdAt            DateTime      @default(now())
+  updatedAt            DateTime      @updatedAt
+
+  event                Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@index([eventId, status])
+  @@index([eventId])
+  @@index([organizerId])
   @@index([referenceNumber])
   @@index([createdAt])
 }

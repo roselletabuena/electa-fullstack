@@ -3,7 +3,7 @@ import { createEvent } from "@/features/events/services/create-event";
 import { getSession } from "@/lib/auth/get-session";
 import { db } from "@/lib/db";
 import type { CreateEventInput } from "@/lib/validations/event";
-import type { Event, EventAuditLog } from "@/generated/client/client";
+import { type Event, type EventAuditLog, Prisma } from "@/generated/client/client";
 
 vi.mock("@/lib/auth/get-session", () => ({
   getSession: vi.fn(),
@@ -103,6 +103,7 @@ describe("createEvent Service", () => {
       showResultsOnClose: true,
       isFreeVotingEnabled: true,
       dailyFreeVoteLimit: 1,
+      takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_user_123",
       createdAt: new Date(),
       updatedAt: new Date(),

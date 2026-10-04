@@ -28,10 +28,12 @@ export type AggregateEvent = {
 
 export type EventAvgAggregateOutputType = {
   dailyFreeVoteLimit: number | null
+  takeRatePercentage: runtime.Decimal | null
 }
 
 export type EventSumAggregateOutputType = {
   dailyFreeVoteLimit: number | null
+  takeRatePercentage: runtime.Decimal | null
 }
 
 export type EventMinAggregateOutputType = {
@@ -47,6 +49,7 @@ export type EventMinAggregateOutputType = {
   showResultsOnClose: boolean | null
   isFreeVotingEnabled: boolean | null
   dailyFreeVoteLimit: number | null
+  takeRatePercentage: runtime.Decimal | null
   organizerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -65,6 +68,7 @@ export type EventMaxAggregateOutputType = {
   showResultsOnClose: boolean | null
   isFreeVotingEnabled: boolean | null
   dailyFreeVoteLimit: number | null
+  takeRatePercentage: runtime.Decimal | null
   organizerId: string | null
   createdAt: Date | null
   updatedAt: Date | null
@@ -83,6 +87,7 @@ export type EventCountAggregateOutputType = {
   showResultsOnClose: number
   isFreeVotingEnabled: number
   dailyFreeVoteLimit: number
+  takeRatePercentage: number
   organizerId: number
   createdAt: number
   updatedAt: number
@@ -92,10 +97,12 @@ export type EventCountAggregateOutputType = {
 
 export type EventAvgAggregateInputType = {
   dailyFreeVoteLimit?: true
+  takeRatePercentage?: true
 }
 
 export type EventSumAggregateInputType = {
   dailyFreeVoteLimit?: true
+  takeRatePercentage?: true
 }
 
 export type EventMinAggregateInputType = {
@@ -111,6 +118,7 @@ export type EventMinAggregateInputType = {
   showResultsOnClose?: true
   isFreeVotingEnabled?: true
   dailyFreeVoteLimit?: true
+  takeRatePercentage?: true
   organizerId?: true
   createdAt?: true
   updatedAt?: true
@@ -129,6 +137,7 @@ export type EventMaxAggregateInputType = {
   showResultsOnClose?: true
   isFreeVotingEnabled?: true
   dailyFreeVoteLimit?: true
+  takeRatePercentage?: true
   organizerId?: true
   createdAt?: true
   updatedAt?: true
@@ -147,6 +156,7 @@ export type EventCountAggregateInputType = {
   showResultsOnClose?: true
   isFreeVotingEnabled?: true
   dailyFreeVoteLimit?: true
+  takeRatePercentage?: true
   organizerId?: true
   createdAt?: true
   updatedAt?: true
@@ -252,6 +262,7 @@ export type EventGroupByOutputType = {
   showResultsOnClose: boolean
   isFreeVotingEnabled: boolean
   dailyFreeVoteLimit: number
+  takeRatePercentage: runtime.Decimal
   organizerId: string
   createdAt: Date
   updatedAt: Date
@@ -293,6 +304,7 @@ export type EventWhereInput = {
   showResultsOnClose?: Prisma.BoolFilter<"Event"> | boolean
   isFreeVotingEnabled?: Prisma.BoolFilter<"Event"> | boolean
   dailyFreeVoteLimit?: Prisma.IntFilter<"Event"> | number
+  takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
@@ -302,6 +314,7 @@ export type EventWhereInput = {
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
+  payoutRequests?: Prisma.PayoutRequestListRelationFilter
 }
 
 export type EventOrderByWithRelationInput = {
@@ -317,6 +330,7 @@ export type EventOrderByWithRelationInput = {
   showResultsOnClose?: Prisma.SortOrder
   isFreeVotingEnabled?: Prisma.SortOrder
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -326,6 +340,7 @@ export type EventOrderByWithRelationInput = {
   auditLogs?: Prisma.EventAuditLogOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
+  payoutRequests?: Prisma.PayoutRequestOrderByRelationAggregateInput
 }
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -344,6 +359,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   showResultsOnClose?: Prisma.BoolFilter<"Event"> | boolean
   isFreeVotingEnabled?: Prisma.BoolFilter<"Event"> | boolean
   dailyFreeVoteLimit?: Prisma.IntFilter<"Event"> | number
+  takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
@@ -353,6 +369,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
+  payoutRequests?: Prisma.PayoutRequestListRelationFilter
 }, "id" | "slug">
 
 export type EventOrderByWithAggregationInput = {
@@ -368,6 +385,7 @@ export type EventOrderByWithAggregationInput = {
   showResultsOnClose?: Prisma.SortOrder
   isFreeVotingEnabled?: Prisma.SortOrder
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -394,6 +412,7 @@ export type EventScalarWhereWithAggregatesInput = {
   showResultsOnClose?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
   isFreeVotingEnabled?: Prisma.BoolWithAggregatesFilter<"Event"> | boolean
   dailyFreeVoteLimit?: Prisma.IntWithAggregatesFilter<"Event"> | number
+  takeRatePercentage?: Prisma.DecimalWithAggregatesFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringWithAggregatesFilter<"Event"> | string
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
@@ -412,6 +431,7 @@ export type EventCreateInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -421,6 +441,7 @@ export type EventCreateInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateInput = {
@@ -436,6 +457,7 @@ export type EventUncheckedCreateInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -445,6 +467,7 @@ export type EventUncheckedCreateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventUpdateInput = {
@@ -460,6 +483,7 @@ export type EventUpdateInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -469,6 +493,7 @@ export type EventUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateInput = {
@@ -484,6 +509,7 @@ export type EventUncheckedUpdateInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -493,6 +519,7 @@ export type EventUncheckedUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyInput = {
@@ -508,6 +535,7 @@ export type EventCreateManyInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -526,6 +554,7 @@ export type EventUpdateManyMutationInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -544,6 +573,7 @@ export type EventUncheckedUpdateManyInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -562,6 +592,7 @@ export type EventCountOrderByAggregateInput = {
   showResultsOnClose?: Prisma.SortOrder
   isFreeVotingEnabled?: Prisma.SortOrder
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -569,6 +600,7 @@ export type EventCountOrderByAggregateInput = {
 
 export type EventAvgOrderByAggregateInput = {
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
 }
 
 export type EventMaxOrderByAggregateInput = {
@@ -584,6 +616,7 @@ export type EventMaxOrderByAggregateInput = {
   showResultsOnClose?: Prisma.SortOrder
   isFreeVotingEnabled?: Prisma.SortOrder
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -602,6 +635,7 @@ export type EventMinOrderByAggregateInput = {
   showResultsOnClose?: Prisma.SortOrder
   isFreeVotingEnabled?: Prisma.SortOrder
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -609,6 +643,7 @@ export type EventMinOrderByAggregateInput = {
 
 export type EventSumOrderByAggregateInput = {
   dailyFreeVoteLimit?: Prisma.SortOrder
+  takeRatePercentage?: Prisma.SortOrder
 }
 
 export type EventScalarRelationFilter = {
@@ -642,6 +677,14 @@ export type IntFieldUpdateOperationsInput = {
   decrement?: number
   multiply?: number
   divide?: number
+}
+
+export type DecimalFieldUpdateOperationsInput = {
+  set?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  increment?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  decrement?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  multiply?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  divide?: runtime.Decimal | runtime.DecimalJsLike | number | string
 }
 
 export type EventCreateNestedOneWithoutDivisionsInput = {
@@ -728,6 +771,20 @@ export type EventUpdateOneRequiredWithoutPaymentTransactionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutPaymentTransactionsInput, Prisma.EventUpdateWithoutPaymentTransactionsInput>, Prisma.EventUncheckedUpdateWithoutPaymentTransactionsInput>
 }
 
+export type EventCreateNestedOneWithoutPayoutRequestsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutPayoutRequestsInput, Prisma.EventUncheckedCreateWithoutPayoutRequestsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutPayoutRequestsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutPayoutRequestsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutPayoutRequestsInput, Prisma.EventUncheckedCreateWithoutPayoutRequestsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutPayoutRequestsInput
+  upsert?: Prisma.EventUpsertWithoutPayoutRequestsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutPayoutRequestsInput, Prisma.EventUpdateWithoutPayoutRequestsInput>, Prisma.EventUncheckedUpdateWithoutPayoutRequestsInput>
+}
+
 export type EventCreateWithoutDivisionsInput = {
   id?: string
   slug: string
@@ -741,6 +798,7 @@ export type EventCreateWithoutDivisionsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -749,6 +807,7 @@ export type EventCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutDivisionsInput = {
@@ -764,6 +823,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -772,6 +832,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutDivisionsInput = {
@@ -803,6 +864,7 @@ export type EventUpdateWithoutDivisionsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -811,6 +873,7 @@ export type EventUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutDivisionsInput = {
@@ -826,6 +889,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -834,6 +898,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutContestantsInput = {
@@ -849,6 +914,7 @@ export type EventCreateWithoutContestantsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -857,6 +923,7 @@ export type EventCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutContestantsInput = {
@@ -872,6 +939,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -880,6 +948,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutContestantsInput = {
@@ -911,6 +980,7 @@ export type EventUpdateWithoutContestantsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -919,6 +989,7 @@ export type EventUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutContestantsInput = {
@@ -934,6 +1005,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -942,6 +1014,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAwardCategoriesInput = {
@@ -957,6 +1030,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -965,6 +1039,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAwardCategoriesInput = {
@@ -980,6 +1055,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -988,6 +1064,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAwardCategoriesInput = {
@@ -1019,6 +1096,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1027,6 +1105,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
@@ -1042,6 +1121,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1050,6 +1130,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAuditLogsInput = {
@@ -1065,6 +1146,7 @@ export type EventCreateWithoutAuditLogsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1073,6 +1155,7 @@ export type EventCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAuditLogsInput = {
@@ -1088,6 +1171,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1096,6 +1180,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAuditLogsInput = {
@@ -1127,6 +1212,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1135,6 +1221,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAuditLogsInput = {
@@ -1150,6 +1237,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1158,6 +1246,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutVotesInput = {
@@ -1173,6 +1262,7 @@ export type EventCreateWithoutVotesInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1181,6 +1271,7 @@ export type EventCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutVotesInput = {
@@ -1196,6 +1287,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1204,6 +1296,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutVotesInput = {
@@ -1235,6 +1328,7 @@ export type EventUpdateWithoutVotesInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1243,6 +1337,7 @@ export type EventUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutVotesInput = {
@@ -1258,6 +1353,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1266,6 +1362,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPaymentTransactionsInput = {
@@ -1281,6 +1378,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1289,6 +1387,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
@@ -1304,6 +1403,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1312,6 +1412,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPaymentTransactionsInput = {
@@ -1343,6 +1444,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1351,6 +1453,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
@@ -1366,6 +1469,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
   isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
   dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1374,6 +1478,123 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutPayoutRequestsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutPayoutRequestsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutPayoutRequestsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutPayoutRequestsInput, Prisma.EventUncheckedCreateWithoutPayoutRequestsInput>
+}
+
+export type EventUpsertWithoutPayoutRequestsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutPayoutRequestsInput, Prisma.EventUncheckedUpdateWithoutPayoutRequestsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutPayoutRequestsInput, Prisma.EventUncheckedCreateWithoutPayoutRequestsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutPayoutRequestsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutPayoutRequestsInput, Prisma.EventUncheckedUpdateWithoutPayoutRequestsInput>
+}
+
+export type EventUpdateWithoutPayoutRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 
@@ -1388,6 +1609,7 @@ export type EventCountOutputType = {
   auditLogs: number
   votes: number
   paymentTransactions: number
+  payoutRequests: number
 }
 
 export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1397,6 +1619,7 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs
   votes?: boolean | EventCountOutputTypeCountVotesArgs
   paymentTransactions?: boolean | EventCountOutputTypeCountPaymentTransactionsArgs
+  payoutRequests?: boolean | EventCountOutputTypeCountPayoutRequestsArgs
 }
 
 /**
@@ -1451,6 +1674,13 @@ export type EventCountOutputTypeCountPaymentTransactionsArgs<ExtArgs extends run
   where?: Prisma.PaymentTransactionWhereInput
 }
 
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountPayoutRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.PayoutRequestWhereInput
+}
+
 
 export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1465,6 +1695,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: boolean
+  takeRatePercentage?: boolean
   organizerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1474,6 +1705,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
+  payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["event"]>
 
@@ -1490,6 +1722,7 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: boolean
+  takeRatePercentage?: boolean
   organizerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1508,6 +1741,7 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: boolean
+  takeRatePercentage?: boolean
   organizerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -1526,12 +1760,13 @@ export type EventSelectScalar = {
   showResultsOnClose?: boolean
   isFreeVotingEnabled?: boolean
   dailyFreeVoteLimit?: boolean
+  takeRatePercentage?: boolean
   organizerId?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "dailyFreeVoteLimit" | "organizerId" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "dailyFreeVoteLimit" | "takeRatePercentage" | "organizerId" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>
   divisions?: boolean | Prisma.Event$divisionsArgs<ExtArgs>
@@ -1539,6 +1774,7 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
+  payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -1553,6 +1789,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     auditLogs: Prisma.$EventAuditLogPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
+    payoutRequests: Prisma.$PayoutRequestPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1567,6 +1804,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     showResultsOnClose: boolean
     isFreeVotingEnabled: boolean
     dailyFreeVoteLimit: number
+    takeRatePercentage: runtime.Decimal
     organizerId: string
     createdAt: Date
     updatedAt: Date
@@ -1970,6 +2208,7 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   auditLogs<T extends Prisma.Event$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Event$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Event$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  payoutRequests<T extends Prisma.Event$payoutRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$payoutRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -2011,6 +2250,7 @@ export interface EventFieldRefs {
   readonly showResultsOnClose: Prisma.FieldRef<"Event", 'Boolean'>
   readonly isFreeVotingEnabled: Prisma.FieldRef<"Event", 'Boolean'>
   readonly dailyFreeVoteLimit: Prisma.FieldRef<"Event", 'Int'>
+  readonly takeRatePercentage: Prisma.FieldRef<"Event", 'Decimal'>
   readonly organizerId: Prisma.FieldRef<"Event", 'String'>
   readonly createdAt: Prisma.FieldRef<"Event", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Event", 'DateTime'>
@@ -2548,6 +2788,30 @@ export type Event$paymentTransactionsArgs<ExtArgs extends runtime.Types.Extensio
   take?: number
   skip?: number
   distinct?: Prisma.PaymentTransactionScalarFieldEnum | Prisma.PaymentTransactionScalarFieldEnum[]
+}
+
+/**
+ * Event.payoutRequests
+ */
+export type Event$payoutRequestsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the PayoutRequest
+   */
+  select?: Prisma.PayoutRequestSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the PayoutRequest
+   */
+  omit?: Prisma.PayoutRequestOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.PayoutRequestInclude<ExtArgs> | null
+  where?: Prisma.PayoutRequestWhereInput
+  orderBy?: Prisma.PayoutRequestOrderByWithRelationInput | Prisma.PayoutRequestOrderByWithRelationInput[]
+  cursor?: Prisma.PayoutRequestWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.PayoutRequestScalarFieldEnum | Prisma.PayoutRequestScalarFieldEnum[]
 }
 
 /**

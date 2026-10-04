@@ -1,0 +1,85 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ElectaStorageConfigurationContract",
+  "description": "Validation schema and contract for AWS S3 Storage and CORS configuration",
+  "type": "object",
+  "required": [
+    "AWS_REGION",
+    "S3_MEDIA_BUCKET",
+    "corsRules",
+    "iamPolicy"
+  ],
+  "properties": {
+    "AWS_REGION": {
+      "type": "string",
+      "enum": ["ap-southeast-1"]
+    },
+    "S3_MEDIA_BUCKET": {
+      "type": "string",
+      "pattern": "^[a-z0-9][a-z0-9.-]{1,61}[a-z0-9]$",
+      "examples": ["electa-dev-media-assets", "electa-prod-media-assets"]
+    },
+    "COGNITO_DOMAIN": {
+      "type": "string",
+      "format": "uri",
+      "examples": ["https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com"]
+    },
+    "corsRules": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["AllowedHeaders", "AllowedMethods", "AllowedOrigins", "ExposeHeaders"],
+        "properties": {
+          "AllowedHeaders": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "AllowedMethods": {
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": ["GET", "PUT", "POST", "HEAD", "DELETE"]
+            }
+          },
+          "AllowedOrigins": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "ExposeHeaders": {
+            "type": "array",
+            "items": { "type": "string" }
+          },
+          "MaxAgeSeconds": {
+            "type": "integer",
+            "minimum": 0
+          }
+        }
+      }
+    },
+    "iamPolicy": {
+      "type": "object",
+      "required": ["PolicyName", "Statement"],
+      "properties": {
+        "PolicyName": {
+          "type": "string",
+          "enum": ["ElectaS3MediaPolicy"]
+        },
+        "Statement": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "required": ["Effect", "Action", "Resource"],
+            "properties": {
+              "Effect": { "type": "string", "enum": ["Allow", "Deny"] },
+              "Action": {
+                "type": "array",
+                "items": { "type": "string" }
+              },
+              "Resource": { "type": "string" }
+            }
+          }
+        }
+      }
+    }
+  }
+}

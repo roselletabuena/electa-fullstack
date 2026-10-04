@@ -1,5 +1,19 @@
 # Electa — Agent Conventions
 
+## Workspace Context & Repository Boundaries
+
+> [!IMPORTANT]
+> **Electa is structured as two independent sibling repositories within the parent workspace (`electa-workspace/`):**
+> 1. **`electa-fullstack/`** (this repository): Next.js 16 App Router web application, Prisma ORM, UI components, feature slices, client-side AWS Amplify & AWS SDK integrations.
+> 2. **`electa-infra/`** (`../electa-infra/` outside this directory): AWS Infrastructure as Code (IaC) powered by Terraform (AWS S3 storage buckets, Cognito User Pools, RDS PostgreSQL, IAM policies, and CORS configuration).
+>
+> **Rules of Engagement:**
+> - **No Cloud Provisioning in Fullstack**: Never write Terraform files or provision cloud resources inside `electa-fullstack/`. All AWS infrastructure belongs in `../electa-infra/`.
+> - **Configuration Handoff**: Cloud resource identifiers (S3 bucket names, regions, Cognito User Pool IDs, Client IDs) are defined in `electa-infra`, exported via `environments/<env>/outputs.tf`, and consumed here as environment variables validated through `src/env.ts`.
+> - **Independent Git Repositories**: `electa-fullstack` and `electa-infra` are distinct git repositories with separate remotes and commit histories. Never execute git commands or commits across both repositories simultaneously.
+
+---
+
 ## Tech Stack
 
 | Layer          | Technology                           |
@@ -23,11 +37,17 @@
 
 ## Folder Structure
 
-```
-vote-sphere/
-├── prisma/                        # Prisma schema and migrations
-│   ├── schema.prisma              # Database schema — single source of truth
-│   └── migrations/                # Auto-generated migration files (do not edit)
+```text
+electa-workspace/
+├── electa-infra/                      # SIBLING REPO (outside fullstack): AWS Terraform IaC
+│   ├── bootstrap/                     # S3 remote state & DynamoDB lock table
+│   ├── modules/                       # Reusable modules (cognito, storage/s3, database/rds)
+│   └── environments/                  # dev / prod environments and outputs
+│
+└── electa-fullstack/                  # THIS REPOSITORY: Next.js 16 Web App
+    ├── prisma/                        # Prisma schema and migrations
+    │   ├── schema.prisma              # Database schema — single source of truth
+    │   └── migrations/                # Auto-generated migration files (do not edit)
 │
 ├── public/                        # Static assets (images, fonts, icons)
 │
@@ -208,6 +228,13 @@ const form = useForm({ resolver: zodResolver(schema) });
 - Use `getSession()` from `src/lib/auth/get-session.ts` in Route Handlers and Server Components to verify the Cognito JWT.
 - Client-side: use `aws-amplify` Auth APIs. Store the user in the Zustand `auth-store` after sign-in.
 - **Protect routes** via `src/middleware.ts` — do not rely solely on client-side guards.
+
+### AWS Cloud Infrastructure Integration (`electa-infra`)
+
+- **Storage / S3**: Media storage buckets and CORS policies are provisioned via Terraform in `../electa-infra/modules/storage/`. Application-level presigned URL generation, upload handoffs, and S3 client calls live here in `electa-fullstack/` using `@aws-sdk/client-s3`.
+- **Auth / Cognito**: Cognito User Pools, Clients, and OAuth Identity Providers are provisioned in `../electa-infra/modules/cognito/`. Web client configuration and session management live here in `src/lib/auth/`.
+- **Database / RDS**: Postgres instances are provisioned in `../electa-infra/modules/database/`. Database schemas and migrations are managed here in `prisma/schema.prisma`.
+- **Environment Handoff**: Cloud outputs from `electa-infra` are documented in `environments/<env>/outputs.tf`. Run `terraform output env_snippet` in `../electa-infra/environments/dev` to populate your local `electa-fullstack/.env.local`.
 
 ### Code Quality Gates
 

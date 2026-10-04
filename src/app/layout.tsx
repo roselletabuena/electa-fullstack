@@ -7,21 +7,18 @@ import "./globals.css";
 
 const outfit = Outfit({
   subsets: ["latin"],
-  weight: ["600", "700", "800", "900"],
   variable: "--font-outfit",
   display: "swap",
 });
 
 const sora = Sora({
   subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
   variable: "--font-sora",
   display: "swap",
 });
 
 const jetbrainsMono = JetBrains_Mono({
   subsets: ["latin"],
-  weight: ["500", "700"],
   variable: "--font-jetbrains-mono",
   display: "swap",
 });

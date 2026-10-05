@@ -1,0 +1,94 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "DeleteMediaApiContract",
+  "description": "API Contract for DELETE /api/media/delete",
+  "endpoint": {
+    "method": "DELETE",
+    "path": "/api/media/delete",
+    "authentication": "Required (Role: ORGANIZER or ADMIN)"
+  },
+  "request": {
+    "contentType": "application/json",
+    "type": "object",
+    "required": ["key"],
+    "properties": {
+      "key": {
+        "type": "string",
+        "minLength": 1,
+        "pattern": "^[a-zA-Z0-9_\\-\\./]+$",
+        "example": "events/banners/123e4567-e89b-12d3-a456-426614174000-banner.jpg"
+      }
+    },
+    "additionalProperties": false
+  },
+  "responses": {
+    "200": {
+      "description": "Asset deleted successfully (idempotent)",
+      "contentType": "application/json",
+      "schema": {
+        "type": "object",
+        "required": ["success", "data", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": {
+            "type": "object",
+            "required": ["success", "key"],
+            "properties": {
+              "success": { "type": "boolean", "const": true },
+              "key": { "type": "string" }
+            }
+          },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "400": {
+      "description": "Malformed JSON or invalid S3 key path",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "401": {
+      "description": "Unauthenticated session",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string", "const": "Unauthorized" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "403": {
+      "description": "Unauthorized role (non-organizer/voter)",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string", "const": "Forbidden" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal S3 or server failure",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

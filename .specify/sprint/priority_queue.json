@@ -1,92 +1,105 @@
 {
-  "timestamp": "2026-10-02T15:56:45Z",
-  "sprint": "SCRUM Sprint 2",
+  "timestamp": "2026-10-05T01:25:00Z",
+  "sprint": "SCRUM Sprint 3 — Media Storage & Contestant Experience",
   "scoringModel": "(0.30 * BV) + (0.25 * CP) + (0.20 * DH) + (0.15 * PR) + (0.10 * UR)",
+  "activeEpic": "VS-40 ([Electa] Media & Image Management via AWS S3)",
   "queue": [
     {
       "rank": 1,
-      "key": "VS-29",
-      "title": "Cloudflare Turnstile & Free-Tier Velocity Bot Mitigation",
+      "key": "VS-42",
+      "title": "[BE] 1.2 Core S3 Storage Service & Presigned URL Generator",
       "type": "Story",
       "priority": "High",
-      "points": 3,
-      "score": 86.2,
-      "stream": "security-bot-mitigation",
+      "points": 5,
+      "score": 89.25,
+      "stream": "backend-storage-service",
       "parallelGroup": "GROUP_B",
-      "branchName": "feature/VS-29-cloudflare-turnstile-bot-mitigation",
-      "prerequisites": [],
+      "branchName": "feature/VS-42-s3-storage-service",
+      "prerequisites": ["VS-41 (PR #1 Submitted)"],
       "targetDirectories": [
-        "src/lib/security/",
-        "src/app/api/events/[slug]/vote/"
+        "src/lib/s3/"
       ]
     },
     {
       "rank": 2,
-      "key": "VS-22",
-      "title": "Real-Time Live Leaderboard & Stealth Mystery Freeze",
+      "key": "VS-44",
+      "title": "[BE] 1.4 Unit Testing & AWS SDK Mocking Suite",
       "type": "Story",
       "priority": "High",
-      "points": 5,
-      "score": 83.0,
-      "stream": "live-leaderboard",
-      "parallelGroup": "GROUP_D",
-      "branchName": "feature/VS-22-realtime-live-leaderboard-freeze",
-      "prerequisites": [],
+      "points": 3,
+      "score": 82.5,
+      "stream": "backend-storage-tests",
+      "parallelGroup": "GROUP_B",
+      "branchName": "feature/VS-44-s3-unit-test-mock-suite",
+      "prerequisites": ["VS-42"],
       "targetDirectories": [
-        "src/features/leaderboard/",
-        "src/features/events/components/"
+        "tests/unit/storage/"
       ]
     },
     {
       "rank": 3,
-      "key": "VS-25",
-      "title": "Viral Social Sharing 'I Voted' Story Generator",
+      "key": "VS-43",
+      "title": "[BE] 1.3 Authenticated API Route Handlers for Media Operations",
       "type": "Story",
-      "priority": "Medium",
-      "points": 3,
-      "score": 79.25,
-      "stream": "growth-social-share",
-      "parallelGroup": "GROUP_A",
-      "branchName": "feature/VS-25-viral-social-story-generator",
-      "prerequisites": [],
+      "priority": "High",
+      "points": 5,
+      "score": 79.5,
+      "stream": "backend-media-api",
+      "parallelGroup": "GROUP_B",
+      "branchName": "feature/VS-43-media-route-handlers",
+      "prerequisites": ["VS-42"],
       "targetDirectories": [
-        "src/features/voting/components/",
-        "src/lib/canvas/"
+        "src/app/api/media/"
       ]
     },
     {
       "rank": 4,
-      "key": "VS-23",
-      "title": "Fullscreen Stage Presentation Mode for LED Screens",
+      "key": "VS-45",
+      "title": "[FE] 1.1 Reusable Image Upload & Dropzone Component",
       "type": "Story",
       "priority": "Medium",
       "points": 5,
-      "score": 75.0,
-      "stream": "stage-presentation",
+      "score": 74.0,
+      "stream": "frontend-media-ui",
       "parallelGroup": "GROUP_A",
-      "branchName": "feature/VS-23-stage-presentation-mode",
-      "prerequisites": ["VS-22"],
+      "branchName": "feature/VS-45-reusable-image-dropzone",
+      "prerequisites": ["VS-42"],
       "targetDirectories": [
-        "src/app/(public)/events/[slug]/stage-display/",
-        "src/features/events/components/"
+        "src/components/shared/",
+        "src/features/media/"
       ]
     },
     {
       "rank": 5,
-      "key": "VS-21",
-      "title": "Philippine Payment Rails & Dynamic QR Ph Engine",
+      "key": "VS-46",
+      "title": "[FE] 1.2 Image Preview, Cropping & Entity Form Integration",
       "type": "Story",
-      "priority": "Deferred",
-      "points": 8,
-      "score": 70.0,
-      "stream": "payment-monetization",
-      "parallelGroup": "GROUP_C",
-      "branchName": "feature/VS-21-qrph-payment-rails",
-      "prerequisites": [],
+      "priority": "Medium",
+      "points": 5,
+      "score": 71.0,
+      "stream": "frontend-forms-integration",
+      "parallelGroup": "GROUP_A",
+      "branchName": "feature/VS-46-image-preview-cropping-forms",
+      "prerequisites": ["VS-45", "VS-43"],
       "targetDirectories": [
-        "src/features/payments/",
-        "src/app/api/payments/",
-        "src/app/api/webhooks/payment/"
+        "src/features/contestants/components/",
+        "src/features/events/components/"
+      ]
+    },
+    {
+      "rank": 6,
+      "key": "VS-47",
+      "title": "[FE] 1.3 Image Delete & Cleanup Confirmation UX",
+      "type": "Story",
+      "priority": "Medium",
+      "points": 3,
+      "score": 67.5,
+      "stream": "frontend-media-cleanup",
+      "parallelGroup": "GROUP_A",
+      "branchName": "feature/VS-47-image-delete-cleanup-ux",
+      "prerequisites": ["VS-45", "VS-43"],
+      "targetDirectories": [
+        "src/features/media/components/"
       ]
     }
   ]

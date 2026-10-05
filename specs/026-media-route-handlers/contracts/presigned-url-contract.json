@@ -1,0 +1,102 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "PresignedUrlApiContract",
+  "description": "API Contract for POST /api/media/presigned-url",
+  "endpoint": {
+    "method": "POST",
+    "path": "/api/media/presigned-url",
+    "authentication": "Required (Cognito JWT or Session Cookie via getSession())"
+  },
+  "request": {
+    "contentType": "application/json",
+    "type": "object",
+    "required": ["fileName", "contentType", "folder"],
+    "properties": {
+      "fileName": {
+        "type": "string",
+        "minLength": 1,
+        "maxLength": 255,
+        "pattern": "^[^/\\\\]+$",
+        "example": "banner.jpg"
+      },
+      "contentType": {
+        "type": "string",
+        "enum": ["image/jpeg", "image/png", "image/webp"],
+        "example": "image/jpeg"
+      },
+      "folder": {
+        "type": "string",
+        "pattern": "^[a-zA-Z0-9_\\-/]+$",
+        "example": "events/banners"
+      },
+      "maxSizeBytes": {
+        "type": "integer",
+        "minimum": 1,
+        "maximum": 10485760,
+        "example": 5242880
+      }
+    },
+    "additionalProperties": false
+  },
+  "responses": {
+    "200": {
+      "description": "Presigned URL generated successfully",
+      "contentType": "application/json",
+      "schema": {
+        "type": "object",
+        "required": ["success", "data", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": true },
+          "data": {
+            "type": "object",
+            "required": ["uploadUrl", "key", "publicUrl", "expiresIn", "contentType"],
+            "properties": {
+              "uploadUrl": { "type": "string", "format": "uri" },
+              "key": { "type": "string", "example": "events/banners/123e4567-e89b-12d3-a456-426614174000-banner.jpg" },
+              "publicUrl": { "type": "string", "format": "uri" },
+              "expiresIn": { "type": "integer", "const": 300 },
+              "contentType": { "type": "string", "enum": ["image/jpeg", "image/png", "image/webp"] }
+            }
+          },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "400": {
+      "description": "Validation or JSON parsing error",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "401": {
+      "description": "Unauthenticated session",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string", "const": "Unauthorized" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    },
+    "500": {
+      "description": "Internal S3 or server failure",
+      "schema": {
+        "type": "object",
+        "required": ["success", "error", "timestamp"],
+        "properties": {
+          "success": { "type": "boolean", "const": false },
+          "error": { "type": "string" },
+          "timestamp": { "type": "string", "format": "date-time" }
+        }
+      }
+    }
+  }
+}

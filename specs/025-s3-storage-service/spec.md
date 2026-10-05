@@ -1,11 +1,10 @@
 # Feature Specification: Core S3 Storage Service & Presigned URL Generator
 
-**Feature Branch**: `025-s3-storage-service`
-
-**Created**: 2026-10-05
-
-**Status**: Draft
-
+**Feature Branch**: `feature/VS-42-s3-storage-service`  
+**Tracking Issue**: [VS-42](https://the-three-devsketeers.atlassian.net/browse/VS-42)  
+**Parent Epic**: [VS-40](https://the-three-devsketeers.atlassian.net/browse/VS-40) ([Electa] Media & Image Management via AWS S3)  
+**Created**: 2026-10-05  
+**Status**: Ready / Implemented  
 **Input**: User description: "https://the-three-devsketeers.atlassian.net/browse/VS-42: [BE] 1.2 Core S3 Storage Service & Presigned URL Generator"
 
 ## User Scenarios & Testing _(mandatory)_

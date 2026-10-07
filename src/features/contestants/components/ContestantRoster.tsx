@@ -34,21 +34,25 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   const [activeContestant, setActiveContestant] = useState<ContestantDto | null>(null);
 
   const formattedDivisions = React.useMemo(() => {
-    if (divisions && divisions.length > 0) {
+    if (divisions && divisions.length > 1) {
       return divisions.map((d) => ({
         label: d.name,
         value: d.name,
       }));
     }
-    const distinct = Array.from(
+    if (divisions && divisions.length <= 1) {
+      return undefined;
+    }
+
+    const distinctCustom = Array.from(
       new Set(
         initialContestants
-          .map((c) => c.divisionRef?.name || c.divisionName || c.division)
-          .filter(Boolean),
+          .map((c) => c.divisionRef?.name || c.divisionName)
+          .filter((name): name is string => Boolean(name && name.trim())),
       ),
     );
-    if (distinct.length > 0) {
-      return distinct.map((div) => ({
+    if (distinctCustom.length > 1) {
+      return distinctCustom.map((div) => ({
         label: String(div).charAt(0).toUpperCase() + String(div).slice(1).toLowerCase(),
         value: String(div),
       }));
@@ -86,13 +90,14 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   // Client-side filtering for sub-50ms instant roster response
   const filteredContestants = initialContestants.filter((c) => {
     if (c.status !== "ACTIVE") return false;
-    if (selectedDivision !== "ALL") {
+    if (formattedDivisions && formattedDivisions.length > 1 && selectedDivision !== "ALL") {
       const targetDiv = selectedDivision.toLowerCase();
       const matchExact =
         c.division.toLowerCase() === targetDiv ||
         (c.divisionName && c.divisionName.toLowerCase() === targetDiv) ||
         (c.divisionRef?.name && c.divisionRef.name.toLowerCase() === targetDiv) ||
-        (c.divisionId && (c.divisionId === selectedDivision || c.divisionId.toLowerCase() === targetDiv));
+        (c.divisionId &&
+          (c.divisionId === selectedDivision || c.divisionId.toLowerCase() === targetDiv));
 
       const matchedConfigDivision = divisions?.find(
         (d) =>
@@ -103,8 +108,10 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
       const matchConfigured = matchedConfigDivision
         ? (c.divisionId && c.divisionId === matchedConfigDivision.id) ||
           (c.divisionRef?.id && c.divisionRef.id === matchedConfigDivision.id) ||
-          (c.divisionName && c.divisionName.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
-          (c.divisionRef?.name && c.divisionRef.name.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
+          (c.divisionName &&
+            c.divisionName.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
+          (c.divisionRef?.name &&
+            c.divisionRef.name.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
           c.division.toLowerCase() === matchedConfigDivision.name.toLowerCase()
         : false;
 

@@ -22,7 +22,9 @@ import {
   FileEdit,
   Save,
   Trash2,
+  Info,
 } from "lucide-react";
+import { CopySlugButton } from "./CopySlugButton";
 import {
   Card,
   CardHeader,
@@ -543,6 +545,29 @@ export function ScheduleLifecycleForm({
                     {errors.draftPassphrase.message}
                   </p>
                 )}
+
+                {/* Organizer Testing Guidance Callout */}
+                <div className="flex flex-col gap-3 rounded-none border border-sky-200 bg-sky-50/60 p-3.5 text-xs text-sky-900 sm:flex-row sm:items-center sm:justify-between dark:border-sky-900/40 dark:bg-sky-950/20 dark:text-sky-200">
+                  <div className="flex items-start gap-2.5">
+                    <Info className="mt-0.5 size-4 shrink-0 text-sky-600 dark:text-sky-400" />
+                    <div className="space-y-0.5">
+                      <p className="font-bold tracking-wider text-sky-950 uppercase dark:text-sky-100">
+                        Organizer Preview Note
+                      </p>
+                      <p className="leading-relaxed text-sky-800 dark:text-sky-300">
+                        Because you are logged in as the event organizer, your session automatically
+                        bypasses this passphrase. To test guest reviewer access, open the event link
+                        in an Incognito / Private window.
+                      </p>
+                    </div>
+                  </div>
+                  <CopySlugButton
+                    slug={event.slug}
+                    variant="outline"
+                    size="sm"
+                    className="shrink-0 rounded-none border-sky-300 bg-white text-xs font-semibold text-sky-800 hover:bg-sky-50 dark:border-sky-800 dark:bg-slate-900 dark:text-sky-300"
+                  />
+                </div>
               </div>
             </div>
 

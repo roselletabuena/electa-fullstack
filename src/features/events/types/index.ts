@@ -43,6 +43,7 @@ export interface PublicEventDto {
   showResultsOnClose: boolean;
   isFreeVotingEnabled?: boolean;
   dailyFreeVoteLimit?: number;
+  organizerId?: string;
   contestants: ContestantDto[];
 }
 

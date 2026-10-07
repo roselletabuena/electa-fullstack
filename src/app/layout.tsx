@@ -3,6 +3,7 @@ import { Outfit, Sora, JetBrains_Mono } from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { ReactQueryProvider } from "@/components/shared/query-provider";
+import { Toaster } from "@/components/ui/sonner";
 import "./globals.css";
 
 const outfit = Outfit({
@@ -51,6 +52,7 @@ export default function RootLayout({
         <ThemeProvider defaultTheme="light">
           <ReactQueryProvider>
             <NuqsAdapter>{children}</NuqsAdapter>
+            <Toaster position="top-center" />
           </ReactQueryProvider>
         </ThemeProvider>
       </body>

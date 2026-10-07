@@ -87,7 +87,7 @@ describe("CategoryFilterBar - Dynamic Division & Award Pills (VS-38)", () => {
     expect(teensPill.className).toContain("rounded-none");
   });
 
-  it("falls back to default divisions when divisions prop is undefined or empty", () => {
+  it("does not render division pills when divisions prop is undefined or empty", () => {
     render(
       <CategoryFilterBar
         selectedDivision="ALL"
@@ -98,10 +98,45 @@ describe("CategoryFilterBar - Dynamic Division & Award Pills (VS-38)", () => {
       />,
     );
 
-    expect(screen.getByRole("button", { name: "All Candidates" })).toBeDefined();
-    expect(screen.getByRole("button", { name: "Female" })).toBeDefined();
-    expect(screen.getByRole("button", { name: "Male" })).toBeDefined();
-    expect(screen.getByRole("button", { name: "LGBTQ+" })).toBeDefined();
-    expect(screen.getByRole("button", { name: "Teen" })).toBeDefined();
+    // Divisions should not be shown when no custom divisions are provided
+    expect(screen.queryByRole("group", { name: "Competition Divisions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Female" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Male" })).toBeNull();
+
+    // Award categories should still be rendered
+    expect(screen.getByRole("button", { name: "All Awards" })).toBeDefined();
+    expect(screen.getByRole("button", { name: "People's Choice" })).toBeDefined();
+  });
+
+  it("suppresses division pills when only 1 division is provided", () => {
+    render(
+      <CategoryFilterBar
+        divisions={[{ label: "Female", value: "FEMALE" }]}
+        selectedDivision="ALL"
+        onSelectDivision={vi.fn()}
+        categories={mockCategories}
+        selectedCategoryId="ALL"
+        onSelectCategory={vi.fn()}
+      />,
+    );
+
+    expect(screen.queryByRole("group", { name: "Competition Divisions" })).toBeNull();
+    expect(screen.queryByRole("button", { name: "Female" })).toBeNull();
+    expect(screen.getByRole("button", { name: "All Awards" })).toBeDefined();
+  });
+
+  it("renders nothing when there are neither multiple divisions nor categories", () => {
+    const { container } = render(
+      <CategoryFilterBar
+        divisions={[{ label: "Female", value: "FEMALE" }]}
+        selectedDivision="ALL"
+        onSelectDivision={vi.fn()}
+        categories={[]}
+        selectedCategoryId="ALL"
+        onSelectCategory={vi.fn()}
+      />,
+    );
+
+    expect(container.firstChild).toBeNull();
   });
 });

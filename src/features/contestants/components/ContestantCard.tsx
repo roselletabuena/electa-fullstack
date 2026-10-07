@@ -92,11 +92,11 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
                 <MapPin className="size-3 shrink-0 text-sky-400" />
                 <span className="max-w-35 truncate">{contestant.hometown}</span>
               </div>
-            ) : (
+            ) : contestant.divisionRef?.name || contestant.divisionName ? (
               <span className="text-slate-400 capitalize">
-                {contestant.division.toLowerCase()} Division
+                {contestant.divisionRef?.name || contestant.divisionName}
               </span>
-            )}
+            ) : null}
 
             {contestant.heightCm && (
               <span className="font-mono text-[11px] text-slate-300">{contestant.heightCm} cm</span>

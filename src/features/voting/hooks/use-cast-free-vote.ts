@@ -2,12 +2,7 @@
 
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { castFreeVoteAction } from "../actions/cast-free-vote";
-import type {
-  CastFreeVoteInput,
-  CastFreeVoteResultDto,
-  VotingErrorDto,
-  VoterQuotaStateDto,
-} from "../types";
+import type { CastFreeVoteInput, CastFreeVoteResultDto, VotingErrorDto } from "../types";
 
 interface UseCastFreeVoteOptions {
   onSuccess?: (result: CastFreeVoteResultDto) => void;
@@ -25,38 +20,15 @@ export function useCastFreeVote(eventId: string, options?: UseCastFreeVoteOption
       }
       return response.data;
     },
-    onMutate: async () => {
-      // Cancel outgoing refetches
-      await queryClient.cancelQueries({ queryKey: ["voting-quota", eventId] });
-
-      const previousQuota = queryClient.getQueryData<VoterQuotaStateDto>(["voting-quota", eventId]);
-
-      // Optimistic update
-      if (previousQuota && previousQuota.remainingVotes > 0) {
-        const nextRemaining = previousQuota.remainingVotes - 1;
-        queryClient.setQueryData<VoterQuotaStateDto>(["voting-quota", eventId], {
-          ...previousQuota,
-          votesUsedIn24h: previousQuota.votesUsedIn24h + 1,
-          remainingVotes: nextRemaining,
-          isInCooldown: nextRemaining === 0,
-        });
-      }
-
-      return { previousQuota };
-    },
-    onError: (err: VotingErrorDto, _variables, context) => {
-      // Rollback on error
-      if (context?.previousQuota) {
-        queryClient.setQueryData(["voting-quota", eventId], context.previousQuota);
-      }
+    onError: (err: VotingErrorDto) => {
       options?.onError?.(err);
     },
     onSuccess: (result) => {
       // Sync fresh quota from server
       queryClient.setQueryData(["voting-quota", eventId], result.quotaState);
       // Invalidate contestant and event roster queries so vote counts update immediately
-      queryClient.invalidateQueries({ queryKey: ["contestants"] });
-      queryClient.invalidateQueries({ queryKey: ["event"] });
+      void queryClient.invalidateQueries({ queryKey: ["contestants"] });
+      void queryClient.invalidateQueries({ queryKey: ["event"] });
       options?.onSuccess?.(result);
     },
   });

@@ -26,7 +26,7 @@ export function OrganizerDashboardHeader({
   event,
   user,
   activeSection = "settings",
-}: OrganizerDashboardHeaderProps): React.JSX.Element {
+}: Readonly<OrganizerDashboardHeaderProps>): React.JSX.Element {
   const operationalState = deriveEventState({
     publicationStatus: event.publicationStatus,
     startsAt: event.startsAt,

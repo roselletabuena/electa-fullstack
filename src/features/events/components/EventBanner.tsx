@@ -8,9 +8,18 @@ import type { PublicEventDto } from "../types";
 
 export interface EventBannerProps {
   event: PublicEventDto;
+  totalVotes?: number;
 }
 
-export function EventBanner({ event }: EventBannerProps): React.JSX.Element {
+export function EventBanner({ event, totalVotes }: Readonly<EventBannerProps>): React.JSX.Element {
+  const aggregateVotes =
+    typeof totalVotes === "number"
+      ? totalVotes
+      : (event.contestants?.reduce((sum, c) => sum + (c.voteCount ?? 0), 0) ?? 0);
+
+  const isLive = event.operationalState === "Active";
+  const shouldShowLiveLeaderboard = isLive && aggregateVotes > 1;
+
   const formattedStartsAt = new Date(event.startsAt).toLocaleDateString("en-US", {
     month: "short",
     day: "numeric",
@@ -89,13 +98,15 @@ export function EventBanner({ event }: EventBannerProps): React.JSX.Element {
             </div>
           </div>
 
-          <Link
-            href={`/events/${event.slug}/leaderboard`}
-            className="font-heading inline-flex items-center gap-2 border border-amber-400 bg-amber-500 px-3.5 py-1.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs transition-transform hover:scale-105 hover:bg-amber-400"
-          >
-            <Trophy className="size-3.5" />
-            <span>Live Leaderboard</span>
-          </Link>
+          {shouldShowLiveLeaderboard && (
+            <Link
+              href={`/events/${event.slug}/leaderboard`}
+              className="font-heading inline-flex items-center gap-2 border border-amber-400 bg-amber-500 px-3.5 py-1.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs transition-transform hover:scale-105 hover:bg-amber-400"
+            >
+              <Trophy className="size-3.5" />
+              <span>Live Leaderboard</span>
+            </Link>
+          )}
         </div>
       </div>
     </header>

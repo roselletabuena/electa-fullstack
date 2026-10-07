@@ -7,7 +7,7 @@ export interface DraftPreviewBannerProps {
 
 export function DraftPreviewBanner({
   accessMode = "guest",
-}: DraftPreviewBannerProps): React.JSX.Element {
+}: Readonly<DraftPreviewBannerProps>): React.JSX.Element {
   return (
     <div
       role="status"

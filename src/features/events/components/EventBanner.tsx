@@ -11,7 +11,7 @@ export interface EventBannerProps {
   totalVotes?: number;
 }
 
-export function EventBanner({ event, totalVotes }: EventBannerProps): React.JSX.Element {
+export function EventBanner({ event, totalVotes }: Readonly<EventBannerProps>): React.JSX.Element {
   const aggregateVotes =
     typeof totalVotes === "number"
       ? totalVotes

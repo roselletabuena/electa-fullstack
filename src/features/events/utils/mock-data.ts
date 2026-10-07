@@ -16,6 +16,7 @@ export const mockScheduledEvent: PublicEventDto = {
   showResultsOnClose: true,
   isFreeVotingEnabled: true,
   dailyFreeVoteLimit: 1,
+  organizerId: "usr_org_01",
   contestants: [
     {
       id: "cst_01",

@@ -1,21 +1,48 @@
+import { createHash } from "node:crypto";
+
 export interface PreviewTokenPayload {
   slug: string;
   exp: number; // Unix timestamp in ms
+  digest?: string; // Truncated SHA-256 digest of active draftPassphraseHash
 }
 
 const PREVIEW_SECRET = "vs_preview_secret_key_2026";
 
 /**
+ * Computes a deterministic short digest of a draft passphrase hash for token binding.
+ */
+export function computePassphraseDigest(passphraseHash: string | null | undefined): string | null {
+  if (!passphraseHash) {
+    return null;
+  }
+  return createHash("sha256").update(passphraseHash).digest("hex").slice(0, 16);
+}
+
+/**
  * Creates a signed preview token for draft event guest review.
+ * Supports overloaded arguments:
+ * - signPreviewToken(slug, ttlMs)
+ * - signPreviewToken(slug, passphraseDigest, ttlMs)
  */
 export function signPreviewToken(
   slug: string,
+  passphraseDigestOrTtl?: string | null | number,
   ttlMs = 1000 * 60 * 60 * 24,
 ): { token: string; expiresAt: string } {
-  const expiresAtMs = Date.now() + ttlMs;
+  let digest: string | undefined;
+  let effectiveTtl = ttlMs;
+
+  if (typeof passphraseDigestOrTtl === "number") {
+    effectiveTtl = passphraseDigestOrTtl;
+  } else if (typeof passphraseDigestOrTtl === "string") {
+    digest = passphraseDigestOrTtl;
+  }
+
+  const expiresAtMs = Date.now() + effectiveTtl;
   const payload: PreviewTokenPayload = {
     slug,
     exp: expiresAtMs,
+    ...(digest ? { digest } : {}),
   };
 
   const payloadBase64 = Buffer.from(JSON.stringify(payload)).toString("base64url");
@@ -43,9 +70,14 @@ function timingSafeEqualStr(a: string, b: string): boolean {
 }
 
 /**
- * Verifies if a given preview token is valid, matches the event slug, and has not expired.
+ * Verifies if a given preview token is valid, matches the event slug, has not expired,
+ * and matches the active passphrase digest if expectedDigest is provided.
  */
-export function verifyPreviewToken(token: string | null | undefined, slug: string): boolean {
+export function verifyPreviewToken(
+  token: string | null | undefined,
+  slug: string,
+  expectedDigest?: string | null,
+): boolean {
   if (!token) {
     return false;
   }
@@ -77,6 +109,11 @@ export function verifyPreviewToken(token: string | null | undefined, slug: strin
     }
     if (Date.now() > payload.exp) {
       return false;
+    }
+    if (expectedDigest !== undefined) {
+      if (!expectedDigest || payload.digest !== expectedDigest) {
+        return false;
+      }
     }
     return true;
   } catch {

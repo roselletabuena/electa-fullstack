@@ -1,0 +1,43 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "ImageDropzoneProps",
+  "description": "Configuration contract for the reusable ImageDropzone React component",
+  "type": "object",
+  "properties": {
+    "folder": {
+      "type": "string",
+      "enum": ["events/banners", "events/logos", "contestants/avatars", "sponsors"],
+      "description": "Target folder hierarchy prefix within the S3 media bucket"
+    },
+    "maxSizeBytes": {
+      "type": "integer",
+      "minimum": 1024,
+      "maximum": 20971520,
+      "default": 5242880,
+      "description": "Maximum allowed file size in bytes (defaults to 5MB)"
+    },
+    "allowedMimeTypes": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": ["image/jpeg", "image/png", "image/webp"]
+      },
+      "default": ["image/jpeg", "image/png", "image/webp"]
+    },
+    "initialPreviewUrl": {
+      "type": "string",
+      "format": "uri"
+    },
+    "disabled": {
+      "type": "boolean",
+      "default": false
+    },
+    "label": {
+      "type": "string"
+    },
+    "helperText": {
+      "type": "string"
+    }
+  },
+  "required": ["folder"]
+}

@@ -1,0 +1,30 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "UploadedMedia",
+  "description": "Output payload emitted by ImageDropzone on successful direct S3 upload",
+  "type": "object",
+  "properties": {
+    "key": {
+      "type": "string",
+      "description": "Permanent relative object key in the S3 media bucket"
+    },
+    "publicUrl": {
+      "type": "string",
+      "format": "uri",
+      "description": "Full HTTPS CloudFront or S3 URL for rendering the asset"
+    },
+    "fileName": {
+      "type": "string",
+      "description": "Original sanitized file name"
+    },
+    "fileSize": {
+      "type": "integer",
+      "description": "File size in bytes"
+    },
+    "contentType": {
+      "type": "string",
+      "enum": ["image/jpeg", "image/png", "image/webp"]
+    }
+  },
+  "required": ["key", "publicUrl", "fileName", "fileSize", "contentType"]
+}

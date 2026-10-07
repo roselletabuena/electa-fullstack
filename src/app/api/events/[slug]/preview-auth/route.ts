@@ -3,7 +3,7 @@ import { cookies } from "next/headers";
 
 import { db } from "@/lib/db";
 import { getMockEventBySlug } from "@/features/events/utils/mock-data";
-import { signPreviewToken } from "@/features/events/utils/preview-token";
+import { computePassphraseDigest, signPreviewToken } from "@/features/events/utils/preview-token";
 import { verifyPassphrase } from "@/features/events/utils/passphrase";
 import { apiError, apiSuccess, type ApiResponse } from "@/lib/api/response";
 import { previewAuthSchema } from "@/lib/validations/event";
@@ -85,7 +85,11 @@ export async function POST(
       }
     }
 
-    const { token, expiresAt } = signPreviewToken(slug);
+    const activeDigest = isDbDraft
+      ? computePassphraseDigest(draftHash)
+      : computePassphraseDigest("judge-preview-2026");
+
+    const { token, expiresAt } = signPreviewToken(slug, activeDigest);
 
     const cookieStore = await cookies();
     cookieStore.set(`vs_preview_${slug}`, token, {

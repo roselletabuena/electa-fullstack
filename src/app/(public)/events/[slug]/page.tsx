@@ -5,7 +5,7 @@ import type { Metadata } from "next";
 
 import { EventPageClient } from "@/features/events/components/EventPageClient";
 import { DraftPassphraseModal } from "@/features/events/components/DraftPassphraseModal";
-import { verifyPreviewToken } from "@/features/events/utils/preview-token";
+import { computePassphraseDigest, verifyPreviewToken } from "@/features/events/utils/preview-token";
 import { getSession } from "@/lib/auth/get-session";
 import { db } from "@/lib/db";
 import { deriveEventState } from "@/features/events/utils/derive-event-state";
@@ -51,6 +51,7 @@ async function getPublicEvent(slug: string): Promise<PublicEventDto | null> {
         showResultsOnClose: event.showResultsOnClose,
         isFreeVotingEnabled: event.isFreeVotingEnabled,
         dailyFreeVoteLimit: event.dailyFreeVoteLimit,
+        organizerId: event.organizerId,
         contestants: event.contestants.map((c) => ({
           id: c.id,
           contestantNumber: c.contestantNumber,
@@ -109,7 +110,9 @@ export default async function EventPage(props: PageProps): Promise<React.JSX.Ele
   // Draft state authorization gates
   if (event.operationalState === "Draft") {
     const session = await getSession();
-    if (session) {
+    const isOwner = Boolean(session && event.organizerId && session.userId === event.organizerId);
+
+    if (isOwner) {
       return (
         <main>
           <Suspense fallback={<EventLoading />}>
@@ -119,10 +122,30 @@ export default async function EventPage(props: PageProps): Promise<React.JSX.Ele
       );
     }
 
+    let draftHash: string | null = null;
+    let isDbRecord = false;
+    try {
+      const dbEvent = await db.event.findUnique({
+        where: { slug },
+        select: { draftPassphraseHash: true },
+      });
+      if (dbEvent) {
+        isDbRecord = true;
+        draftHash = dbEvent.draftPassphraseHash;
+      }
+    } catch {
+      // Optional in mock environments
+    }
+
+    // Active digest from db hash, or for mock fallback
+    const activeDigest = isDbRecord
+      ? computePassphraseDigest(draftHash)
+      : computePassphraseDigest("judge-preview-2026");
+
     const cookieStore = await cookies();
     const previewCookie = cookieStore.get(`vs_preview_${slug}`)?.value;
 
-    if (previewCookie && verifyPreviewToken(previewCookie, slug)) {
+    if (previewCookie && verifyPreviewToken(previewCookie, slug, activeDigest)) {
       return (
         <main>
           <Suspense fallback={<EventLoading />}>
@@ -132,7 +155,7 @@ export default async function EventPage(props: PageProps): Promise<React.JSX.Ele
       );
     }
 
-    // Unauthenticated guest reviewer without token: render Passphrase unlock prompt
+    // Unauthenticated guest reviewer or non-owner: render Passphrase unlock prompt
     return (
       <main className="py-12">
         <DraftPassphraseModal slug={slug} />

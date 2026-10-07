@@ -40,6 +40,7 @@
 - [x] T011 [US1] Create public leaderboard container in `src/features/leaderboard/components/LeaderboardView.tsx`
 - [x] T012 [US1] Build public event leaderboard page in `src/app/(public)/events/[slug]/leaderboard/page.tsx`
 - [x] T013 [US1] Unit test `/api/events/[slug]/leaderboard` route handler in `tests/unit/leaderboard/leaderboard-route.test.ts`
+- [x] T013b [US1] Conditionally render "Live Leaderboard" button in `EventBanner.tsx` only when voting is actively live (`operationalState === 'Active'`) and `totalVotes > 1`
 
 **Checkpoint**: User Story 1 fully functional and independently verified.
 

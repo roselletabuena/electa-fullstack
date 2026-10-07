@@ -24,6 +24,8 @@ As a pageant fan and voter, I want to watch the real-time leaderboard update ins
 1. **Given** a published active event, **When** a user navigates to the event leaderboard (`/events/[slug]/leaderboard`), **Then** they see ranked candidate cards with the Top 3 highlighted in Gold (#1), Silver (#2), and Bronze (#3) zero-radius podium cards.
 2. **Given** a candidate in 2nd or 3rd place, **When** the podium card renders, **Then** a dynamic gap badge displays the exact vote difference required to surpass the higher rank (e.g., "Needs 12 votes to take 1st!").
 3. **Given** a voter casting a free or boosted vote, **When** the vote is committed to the database, **Then** the leaderboard broadcasts the updated tallies via Supabase Realtime / SSE and recalculates ranks live on connected screens.
+4. **Given** an event on the public landing page (`/events/[slug]`), **When** voting is live (`operationalState === 'Active'`) AND total votes across all candidates is strictly greater than 1 (`totalVotes > 1`), **Then** the "Live Leaderboard" entry point button is displayed in the event banner.
+5. **Given** an event that is not live (e.g., Scheduled, Draft, or Closed) OR has 1 or fewer votes (`totalVotes <= 1`), **When** a user visits `/events/[slug]`, **Then** the "Live Leaderboard" button is hidden.
 
 ---
 
@@ -62,6 +64,7 @@ As a voter or pageant judge, I want to filter the leaderboard by division (e.g.,
 - **What happens when two or more candidates have an exact tie in vote count?** Candidates with identical vote counts share the same rank number (e.g., T-1st) and are sub-ordered deterministically by earliest vote timestamp or contestant number.
 - **What happens when an event ends (`endsAt` passed)?** If `showResultsOnClose = true`, the final verified tallies and winners are revealed publicly, lifting the mystery freeze state.
 - **What happens if a real-time connection drops?** The client falls back to periodic polling (every 15 seconds) or reconnects automatically with exponential backoff.
+- **When is the "Live Leaderboard" entry button visible on the public event page?** It is conditionally rendered in the header banner ONLY when voting is actively open (`operationalState === 'Active'`) AND the aggregate vote count across all candidates is greater than 1 (`totalVotes > 1`). If the event is scheduled, drafted, closed, or has 0 to 1 votes, the button is hidden.
 
 ---
 
@@ -75,6 +78,7 @@ As a voter or pageant judge, I want to filter the leaderboard by division (e.g.,
 - **FR-004**: System MUST support organizer-controlled mystery freeze via `isLeaderboardFrozen` boolean flag and optional `freezeStartsAt` schedule in Event settings.
 - **FR-005**: System MUST withhold rank numbers and precise vote counts from public API responses when mystery freeze is active, while allowing authenticated organizers to view full tallies.
 - **FR-006**: System MUST allow filtering rankings by division ID and award category ID with URL state persistence.
+- **FR-007**: System MUST conditionally display the public event banner entry button ("Live Leaderboard") ONLY when the competition voting is live (`operationalState === 'Active'`) AND total votes across all candidates is strictly greater than 1 (`totalVotes > 1`). When the event is scheduled, drafted, closed, or has 1 or fewer votes, the button MUST remain hidden.
 
 ### Key Entities
 

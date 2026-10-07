@@ -26,7 +26,7 @@ export function EventPageClient({
   initialEvent,
   isDraftPreview = false,
   accessMode = "guest",
-}: EventPageClientProps): React.JSX.Element {
+}: Readonly<EventPageClientProps>): React.JSX.Element {
   const router = useRouter();
   const queryClient = useQueryClient();
   const [operationalStateOverride, setOperationalStateOverride] =
@@ -104,6 +104,8 @@ export function EventPageClient({
   const contestantsToDisplay =
     apiContestants && apiContestants.length > 0 ? apiContestants : fallbackRichContestants;
 
+  const totalVotes = contestantsToDisplay.reduce((sum, c) => sum + (c.voteCount ?? 0), 0);
+
   return (
     <div className="bg-background text-foreground min-h-screen px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-8">
@@ -111,7 +113,7 @@ export function EventPageClient({
           <DraftPreviewBanner accessMode={accessMode} />
         )}
 
-        <EventBanner event={event} />
+        <EventBanner event={event} totalVotes={totalVotes} />
 
         <EventVotingRulesBanner
           isFreeVotingEnabled={event.isFreeVotingEnabled}
@@ -145,11 +147,11 @@ export function EventPageClient({
             contestantAvatarUrl={boostCandidate.avatarUrl}
             onSuccess={() => {
               router.refresh();
-              queryClient.invalidateQueries({ queryKey: ["contestants"] });
-              queryClient.invalidateQueries({ queryKey: ["event"] });
-              queryClient.invalidateQueries({ queryKey: ["events"] });
-              queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
-              queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
+              void queryClient.invalidateQueries({ queryKey: ["contestants"] });
+              void queryClient.invalidateQueries({ queryKey: ["event"] });
+              void queryClient.invalidateQueries({ queryKey: ["events"] });
+              void queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
+              void queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
             }}
           />
         )}

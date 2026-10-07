@@ -1,7 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import { Heart, Loader2, Zap, Share2, Check } from "lucide-react";
+import { Heart, Loader2, Zap, Share2 } from "lucide-react";
+import { toast } from "@/components/ui/sonner";
 import { useFreeVoteQuota } from "../hooks/use-free-vote-quota";
 import { useCastFreeVote } from "../hooks/use-cast-free-vote";
 import { AuthPromptModal } from "./AuthPromptModal";
@@ -48,8 +49,6 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
   const [isAuthModalOpen, setIsAuthModalOpen] = useState(false);
   const [isStoryModalOpen, setIsStoryModalOpen] = useState(false);
   const [isBoostModalOpen, setIsBoostModalOpen] = useState(false);
-  const [errorToast, setErrorToast] = useState<string | null>(null);
-  const [successToast, setSuccessToast] = useState<string | null>(null);
 
   const { quota, isLoading: isQuotaLoading, formattedCountdown } = useFreeVoteQuota(eventId);
 
@@ -64,8 +63,10 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         }
         setIsStoryModalOpen(true);
       } else {
-        setSuccessToast("Vote cast successfully!");
-        setTimeout(() => setSuccessToast(null), 3000);
+        toast.success("Vote cast successfully!", {
+          description: `Your free vote for ${contestantName} has been recorded.`,
+          duration: 4000,
+        });
       }
       onVoteSuccess?.();
     },
@@ -73,8 +74,10 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
       if (err.code === "NOT_AUTHENTICATED") {
         setIsAuthModalOpen(true);
       } else {
-        setErrorToast(err.message);
-        setTimeout(() => setErrorToast(null), 4000);
+        toast.error("Unable to Cast Vote", {
+          description: err.message || `Could not record vote for ${contestantName}.`,
+          duration: 4000,
+        });
       }
     },
   });
@@ -133,57 +136,69 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
     theme: "midnight",
   };
 
+  const renderActionButton = () => {
+    if (isFreeVotingDisabled) {
+      return (
+        <button
+          type="button"
+          onClick={handleVoteClick}
+          className={`flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
+        >
+          <Zap className="size-3.5 fill-white" />
+          <span>Boost Only</span>
+        </button>
+      );
+    }
+
+    if (isInCooldown) {
+      return (
+        <button
+          type="button"
+          onClick={(e) => {
+            e.stopPropagation();
+            if (onBoostClick) onBoostClick();
+            else setIsBoostModalOpen(true);
+          }}
+          className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
+          title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
+        >
+          <Zap className="size-3.5 fill-white" />
+          <span>Boost</span>
+        </button>
+      );
+    }
+
+    return (
+      <button
+        type="button"
+        disabled={isCasting || isQuotaLoading}
+        onClick={handleVoteClick}
+        className={`group/vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
+      >
+        {isCasting ? (
+          <>
+            <Loader2 className="size-3.5 animate-spin text-white" />
+            <span>Voting...</span>
+          </>
+        ) : (
+          <>
+            <Heart className="size-3.5 fill-white text-white transition-transform group-hover/vote:scale-125" />
+            <span>Vote</span>
+            {total > 1 && (
+              <span className="py-0.2 ml-0.5 rounded-none bg-sky-800/90 px-1.5 font-mono text-[10px] font-bold text-sky-100">
+                {remaining}/{total}
+              </span>
+            )}
+          </>
+        )}
+      </button>
+    );
+  };
+
   return (
     <>
       <div className="relative inline-flex items-center">
-        {isFreeVotingDisabled ? (
-          <button
-            type="button"
-            onClick={handleVoteClick}
-            className={`flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
-          >
-            <Zap className="size-3.5 fill-white" />
-            <span>Boost Only</span>
-          </button>
-        ) : isInCooldown ? (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.stopPropagation();
-              if (onBoostClick) onBoostClick();
-              else setIsBoostModalOpen(true);
-            }}
-            className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
-            title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
-          >
-            <Zap className="size-3.5 fill-white" />
-            <span>Boost</span>
-          </button>
-        ) : (
-          <button
-            type="button"
-            disabled={isCasting || isQuotaLoading}
-            onClick={handleVoteClick}
-            className={`group/vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
-          >
-            {isCasting ? (
-              <>
-                <Loader2 className="size-3.5 animate-spin text-white" />
-                <span>Voting...</span>
-              </>
-            ) : (
-              <>
-                <Heart className="size-3.5 fill-white text-white transition-transform group-hover/vote:scale-125" />
-                <span>Vote</span>
-                {total > 1 && (
-                  <span className="py-0.2 ml-0.5 rounded-none bg-sky-800/90 px-1.5 font-mono text-[10px] font-bold text-sky-100">
-                    {remaining}/{total}
-                  </span>
-                )}
-              </>
-            )}
-          </button>
-        )}
+        {renderActionButton()}
 
         {/* On-Demand Story Generator Modal Button */}
         {showShareButton && (
@@ -202,21 +217,6 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             <Share2 className={size === "lg" ? "size-4" : "size-3.5"} />
             {size === "lg" && <span>Share Story</span>}
           </button>
-        )}
-
-        {/* Transient Success Toast */}
-        {successToast && (
-          <div className="animate-in fade-in slide-in-from-bottom-2 absolute -top-10 left-1/2 z-20 flex -translate-x-1/2 items-center gap-1.5 rounded-none bg-emerald-600 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
-            <Check className="size-3.5" />
-            <span>{successToast}</span>
-          </div>
-        )}
-
-        {/* Transient Error Toast */}
-        {errorToast && (
-          <div className="animate-in fade-in slide-in-from-bottom-2 absolute -top-10 left-1/2 z-20 -translate-x-1/2 rounded-none bg-rose-600 px-3 py-1 text-xs font-semibold whitespace-nowrap text-white shadow-lg">
-            {errorToast}
-          </div>
         )}
       </div>
 
@@ -261,8 +261,9 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         awardCategoryId={awardCategoryId}
         onSuccess={() => {
           onVoteSuccess?.();
-          setSuccessToast("Boost Votes Credited!");
-          setTimeout(() => setSuccessToast(null), 3000);
+          toast.success("Boost Votes Credited!", {
+            description: `Boosted votes for ${contestantName} were recorded.`,
+          });
         }}
       />
     </>

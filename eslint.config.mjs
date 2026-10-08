@@ -3,6 +3,7 @@ import nextVitals from "eslint-config-next/core-web-vitals";
 import nextTs from "eslint-config-next/typescript";
 import prettier from "eslint-config-prettier/flat";
 import unicorn from "eslint-plugin-unicorn";
+import sonarjs from "eslint-plugin-sonarjs";
 
 /**
  * ESLint flat config for Electa.
@@ -52,6 +53,17 @@ const eslintConfig = defineConfig([
       "unicorn/prefer-string-slice": "error",
       "unicorn/prefer-ternary": "warn",
       "unicorn/throw-new-error": "error",
+    },
+  },
+
+  // ─── SonarLint / SonarJS rules (code smells, bugs, cognitive complexity) ───
+  sonarjs.configs.recommended,
+  {
+    rules: {
+      // TypeScript allows explicit undefined in optional types; disable noise
+      "sonarjs/no-redundant-optional": "off",
+      // Math.random is used for visual effects (confetti, canvas animations)
+      "sonarjs/pseudo-random": "warn",
     },
   },
 

@@ -18,6 +18,12 @@
       "skillPath": "skills/engineering/code-review/SKILL.md",
       "computedHash": "b4f17857c85ca60af1df7d0b623dd03c2a48419f6123e714f3d9748ca744a1bf"
     },
+    "code-review-and-quality": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/code-review-and-quality/SKILL.md",
+      "computedHash": "0667c7af98996c0bec4fb0eb444680bdbf1da1d6a3cfdf5dbe8cbd350d9d2752"
+    },
     "epic-breakdown-advisor": {
       "source": "deanpeters/product-manager-skills",
       "sourceType": "github",
@@ -30,6 +36,12 @@
       "skillPath": "skills/frontend-design/SKILL.md",
       "computedHash": "93f53fd1c0352d3d7ec17b8f73d7351bf76f4821e55d123c9d2abc2c53ba48e4"
     },
+    "frontend-ui-engineering": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/frontend-ui-engineering/SKILL.md",
+      "computedHash": "caada020b47fb51c68ba91f9bf390745e18f9d6c17e4c251b046ba74e43343d7"
+    },
     "grilling": {
       "source": "mattpocock/skills",
       "sourceType": "github",
@@ -41,6 +53,12 @@
       "sourceType": "github",
       "skillPath": "nextjs-react-typescript/SKILL.md",
       "computedHash": "52067402daf8388ba7970478e0ba1f350f1868a65a62ae2bf6f4dc1ac3cf3e88"
+    },
+    "planning-and-task-breakdown": {
+      "source": "addyosmani/agent-skills",
+      "sourceType": "github",
+      "skillPath": "skills/planning-and-task-breakdown/SKILL.md",
+      "computedHash": "0dc14a1402cdabd376f2d81d2225fcb4a18ee63d58b945ff83affeb024285b8f"
     },
     "prioritization-advisor": {
       "source": "deanpeters/product-manager-skills",

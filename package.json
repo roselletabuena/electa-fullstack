@@ -8,6 +8,8 @@
     "start": "next start",
     "lint": "eslint src",
     "lint:fix": "eslint src --fix",
+    "lint:sonar": "eslint src",
+    "lint:staged": "lint-staged",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
     "typecheck": "tsc --noEmit",
@@ -21,11 +23,11 @@
     "seed": "tsx prisma/seed.ts"
   },
   "lint-staged": {
-    "*.{ts,tsx}": [
+    "*.{js,jsx,mjs,ts,tsx}": [
       "eslint --fix",
       "prettier --write"
     ],
-    "*.{js,mjs,json,md,css}": [
+    "*.{json,md,css}": [
       "prettier --write"
     ]
   },
@@ -75,6 +77,7 @@
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-import": "^2.32.0",
     "eslint-plugin-jsx-a11y": "^6.10.2",
+    "eslint-plugin-sonarjs": "^4.2.2",
     "eslint-plugin-unicorn": "^55.0.0",
     "jsdom": "^29.1.1",
     "lint-staged": "^16.4.0",

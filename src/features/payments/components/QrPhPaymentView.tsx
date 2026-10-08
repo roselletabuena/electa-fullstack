@@ -32,7 +32,7 @@ export function QrPhPaymentView({
   onBack,
   onClose,
   onSuccess,
-}: QrPhPaymentViewProps): React.JSX.Element {
+}: Readonly<QrPhPaymentViewProps>): React.JSX.Element {
   const queryClient = useQueryClient();
   const [timeLeftSeconds, setTimeLeftSeconds] = useState<number>(15 * 60);
   const [isPolling, setIsPolling] = useState<boolean>(true);

@@ -16,6 +16,61 @@ export interface CreatePaymentIntentResponse {
   error?: string;
 }
 
+interface VotePackage {
+  pricePhp: number;
+  baseVotes: number;
+  bonusVotes: number;
+  totalVotes: number;
+}
+
+function resolveVotePackage(validated: CreatePaymentIntentInput): VotePackage {
+  if (validated.tierId) {
+    const tier = PRICING_TIERS.find((t) => t.id === validated.tierId);
+    if (tier) {
+      return {
+        pricePhp: tier.pricePhp,
+        baseVotes: tier.baseVotes,
+        bonusVotes: tier.bonusVotes,
+        totalVotes: tier.totalVotes,
+      };
+    }
+  }
+  if (validated.customVotes && validated.customVotes > 0) {
+    const customPkg = calculateCustomVotePackage(validated.customVotes);
+    return {
+      pricePhp: customPkg.pricePhp,
+      baseVotes: customPkg.baseVotes,
+      bonusVotes: customPkg.bonusVotes,
+      totalVotes: customPkg.totalVotes,
+    };
+  }
+  return { pricePhp: 50, baseVotes: 5, bonusVotes: 0, totalVotes: 5 };
+}
+
+async function resolveQrCodeDisplay(
+  qrCodeData: string | null | undefined,
+  referenceNumber: string,
+  pricePhp: number,
+): Promise<{ finalQrCode: string; rawQrString: string }> {
+  if (!qrCodeData) {
+    const rawQrString = buildQrPhPayload({
+      referenceNumber,
+      amountInPhp: pricePhp,
+      merchantName: "VoteSphere",
+      city: "Manila",
+    });
+    const finalQrCode = await generateQrCodeDataUrl(rawQrString);
+    return { finalQrCode, rawQrString };
+  }
+
+  if (qrCodeData.startsWith("http") || qrCodeData.startsWith("data:")) {
+    return { finalQrCode: qrCodeData, rawQrString: qrCodeData };
+  }
+
+  const finalQrCode = await generateQrCodeDataUrl(qrCodeData);
+  return { finalQrCode, rawQrString: qrCodeData };
+}
+
 export async function createPaymentIntentAction(
   rawInput: CreatePaymentIntentInput,
 ): Promise<CreatePaymentIntentResponse> {
@@ -37,7 +92,7 @@ export async function createPaymentIntentAction(
       select: { id: true, name: true, contestantNumber: true, eventId: true, status: true },
     });
 
-    if (!contestant || contestant.eventId !== event.id) {
+    if (contestant?.eventId !== event.id) {
       return { success: false, error: "Contestant not found in this event." };
     }
 
@@ -46,26 +101,7 @@ export async function createPaymentIntentAction(
     }
 
     // 2. Resolve Price & Vote Counts
-    let pricePhp = 50;
-    let baseVotes = 5;
-    let bonusVotes = 0;
-    let totalVotes = 5;
-
-    if (validated.tierId) {
-      const tier = PRICING_TIERS.find((t) => t.id === validated.tierId);
-      if (tier) {
-        pricePhp = tier.pricePhp;
-        baseVotes = tier.baseVotes;
-        bonusVotes = tier.bonusVotes;
-        totalVotes = tier.totalVotes;
-      }
-    } else if (validated.customVotes && validated.customVotes > 0) {
-      const customPkg = calculateCustomVotePackage(validated.customVotes);
-      pricePhp = customPkg.pricePhp;
-      baseVotes = customPkg.baseVotes;
-      bonusVotes = customPkg.bonusVotes;
-      totalVotes = customPkg.totalVotes;
-    }
+    const { pricePhp, baseVotes, bonusVotes, totalVotes } = resolveVotePackage(validated);
 
     const amountInCents = Math.round(pricePhp * 100);
     const referenceNumber = `VS-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
@@ -88,25 +124,11 @@ export async function createPaymentIntentAction(
     });
 
     // 4. Resolve QR Ph Payload / Image
-    let finalQrCode = "";
-    let rawQrString = intentOutput.qrCodeData ?? "";
-
-    if (
-      intentOutput.qrCodeData &&
-      (intentOutput.qrCodeData.startsWith("http") || intentOutput.qrCodeData.startsWith("data:"))
-    ) {
-      finalQrCode = intentOutput.qrCodeData;
-    } else if (intentOutput.qrCodeData) {
-      finalQrCode = await generateQrCodeDataUrl(intentOutput.qrCodeData);
-    } else {
-      rawQrString = buildQrPhPayload({
-        referenceNumber,
-        amountInPhp: pricePhp,
-        merchantName: "VoteSphere",
-        city: "Manila",
-      });
-      finalQrCode = await generateQrCodeDataUrl(rawQrString);
-    }
+    const { finalQrCode, rawQrString } = await resolveQrCodeDisplay(
+      intentOutput.qrCodeData,
+      referenceNumber,
+      pricePhp,
+    );
 
     // 5. Expiry 15 minutes from now
     const expiresAt = new Date(Date.now() + 15 * 60 * 1000);

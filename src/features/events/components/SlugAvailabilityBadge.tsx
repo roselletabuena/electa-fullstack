@@ -15,7 +15,7 @@ export function SlugAvailabilityBadge({
   status,
   message,
   className,
-}: SlugAvailabilityBadgeProps): React.JSX.Element | null {
+}: Readonly<SlugAvailabilityBadgeProps>): React.JSX.Element | null {
   if (status === "idle") {
     return null;
   }

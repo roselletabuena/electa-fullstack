@@ -9,10 +9,9 @@ export function DraftPreviewBanner({
   accessMode = "guest",
 }: Readonly<DraftPreviewBannerProps>): React.JSX.Element {
   return (
-    <div
-      role="status"
+    <output
       aria-label="Draft Preview Notification"
-      className="relative overflow-hidden rounded-xl border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/5 to-amber-500/10 p-4 backdrop-blur-md"
+      className="relative block overflow-hidden rounded-xl border border-amber-500/30 bg-linear-to-r from-amber-500/10 via-amber-500/5 to-amber-500/10 p-4 backdrop-blur-md"
     >
       <div className="flex flex-col items-start justify-between gap-3 sm:flex-row sm:items-center">
         <div className="flex items-center gap-3">
@@ -40,6 +39,6 @@ export function DraftPreviewBanner({
           <span>Voting & Payments Disabled</span>
         </div>
       </div>
-    </div>
+    </output>
   );
 }

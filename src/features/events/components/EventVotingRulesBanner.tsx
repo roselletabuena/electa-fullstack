@@ -14,7 +14,7 @@ export function EventVotingRulesBanner({
   isFreeVotingEnabled = true,
   dailyFreeVoteLimit = 1,
   className,
-}: EventVotingRulesBannerProps): React.JSX.Element {
+}: Readonly<EventVotingRulesBannerProps>): React.JSX.Element {
   if (!isFreeVotingEnabled) {
     return (
       <div

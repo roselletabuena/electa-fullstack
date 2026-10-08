@@ -13,7 +13,7 @@ interface PaymentReceiptCardProps {
 export function PaymentReceiptCard({
   receipt,
   onClose,
-}: PaymentReceiptCardProps): React.JSX.Element {
+}: Readonly<PaymentReceiptCardProps>): React.JSX.Element {
   const [copied, setCopied] = useState(false);
 
   const handleCopyRef = async () => {

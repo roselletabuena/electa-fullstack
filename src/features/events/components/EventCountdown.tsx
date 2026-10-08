@@ -23,7 +23,7 @@ export function EventCountdown({
   serverTime,
   onStateTransition,
   className,
-}: EventCountdownProps): React.JSX.Element | null {
+}: Readonly<EventCountdownProps>): React.JSX.Element | null {
   const [, startTransition] = useTransition();
 
   const isScheduled = operationalState === "Scheduled";
@@ -109,7 +109,7 @@ interface CountdownUnitProps {
   isLive?: boolean;
 }
 
-function CountdownUnit({ value, label, isLive }: CountdownUnitProps): React.JSX.Element {
+function CountdownUnit({ value, label, isLive }: Readonly<CountdownUnitProps>): React.JSX.Element {
   const padded = String(value).padStart(2, "0");
 
   return (

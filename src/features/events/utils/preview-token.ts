@@ -64,7 +64,7 @@ function timingSafeEqualStr(a: string, b: string): boolean {
   }
   let mismatch = 0;
   for (let i = 0; i < a.length; i++) {
-    mismatch |= a.charCodeAt(i) ^ b.charCodeAt(i);
+    mismatch |= (a.codePointAt(i) ?? 0) ^ (b.codePointAt(i) ?? 0);
   }
   return mismatch === 0;
 }

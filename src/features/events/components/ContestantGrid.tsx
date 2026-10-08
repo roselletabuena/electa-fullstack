@@ -21,7 +21,7 @@ export function ContestantGrid({
   operationalState,
   showResultsOnClose = true,
   onSelectCandidate,
-}: ContestantGridProps): React.JSX.Element {
+}: Readonly<ContestantGridProps>): React.JSX.Element {
   return (
     <section className="space-y-6" aria-label="Official Contestant Candidates">
       <div className="border-border/40 flex flex-col justify-between gap-2 border-b pb-4 sm:flex-row sm:items-center">
@@ -62,7 +62,7 @@ export function ContestantCard({
   operationalState,
   showResultsOnClose = true,
   onSelect,
-}: ContestantCardProps): React.JSX.Element {
+}: Readonly<ContestantCardProps>): React.JSX.Element {
   const isScheduled = operationalState === "Scheduled";
   const isActive = operationalState === "Active";
   const isClosed = operationalState === "Closed";

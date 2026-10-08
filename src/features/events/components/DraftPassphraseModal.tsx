@@ -13,13 +13,13 @@ export interface DraftPassphraseModalProps {
 export function DraftPassphraseModal({
   slug,
   onUnlocked,
-}: DraftPassphraseModalProps): React.JSX.Element {
+}: Readonly<DraftPassphraseModalProps>): React.JSX.Element {
   const router = useRouter();
   const [passphrase, setPassphrase] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>): Promise<void> => {
+  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>): Promise<void> => {
     e.preventDefault();
     if (!passphrase.trim()) {
       setError("Please enter the preview passphrase.");

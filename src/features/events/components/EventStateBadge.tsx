@@ -10,7 +10,10 @@ export interface EventStateBadgeProps {
   className?: string;
 }
 
-export function EventStateBadge({ state, className }: EventStateBadgeProps): React.JSX.Element {
+export function EventStateBadge({
+  state,
+  className,
+}: Readonly<EventStateBadgeProps>): React.JSX.Element {
   switch (state) {
     case "Scheduled":
       return (

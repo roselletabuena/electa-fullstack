@@ -64,6 +64,7 @@ const STATUS_CONFIG: Record<
     description: string;
     icon: React.ComponentType<{ className?: string }>;
     badgeClass: string;
+    dotClass: string;
   }
 > = {
   DRAFT: {
@@ -72,6 +73,7 @@ const STATUS_CONFIG: Record<
     icon: FileEdit,
     badgeClass:
       "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300",
+    dotClass: "bg-amber-500",
   },
   PUBLISHED: {
     label: "Published",
@@ -79,6 +81,7 @@ const STATUS_CONFIG: Record<
     icon: Globe,
     badgeClass:
       "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300",
+    dotClass: "bg-emerald-500",
   },
   ARCHIVED: {
     label: "Archived",
@@ -86,12 +89,13 @@ const STATUS_CONFIG: Record<
     icon: Archive,
     badgeClass:
       "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
+    dotClass: "bg-slate-500",
   },
 };
 
 function formatForDateTimeInput(dateVal: Date | string): string {
   const d = new Date(dateVal);
-  if (isNaN(d.getTime())) return "";
+  if (Number.isNaN(d.getTime())) return "";
   const pad = (n: number) => n.toString().padStart(2, "0");
   const year = d.getFullYear();
   const month = pad(d.getMonth() + 1);
@@ -104,7 +108,7 @@ function formatForDateTimeInput(dateVal: Date | string): string {
 function calculateDuration(startsAtStr: string, endsAtStr: string): string | null {
   const start = new Date(startsAtStr).getTime();
   const end = new Date(endsAtStr).getTime();
-  if (isNaN(start) || isNaN(end) || end <= start) return null;
+  if (Number.isNaN(start) || Number.isNaN(end) || end <= start) return null;
   const diffMs = end - start;
   const days = Math.floor(diffMs / (1000 * 60 * 60 * 24));
   const hours = Math.floor((diffMs % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
@@ -114,10 +118,196 @@ function calculateDuration(startsAtStr: string, endsAtStr: string): string | nul
   return parts.join(", ");
 }
 
+function applyServerFieldErrors(
+  fieldErrors: Record<string, string[]> | undefined,
+  setError: (
+    field: keyof ScheduleLifecycleFormValues,
+    error: { type: string; message: string },
+  ) => void,
+): void {
+  if (!fieldErrors) return;
+  for (const [field, messages] of Object.entries(fieldErrors)) {
+    const firstMessage = messages?.[0];
+    if (firstMessage) {
+      setError(field as keyof ScheduleLifecycleFormValues, {
+        type: "server",
+        message: firstMessage,
+      });
+    }
+  }
+}
+
+function resolveUpdatedPassphraseState(
+  currentHasPassphrase: boolean,
+  values: ScheduleLifecycleFormValues,
+): boolean {
+  if (values.clearDraftPassphrase) {
+    return false;
+  }
+  if (values.draftPassphrase && values.draftPassphrase.trim().length > 0) {
+    return true;
+  }
+  return currentHasPassphrase;
+}
+
+interface StatusAlertBannerProps {
+  statusMessage: {
+    type: "success" | "error";
+    message: string;
+  } | null;
+}
+
+function StatusAlertBanner({
+  statusMessage,
+}: Readonly<StatusAlertBannerProps>): React.JSX.Element | null {
+  if (!statusMessage) return null;
+
+  const isSuccess = statusMessage.type === "success";
+
+  return (
+    <div
+      role="status"
+      aria-live="polite"
+      className={cn(
+        "flex items-start gap-3 rounded-none border p-4 text-sm transition-all",
+        isSuccess
+          ? "border-emerald-200 bg-emerald-50/80 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300"
+          : "border-red-200 bg-red-50/80 text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300",
+      )}
+    >
+      {isSuccess ? (
+        <CheckCircle2 className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
+      ) : (
+        <AlertCircle className="size-5 shrink-0 text-red-600 dark:text-red-400" />
+      )}
+      <div className="flex-1 font-medium">{statusMessage.message}</div>
+    </div>
+  );
+}
+
+interface PassphraseStatusBadgeProps {
+  hasActivePassphrase: boolean;
+}
+
+function PassphraseStatusBadge({
+  hasActivePassphrase,
+}: Readonly<PassphraseStatusBadgeProps>): React.JSX.Element {
+  if (hasActivePassphrase) {
+    return (
+      <Badge
+        variant="outline"
+        className="rounded-none border-amber-200 bg-amber-50 text-xs text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+      >
+        <span className="flex items-center gap-1">
+          <Lock className="size-3" /> Passphrase Set
+        </span>
+      </Badge>
+    );
+  }
+
+  return (
+    <Badge
+      variant="outline"
+      className="rounded-none border-slate-200 bg-slate-50 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
+    >
+      <span className="flex items-center gap-1">
+        <Unlock className="size-3" /> No Passphrase
+      </span>
+    </Badge>
+  );
+}
+
+interface StatusTransitionNoteProps {
+  status: EventPublicationStatus | undefined;
+}
+
+function StatusTransitionNote({
+  status,
+}: Readonly<StatusTransitionNoteProps>): React.JSX.Element | null {
+  if (status === "PUBLISHED") {
+    return (
+      <p>
+        <strong>Going Live:</strong> The event will immediately become publicly accessible. Voters
+        can view contestants and vote according to the operational schedule.
+      </p>
+    );
+  }
+  if (status === "ARCHIVED") {
+    return (
+      <p>
+        <strong>Archiving:</strong> Active voting will be permanently locked. The event page will
+        remain accessible in read-only mode for historical results.
+      </p>
+    );
+  }
+  if (status === "DRAFT") {
+    return (
+      <p>
+        <strong>Unpublishing:</strong> The event will be hidden from public voters and will require
+        a draft preview passphrase or organizer login to view.
+      </p>
+    );
+  }
+  return null;
+}
+
+interface LifecycleConfirmModalProps {
+  open: boolean;
+  onOpenChange: (open: boolean) => void;
+  eventTitle: string;
+  currentStatus: EventPublicationStatus;
+  targetStatus: EventPublicationStatus | undefined;
+  onConfirm: () => void;
+}
+
+function LifecycleConfirmModal({
+  open,
+  onOpenChange,
+  eventTitle,
+  currentStatus,
+  targetStatus,
+  onConfirm,
+}: Readonly<LifecycleConfirmModalProps>): React.JSX.Element {
+  return (
+    <Dialog open={open} onOpenChange={onOpenChange}>
+      <DialogContent onClose={() => onOpenChange(false)}>
+        <DialogHeader>
+          <div className="flex items-center gap-2">
+            <AlertTriangle className="size-5 text-amber-500" />
+            <DialogTitle>Confirm Publication Status Transition</DialogTitle>
+          </div>
+          <DialogDescription>
+            You are changing the publication status of <strong>{eventTitle}</strong> from{" "}
+            <strong>{currentStatus}</strong> to <strong>{targetStatus}</strong>.
+          </DialogDescription>
+        </DialogHeader>
+
+        <div className="my-4 rounded-none border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+          <StatusTransitionNote status={targetStatus} />
+        </div>
+
+        <DialogFooter>
+          <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+            Cancel
+          </Button>
+          <Button
+            type="button"
+            size="sm"
+            onClick={onConfirm}
+            className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+          >
+            Confirm Transition
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
+  );
+}
+
 export function ScheduleLifecycleForm({
   event,
   className,
-}: ScheduleLifecycleFormProps): React.JSX.Element {
+}: Readonly<ScheduleLifecycleFormProps>): React.JSX.Element {
   const [isPending, startTransition] = useTransition();
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
@@ -158,6 +348,10 @@ export function ScheduleLifecycleForm({
   const watchedReason = useWatch({ control, name: "reason" }) ?? "";
 
   const durationText = calculateDuration(watchedStartsAt, watchedEndsAt);
+  const hasActivePassphrase = hasPassphrase && !watchedClearPassphrase;
+  const draftPassphrasePlaceholder = hasActivePassphrase
+    ? "Enter new passphrase to replace existing..."
+    : "Set draft preview passphrase (min 4 chars)...";
 
   const commitSubmission = (data: ScheduleLifecycleFormValues) => {
     setStatusMessage(null);
@@ -178,11 +372,7 @@ export function ScheduleLifecycleForm({
           message: response.message || "Schedule & lifecycle settings updated successfully!",
         });
 
-        if (data.clearDraftPassphrase) {
-          setHasPassphrase(false);
-        } else if (data.draftPassphrase && data.draftPassphrase.trim().length > 0) {
-          setHasPassphrase(true);
-        }
+        setHasPassphrase(resolveUpdatedPassphraseState(hasPassphrase, data));
 
         // Rebase form
         reset({
@@ -197,16 +387,7 @@ export function ScheduleLifecycleForm({
           message: response.error || "Failed to update schedule settings.",
         });
 
-        if (response.fieldErrors) {
-          for (const [field, messages] of Object.entries(response.fieldErrors)) {
-            if (messages && messages[0]) {
-              setError(field as keyof ScheduleLifecycleFormValues, {
-                type: "server",
-                message: messages[0],
-              });
-            }
-          }
-        }
+        applyServerFieldErrors(response.fieldErrors, setError);
       }
     });
   };
@@ -263,11 +444,7 @@ export function ScheduleLifecycleForm({
                   <span
                     className={cn(
                       "mr-1.5 inline-block size-1.5 rounded-full",
-                      watchedStatus === "PUBLISHED"
-                        ? "bg-emerald-500"
-                        : watchedStatus === "ARCHIVED"
-                          ? "bg-slate-500"
-                          : "bg-amber-500",
+                      STATUS_CONFIG[watchedStatus].dotClass,
                     )}
                   />
                   {STATUS_CONFIG[watchedStatus].label} Status
@@ -278,25 +455,7 @@ export function ScheduleLifecycleForm({
 
           <CardContent className="space-y-8 pt-6">
             {/* Status Alert Banner */}
-            {statusMessage && (
-              <div
-                role="status"
-                aria-live="polite"
-                className={cn(
-                  "flex items-start gap-3 rounded-lg border p-4 text-sm transition-all",
-                  statusMessage.type === "success"
-                    ? "border-emerald-200 bg-emerald-50/80 text-emerald-800 dark:border-emerald-900/60 dark:bg-emerald-950/30 dark:text-emerald-300"
-                    : "border-red-200 bg-red-50/80 text-red-800 dark:border-red-900/60 dark:bg-red-950/30 dark:text-red-300",
-                )}
-              >
-                {statusMessage.type === "success" ? (
-                  <CheckCircle2 className="size-5 shrink-0 text-emerald-600 dark:text-emerald-400" />
-                ) : (
-                  <AlertCircle className="size-5 shrink-0 text-red-600 dark:text-red-400" />
-                )}
-                <div className="flex-1 font-medium">{statusMessage.message}</div>
-              </div>
-            )}
+            <StatusAlertBanner statusMessage={statusMessage} />
 
             {/* Section 1: Voting Operational Window */}
             <div className="space-y-4">
@@ -454,25 +613,7 @@ export function ScheduleLifecycleForm({
                   </p>
                 </div>
 
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "text-xs",
-                    hasPassphrase && !watchedClearPassphrase
-                      ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
-                      : "border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400",
-                  )}
-                >
-                  {hasPassphrase && !watchedClearPassphrase ? (
-                    <span className="flex items-center gap-1">
-                      <Lock className="size-3" /> Passphrase Set
-                    </span>
-                  ) : (
-                    <span className="flex items-center gap-1">
-                      <Unlock className="size-3" /> No Passphrase
-                    </span>
-                  )}
-                </Badge>
+                <PassphraseStatusBadge hasActivePassphrase={hasActivePassphrase} />
               </div>
 
               <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/40">
@@ -481,11 +622,7 @@ export function ScheduleLifecycleForm({
                     <input
                       id="draftPassphrase"
                       type={showPassword ? "text" : "password"}
-                      placeholder={
-                        hasPassphrase && !watchedClearPassphrase
-                          ? "Enter new passphrase to replace existing..."
-                          : "Set draft preview passphrase (min 4 chars)..."
-                      }
+                      placeholder={draftPassphrasePlaceholder}
                       {...register("draftPassphrase")}
                       className={cn(
                         "w-full rounded-lg border border-slate-200 bg-white py-2 pr-10 pl-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500",
@@ -503,7 +640,7 @@ export function ScheduleLifecycleForm({
                     </button>
                   </div>
 
-                  {hasPassphrase && !watchedClearPassphrase && (
+                  {hasActivePassphrase && (
                     <Button
                       type="button"
                       variant="outline"
@@ -664,61 +801,14 @@ export function ScheduleLifecycleForm({
       </form>
 
       {/* Confirmation Modal for Lifecycle Transitions */}
-      <Dialog open={confirmModalOpen} onOpenChange={setConfirmModalOpen}>
-        <DialogContent onClose={() => setConfirmModalOpen(false)}>
-          <DialogHeader>
-            <div className="flex items-center gap-2">
-              <AlertTriangle className="size-5 text-amber-500" />
-              <DialogTitle>Confirm Publication Status Transition</DialogTitle>
-            </div>
-            <DialogDescription>
-              You are changing the publication status of <strong>{event.title}</strong> from{" "}
-              <strong>{event.publicationStatus}</strong> to{" "}
-              <strong>{pendingValues?.publicationStatus}</strong>.
-            </DialogDescription>
-          </DialogHeader>
-
-          <div className="my-4 rounded-lg border border-slate-200 bg-slate-50 p-4 text-xs text-slate-700 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
-            {pendingValues?.publicationStatus === "PUBLISHED" && (
-              <p>
-                <strong>Going Live:</strong> The event will immediately become publicly accessible.
-                Voters can view contestants and vote according to the operational schedule.
-              </p>
-            )}
-            {pendingValues?.publicationStatus === "ARCHIVED" && (
-              <p>
-                <strong>Archiving:</strong> Active voting will be permanently locked. The event page
-                will remain accessible in read-only mode for historical results.
-              </p>
-            )}
-            {pendingValues?.publicationStatus === "DRAFT" && (
-              <p>
-                <strong>Unpublishing:</strong> The event will be hidden from public voters and will
-                require a draft preview passphrase or organizer login to view.
-              </p>
-            )}
-          </div>
-
-          <DialogFooter>
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={() => setConfirmModalOpen(false)}
-            >
-              Cancel
-            </Button>
-            <Button
-              type="button"
-              size="sm"
-              onClick={handleConfirmTransition}
-              className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
-            >
-              Confirm Transition
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      <LifecycleConfirmModal
+        open={confirmModalOpen}
+        onOpenChange={setConfirmModalOpen}
+        eventTitle={event.title}
+        currentStatus={event.publicationStatus}
+        targetStatus={pendingValues?.publicationStatus}
+        onConfirm={handleConfirmTransition}
+      />
     </div>
   );
 }

@@ -59,7 +59,7 @@ export function CreateEventForm({
   onSuccess,
   onCancel,
   className,
-}: CreateEventFormProps): React.JSX.Element {
+}: Readonly<CreateEventFormProps>): React.JSX.Element {
   const router = useRouter();
   const [isCustomSlug, setIsCustomSlug] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);

@@ -1,4 +1,4 @@
-import { createHmac } from "crypto";
+import { createHmac } from "node:crypto";
 import { env } from "@/env";
 
 const DEFAULT_SALT = env.AUTH_SECRET || "electa_voter_privacy_salt_2026";

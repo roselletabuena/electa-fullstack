@@ -15,6 +15,115 @@ interface RouteParams {
   }>;
 }
 
+interface RetrievedEvent {
+  event: PublicEventDto | null;
+  draftHash: string | null;
+  isDbRecord: boolean;
+}
+
+async function fetchDbEvent(slug: string): Promise<RetrievedEvent> {
+  try {
+    const dbEvent = await db.event.findUnique({
+      where: { slug },
+      include: {
+        contestants: {
+          where: { status: "ACTIVE" },
+          orderBy: { contestantNumber: "asc" },
+        },
+      },
+    });
+
+    if (!dbEvent) {
+      return { event: null, draftHash: null, isDbRecord: false };
+    }
+
+    const operationalState = deriveEventState({
+      publicationStatus: dbEvent.publicationStatus,
+      startsAt: dbEvent.startsAt,
+      endsAt: dbEvent.endsAt,
+    });
+
+    return {
+      isDbRecord: true,
+      draftHash: dbEvent.draftPassphraseHash,
+      event: {
+        id: dbEvent.id,
+        slug: dbEvent.slug,
+        title: dbEvent.title,
+        description: dbEvent.description,
+        bannerUrl: dbEvent.bannerUrl,
+        startsAt: dbEvent.startsAt.toISOString(),
+        endsAt: dbEvent.endsAt.toISOString(),
+        serverTime: new Date().toISOString(),
+        operationalState,
+        showResultsOnClose: dbEvent.showResultsOnClose,
+        isFreeVotingEnabled: dbEvent.isFreeVotingEnabled,
+        dailyFreeVoteLimit: dbEvent.dailyFreeVoteLimit,
+        organizerId: dbEvent.organizerId,
+        contestants: dbEvent.contestants.map((c) => ({
+          id: c.id,
+          contestantNumber: c.contestantNumber,
+          name: c.name,
+          bio: c.bio || "",
+          avatarUrl: c.avatarUrl,
+          voteCount: c.voteCount,
+        })),
+      },
+    };
+  } catch {
+    return { event: null, draftHash: null, isDbRecord: false };
+  }
+}
+
+async function getPreviewCookie(request: NextRequest, slug: string): Promise<string | undefined> {
+  const cookieKey = `vs_preview_${slug}`;
+  const directCookie = request.cookies.get(cookieKey)?.value;
+  if (directCookie) {
+    return directCookie;
+  }
+  try {
+    const cookieStore = await cookies();
+    return cookieStore.get(cookieKey)?.value;
+  } catch {
+    return undefined;
+  }
+}
+
+async function isDraftAuthorized(
+  request: NextRequest,
+  event: PublicEventDto,
+  draftHash: string | null,
+  isDbRecord: boolean,
+): Promise<boolean> {
+  if (event.operationalState !== "Draft") {
+    return true;
+  }
+
+  const session = await getSession();
+  if (session?.userId && event.organizerId && session.userId === event.organizerId) {
+    return true;
+  }
+
+  const previewCookie = await getPreviewCookie(request, event.slug);
+  if (!previewCookie) {
+    return false;
+  }
+
+  const activeDigest = isDbRecord
+    ? computePassphraseDigest(draftHash)
+    : computePassphraseDigest("judge-preview-2026");
+
+  return verifyPreviewToken(previewCookie, event.slug, activeDigest);
+}
+
+function maskContestantVotes(event: PublicEventDto) {
+  const showResults = event.operationalState === "Closed" && event.showResultsOnClose;
+  return event.contestants.map((candidate) => ({
+    ...candidate,
+    voteCount: showResults ? candidate.voteCount : null,
+  }));
+}
+
 export async function GET(
   request: NextRequest,
   context: RouteParams,
@@ -26,109 +135,21 @@ export async function GET(
       return apiError("Event slug parameter is required", 400);
     }
 
-    let event: PublicEventDto | null = null;
-    let draftHash: string | null = null;
-    let isDbRecord = false;
-
-    try {
-      const dbEvent = await db.event.findUnique({
-        where: { slug },
-        include: {
-          contestants: {
-            where: { status: "ACTIVE" },
-            orderBy: { contestantNumber: "asc" },
-          },
-        },
-      });
-
-      if (dbEvent) {
-        isDbRecord = true;
-        draftHash = dbEvent.draftPassphraseHash;
-        const operationalState = deriveEventState({
-          publicationStatus: dbEvent.publicationStatus,
-          startsAt: dbEvent.startsAt,
-          endsAt: dbEvent.endsAt,
-        });
-
-        event = {
-          id: dbEvent.id,
-          slug: dbEvent.slug,
-          title: dbEvent.title,
-          description: dbEvent.description,
-          bannerUrl: dbEvent.bannerUrl,
-          startsAt: dbEvent.startsAt.toISOString(),
-          endsAt: dbEvent.endsAt.toISOString(),
-          serverTime: new Date().toISOString(),
-          operationalState,
-          showResultsOnClose: dbEvent.showResultsOnClose,
-          isFreeVotingEnabled: dbEvent.isFreeVotingEnabled,
-          dailyFreeVoteLimit: dbEvent.dailyFreeVoteLimit,
-          organizerId: dbEvent.organizerId,
-          contestants: dbEvent.contestants.map((c) => ({
-            id: c.id,
-            contestantNumber: c.contestantNumber,
-            name: c.name,
-            bio: c.bio || "",
-            avatarUrl: c.avatarUrl,
-            voteCount: c.voteCount,
-          })),
-        };
-      }
-    } catch {
-      // Optional in mock test runs
-    }
-
-    if (!event) {
-      event = getMockEventBySlug(slug);
-    }
+    const { event: dbEvent, draftHash, isDbRecord } = await fetchDbEvent(slug);
+    const event = dbEvent ?? getMockEventBySlug(slug);
 
     if (!event) {
       return apiError("Event not found", 404);
     }
 
-    // Draft authorization gate: only verified owner or valid preview cookie allowed
-    if (event.operationalState === "Draft") {
-      const session = await getSession();
-      const isOwner = Boolean(session && event.organizerId && session.userId === event.organizerId);
-
-      let isGuestAuthorized = false;
-      if (!isOwner) {
-        let previewCookie = request.cookies.get(`vs_preview_${slug}`)?.value;
-        if (!previewCookie) {
-          try {
-            const cookieStore = await cookies();
-            previewCookie = cookieStore.get(`vs_preview_${slug}`)?.value;
-          } catch {
-            // No request store context
-          }
-        }
-
-        const activeDigest = isDbRecord
-          ? computePassphraseDigest(draftHash)
-          : computePassphraseDigest("judge-preview-2026");
-
-        if (previewCookie && verifyPreviewToken(previewCookie, slug, activeDigest)) {
-          isGuestAuthorized = true;
-        }
-      }
-
-      if (!isOwner && !isGuestAuthorized) {
-        return apiError("Event not found", 404);
-      }
+    const authorized = await isDraftAuthorized(request, event, draftHash, isDbRecord);
+    if (!authorized) {
+      return apiError("Event not found", 404);
     }
-
-    // Mask vote counts if Scheduled or Active or if showResultsOnClose is false
-    const sanitizedContestants = event.contestants.map((candidate) => ({
-      ...candidate,
-      voteCount:
-        event.operationalState === "Closed" && event.showResultsOnClose
-          ? candidate.voteCount
-          : null,
-    }));
 
     return apiSuccess({
       ...event,
-      contestants: sanitizedContestants,
+      contestants: maskContestantVotes(event),
       serverTime: new Date().toISOString(),
     });
   } catch (error) {

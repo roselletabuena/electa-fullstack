@@ -10,7 +10,7 @@ import type { CreateEventResult } from "../types";
 export async function createEvent(input: CreateEventInput): Promise<CreateEventResult> {
   // 1. Session verification
   const session = await getSession();
-  if (!session || !session.userId) {
+  if (!session?.userId) {
     return {
       success: false,
       error: "Unauthorized: Organizer session required",
@@ -23,9 +23,7 @@ export async function createEvent(input: CreateEventInput): Promise<CreateEventR
     const fieldErrors: Record<string, string[]> = {};
     for (const issue of validation.error.issues) {
       const field = issue.path[0]?.toString() || "form";
-      if (!fieldErrors[field]) {
-        fieldErrors[field] = [];
-      }
+      fieldErrors[field] ??= [];
       fieldErrors[field].push(issue.message);
     }
     return {

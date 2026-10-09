@@ -17,15 +17,29 @@ export interface OmnichannelAuthModalProps {
   voteIntent?: Omit<PendingVoteIntent, "timestamp"> | undefined;
 }
 
-export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
+export function OmnichannelAuthModal({
   isOpen,
   onClose,
+  onSuccess,
   title = "Sign In to Cast Your Vote",
   subtitle = "Sign in with your Google account to cast your free daily votes and support your favorite candidates.",
   voteIntent,
-}) => {
+}: Readonly<OmnichannelAuthModalProps>): React.JSX.Element | null {
   const router = useRouter();
   const isMounted = useIsMounted();
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !isMounted) return null;
 
@@ -34,6 +48,8 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
       savePendingVoteIntent(voteIntent);
     }
 
+    onSuccess?.();
+
     const returnPath = typeof window !== "undefined" ? window.location.pathname : "/events";
     router.push(
       `/api/auth/cognito/initiate?provider=Google&returnTo=${encodeURIComponent(returnPath)}`,
@@ -41,16 +57,18 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
   };
 
   return createPortal(
-    <div
-      role="dialog"
-      aria-modal="true"
+    <dialog
+      open
       aria-labelledby="auth-modal-title"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-0 bg-transparent p-4 outline-hidden backdrop:bg-transparent"
     >
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-slate-950/70 backdrop-blur-xs transition-opacity"
+      <button
+        type="button"
+        aria-label="Close modal overlay"
+        tabIndex={-1}
         onClick={onClose}
+        className="fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Card - Zero-Radius Electa Style */}
@@ -108,7 +126,7 @@ export const OmnichannelAuthModal: React.FC<OmnichannelAuthModalProps> = ({
           </button>
         </div>
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
-};
+}

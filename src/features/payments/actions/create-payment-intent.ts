@@ -1,5 +1,6 @@
 "use server";
 
+import crypto from "node:crypto";
 import { db } from "@/lib/db";
 import {
   createPaymentIntentSchema,
@@ -104,7 +105,8 @@ export async function createPaymentIntentAction(
     const { pricePhp, baseVotes, bonusVotes, totalVotes } = resolveVotePackage(validated);
 
     const amountInCents = Math.round(pricePhp * 100);
-    const referenceNumber = `VS-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).slice(2, 6).toUpperCase()}`;
+    const randomSuffix = crypto.randomBytes(2).toString("hex").toUpperCase();
+    const referenceNumber = `VS-${Date.now().toString(36).toUpperCase()}-${randomSuffix}`;
 
     // 3. Request PayMongo / Mock Gateway Intent
     const intentOutput = await createPayMongoPaymentIntent({

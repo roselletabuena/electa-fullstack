@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="30 24 60 72" width="60" height="72" fill="none" role="img" aria-label="Electa Symbol">
+  <style>
+    .electa-frame {
+      fill: #0F172A;
+    }
+    .electa-check {
+      stroke: #0284C7;
+    }
+    @media (prefers-color-scheme: dark) {
+      .electa-frame {
+        fill: #F8FAFC;
+      }
+      .electa-check {
+        stroke: #38BDF8;
+      }
+    }
+  </style>
+  <rect class="electa-frame" x="36" y="30" width="12" height="60" fill="#0F172A"/>
+  <rect class="electa-frame" x="36" y="30" width="48" height="12" fill="#0F172A"/>
+  <rect class="electa-frame" x="36" y="78" width="48" height="12" fill="#0F172A"/>
+  <path class="electa-check" d="M48 62 L58 72 L82 47" fill="none" stroke="#0284C7" stroke-width="11" stroke-linecap="square" stroke-linejoin="miter"/>
+</svg>

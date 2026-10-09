@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 360 100" width="360" height="100" fill="none" role="img" aria-label="Electa Logo Full">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@600&amp;display=swap');
+    .electa-frame {
+      fill: #0F172A;
+    }
+    .electa-check {
+      stroke: #0284C7;
+    }
+    .electa-text {
+      fill: #0F172A;
+      font-family: 'Outfit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      font-size: 92px;
+      font-weight: 600;
+      letter-spacing: -2px;
+    }
+    @media (prefers-color-scheme: dark) {
+      .electa-frame {
+        fill: #F8FAFC;
+      }
+      .electa-check {
+        stroke: #38BDF8;
+      }
+      .electa-text {
+        fill: #F8FAFC;
+      }
+    }
+  </style>
+  <svg x="0" y="0" width="84" height="100" viewBox="30 24 60 72">
+    <rect class="electa-frame" x="36" y="30" width="12" height="60" fill="#0F172A"/>
+    <rect class="electa-frame" x="36" y="30" width="48" height="12" fill="#0F172A"/>
+    <rect class="electa-frame" x="36" y="78" width="48" height="12" fill="#0F172A"/>
+    <path class="electa-check" d="M48 62 L58 72 L82 47" fill="none" stroke="#0284C7" stroke-width="11" stroke-linecap="square" stroke-linejoin="miter"/>
+  </svg>
+  <text x="106" y="81" class="electa-text">electa</text>
+</svg>

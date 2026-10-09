@@ -32,7 +32,7 @@ export interface GeneralBrandingFormProps {
 export function GeneralBrandingForm({
   event,
   className,
-}: GeneralBrandingFormProps): React.JSX.Element {
+}: Readonly<GeneralBrandingFormProps>): React.JSX.Element {
   const [isPending, startTransition] = useTransition();
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
@@ -81,7 +81,7 @@ export function GeneralBrandingForm({
 
         if (response.fieldErrors) {
           for (const [field, messages] of Object.entries(response.fieldErrors)) {
-            if (messages && messages[0]) {
+            if (messages?.[0]) {
               setError(field as keyof UpdateEventBrandingInput, {
                 type: "server",
                 message: messages[0],

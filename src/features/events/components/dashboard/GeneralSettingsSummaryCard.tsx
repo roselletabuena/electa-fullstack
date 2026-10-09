@@ -11,7 +11,7 @@ export interface GeneralSettingsSummaryCardProps {
 
 export function GeneralSettingsSummaryCard({
   event,
-}: GeneralSettingsSummaryCardProps): React.JSX.Element {
+}: Readonly<GeneralSettingsSummaryCardProps>): React.JSX.Element {
   return (
     <div className="space-y-6">
       <Card>

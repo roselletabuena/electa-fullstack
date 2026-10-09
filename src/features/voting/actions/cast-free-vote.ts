@@ -10,10 +10,19 @@ export type CastFreeVoteResponse =
   | { success: true; data: CastFreeVoteResultDto; error: null }
   | { success: false; data: null; error: VotingErrorDto };
 
+class QuotaExhaustedError extends Error {
+  public readonly quotaState: ReturnType<typeof calculateVoterQuota>;
+  constructor(quotaState: ReturnType<typeof calculateVoterQuota>) {
+    super("Daily free vote quota exhausted");
+    this.name = "QuotaExhaustedError";
+    this.quotaState = quotaState;
+  }
+}
+
 export async function castFreeVoteAction(rawInput: unknown): Promise<CastFreeVoteResponse> {
   try {
     const session = await getSession();
-    if (!session || !session.userId) {
+    if (!session?.userId) {
       return {
         success: false,
         data: null,
@@ -142,10 +151,7 @@ export async function castFreeVoteAction(rawInput: unknown): Promise<CastFreeVot
           now,
         });
 
-        throw {
-          isQuotaExhausted: true,
-          quotaState: quota,
-        };
+        throw new QuotaExhaustedError(quota);
       }
 
       // 1. Record atomic vote entry
@@ -202,11 +208,7 @@ export async function castFreeVoteAction(rawInput: unknown): Promise<CastFreeVot
       error: null,
     };
   } catch (err: unknown) {
-    if (typeof err === "object" && err !== null && "isQuotaExhausted" in err) {
-      const quotaErr = err as {
-        isQuotaExhausted: boolean;
-        quotaState: { nextResetTime: string | null };
-      };
+    if (err instanceof QuotaExhaustedError) {
       return {
         success: false,
         data: null,
@@ -214,7 +216,7 @@ export async function castFreeVoteAction(rawInput: unknown): Promise<CastFreeVot
           code: "DAILY_QUOTA_EXHAUSTED",
           message: "You have used all your free daily votes for this competition cycle.",
           details: {
-            nextResetTime: quotaErr.quotaState.nextResetTime,
+            nextResetTime: err.quotaState.nextResetTime,
           },
         },
       };

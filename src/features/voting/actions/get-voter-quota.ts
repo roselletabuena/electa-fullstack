@@ -42,7 +42,7 @@ export async function getVoterQuotaAction(eventId: string): Promise<GetVoterQuot
 
     const session = await getSession();
 
-    if (!session || !session.userId) {
+    if (!session?.userId) {
       return {
         success: true,
         data: {

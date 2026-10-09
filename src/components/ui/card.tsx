@@ -6,7 +6,7 @@ export const Card = React.forwardRef<HTMLDivElement, React.HTMLAttributes<HTMLDi
     <div
       ref={ref}
       className={cn(
-        "hover:shadow-card rounded-none border border-slate-300 bg-white text-slate-900 shadow-xs transition-all duration-200 hover:-translate-y-[2px] hover:border-slate-400 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:hover:border-slate-700",
+        "hover:shadow-card rounded-none border border-slate-300 bg-white text-slate-900 shadow-xs transition-all duration-200 hover:-translate-y-0.5 hover:border-slate-400 dark:border-slate-800 dark:bg-slate-900/90 dark:text-slate-100 dark:hover:border-slate-700",
         className,
       )}
       {...props}
@@ -32,7 +32,7 @@ CardHeader.displayName = "CardHeader";
 export const CardTitle = React.forwardRef<
   HTMLHeadingElement,
   React.HTMLAttributes<HTMLHeadingElement>
->(({ className, ...props }, ref) => (
+>(({ className, children, ...props }, ref) => (
   <h3
     ref={ref}
     className={cn(
@@ -40,7 +40,9 @@ export const CardTitle = React.forwardRef<
       className,
     )}
     {...props}
-  />
+  >
+    {children}
+  </h3>
 ));
 CardTitle.displayName = "CardTitle";
 

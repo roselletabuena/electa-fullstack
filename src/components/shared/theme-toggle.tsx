@@ -5,11 +5,11 @@ import { useTheme } from "./theme-provider";
 import { cn } from "@/lib/utils";
 
 interface ThemeToggleProps {
-  className?: string;
-  showLabel?: boolean;
+  readonly className?: string;
+  readonly showLabel?: boolean;
 }
 
-export function ThemeToggle({ className, showLabel = true }: ThemeToggleProps) {
+export function ThemeToggle({ className, showLabel = true }: Readonly<ThemeToggleProps>) {
   const { theme, toggleTheme } = useTheme();
 
   return (

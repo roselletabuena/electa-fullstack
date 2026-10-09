@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
 
 type Theme = "light" | "dark";
 
@@ -13,8 +13,8 @@ interface ThemeContextValue {
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
 
 interface ThemeProviderProps {
-  children: React.ReactNode;
-  defaultTheme?: Theme;
+  readonly children: React.ReactNode;
+  readonly defaultTheme?: Theme;
 }
 
 function applyDocumentTheme(currentTheme: Theme) {
@@ -28,8 +28,8 @@ function applyDocumentTheme(currentTheme: Theme) {
   }
 }
 
-export function ThemeProvider({ children, defaultTheme = "light" }: ThemeProviderProps) {
-  const [theme, setThemeState] = useState<Theme>(() => {
+export function ThemeProvider({ children, defaultTheme = "light" }: Readonly<ThemeProviderProps>) {
+  const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
       const stored = (localStorage.getItem("electa-theme") ||
         localStorage.getItem("votesphere-theme")) as Theme | null;
@@ -44,24 +44,29 @@ export function ThemeProvider({ children, defaultTheme = "light" }: ThemeProvide
     applyDocumentTheme(theme);
   }, [theme]);
 
-  const setTheme = useCallback((newTheme: Theme) => {
-    setThemeState(newTheme);
+  const handleSetTheme = useCallback((newTheme: Theme) => {
+    setTheme(newTheme);
     localStorage.setItem("electa-theme", newTheme);
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setThemeState((prev) => {
+    setTheme((prev) => {
       const next = prev === "light" ? "dark" : "light";
       localStorage.setItem("electa-theme", next);
       return next;
     });
   }, []);
 
-  return (
-    <ThemeContext.Provider value={{ theme, setTheme, toggleTheme }}>
-      {children}
-    </ThemeContext.Provider>
+  const contextValue = useMemo(
+    () => ({
+      theme,
+      setTheme: handleSetTheme,
+      toggleTheme,
+    }),
+    [theme, handleSetTheme, toggleTheme],
   );
+
+  return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;
 }
 
 export function useTheme(): ThemeContextValue {

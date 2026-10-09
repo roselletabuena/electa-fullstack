@@ -5,19 +5,22 @@ import { X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 interface DialogProps {
-  open: boolean;
-  onOpenChange: (open: boolean) => void;
-  children: React.ReactNode;
+  readonly open: boolean;
+  readonly onOpenChange: (open: boolean) => void;
+  readonly children: React.ReactNode;
 }
 
-export function Dialog({ open, onOpenChange, children }: DialogProps) {
+export function Dialog({ open, onOpenChange, children }: Readonly<DialogProps>) {
   if (!open) return null;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4">
       {/* Backdrop */}
-      <div
-        className="animate-in fade-in-0 fixed inset-0 bg-black/80 backdrop-blur-md transition-opacity duration-200"
+      <button
+        type="button"
+        aria-label="Close dialog overlay"
+        tabIndex={-1}
+        className="animate-in fade-in-0 fixed inset-0 cursor-default border-none bg-black/80 backdrop-blur-md transition-opacity duration-200"
         onClick={() => onOpenChange(false)}
       />
       {/* Dialog container */}
@@ -26,15 +29,13 @@ export function Dialog({ open, onOpenChange, children }: DialogProps) {
   );
 }
 
-export function DialogContent({
-  className,
-  children,
-  onClose,
-}: {
-  className?: string;
-  children: React.ReactNode;
-  onClose?: (() => void) | undefined;
-}) {
+interface DialogContentProps {
+  readonly className?: string;
+  readonly children: React.ReactNode;
+  readonly onClose?: (() => void) | undefined;
+}
+
+export function DialogContent({ className, children, onClose }: Readonly<DialogContentProps>) {
   return (
     <div
       className={cn(
@@ -57,11 +58,18 @@ export function DialogContent({
   );
 }
 
-export function DialogHeader({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export function DialogHeader({
+  className,
+  ...props
+}: Readonly<React.HTMLAttributes<HTMLDivElement>>) {
   return <div className={cn("flex flex-col space-y-1.5 text-left", className)} {...props} />;
 }
 
-export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHeadingElement>) {
+export function DialogTitle({
+  className,
+  children,
+  ...props
+}: Readonly<React.HTMLAttributes<HTMLHeadingElement>>) {
   return (
     <h2
       className={cn(
@@ -69,14 +77,16 @@ export function DialogTitle({ className, ...props }: React.HTMLAttributes<HTMLHe
         className,
       )}
       {...props}
-    />
+    >
+      {children}
+    </h2>
   );
 }
 
 export function DialogDescription({
   className,
   ...props
-}: React.HTMLAttributes<HTMLParagraphElement>) {
+}: Readonly<React.HTMLAttributes<HTMLParagraphElement>>) {
   return (
     <p
       className={cn("font-body text-xs text-slate-500 dark:text-slate-400", className)}
@@ -85,7 +95,10 @@ export function DialogDescription({
   );
 }
 
-export function DialogFooter({ className, ...props }: React.HTMLAttributes<HTMLDivElement>) {
+export function DialogFooter({
+  className,
+  ...props
+}: Readonly<React.HTMLAttributes<HTMLDivElement>>) {
   return (
     <div
       className={cn(

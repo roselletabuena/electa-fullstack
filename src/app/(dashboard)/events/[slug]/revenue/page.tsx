@@ -16,7 +16,7 @@ interface RevenuePageProps {
 
 export default async function EventRevenuePage({
   params,
-}: RevenuePageProps): Promise<React.JSX.Element> {
+}: Readonly<RevenuePageProps>): Promise<React.JSX.Element> {
   const resolvedParams = await params;
   const parsedParams = eventSlugParamsSchema.safeParse(resolvedParams);
 

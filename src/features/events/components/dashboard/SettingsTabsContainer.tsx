@@ -18,7 +18,7 @@ export interface SettingsTabsContainerProps {
 export function SettingsTabsContainer({
   event,
   initialTab = "general",
-}: SettingsTabsContainerProps): React.JSX.Element {
+}: Readonly<SettingsTabsContainerProps>): React.JSX.Element {
   const [activeTab] = useQueryState(
     "tab",
     parseAsStringLiteral(SETTINGS_TABS)
@@ -30,7 +30,7 @@ export function SettingsTabsContainer({
     <div className="space-y-6">
       <SettingsTabNav initialTab={initialTab} />
 
-      <section aria-labelledby={`tab-${activeTab}`} id={`panel-${activeTab}`} tabIndex={0}>
+      <section role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
         {activeTab === "general" && <GeneralBrandingForm event={event} />}
         {activeTab === "schedule" && <ScheduleLifecycleForm event={event} />}
         {activeTab === "voting-rules" && <VotingRulesForm event={event} />}

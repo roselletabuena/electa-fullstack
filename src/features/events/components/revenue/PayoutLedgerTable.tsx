@@ -4,7 +4,6 @@ import type { PayoutLedgerItem } from "../../types/revenue";
 
 interface PayoutLedgerTableProps {
   payouts: PayoutLedgerItem[];
-  availableBalancePhp: number;
 }
 
 function formatPhp(amount: number): string {
@@ -46,7 +45,9 @@ function getStatusBadge(status: string) {
   }
 }
 
-export function PayoutLedgerTable({ payouts }: PayoutLedgerTableProps): React.JSX.Element {
+export function PayoutLedgerTable({
+  payouts,
+}: Readonly<PayoutLedgerTableProps>): React.JSX.Element {
   return (
     <div className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
       <div className="flex flex-col gap-3 border-b border-slate-200 px-5 py-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">

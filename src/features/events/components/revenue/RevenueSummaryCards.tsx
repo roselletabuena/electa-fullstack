@@ -19,7 +19,7 @@ function formatPhp(amount: number): string {
 export function RevenueSummaryCards({
   summary,
   isAdmin = false,
-}: RevenueSummaryCardsProps): React.JSX.Element {
+}: Readonly<RevenueSummaryCardsProps>): React.JSX.Element {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-5">
       {/* Gross Sales */}

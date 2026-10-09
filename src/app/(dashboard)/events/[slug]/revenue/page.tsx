@@ -73,10 +73,7 @@ export default async function EventRevenuePage({
 
         {/* Payout & Disbursement Ledger */}
         <section aria-label="Payout Ledger">
-          <PayoutLedgerTable
-            payouts={financialData.recentPayouts}
-            availableBalancePhp={financialData.summary.availablePayoutBalancePhp}
-          />
+          <PayoutLedgerTable payouts={financialData.recentPayouts} />
         </section>
       </main>
     </div>

@@ -6,15 +6,21 @@ export interface ParsedVideoEmbed {
   embedUrl: string;
 }
 
+const YOUTUBE_REGEX = /(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([\w-]{11})/i;
+const TIKTOK_VIDEO_REGEX = /tiktok\.com\/@[^/]+\/video\/(\d+)/i;
+const TIKTOK_VM_REGEX = /vm\.tiktok\.com\/([a-z0-9]+)/i;
+const INSTAGRAM_REGEX = /instagram\.com\/(?:reel|p)\/([\w-]+)/i;
+const FACEBOOK_REEL_REGEX = /facebook\.com\/reel\/(\d+)/i;
+const FACEBOOK_WATCH_REGEX = /facebook\.com\/watch\/\?v=(\d+)/i;
+const FACEBOOK_VIDEO_REGEX = /facebook\.com\/[^/]+\/videos\/(\d+)/i;
+
 export function parseVideoEmbedUrl(rawUrl: string): ParsedVideoEmbed | null {
   if (!rawUrl || typeof rawUrl !== "string") return null;
   const trimmed = rawUrl.trim();
 
   // 1. YouTube (Shorts, Watch, Shortlink)
-  const ytShortsMatch = trimmed.match(
-    /(?:youtube\.com\/shorts\/|youtu\.be\/|youtube\.com\/watch\?v=)([a-zA-Z0-9_-]{11})/i,
-  );
-  if (ytShortsMatch && ytShortsMatch[1]) {
+  const ytShortsMatch = YOUTUBE_REGEX.exec(trimmed);
+  if (ytShortsMatch?.[1]) {
     const id = ytShortsMatch[1];
     return {
       platform: "YOUTUBE",
@@ -24,10 +30,8 @@ export function parseVideoEmbedUrl(rawUrl: string): ParsedVideoEmbed | null {
   }
 
   // 2. TikTok
-  const tiktokMatch =
-    trimmed.match(/tiktok\.com\/@[^/]+\/video\/(\d+)/i) ||
-    trimmed.match(/vm\.tiktok\.com\/([a-zA-Z0-9]+)/i);
-  if (tiktokMatch && tiktokMatch[1]) {
+  const tiktokMatch = TIKTOK_VIDEO_REGEX.exec(trimmed) ?? TIKTOK_VM_REGEX.exec(trimmed);
+  if (tiktokMatch?.[1]) {
     const id = tiktokMatch[1];
     return {
       platform: "TIKTOK",
@@ -37,8 +41,8 @@ export function parseVideoEmbedUrl(rawUrl: string): ParsedVideoEmbed | null {
   }
 
   // 3. Instagram Reels / Posts
-  const igMatch = trimmed.match(/instagram\.com\/(?:reel|p)\/([a-zA-Z0-9_-]+)/i);
-  if (igMatch && igMatch[1]) {
+  const igMatch = INSTAGRAM_REGEX.exec(trimmed);
+  if (igMatch?.[1]) {
     const id = igMatch[1];
     return {
       platform: "INSTAGRAM",
@@ -48,10 +52,10 @@ export function parseVideoEmbedUrl(rawUrl: string): ParsedVideoEmbed | null {
   }
 
   // 4. Facebook Videos / Reels
-  const fbReelMatch = trimmed.match(/facebook\.com\/reel\/(\d+)/i);
-  const fbWatchMatch = trimmed.match(/facebook\.com\/watch\/\?v=(\d+)/i);
-  const fbVideoMatch = trimmed.match(/facebook\.com\/[^/]+\/videos\/(\d+)/i);
-  const fbId = fbReelMatch?.[1] || fbWatchMatch?.[1] || fbVideoMatch?.[1];
+  const fbReelMatch = FACEBOOK_REEL_REGEX.exec(trimmed);
+  const fbWatchMatch = FACEBOOK_WATCH_REGEX.exec(trimmed);
+  const fbVideoMatch = FACEBOOK_VIDEO_REGEX.exec(trimmed);
+  const fbId = fbReelMatch?.[1] ?? fbWatchMatch?.[1] ?? fbVideoMatch?.[1];
   if (fbId) {
     return {
       platform: "FACEBOOK",

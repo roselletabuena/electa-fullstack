@@ -35,21 +35,23 @@ export const VideoReelPlayer: React.FC<VideoReelPlayerProps> = ({ media, candida
   return (
     <div className="relative mx-auto aspect-9/16 max-h-137.5 w-full max-w-sm overflow-hidden rounded-none border border-slate-300 bg-slate-950 shadow-xl dark:border-slate-800">
       {!isPlaying ? (
-        <div
+        <button
+          type="button"
           onClick={() => setIsPlaying(true)}
-          className="group absolute inset-0 flex cursor-pointer flex-col items-center justify-center bg-linear-to-b from-slate-900 via-slate-950 to-slate-900 p-6 text-center"
+          aria-label={`Play ${candidateName} official video reel`}
+          className="group absolute inset-0 flex w-full cursor-pointer flex-col items-center justify-center border-none bg-linear-to-b from-slate-900 via-slate-950 to-slate-900 p-6 text-center focus:outline-hidden"
         >
           <div className="flex size-16 items-center justify-center rounded-none border border-sky-400 bg-sky-600 text-white shadow-xl transition-transform group-hover:scale-110">
             <Play className="size-8 translate-x-0.5 fill-white" />
           </div>
 
-          <h4 className="font-heading font-extrabold mt-4 text-sm text-slate-200">
+          <h4 className="font-heading mt-4 text-sm font-extrabold text-slate-200">
             {candidateName} Official Video Reel
           </h4>
           <span className="mt-2 rounded-none border border-white/20 bg-white/10 px-3 py-1 font-mono text-[11px] font-medium tracking-wider text-slate-300 uppercase">
             {parsed.platform}
           </span>
-        </div>
+        </button>
       ) : (
         <iframe
           src={parsed.embedUrl}

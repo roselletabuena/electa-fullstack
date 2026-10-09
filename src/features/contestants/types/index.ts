@@ -45,7 +45,7 @@ export interface ContestantDto {
   eventId: string;
   contestantNumber: number;
   name: string;
-  division: ContestantDivision | string;
+  division: string;
   divisionId?: string | null | undefined;
   divisionName?: string | null | undefined;
   divisionRef?: { id: string; name: string } | null | undefined;
@@ -66,15 +66,15 @@ export interface ContestantDto {
 }
 
 export interface ContestantFilters {
-  division?: ContestantDivision | string | "ALL";
-  categoryId?: string | "ALL";
-  status?: ContestantStatus | "ALL";
+  division?: string | undefined;
+  categoryId?: string | undefined;
+  status?: ContestantStatus | "ALL" | undefined;
 }
 
 export interface CreateContestantInput {
   contestantNumber: number;
   name: string;
-  division: ContestantDivision | string;
+  division: string;
   divisionId?: string | null | undefined;
   hometown?: string | undefined;
   heightCm?: number | undefined;
@@ -91,7 +91,7 @@ export interface CreateContestantInput {
 export interface UpdateContestantInput {
   contestantNumber?: number | undefined;
   name?: string | undefined;
-  division?: ContestantDivision | string | undefined;
+  division?: string | undefined;
   divisionId?: string | null | undefined;
   hometown?: string | undefined;
   heightCm?: number | null | undefined;

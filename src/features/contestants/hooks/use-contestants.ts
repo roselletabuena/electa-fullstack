@@ -18,7 +18,8 @@ export function useContestants(slug: string, filters?: ContestantFilters) {
       }
 
       const queryString = params.toString();
-      const url = `/api/events/${encodeURIComponent(slug)}/contestants${queryString ? `?${queryString}` : ""}`;
+      const basePath = `/api/events/${encodeURIComponent(slug)}/contestants`;
+      const url = queryString ? `${basePath}?${queryString}` : basePath;
 
       const res = await fetch(url);
       if (!res.ok) {

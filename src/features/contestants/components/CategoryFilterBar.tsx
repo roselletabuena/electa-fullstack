@@ -14,8 +14,8 @@ interface CategoryFilterBarProps {
   selectedDivision: string;
   onSelectDivision: (division: string) => void;
   categories: AwardCategoryDto[];
-  selectedCategoryId: string | "ALL";
-  onSelectCategory: (categoryId: string | "ALL") => void;
+  selectedCategoryId: string;
+  onSelectCategory: (categoryId: string) => void;
 }
 
 export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
@@ -41,10 +41,9 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
     <div className="flex flex-col gap-3 py-4">
       {/* Primary Division Pill Tabs */}
       {hasMultipleDivisions && (
-        <div
-          role="group"
+        <fieldset
           aria-label="Competition Divisions"
-          className="flex flex-wrap items-center gap-2 pb-1"
+          className="m-0 flex flex-wrap items-center gap-2 border-none p-0 pb-1"
         >
           <div className="mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
             <Users className="size-3.5 text-sky-600 dark:text-sky-400" />
@@ -71,15 +70,14 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
               </button>
             );
           })}
-        </div>
+        </fieldset>
       )}
 
       {/* Award Category Filter Track */}
       {categories.length > 0 && (
-        <div
-          role="group"
+        <fieldset
           aria-label="Award Tracks"
-          className="flex flex-wrap items-center gap-2 pt-1"
+          className="m-0 flex flex-wrap items-center gap-2 border-none p-0 pt-1"
         >
           <div className="mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
             <Award className="size-3.5 text-sky-600 dark:text-sky-400" />
@@ -115,7 +113,7 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
               </button>
             );
           })}
-        </div>
+        </fieldset>
       )}
     </div>
   );

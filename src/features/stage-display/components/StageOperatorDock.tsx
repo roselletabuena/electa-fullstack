@@ -54,7 +54,14 @@ export function StageOperatorDock({
   onSelectDivision,
   onSelectCategory,
   isVisible,
-}: StageOperatorDockProps): React.JSX.Element {
+}: Readonly<StageOperatorDockProps>): React.JSX.Element {
+  let stepLabel = `Reveal ${currentStep} of ${totalSteps}`;
+  if (currentStep === 0) {
+    stepLabel = "All Masked";
+  } else if (currentStep >= totalSteps) {
+    stepLabel = "Winner Crowned! 👑";
+  }
+
   return (
     <aside
       aria-label="Stage Operator Dock"
@@ -95,11 +102,7 @@ export function StageOperatorDock({
         {mode === "WINNER_REVEAL" && (
           <div className="flex items-center gap-1.5 border-l border-slate-800 pl-3">
             <span className="border border-amber-500/30 bg-amber-500/10 px-1.5 py-0.5 font-mono text-[11px] font-bold text-amber-400">
-              {currentStep === 0
-                ? "All Masked"
-                : currentStep >= totalSteps
-                  ? "Winner Crowned! 👑"
-                  : `Reveal ${currentStep} of ${totalSteps}`}
+              {stepLabel}
             </span>
 
             <button

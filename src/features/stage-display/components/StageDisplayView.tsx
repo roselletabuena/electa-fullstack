@@ -19,7 +19,9 @@ interface StageDisplayViewProps {
   initialData: StageDisplayPayload;
 }
 
-export function StageDisplayView({ initialData }: StageDisplayViewProps): React.JSX.Element {
+export function StageDisplayView({
+  initialData,
+}: Readonly<StageDisplayViewProps>): React.JSX.Element {
   const [mode, setMode] = useState<StageDisplayMode>("LIVE_TALLY");
   const [isMuted, setIsMuted] = useState(false);
   const [audioEnabled, setAudioEnabled] = useState(false);
@@ -56,9 +58,7 @@ export function StageDisplayView({ initialData }: StageDisplayViewProps): React.
 
   const fireConfetti = useCallback(() => {
     if (!canvasRef.current) return;
-    if (!confettiRef.current) {
-      confettiRef.current = new ConfettiCannon(canvasRef.current);
-    }
+    confettiRef.current ??= new ConfettiCannon(canvasRef.current);
     confettiRef.current.fire(220);
   }, []);
 
@@ -134,11 +134,7 @@ export function StageDisplayView({ initialData }: StageDisplayViewProps): React.
       />
 
       {/* Confetti Canvas — always on top of everything except audio prompt */}
-      <canvas
-        ref={canvasRef}
-        className="pointer-events-none absolute inset-0 z-40 h-full w-full"
-        aria-hidden="true"
-      />
+      <canvas ref={canvasRef} className="pointer-events-none absolute inset-0 z-40 h-full w-full" />
 
       {/* Audio Enable Prompt Overlay */}
       <AnimatePresence>

@@ -155,7 +155,7 @@ export async function generateStoryCard(payload: StoryCardPayload): Promise<Stor
   ctx.fillStyle = config.brandBar;
   ctx.font = "bold 26px sans-serif";
   ctx.textAlign = "center";
-  ctx.fillText("VOTESPHERE • OFFICIAL BALLOT VERIFIED", width / 2, 110);
+  ctx.fillText("ELECTA • OFFICIAL BALLOT VERIFIED", width / 2, 110);
 
   ctx.fillStyle = config.eventTitle;
   ctx.font = "900 48px sans-serif";

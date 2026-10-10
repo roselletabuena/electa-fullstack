@@ -19,7 +19,7 @@ export async function GET(
   const session = await getSession();
 
   return apiSuccess({
-    service: "VoteSphere Event Voting Gateway",
+    service: "Electa Event Voting Gateway",
     slug,
     authenticated: !!session?.userId,
     ...(session?.userId ? { userId: session.userId } : {}),

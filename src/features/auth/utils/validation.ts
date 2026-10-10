@@ -35,6 +35,7 @@ export const registerUserSchema = z.object({
     .string()
     .min(8, "Password must be at least 8 characters")
     .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    // eslint-disable-next-line sonarjs/concise-regex
     .regex(/[0-9]/, "Password must contain at least one number"),
   organizationName: z.string().trim().max(100).optional(),
   returnTo: z.string().optional(),

@@ -1,6 +1,6 @@
 import type { PendingVoteIntent } from "../types";
 
-export const VOTE_INTENT_STORAGE_KEY = "votesphere_pending_vote_intent";
+export const VOTE_INTENT_STORAGE_KEY = "electa_pending_vote_intent";
 const INTENT_EXPIRY_MS = 15 * 60 * 1000; // 15 minutes validity
 
 /**

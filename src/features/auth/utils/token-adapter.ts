@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { env } from "@/env";
 import type { UserSessionDto, UserRole } from "../types";
 
@@ -140,11 +140,9 @@ export function verifyLocalCognitoToken(token: string): UserSessionDto | null {
       if (signature !== expectedSignature) {
         return null;
       }
-    } else {
+    } else if (!payload.sub || !payload.email) {
       // For RS256 Cognito tokens, validate payload structure and required claims
-      if (!payload.sub || !payload.email) {
-        return null;
-      }
+      return null;
     }
 
     const role = (payload["custom:role"] ||

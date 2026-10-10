@@ -18,10 +18,27 @@ import { useContestants } from "../hooks/use-contestants";
 import { cn } from "@/lib/utils";
 
 interface OrganizerContestantTableProps {
-  slug: string;
-  contestants: ContestantDto[];
-  categories: AwardCategoryDto[];
-  divisions?: DivisionDto[] | DynamicDivisionItem[] | undefined;
+  readonly slug: string;
+  readonly contestants: ContestantDto[];
+  readonly categories: AwardCategoryDto[];
+  readonly divisions?: DivisionDto[] | DynamicDivisionItem[] | undefined;
+}
+
+function getStatusBadgeClass(status: ContestantStatus): string {
+  if (status === "ACTIVE") {
+    return "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300";
+  }
+  if (status === "HIDDEN") {
+    return "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
+  }
+  return "border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300";
+}
+
+function getModalKey(editingContestant: ContestantDto | null, modalOpen: boolean): string {
+  if (editingContestant) {
+    return editingContestant.id;
+  }
+  return modalOpen ? "new-open" : "closed";
 }
 
 export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> = ({
@@ -189,11 +206,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                           }
                           className={cn(
                             "rounded-none border px-2.5 py-1 text-[11px] font-bold tracking-wider uppercase transition-colors focus:outline-none",
-                            c.status === "ACTIVE"
-                              ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
-                              : c.status === "HIDDEN"
-                                ? "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-                                : "border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300",
+                            getStatusBadgeClass(c.status),
                           )}
                         >
                           <option value="ACTIVE">ACTIVE</option>
@@ -234,7 +247,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
       </Card>
 
       <ContestantFormModal
-        key={editingContestant ? editingContestant.id : modalOpen ? "new-open" : "closed"}
+        key={getModalKey(editingContestant, modalOpen)}
         isOpen={modalOpen}
         onClose={() => {
           setModalOpen(false);

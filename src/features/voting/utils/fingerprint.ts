@@ -1,3 +1,12 @@
+function getRandomHex(bytesCount = 4): string {
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+    const bytes = new Uint8Array(bytesCount);
+    crypto.getRandomValues(bytes);
+    return Array.from(bytes, (b) => b.toString(16).padStart(2, "0")).join("");
+  }
+  return Date.now().toString(36);
+}
+
 /**
  * Generates or retrieves a persistent client device fingerprint hash.
  * Combines browser entropy components (screen resolution, timezone, language, platform).
@@ -31,12 +40,11 @@ export function getClientDeviceFingerprint(): string {
   const rawString = components.join("###");
   let hash = 0;
   for (let i = 0; i < rawString.length; i++) {
-    const char = rawString.charCodeAt(i);
-    hash = (hash << 5) - hash + char;
-    hash |= 0; // Convert to 32bit integer
+    const char = rawString.codePointAt(i) ?? 0;
+    hash = Math.trunc((hash << 5) - hash + char);
   }
 
-  const randomSuffix = Math.random().toString(36).slice(2, 10);
+  const randomSuffix = getRandomHex(4);
   const fingerprint = `fp_${Math.abs(hash).toString(16)}_${randomSuffix}`;
 
   try {

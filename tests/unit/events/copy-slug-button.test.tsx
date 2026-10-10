@@ -10,10 +10,12 @@ describe("CopySlugButton", () => {
 
   it("renders with default label and copies URL to clipboard", async () => {
     const writeTextMock = vi.fn().mockResolvedValue(undefined);
-    Object.assign(navigator, {
-      clipboard: {
+    Object.defineProperty(navigator, "clipboard", {
+      value: {
         writeText: writeTextMock,
       },
+      configurable: true,
+      writable: true,
     });
 
     render(<CopySlugButton slug="miss-visayas-2026" />);

@@ -95,11 +95,11 @@ export function QrPhPaymentView({
           setIsPolling(false);
 
           // Invalidate all related TanStack Query caches so vote counts and leaderboards update in real-time
-          queryClient.invalidateQueries({ queryKey: ["contestants"] });
-          queryClient.invalidateQueries({ queryKey: ["event"] });
-          queryClient.invalidateQueries({ queryKey: ["events"] });
-          queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
-          queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
+          void queryClient.invalidateQueries({ queryKey: ["contestants"] });
+          void queryClient.invalidateQueries({ queryKey: ["event"] });
+          void queryClient.invalidateQueries({ queryKey: ["events"] });
+          void queryClient.invalidateQueries({ queryKey: ["leaderboard"] });
+          void queryClient.invalidateQueries({ queryKey: ["voting-quota"] });
 
           if (onSuccess) onSuccess(payload.receipt);
         } else if (!res.success && (payload.error || res.error)) {
@@ -132,7 +132,7 @@ export function QrPhPaymentView({
     }
 
     setTimeout(() => {
-      checkPaymentStatus(false);
+      void checkPaymentStatus(false);
     }, 2000);
   };
 
@@ -141,7 +141,7 @@ export function QrPhPaymentView({
     if (!isPolling || receipt || timeLeftSeconds === 0) return;
 
     const pollInterval = setInterval(() => {
-      checkPaymentStatus(false);
+      void checkPaymentStatus(false);
     }, 3500);
 
     return () => clearInterval(pollInterval);

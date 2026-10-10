@@ -17,7 +17,7 @@ export function BannerAspectPreview({
   imageUrl,
   title = "Event Banner Preview",
   className,
-}: BannerAspectPreviewProps): React.JSX.Element {
+}: Readonly<BannerAspectPreviewProps>): React.JSX.Element {
   const [aspectRatio, setAspectRatio] = useState<AspectRatioPreset>("16:9");
   const [hasError, setHasError] = useState(false);
   const [isLoading, setIsLoading] = useState(true);

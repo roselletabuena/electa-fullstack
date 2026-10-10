@@ -10,10 +10,60 @@ import { CategoryFilterBar } from "./CategoryFilterBar";
 import { FreeVoteCooldownBanner } from "@/features/voting/components/FreeVoteCooldownBanner";
 
 interface ContestantRosterProps {
-  initialContestants: ContestantDto[];
-  divisions?: DynamicDivisionItem[] | DivisionDto[] | undefined;
-  categories?: AwardCategoryDto[] | undefined;
-  onVoteClick?: ((contestant: ContestantDto) => void) | undefined;
+  readonly initialContestants: ContestantDto[];
+  readonly divisions?: DynamicDivisionItem[] | DivisionDto[] | undefined;
+  readonly categories?: AwardCategoryDto[] | undefined;
+  readonly onVoteClick?: ((contestant: ContestantDto) => void) | undefined;
+}
+
+function matchesDivision(
+  c: ContestantDto,
+  selectedDivision: string,
+  divisions?: DynamicDivisionItem[] | DivisionDto[],
+): boolean {
+  if (selectedDivision === "ALL") return true;
+  const targetDiv = selectedDivision.toLowerCase();
+
+  const matchExact =
+    c.division.toLowerCase() === targetDiv ||
+    c.divisionName?.toLowerCase() === targetDiv ||
+    c.divisionRef?.name.toLowerCase() === targetDiv ||
+    (c.divisionId &&
+      (c.divisionId === selectedDivision || c.divisionId.toLowerCase() === targetDiv));
+
+  if (matchExact) return true;
+
+  const matchedConfigDivision = divisions?.find(
+    (d) =>
+      d.name.toLowerCase() === targetDiv ||
+      (d.id && (d.id === selectedDivision || d.id.toLowerCase() === targetDiv)),
+  );
+
+  if (matchedConfigDivision) {
+    const configName = matchedConfigDivision.name.toLowerCase();
+    const matchConfigured =
+      (c.divisionId && c.divisionId === matchedConfigDivision.id) ||
+      (c.divisionRef?.id && c.divisionRef.id === matchedConfigDivision.id) ||
+      c.divisionName?.toLowerCase() === configName ||
+      c.divisionRef?.name.toLowerCase() === configName ||
+      c.division.toLowerCase() === configName;
+
+    if (matchConfigured) return true;
+  }
+
+  const isFemaleFilter = targetDiv.includes("female");
+  const isMaleFilter = !isFemaleFilter && targetDiv.includes("male");
+  return (
+    (c.division === "FEMALE" && isFemaleFilter) ||
+    (c.division === "MALE" && isMaleFilter) ||
+    (c.division === "LGBTQ" && targetDiv.includes("lgbt")) ||
+    (c.division === "TEEN" && targetDiv.includes("teen"))
+  );
+}
+
+function matchesCategory(c: ContestantDto, selectedCategoryId: string): boolean {
+  if (selectedCategoryId === "ALL") return true;
+  return c.categories.some((cat) => cat.id === selectedCategoryId);
 }
 
 export const ContestantRoster: React.FC<ContestantRosterProps> = ({
@@ -30,7 +80,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   const categoryFromUrl = searchParams.get("category") || "ALL";
 
   const [selectedDivision, setSelectedDivision] = useState<string>(divisionFromUrl);
-  const [selectedCategoryId, setSelectedCategoryId] = useState<string | "ALL">(categoryFromUrl);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string>(categoryFromUrl);
   const [activeContestant, setActiveContestant] = useState<ContestantDto | null>(null);
 
   const formattedDivisions = React.useMemo(() => {
@@ -48,7 +98,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
       new Set(
         initialContestants
           .map((c) => c.divisionRef?.name || c.divisionName)
-          .filter((name): name is string => Boolean(name && name.trim())),
+          .filter((name): name is string => Boolean(name?.trim())),
       ),
     );
     if (distinctCustom.length > 1) {
@@ -60,7 +110,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
     return undefined;
   }, [divisions, initialContestants]);
 
-  const updateUrlFilters = (division: string, categoryId: string | "ALL") => {
+  const updateUrlFilters = (division: string, categoryId: string) => {
     const params = new URLSearchParams(searchParams.toString());
     if (division && division !== "ALL") {
       params.set("division", division);
@@ -82,7 +132,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
     updateUrlFilters(division, selectedCategoryId);
   };
 
-  const handleSelectCategory = (categoryId: string | "ALL") => {
+  const handleSelectCategory = (categoryId: string) => {
     setSelectedCategoryId(categoryId);
     updateUrlFilters(selectedDivision, categoryId);
   };
@@ -90,48 +140,11 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   // Client-side filtering for sub-50ms instant roster response
   const filteredContestants = initialContestants.filter((c) => {
     if (c.status !== "ACTIVE") return false;
-    if (formattedDivisions && formattedDivisions.length > 1 && selectedDivision !== "ALL") {
-      const targetDiv = selectedDivision.toLowerCase();
-      const matchExact =
-        c.division.toLowerCase() === targetDiv ||
-        (c.divisionName && c.divisionName.toLowerCase() === targetDiv) ||
-        (c.divisionRef?.name && c.divisionRef.name.toLowerCase() === targetDiv) ||
-        (c.divisionId &&
-          (c.divisionId === selectedDivision || c.divisionId.toLowerCase() === targetDiv));
-
-      const matchedConfigDivision = divisions?.find(
-        (d) =>
-          d.name.toLowerCase() === targetDiv ||
-          (d.id && (d.id === selectedDivision || d.id.toLowerCase() === targetDiv)),
-      );
-
-      const matchConfigured = matchedConfigDivision
-        ? (c.divisionId && c.divisionId === matchedConfigDivision.id) ||
-          (c.divisionRef?.id && c.divisionRef.id === matchedConfigDivision.id) ||
-          (c.divisionName &&
-            c.divisionName.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
-          (c.divisionRef?.name &&
-            c.divisionRef.name.toLowerCase() === matchedConfigDivision.name.toLowerCase()) ||
-          c.division.toLowerCase() === matchedConfigDivision.name.toLowerCase()
-        : false;
-
-      const isFemaleFilter = targetDiv.includes("female");
-      const isMaleFilter = !isFemaleFilter && targetDiv.includes("male");
-      const matchNormalized =
-        (c.division === "FEMALE" && isFemaleFilter) ||
-        (c.division === "MALE" && isMaleFilter) ||
-        (c.division === "LGBTQ" && targetDiv.includes("lgbt")) ||
-        (c.division === "TEEN" && targetDiv.includes("teen"));
-
-      if (!matchExact && !matchConfigured && !matchNormalized) {
-        return false;
-      }
+    const hasDivisions = formattedDivisions && formattedDivisions.length > 1;
+    if (hasDivisions && !matchesDivision(c, selectedDivision, divisions)) {
+      return false;
     }
-    if (selectedCategoryId !== "ALL") {
-      const isNominated = c.categories.some((cat) => cat.id === selectedCategoryId);
-      if (!isNominated) return false;
-    }
-    return true;
+    return matchesCategory(c, selectedCategoryId);
   });
 
   return (

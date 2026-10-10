@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import type { OAuthStatePayload } from "../types";
 import { generateLocalCognitoToken } from "./token-adapter";
 
@@ -72,19 +72,18 @@ export async function exchangeCognitoCodeForTokens(params: {
 
   // In local mode or mock test, generate a deterministic mocked Google-federated Cognito ID token
   if (authProvider === "local" || params.code.startsWith("mock_")) {
-    const mockEmail = params.code.includes("returning")
-      ? "organizer@electa.ph"
-      : params.code.includes("alice")
-        ? "alice.organizer@gmail.com"
-        : "google.organizer@electa.ph";
+    let mockEmail = "google.organizer@electa.ph";
+    let mockName = "Google Organizer";
 
-    const mockName = params.code.includes("returning")
-      ? "Alex Gonzaga (Organizer)"
-      : params.code.includes("alice")
-        ? "Alice Guo"
-        : "Google Organizer";
+    if (params.code.includes("returning")) {
+      mockEmail = "organizer@electa.ph";
+      mockName = "Alex Gonzaga (Organizer)";
+    } else if (params.code.includes("alice")) {
+      mockEmail = "alice.organizer@gmail.com";
+      mockName = "Alice Guo";
+    }
 
-    const mockSub = `google_${crypto.createHash("md5").update(mockEmail).digest("hex")}`;
+    const mockSub = `google_${crypto.createHash("sha256").update(mockEmail).digest("hex")}`;
 
     const idToken = generateLocalCognitoToken({
       userId: mockSub,

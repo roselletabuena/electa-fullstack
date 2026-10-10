@@ -9,5 +9,6 @@
   "tailwindCSS.lint.recommendedVariantOrder": "warning",
   "editor.codeActionsOnSave": {
     "source.fixAll": "explicit"
-  }
+  },
+  "sonarlint.files.exclusions": ["**/src/generated/**"]
 }

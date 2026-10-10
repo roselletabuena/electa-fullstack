@@ -327,11 +327,11 @@ export function BoostVoteModal({
   };
 
   return (
-    <div
-      role="dialog"
+    <dialog
+      open
       aria-modal="true"
       aria-labelledby="boost-modal-title"
-      className="animate-in fade-in fixed inset-0 z-50 flex items-center justify-center bg-slate-950/70 p-3 backdrop-blur-xs duration-150 sm:p-4"
+      className="animate-in fade-in fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-slate-950/70 p-3 backdrop-blur-xs duration-150 sm:p-4"
     >
       <div className="relative flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Header */}
@@ -492,6 +492,6 @@ export function BoostVoteModal({
           )}
         </div>
       </div>
-    </div>
+    </dialog>
   );
 }

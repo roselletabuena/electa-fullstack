@@ -18,7 +18,7 @@ function formatPhp(amount: number): string {
 
 export function ContestantRevenueShareTable({
   shares,
-}: ContestantRevenueShareTableProps): React.JSX.Element {
+}: Readonly<ContestantRevenueShareTableProps>): React.JSX.Element {
   return (
     <div className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
       <div className="flex items-center justify-between border-b border-slate-200 px-5 py-4 dark:border-slate-800">

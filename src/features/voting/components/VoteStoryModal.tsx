@@ -18,7 +18,7 @@ export function VoteStoryModal({
   isOpen,
   onClose,
   payload,
-}: VoteStoryModalProps): React.JSX.Element | null {
+}: Readonly<VoteStoryModalProps>): React.JSX.Element | null {
   const isMounted = useIsMounted();
   const [selectedTheme, setSelectedTheme] = useState<StoryTheme>("midnight");
   const [generatedResult, setGeneratedResult] = useState<StoryGeneratorResult | null>(null);
@@ -26,6 +26,19 @@ export function VoteStoryModal({
   const handleGenerated = useCallback((res: StoryGeneratorResult) => {
     setGeneratedResult(res);
   }, []);
+
+  React.useEffect(() => {
+    if (!isOpen) return;
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        onClose();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen, onClose]);
 
   if (!isOpen || !payload || !isMounted) return null;
 
@@ -41,22 +54,22 @@ export function VoteStoryModal({
   ];
 
   return createPortal(
-    <div
-      role="dialog"
-      aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-3 sm:p-4"
+    <dialog
+      open
+      aria-labelledby="share-story-title"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-0 bg-transparent p-3 outline-hidden backdrop:bg-transparent sm:p-4"
     >
       {/* Backdrop */}
-      <div
-        className="fixed inset-0 bg-slate-950/80 backdrop-blur-xs transition-opacity"
+      <button
+        type="button"
+        aria-label="Close modal overlay"
+        tabIndex={-1}
         onClick={onClose}
+        className="fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/80 p-0 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Container */}
-      <div
-        onClick={(e) => e.stopPropagation()}
-        className="relative z-10 flex max-h-[92vh] w-full max-w-sm flex-col overflow-y-auto border border-slate-300 bg-white p-4 shadow-2xl sm:max-w-md sm:p-5 dark:border-slate-800 dark:bg-[#0b111e]"
-      >
+      <div className="relative z-10 flex max-h-[92vh] w-full max-w-sm flex-col overflow-y-auto border border-slate-300 bg-white p-4 shadow-2xl sm:max-w-md sm:p-5 dark:border-slate-800 dark:bg-[#0b111e]">
         {/* Header */}
         <div className="flex items-start justify-between gap-2">
           <div>
@@ -64,7 +77,10 @@ export function VoteStoryModal({
               <Sparkles className="h-3 w-3 text-emerald-600 dark:text-emerald-400" />
               <span>Official Ballot Verified</span>
             </div>
-            <h2 className="font-heading mt-1.5 text-lg font-black tracking-tight text-slate-900 uppercase sm:text-xl dark:text-white">
+            <h2
+              id="share-story-title"
+              className="font-heading mt-1.5 text-lg font-black tracking-tight text-slate-900 uppercase sm:text-xl dark:text-white"
+            >
               Share Your Story
             </h2>
             <p className="font-sans text-[11px] text-slate-500 dark:text-slate-400">
@@ -115,7 +131,7 @@ export function VoteStoryModal({
           <StoryActionButtons payload={currentPayload} result={generatedResult} />
         </div>
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 }

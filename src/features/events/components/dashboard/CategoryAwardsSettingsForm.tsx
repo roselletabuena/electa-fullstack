@@ -31,7 +31,7 @@ export interface CategoryAwardsSettingsFormProps {
 export function CategoryAwardsSettingsForm({
   event,
   className,
-}: CategoryAwardsSettingsFormProps): React.JSX.Element {
+}: Readonly<CategoryAwardsSettingsFormProps>): React.JSX.Element {
   const { data: taxonomy, isLoading, isError, error, refetch } = useEventTaxonomy(event.slug);
 
   const createDivisionMutation = useCreateDivision(event.slug);

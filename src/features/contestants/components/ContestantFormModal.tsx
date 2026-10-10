@@ -169,13 +169,25 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
 
   if (!isMounted) return null;
 
+  let submitButtonLabel = "Register Contestant";
+  if (isSubmitting) {
+    submitButtonLabel = "Saving...";
+  } else if (initialData) {
+    submitButtonLabel = "Update Profile";
+  }
+
   return createPortal(
-    <div
-      role="dialog"
+    <dialog
+      open
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-transparent p-4 sm:p-6"
     >
-      <div onClick={onClose} className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs" />
+      <button
+        type="button"
+        aria-label="Close modal overlay"
+        onClick={onClose}
+        className="fixed inset-0 cursor-default border-none bg-slate-900/60 backdrop-blur-xs"
+      />
 
       <div className="relative z-10 flex max-h-[92vh] w-full max-w-3xl flex-col overflow-hidden rounded-none border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
         <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50/70 px-6 py-4 dark:border-slate-800 dark:bg-slate-900/80">
@@ -318,11 +330,15 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
               <div className="grid grid-cols-5 gap-2 sm:grid-cols-10">
                 {galleryUrls.map((url, i) => (
                   <div
-                    key={i}
+                    key={`${url}-${i}`}
                     className="group relative aspect-4/5 overflow-hidden rounded-none border border-slate-300 bg-slate-100 dark:border-slate-700 dark:bg-slate-950"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img src={url} alt={`Photo ${i + 1}`} className="h-full w-full object-cover" />
+                    <img
+                      src={url}
+                      alt={`Contestant thumbnail ${i + 1}`}
+                      className="h-full w-full object-cover"
+                    />
                     <button
                       type="button"
                       onClick={() => handleRemovePhoto(i)}
@@ -476,12 +492,12 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
               disabled={isSubmitting}
               className="btn-primary rounded-none px-6 py-2 text-xs disabled:opacity-50"
             >
-              {isSubmitting ? "Saving..." : initialData ? "Update Profile" : "Register Contestant"}
+              {submitButtonLabel}
             </button>
           </div>
         </form>
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 };

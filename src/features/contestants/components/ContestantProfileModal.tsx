@@ -47,15 +47,17 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
   const photosMedia = contestant.media.filter((m) => m.mediaType === "PHOTO");
 
   return createPortal(
-    <div
-      role="dialog"
+    <dialog
+      open
       aria-modal="true"
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-transparent p-4 sm:p-6"
     >
       {/* Backdrop */}
-      <div
+      <button
+        type="button"
+        aria-label="Close modal overlay"
         onClick={onClose}
-        className="fixed inset-0 bg-slate-900/60 backdrop-blur-xs transition-opacity"
+        className="fixed inset-0 cursor-default border-none bg-slate-900/60 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Container */}
@@ -290,7 +292,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
           </div>
         </div>
       </div>
-    </div>,
+    </dialog>,
     document.body,
   );
 };

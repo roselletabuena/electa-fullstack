@@ -32,7 +32,7 @@ export function AwardCategoriesSection({
   onToggleVoting,
   onDeleteRequest,
   disabled = false,
-}: AwardCategoriesSectionProps): React.JSX.Element {
+}: Readonly<AwardCategoriesSectionProps>): React.JSX.Element {
   const [isAdding, setIsAdding] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);

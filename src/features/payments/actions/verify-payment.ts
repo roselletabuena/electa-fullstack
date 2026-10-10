@@ -17,6 +17,12 @@ export interface VerifyPaymentResponse {
   error?: string;
 }
 
+function computeVerificationHash(transactionId: string, referenceNumber: string): string {
+  const payload = `${transactionId}-${referenceNumber}`;
+  const sig = Buffer.from(payload).toString("base64").slice(0, 16);
+  return `VS-SIG-${sig}`;
+}
+
 export async function verifyPaymentStatusAction(
   rawInput: VerifyPaymentInput,
   options?: { simulateSuccess?: boolean },
@@ -60,7 +66,7 @@ export async function verifyPaymentStatusAction(
         bonusVotes: transaction.bonusVotes,
         paidAt: (transaction.paidAt ?? transaction.updatedAt).toISOString(),
         paymentChannel: transaction.paymentChannel,
-        verificationHash: `VS-SIG-${Buffer.from(`${transaction.id}-${transaction.referenceNumber}`).toString("base64").slice(0, 16)}`,
+        verificationHash: computeVerificationHash(transaction.id, transaction.referenceNumber),
       };
 
       return {
@@ -144,7 +150,7 @@ export async function verifyPaymentStatusAction(
         bonusVotes: transaction.bonusVotes,
         paidAt: paidDate.toISOString(),
         paymentChannel: transaction.paymentChannel,
-        verificationHash: `VS-SIG-${Buffer.from(`${transaction.id}-${transaction.referenceNumber}`).toString("base64").slice(0, 16)}`,
+        verificationHash: computeVerificationHash(transaction.id, transaction.referenceNumber),
       };
 
       return {

@@ -8,10 +8,12 @@ import type { StageCandidate } from "../types";
 interface StageLiveTallyProps {
   candidates: StageCandidate[];
   isFrozen: boolean;
-  _totalVotes?: number;
 }
 
-export function StageLiveTally({ candidates, isFrozen }: StageLiveTallyProps): React.JSX.Element {
+export function StageLiveTally({
+  candidates,
+  isFrozen,
+}: Readonly<StageLiveTallyProps>): React.JSX.Element {
   if (candidates.length === 0) {
     return (
       <div className="flex h-full flex-col items-center justify-center p-12 text-center">

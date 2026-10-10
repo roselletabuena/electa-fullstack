@@ -1,6 +1,6 @@
 import React from "react";
 
-export default function AuthLayout({ children }: { children: React.ReactNode }) {
+export default function AuthLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <div className="relative flex min-h-screen flex-col justify-between bg-[#F8FAFC] text-slate-900 antialiased transition-colors selection:bg-sky-600 selection:text-white dark:bg-[#090D16] dark:text-slate-100">
       {/* Subtle Ambient Background Light */}

@@ -141,13 +141,20 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
       {lightboxOpen &&
         typeof document !== "undefined" &&
         createPortal(
-          <div
-            role="dialog"
+          <dialog
+            open
             aria-modal="true"
             aria-label={`${candidateName} Fullscreen Lightbox`}
-            className="animate-in fade-in fixed inset-0 z-9999 flex items-center justify-center bg-slate-950/95 p-4 backdrop-blur-xl duration-200 sm:p-8"
-            onClick={() => setLightboxOpen(false)}
+            className="animate-in fade-in fixed inset-0 z-9999 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-slate-950/95 p-4 backdrop-blur-xl duration-200 sm:p-8"
           >
+            {/* Backdrop */}
+            <button
+              type="button"
+              aria-label="Close fullscreen view"
+              onClick={() => setLightboxOpen(false)}
+              className="fixed inset-0 cursor-default border-none bg-transparent"
+            />
+
             {/* Close button */}
             <button
               type="button"
@@ -164,10 +171,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
             </div>
 
             {/* Main Fullscreen Image */}
-            <div
-              className="relative flex max-h-[88vh] max-w-[90vw] items-center justify-center overflow-hidden"
-              onClick={(e) => e.stopPropagation()}
-            >
+            <div className="relative z-10 flex max-h-[88vh] max-w-[90vw] items-center justify-center overflow-hidden">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={activePhoto.url}
@@ -181,10 +185,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
               <>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handlePrev();
-                  }}
+                  onClick={handlePrev}
                   className="absolute top-1/2 left-4 z-20 -translate-y-1/2 rounded-none border border-white/20 bg-slate-900/80 p-3 text-white backdrop-blur-md transition hover:bg-slate-800"
                   aria-label="Previous image"
                 >
@@ -192,10 +193,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
                 </button>
                 <button
                   type="button"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    handleNext();
-                  }}
+                  onClick={handleNext}
                   className="absolute top-1/2 right-4 z-20 -translate-y-1/2 rounded-none border border-white/20 bg-slate-900/80 p-3 text-white backdrop-blur-md transition hover:bg-slate-800"
                   aria-label="Next image"
                 >
@@ -203,7 +201,7 @@ export const PhotoGalleryCarousel: React.FC<PhotoGalleryCarouselProps> = ({
                 </button>
               </>
             )}
-          </div>,
+          </dialog>,
           document.body,
         )}
     </div>

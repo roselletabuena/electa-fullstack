@@ -19,7 +19,7 @@ export function CopySlugButton({
   variant = "outline",
   size = "sm",
   showLabel = true,
-}: CopySlugButtonProps): React.JSX.Element {
+}: Readonly<CopySlugButtonProps>): React.JSX.Element {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = async () => {
@@ -28,7 +28,7 @@ export function CopySlugButton({
         typeof window !== "undefined" ? window.location.origin : "https://votesphere.app";
       const publicUrl = `${origin}/events/${slug}`;
 
-      if (navigator.clipboard && navigator.clipboard.writeText) {
+      if (navigator.clipboard?.writeText) {
         await navigator.clipboard.writeText(publicUrl);
       } else {
         // Fallback for environments without Async Clipboard API

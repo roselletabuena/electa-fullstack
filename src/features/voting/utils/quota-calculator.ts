@@ -26,7 +26,7 @@ export function calculateVoterQuota({
   // Normalize and sort timestamps ascending
   const validTimestamps = recentFreeVoteTimestamps
     .map((t) => (typeof t === "number" ? t : new Date(t).getTime()))
-    .filter((t) => !isNaN(t) && t >= windowStartTime && t <= currentTime)
+    .filter((t) => !Number.isNaN(t) && t >= windowStartTime && t <= currentTime)
     .sort((a, b) => a - b);
 
   const votesUsedIn24h = validTimestamps.length;
@@ -81,7 +81,7 @@ export function getRemainingMilliseconds(
     return 0;
   }
   const resetMs = new Date(nextResetTime).getTime();
-  if (isNaN(resetMs)) {
+  if (Number.isNaN(resetMs)) {
     return 0;
   }
   return Math.max(0, resetMs - now.getTime());

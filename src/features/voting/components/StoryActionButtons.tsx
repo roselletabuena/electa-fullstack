@@ -12,7 +12,7 @@ interface StoryActionButtonsProps {
 export function StoryActionButtons({
   payload,
   result,
-}: StoryActionButtonsProps): React.JSX.Element {
+}: Readonly<StoryActionButtonsProps>): React.JSX.Element {
   const [copied, setCopied] = useState<boolean>(false);
   const [isSharing, setIsSharing] = useState<boolean>(false);
 
@@ -23,7 +23,7 @@ export function StoryActionButtons({
     link.download = result.fileName;
     document.body.appendChild(link);
     link.click();
-    document.body.removeChild(link);
+    link.remove();
   };
 
   const handleShare = async () => {
@@ -33,11 +33,7 @@ export function StoryActionButtons({
     try {
       const file = new File([result.blob], result.fileName, { type: "image/png" });
 
-      if (
-        typeof navigator !== "undefined" &&
-        navigator.canShare &&
-        navigator.canShare({ files: [file] })
-      ) {
+      if (typeof navigator !== "undefined" && navigator.canShare?.({ files: [file] })) {
         await navigator.share({
           title: `Vote for #${payload.candidateNumber} ${payload.candidateName}!`,
           text: `I just voted for #${payload.candidateNumber} ${payload.candidateName} in ${payload.eventTitle}! Cast your vote now!`,

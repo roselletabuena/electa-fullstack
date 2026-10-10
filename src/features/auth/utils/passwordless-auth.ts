@@ -1,4 +1,4 @@
-import crypto from "crypto";
+import crypto from "node:crypto";
 import { generateLocalCognitoToken } from "./token-adapter";
 import type { UserSessionDto } from "../types";
 
@@ -20,15 +20,15 @@ function hashOtpCode(code: string): string {
 /**
  * Initiates a passwordless verification challenge (Email Magic Link, SMS OTP, or WhatsApp OTP).
  */
-export async function requestPasswordlessOtp(params: {
+export function requestPasswordlessOtp(params: {
   channel: "email" | "sms" | "whatsapp";
   destination: string;
-}): Promise<{ success: boolean; message: string; challengeId: string }> {
+}): { success: boolean; message: string; challengeId: string } {
   const { channel, destination } = params;
   const cleanDestination = destination.trim().toLowerCase();
 
-  // Generate 6-digit OTP code
-  const code = Math.floor(100000 + Math.random() * 900000).toString();
+  // Generate cryptographically secure 6-digit OTP code
+  const code = crypto.randomInt(100000, 1000000).toString();
   const challengeId = crypto.randomUUID();
   const expiresAt = Date.now() + 10 * 60 * 1000; // 10 minutes
 
@@ -61,15 +61,12 @@ export async function requestPasswordlessOtp(params: {
 /**
  * Verifies a passwordless OTP code and issues a verified voter session.
  */
-export async function verifyPasswordlessOtp(params: {
-  destination: string;
-  code: string;
-}): Promise<{
+export function verifyPasswordlessOtp(params: { destination: string; code: string }): {
   success: boolean;
   sessionToken?: string;
   user?: UserSessionDto;
   error?: string;
-}> {
+} {
   const { destination, code } = params;
   const cleanDestination = destination.trim().toLowerCase();
   const cleanCode = code.trim();

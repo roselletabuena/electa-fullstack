@@ -41,7 +41,7 @@ export function useFreeVoteQuota(eventId: string) {
       // Auto-invalidate when countdown reaches zero to restore votes
       if (remaining <= 0) {
         clearInterval(interval);
-        queryClient.invalidateQueries({ queryKey: ["voting-quota", eventId] });
+        void queryClient.invalidateQueries({ queryKey: ["voting-quota", eventId] });
       }
     }, 1000);
 

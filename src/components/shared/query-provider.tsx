@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 interface ReactQueryProviderProps {
-  children: React.ReactNode;
+  readonly children: React.ReactNode;
 }
 
 export function ReactQueryProvider({ children }: ReactQueryProviderProps): React.JSX.Element {

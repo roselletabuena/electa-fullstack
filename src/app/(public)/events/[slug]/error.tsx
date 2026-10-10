@@ -5,13 +5,12 @@ import { AlertTriangle, RefreshCw } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 
-export default function EventError({
-  error,
-  reset,
-}: {
-  error: Error & { digest?: string };
-  reset: () => void;
-}): React.JSX.Element {
+interface EventErrorProps {
+  readonly error: Error & { digest?: string };
+  readonly reset: () => void;
+}
+
+export default function EventError({ error, reset }: EventErrorProps): React.JSX.Element {
   useEffect(() => {
     console.error("Event route error:", error);
   }, [error]);

@@ -1,0 +1,1063 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Electa — Trending Events | Official Event Voting Platform</title>
+
+  <!-- Google Fonts: Outfit (Headings), Sora (Body & UI), JetBrains Mono (Data & Numbers) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800;900&family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+  <style>
+    /* ==========================================================================
+       ELECTA REALISTIC MVP — STREAMLINED & MINIMAL
+       - Zero-radius geometry (--radius: 0px)
+       - Light mode default (Opal Theme: #F8FAFC / #FFFFFF)
+       - WCAG AA compliant contrast
+       - Free of unnecessary badges, noisy labels, and clutter
+       ========================================================================== */
+    :root {
+      --bg: #F8FAFC;
+      --surface: #FFFFFF;
+      --surface-elevated: #F1F5F9;
+      --border: #CBD5E1;
+      --border-strong: #94A3B8;
+      --text: #0F172A;
+      --text-muted: #475569;
+      --text-subtle: #64748B;
+
+      --accent: #0369A1; /* WCAG AA 5.9:1 on white */
+      --accent-hover: #0284C7;
+      --accent-soft: rgba(3, 105, 161, 0.08);
+
+      --live-red: #DC2626;
+
+      --font-heading: 'Outfit', sans-serif;
+      --font-body: 'Sora', sans-serif;
+      --font-mono: 'JetBrains Mono', monospace;
+
+      --radius: 0px !important;
+      --shadow-card: 0 1px 3px 0 rgba(15, 23, 42, 0.04);
+      --shadow-hover: 0 8px 20px -3px rgba(15, 23, 42, 0.08);
+      --transition: all 0.16s ease-in-out;
+    }
+
+    [data-theme="dark"] {
+      --bg: #090D16;
+      --surface: #0D1424;
+      --surface-elevated: #162035;
+      --border: #1E293B;
+      --border-strong: #334155;
+      --text: #F8FAFC;
+      --text-muted: #CBD5E1;
+      --text-subtle: #94A3B8;
+
+      --accent: #38BDF8;
+      --accent-hover: #0284C7;
+      --accent-soft: rgba(56, 189, 248, 0.12);
+
+      --shadow-card: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+      --shadow-hover: 0 12px 28px -4px rgba(0, 0, 0, 0.6);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      border-radius: 0 !important;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      font-family: var(--font-body);
+      line-height: 1.5;
+      -webkit-font-smoothing: antialiased;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* LAB SWITCHER */
+    .lab-bar {
+      background: #0F172A;
+      color: #94A3B8;
+      padding: 6px 24px;
+      font-size: 0.7rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .lab-btn-group {
+      display: flex;
+      gap: 6px;
+    }
+
+    .lab-btn {
+      padding: 2px 8px;
+      font-family: var(--font-heading);
+      font-size: 0.65rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #CBD5E1;
+      cursor: pointer;
+    }
+
+    .lab-btn:hover, .lab-btn.active {
+      background: #0284C7;
+      color: #FFFFFF;
+      border-color: #0284C7;
+    }
+
+    /* HEADER */
+    .site-header {
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .header-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 64px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand-mark {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: inherit;
+    }
+
+    .brand-logo {
+      height: 36px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+      transition: var(--transition);
+    }
+
+    .footer-logo {
+      height: 24px;
+      width: auto;
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+    }
+
+    .brand-title {
+      font-family: var(--font-heading);
+      font-size: 1.35rem;
+      font-weight: 900;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      display: block;
+    }
+
+    .brand-tag {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+      display: block;
+      margin-top: 2px;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .btn-portal {
+      height: 36px;
+      padding: 0 16px;
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text);
+      font-family: var(--font-heading);
+      font-weight: 800;
+      font-size: 0.725rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: var(--transition);
+    }
+
+    .btn-portal:hover {
+      border-color: var(--text);
+      background: var(--surface-elevated);
+    }
+
+    .btn-theme {
+      height: 36px;
+      width: 36px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      cursor: pointer;
+      font-size: 0.9rem;
+      transition: var(--transition);
+    }
+
+    .btn-theme:hover {
+      background: var(--surface-elevated);
+      border-color: var(--border-strong);
+    }
+
+    .btn-primary {
+      height: 36px;
+      padding: 0 16px;
+      background: var(--text);
+      color: var(--surface);
+      border: 1px solid var(--text);
+      font-family: var(--font-heading);
+      font-size: 0.75rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    [data-theme="dark"] .btn-primary {
+      background: #FFFFFF;
+      color: #0F172A;
+      border-color: #FFFFFF;
+    }
+
+    .btn-primary:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* WRAPPER */
+    .wrap {
+      max-width: 1360px;
+      margin: 0 auto;
+      padding: 32px 24px 64px 24px;
+    }
+
+    /* HERO */
+    .hero-section {
+      margin-bottom: 40px;
+    }
+
+    .hero-layout {
+      display: grid;
+      grid-template-columns: 1fr 1.15fr;
+      gap: 24px;
+      align-items: stretch;
+    }
+
+    .hero-intro {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+    }
+
+    .hero-heading {
+      font-family: var(--font-heading);
+      font-size: 2.25rem;
+      font-weight: 900;
+      line-height: 1.15;
+      letter-spacing: -0.035em;
+      text-transform: uppercase;
+      margin-bottom: 12px;
+      color: var(--text);
+    }
+
+    .hero-heading span {
+      color: var(--accent);
+    }
+
+    .hero-subhead {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 24px;
+    }
+
+    /* SEARCH */
+    .hero-search-box {
+      display: flex;
+      border: 1px solid var(--border-strong);
+      background: var(--surface);
+      margin-top: auto;
+      transition: var(--transition);
+    }
+
+    .hero-search-box:focus-within {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px var(--accent-soft);
+    }
+
+    .hero-search-box input {
+      flex: 1;
+      height: 46px;
+      border: none;
+      background: transparent;
+      padding: 0 16px;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text);
+      outline: none;
+    }
+
+    .hero-search-box input::placeholder {
+      color: var(--text-subtle);
+    }
+
+    .hero-search-box button {
+      height: 46px;
+      padding: 0 20px;
+      flex-shrink: 0;
+    }
+
+    /* MARKETING SHOWCASE (WHY CHOOSE ELECTA) */
+    .marketing-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-top: 3px solid var(--accent);
+      padding: 28px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      box-shadow: var(--shadow-card);
+      position: relative;
+    }
+
+    .marketing-header {
+      margin-bottom: 16px;
+    }
+
+    .marketing-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--accent-soft);
+      color: var(--accent);
+      border: 1px solid var(--accent);
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      padding: 3px 8px;
+      margin-bottom: 10px;
+    }
+
+    .badge-dot {
+      width: 6px;
+      height: 6px;
+      background: var(--accent);
+      display: inline-block;
+    }
+
+    .marketing-title {
+      font-family: var(--font-heading);
+      font-size: 1.45rem;
+      font-weight: 900;
+      line-height: 1.18;
+      letter-spacing: -0.03em;
+      text-transform: uppercase;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .marketing-title span {
+      color: var(--accent);
+    }
+
+    .marketing-subhead {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* VALUE PROPOSITIONS GRID */
+    .marketing-features {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 18px;
+    }
+
+    .feature-tile {
+      background: var(--surface-elevated);
+      border: 1px solid var(--border);
+      padding: 10px 12px;
+      display: flex;
+      gap: 10px;
+      align-items: flex-start;
+      transition: var(--transition);
+    }
+
+    .feature-tile:hover {
+      border-color: var(--border-strong);
+      background: var(--surface);
+      transform: translateY(-1px);
+    }
+
+    .feature-icon-box {
+      font-size: 1.1rem;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .feature-name {
+      font-family: var(--font-heading);
+      font-size: 0.775rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: -0.01em;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .feature-desc {
+      font-size: 0.685rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+    }
+
+    /* TRUST METRICS RIBBON */
+    .marketing-metrics {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      margin-bottom: 18px;
+    }
+
+    .metric-item {
+      background: var(--surface-elevated);
+      padding: 8px 6px;
+      text-align: center;
+    }
+
+    .metric-value {
+      font-family: var(--font-mono);
+      font-size: 1.05rem;
+      font-weight: 800;
+      color: var(--accent);
+      line-height: 1.1;
+    }
+
+    .metric-label {
+      font-size: 0.6rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      color: var(--text-subtle);
+      letter-spacing: 0.04em;
+      margin-top: 2px;
+    }
+
+    /* TRUST FOOTNOTE */
+    .marketing-footer {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: auto;
+      padding-top: 14px;
+      border-top: 1px dashed var(--border);
+      text-align: center;
+    }
+
+    .marketing-footnote {
+      font-size: 0.725rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      letter-spacing: 0.02em;
+      flex-wrap: wrap;
+    }
+
+    .footnote-icon {
+      color: #059669;
+      font-weight: 900;
+    }
+
+    /* SECTION BAR */
+    .section-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding-bottom: 12px;
+      border-bottom: 2px solid var(--text);
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .section-title {
+      font-family: var(--font-heading);
+      font-size: 1.4rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      color: var(--text);
+    }
+
+    .status-filters {
+      display: flex;
+      gap: 4px;
+      flex-wrap: wrap;
+    }
+
+    .filter-tab {
+      padding: 6px 14px;
+      font-family: var(--font-heading);
+      font-size: 0.725rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .filter-tab:hover {
+      background: var(--surface-elevated);
+      color: var(--text);
+    }
+
+    .filter-tab.active {
+      background: var(--text);
+      color: var(--surface);
+      border-color: var(--text);
+    }
+
+    [data-theme="dark"] .filter-tab.active {
+      background: #FFFFFF;
+      color: #0F172A;
+      border-color: #FFFFFF;
+    }
+
+    /* EVENTS GRID */
+    .events-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 24px;
+    }
+
+    .event-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      box-shadow: var(--shadow-card);
+      transition: var(--transition);
+    }
+
+    .event-card:hover {
+      border-color: var(--border-strong);
+      box-shadow: var(--shadow-hover);
+      transform: translateY(-2px);
+    }
+
+    .card-poster {
+      position: relative;
+      width: 100%;
+      height: 200px;
+      background: #0F172A;
+      overflow: hidden;
+    }
+
+    .card-poster img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.4s ease;
+    }
+
+    .event-card:hover .card-poster img {
+      transform: scale(1.03);
+    }
+
+    /* SINGLE MINIMAL STATUS PILL (NO CLUTTER) */
+    .card-time-pill {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: rgba(15, 23, 42, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.2);
+      color: #FFFFFF;
+      font-family: var(--font-mono);
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 8px;
+    }
+
+    .card-content {
+      padding: 18px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+    }
+
+    .card-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      font-weight: 900;
+      line-height: 1.2;
+      text-transform: uppercase;
+      letter-spacing: -0.02em;
+      color: var(--text);
+      margin-bottom: 6px;
+    }
+
+    .card-meta {
+      font-size: 0.775rem;
+      color: var(--text-muted);
+      margin-bottom: 18px;
+    }
+
+    .btn-card-action {
+      margin-top: auto;
+      height: 38px;
+      background: var(--text);
+      color: var(--surface);
+      border: 1px solid var(--text);
+      font-family: var(--font-heading);
+      font-size: 0.725rem;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    [data-theme="dark"] .btn-card-action {
+      background: #FFFFFF;
+      color: #0F172A;
+      border-color: #FFFFFF;
+    }
+
+    .btn-card-action:hover {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #FFFFFF;
+    }
+
+    /* FOOTER */
+    .site-footer {
+      background: #0F172A;
+      color: #94A3B8;
+      padding: 24px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      font-size: 0.775rem;
+      margin-top: 64px;
+    }
+
+    .footer-inner {
+      max-width: 1360px;
+      margin: 0 auto;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 900px) {
+      .hero-layout {
+        grid-template-columns: 1fr;
+      }
+      .marketing-features {
+        grid-template-columns: 1fr;
+      }
+      .events-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 600px) {
+      .hero-heading {
+        font-size: 1.75rem;
+      }
+      .hero-search-box {
+        flex-direction: column;
+      }
+      .hero-search-box button {
+        width: 100%;
+      }
+      .marketing-card {
+        padding: 22px 18px;
+      }
+      .marketing-title {
+        font-size: 1.25rem;
+      }
+      .marketing-metrics {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+  </style>
+</head>
+<body data-theme="light">
+
+
+  <!-- SITE HEADER -->
+  <header class="site-header">
+    <div class="header-inner">
+      <a href="./mockup-realistic.html" class="brand-mark">
+        <img src="./electa-logo.svg" alt="Electa Logo" class="brand-logo" id="brandLogo" width="30" height="36">
+        <div>
+          <span class="brand-title">ELECTA</span>
+          <span class="brand-tag">VOTE · ENGAGE · CELEBRATE</span>
+        </div>
+      </a>
+
+      <div class="header-actions">
+        <button class="btn-theme" onclick="toggleTheme()" title="Toggle Theme" aria-label="Toggle Dark/Light Mode">
+          <span id="themeIcon">🌙</span>
+        </button>
+
+        <a href="/events/new" class="btn-portal" onclick="alert('Navigating to Create Event Setup (/events/new)...')">
+          + Create Event
+        </a>
+
+        <a href="/login" class="btn-primary" onclick="alert('Opening Sign In...')">
+          Sign In
+        </a>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+
+    <!-- HERO: DIRECT & PURPOSEFUL -->
+    <section class="hero-section">
+      <div class="hero-layout">
+
+        <!-- LEFT: CLEAN TITLE & SEARCH -->
+        <div class="hero-intro">
+          <div>
+            <h1 class="hero-heading">
+              SUPPORT YOUR <span>EVENT CANDIDATES</span>
+            </h1>
+
+            <p class="hero-subhead">
+              The official digital voting platform. Discover active events, explore contestant profiles, and cast verified free and boost votes.
+            </p>
+          </div>
+
+          <!-- SEARCH BAR -->
+          <div class="hero-search-box">
+            <input 
+              type="text" 
+              id="globalSearchInput" 
+              placeholder="Search by event title, location, or contestant..."
+              oninput="handleSearch(this.value)"
+              onkeydown="if(event.key==='Enter') executeSearch()"
+            >
+            <button class="btn-primary" onclick="executeSearch()">
+              SEARCH
+            </button>
+          </div>
+        </div>
+
+        <!-- RIGHT: APP MARKETING SHOWCASE -->
+        <div class="marketing-card">
+          <div class="marketing-header">
+            <div class="marketing-badge">
+              <span class="badge-dot"></span> OFFICIAL VOTING PLATFORM
+            </div>
+            <h2 class="marketing-title">
+              WHY ORGANIZERS & FANS <span>CHOOSE ELECTA</span>
+            </h2>
+            <p class="marketing-subhead">
+              The modern digital voting platform built for transparent, real-time live events and competitions.
+            </p>
+          </div>
+
+          <!-- VALUE PROPOSITIONS GRID -->
+          <div class="marketing-features">
+            <div class="feature-tile">
+              <div class="feature-icon-box">🛡️</div>
+              <div class="feature-text">
+                <div class="feature-name">Bot & Abuse Protection</div>
+                <div class="feature-desc">Turnstile verification, IP rate-limiting, and voter sign-in keep tallies clean.</div>
+              </div>
+            </div>
+
+            <div class="feature-tile">
+              <div class="feature-icon-box">⚡</div>
+              <div class="feature-text">
+                <div class="feature-name">Live Stage Leaderboard</div>
+                <div class="feature-desc">Instant score updates designed to project on big screens during live events.</div>
+              </div>
+            </div>
+
+            <div class="feature-tile">
+              <div class="feature-icon-box">🇵🇭</div>
+              <div class="feature-text">
+                <div class="feature-name">Seamless GCash & Maya</div>
+                <div class="feature-desc">Frictionless paid boost votes powered by dynamic QR Ph and Philippine e-wallets.</div>
+              </div>
+            </div>
+
+            <div class="feature-tile">
+              <div class="feature-icon-box">🚀</div>
+              <div class="feature-text">
+                <div class="feature-name">Fast Event Setup</div>
+                <div class="feature-desc">Create contestant rosters, voting categories, and custom rules with ease.</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- HIGHLIGHTS RIBBON -->
+          <div class="marketing-metrics">
+            <div class="metric-item">
+              <div class="metric-value">&lt; 5M</div>
+              <div class="metric-label">EVENT SETUP</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">1-TAP</div>
+              <div class="metric-label">GCASH & MAYA</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">LIVE</div>
+              <div class="metric-label">STAGE TALLY</div>
+            </div>
+            <div class="metric-item">
+              <div class="metric-value">FREE</div>
+              <div class="metric-label">DAILY VOTES</div>
+            </div>
+          </div>
+
+          <!-- TRUST FOOTNOTE -->
+          <div class="marketing-footer">
+            <div class="marketing-footnote">
+              <span class="footnote-icon">✓</span> Transparent live tallies • Philippine e-wallets • Instant mobile access
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- SECTION BAR: CLEAN STATUS FILTERS -->
+    <div class="section-bar" id="events">
+      <h2 class="section-title">TRENDING EVENTS</h2>
+
+      <!-- LIFECYCLE FILTERS -->
+      <div class="status-filters">
+        <button class="filter-tab active" onclick="filterStatus('all', this)">ALL EVENTS</button>
+        <button class="filter-tab" onclick="filterStatus('active', this)">LIVE VOTING</button>
+        <button class="filter-tab" onclick="filterStatus('scheduled', this)">UPCOMING</button>
+        <button class="filter-tab" onclick="filterStatus('closed', this)">CONCLUDED</button>
+      </div>
+    </div>
+
+    <!-- MAIN EVENTS GRID -->
+    <section class="events-grid" id="eventsGrid">
+
+      <!-- CARD 1 (ACTIVE) -->
+      <article class="event-card" data-status="active" data-title="Miss Luzon 2026">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1511578314322-379afb476865?auto=format&fit=crop&w=600&q=80" alt="Miss Luzon 2026">
+          <div class="card-time-pill">⏳ 2D 11H LEFT</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Miss Luzon 2026</h3>
+          <p class="card-meta">Northern Luzon • 48 Contestants</p>
+          <a href="/events/miss-luzon-2026" class="btn-card-action">
+            VIEW EVENT →
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 2 (ACTIVE - CLOSING SOON) -->
+      <article class="event-card" data-status="active" data-title="Binibining Binangonan 2026">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=600&q=80" alt="Binibining Binangonan 2026">
+          <div class="card-time-pill">⏳ 18H LEFT</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Binibining Binangonan 2026</h3>
+          <p class="card-meta">Rizal Province • 28 Contestants</p>
+          <a href="/events/binibining-binangonan-2026" class="btn-card-action">
+            VIEW EVENT →
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 3 (ACTIVE) -->
+      <article class="event-card" data-status="active" data-title="Mutya ng Pilipinas Regional 2026">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1517841905240-472988babdf9?auto=format&fit=crop&w=600&q=80" alt="Mutya ng Pilipinas Regional">
+          <div class="card-time-pill">⏳ 3D LEFT</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Mutya ng Pilipinas Regional 2026</h3>
+          <p class="card-meta">CALABARZON • 24 Contestants</p>
+          <a href="/events/mutya-ng-pilipinas-2026" class="btn-card-action">
+            VIEW EVENT →
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 4 (ACTIVE) -->
+      <article class="event-card" data-status="active" data-title="Lakan ng Catanduanes 2026">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1508214751196-bcfd4ca60f91?auto=format&fit=crop&w=600&q=80" alt="Lakan ng Catanduanes">
+          <div class="card-time-pill">⏳ 4D LEFT</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Lakan ng Catanduanes 2026</h3>
+          <p class="card-meta">Bicol Region • 18 Contestants</p>
+          <a href="/events/lakan-ng-catanduanes-2026" class="btn-card-action">
+            VIEW EVENT →
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 5 (UPCOMING) -->
+      <article class="event-card" data-status="scheduled" data-title="Mister Tourism World Philippines 2026">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e?auto=format&fit=crop&w=600&q=80" alt="Mister Tourism World">
+          <div class="card-time-pill" style="color: #38BDF8;">OPENS OCT 15</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Mister Tourism World PH 2026</h3>
+          <p class="card-meta">National • 34 Contestants</p>
+          <a href="/events/mister-tourism-world-ph-2026" class="btn-card-action">
+            PREVIEW EVENT →
+          </a>
+        </div>
+      </article>
+
+      <!-- CARD 6 (CONCLUDED) -->
+      <article class="event-card" data-status="closed" data-title="Miss Metro Manila 2025: Finale">
+        <div class="card-poster">
+          <img src="https://images.unsplash.com/photo-1524504388940-b1c1722653e1?auto=format&fit=crop&w=600&q=80" alt="Miss Metro Manila 2025">
+          <div class="card-time-pill" style="color: #94A3B8;">CONCLUDED</div>
+        </div>
+        <div class="card-content">
+          <h3 class="card-title">Miss Metro Manila 2025</h3>
+          <p class="card-meta">NCR Metro • 30 Contestants</p>
+          <a href="/events/miss-metro-manila-2025" class="btn-card-action">
+            VIEW FINAL TALLIES →
+          </a>
+        </div>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- SITE FOOTER -->
+  <footer class="site-footer">
+    <div class="footer-inner">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="./electa-logo-dark.svg" alt="Electa Logo" class="footer-logo" width="20" height="24">
+        <div>
+          <strong style="color: #FFFFFF; font-family: var(--font-heading);">ELECTA</strong> 
+        </div>
+      </div>
+      <div>
+        © 2026 Electa Platform. All Rights Reserved.
+      </div>
+    </div>
+  </footer>
+
+  <!-- SCRIPT LOGIC -->
+  <script>
+    // Theme toggle
+    function toggleTheme() {
+      const body = document.body;
+      const isDark = body.getAttribute('data-theme') === 'dark';
+      const newTheme = isDark ? 'light' : 'dark';
+      body.setAttribute('data-theme', newTheme);
+      document.getElementById('themeIcon').textContent = isDark ? '🌙' : '☀️';
+      const logo = document.getElementById('brandLogo');
+      if (logo) {
+        logo.src = newTheme === 'dark' ? './electa-logo-dark.svg' : './electa-logo.svg';
+      }
+    }
+
+    // Lifecycle status filter (ALL, ACTIVE, SCHEDULED, CLOSED)
+    function filterStatus(status, btn) {
+      document.querySelectorAll('.filter-tab').forEach(b => b.classList.remove('active'));
+      if (btn) btn.classList.add('active');
+
+      const cards = document.querySelectorAll('.event-card');
+      cards.forEach(card => {
+        const s = card.getAttribute('data-status');
+        if (status === 'all' || s === status) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+
+    // Search bar execution
+    function executeSearch() {
+      const q = document.getElementById('globalSearchInput').value;
+      handleSearch(q);
+      document.getElementById('events').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // Real-time search filter
+    function handleSearch(val) {
+      const q = val.toLowerCase().trim();
+      const cards = document.querySelectorAll('.event-card');
+      cards.forEach(card => {
+        const title = (card.getAttribute('data-title') || '').toLowerCase();
+        const body = card.innerText.toLowerCase();
+        if (q === '' || title.includes(q) || body.includes(q)) {
+          card.style.display = 'flex';
+        } else {
+          card.style.display = 'none';
+        }
+      });
+    }
+  </script>
+</body>
+</html>

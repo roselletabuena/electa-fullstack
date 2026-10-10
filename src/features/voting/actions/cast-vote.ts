@@ -13,10 +13,113 @@ export type CastVoteResponse =
   | { success: true; data: CastVoteResultDto; error: null }
   | { success: false; data: null; error: VotingErrorDto };
 
+class QuotaExhaustedError extends Error {
+  public readonly quotaState: ReturnType<typeof calculateVoterQuota>;
+  constructor(quotaState: ReturnType<typeof calculateVoterQuota>) {
+    super("Daily free vote quota exhausted");
+    this.name = "QuotaExhaustedError";
+    this.quotaState = quotaState;
+  }
+}
+
+async function checkIdempotentVote(idempotencyKey?: string): Promise<CastVoteResultDto | null> {
+  if (!idempotencyKey) return null;
+
+  const existingVote = await db.vote.findUnique({
+    where: { id: idempotencyKey },
+  });
+
+  if (!existingVote) return null;
+
+  const contestant = await db.contestant.findUnique({
+    where: { id: existingVote.contestantId },
+    select: { voteCount: true },
+  });
+
+  return {
+    success: true,
+    voteId: existingVote.id,
+    contestantId: existingVote.contestantId,
+    newContestantVoteCount: contestant?.voteCount ?? 0,
+    voteType: existingVote.voteType,
+    voteWeight: existingVote.voteWeight,
+  };
+}
+
+async function checkVoteSecurity(
+  voteType: string,
+  turnstileToken: string | undefined,
+  deviceFingerprint: string | undefined,
+  eventId: string,
+  userId: string,
+  clientIp: string,
+): Promise<VotingErrorDto | null> {
+  if (voteType !== "FREE") return null;
+
+  const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
+  if (!turnstileCheck.success) {
+    return {
+      code: "BOT_DETECTION_FAILED",
+      message: "Security bot verification failed. Please refresh and try again.",
+    };
+  }
+
+  if (deviceFingerprint) {
+    const deviceCheck = checkDeviceAccountLimit(deviceFingerprint, eventId, userId);
+    if (!deviceCheck.allowed) {
+      return {
+        code: "DEVICE_ACCOUNT_LIMIT_EXCEEDED",
+        message: "Maximum voter account limit reached on this device for this competition.",
+      };
+    }
+  }
+
+  return null;
+}
+
+function checkEventEligibility(
+  event: {
+    publicationStatus: string;
+    startsAt: Date;
+    endsAt: Date;
+    isFreeVotingEnabled: boolean;
+  } | null,
+  voteType: string,
+  now: Date,
+): VotingErrorDto | null {
+  if (!event) {
+    return {
+      code: "EVENT_NOT_ACTIVE",
+      message: "The requested event could not be found.",
+    };
+  }
+
+  const isEventActive =
+    event.publicationStatus === "PUBLISHED" &&
+    now >= new Date(event.startsAt) &&
+    now <= new Date(event.endsAt);
+
+  if (!isEventActive) {
+    return {
+      code: "EVENT_NOT_ACTIVE",
+      message: "Voting is currently closed for this event.",
+    };
+  }
+
+  if (voteType === "FREE" && !event.isFreeVotingEnabled) {
+    return {
+      code: "FREE_VOTING_DISABLED",
+      message: "Free daily voting is currently disabled for this competition phase.",
+    };
+  }
+
+  return null;
+}
+
 export async function castVoteAction(rawInput: unknown): Promise<CastVoteResponse> {
   try {
     const session = await getSession();
-    if (!session || !session.userId) {
+    if (!session?.userId) {
       return {
         success: false,
         data: null,
@@ -72,59 +175,30 @@ export async function castVoteAction(rawInput: unknown): Promise<CastVoteRespons
     } = parseResult.data;
 
     // Check for existing vote with idempotency key
-    if (idempotencyKey) {
-      const existingVote = await db.vote.findUnique({
-        where: { id: idempotencyKey },
-      });
-
-      if (existingVote) {
-        const contestant = await db.contestant.findUnique({
-          where: { id: existingVote.contestantId },
-          select: { voteCount: true },
-        });
-
-        return {
-          success: true,
-          data: {
-            success: true,
-            voteId: existingVote.id,
-            contestantId: existingVote.contestantId,
-            newContestantVoteCount: contestant?.voteCount ?? 0,
-            voteType: existingVote.voteType,
-            voteWeight: existingVote.voteWeight,
-          },
-          error: null,
-        };
-      }
+    const existingVoteResult = await checkIdempotentVote(idempotencyKey);
+    if (existingVoteResult) {
+      return {
+        success: true,
+        data: existingVoteResult,
+        error: null,
+      };
     }
 
     // 3. Anti-Bot and Anti-Syndicate Checks for Free Votes
-    if (voteType === "FREE") {
-      const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
-      if (!turnstileCheck.success) {
-        return {
-          success: false,
-          data: null,
-          error: {
-            code: "BOT_DETECTION_FAILED",
-            message: "Security bot verification failed. Please refresh and try again.",
-          },
-        };
-      }
-
-      if (deviceFingerprint) {
-        const deviceCheck = checkDeviceAccountLimit(deviceFingerprint, eventId, session.userId);
-        if (!deviceCheck.allowed) {
-          return {
-            success: false,
-            data: null,
-            error: {
-              code: "DEVICE_ACCOUNT_LIMIT_EXCEEDED",
-              message: "Maximum voter account limit reached on this device for this competition.",
-            },
-          };
-        }
-      }
+    const securityError = await checkVoteSecurity(
+      voteType,
+      turnstileToken,
+      deviceFingerprint,
+      eventId,
+      session.userId,
+      clientIp,
+    );
+    if (securityError) {
+      return {
+        success: false,
+        data: null,
+        error: securityError,
+      };
     }
 
     const now = new Date();
@@ -142,40 +216,14 @@ export async function castVoteAction(rawInput: unknown): Promise<CastVoteRespons
       },
     });
 
-    if (!event) {
+    const eventError = checkEventEligibility(event, voteType, now);
+    if (eventError || !event) {
       return {
         success: false,
         data: null,
-        error: {
+        error: eventError ?? {
           code: "EVENT_NOT_ACTIVE",
           message: "The requested event could not be found.",
-        },
-      };
-    }
-
-    const isEventActive =
-      event.publicationStatus === "PUBLISHED" &&
-      now >= new Date(event.startsAt) &&
-      now <= new Date(event.endsAt);
-
-    if (!isEventActive) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "EVENT_NOT_ACTIVE",
-          message: "Voting is currently closed for this event.",
-        },
-      };
-    }
-
-    if (voteType === "FREE" && !event.isFreeVotingEnabled) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "FREE_VOTING_DISABLED",
-          message: "Free daily voting is currently disabled for this competition phase.",
         },
       };
     }
@@ -237,10 +285,7 @@ export async function castVoteAction(rawInput: unknown): Promise<CastVoteRespons
             now,
           });
 
-          throw {
-            isQuotaExhausted: true,
-            quotaState: quota,
-          };
+          throw new QuotaExhaustedError(quota);
         }
 
         const updatedTimestamps = [...recentVotes.map((v) => v.createdAt), now];
@@ -301,11 +346,7 @@ export async function castVoteAction(rawInput: unknown): Promise<CastVoteRespons
       error: null,
     };
   } catch (err: unknown) {
-    if (typeof err === "object" && err !== null && "isQuotaExhausted" in err) {
-      const quotaErr = err as {
-        isQuotaExhausted: boolean;
-        quotaState: { nextResetTime: string | null };
-      };
+    if (err instanceof QuotaExhaustedError) {
       return {
         success: false,
         data: null,
@@ -313,7 +354,7 @@ export async function castVoteAction(rawInput: unknown): Promise<CastVoteRespons
           code: "DAILY_QUOTA_EXHAUSTED",
           message: "You have used all your free daily votes for this competition cycle.",
           details: {
-            nextResetTime: quotaErr.quotaState.nextResetTime,
+            nextResetTime: err.quotaState.nextResetTime,
           },
         },
       };

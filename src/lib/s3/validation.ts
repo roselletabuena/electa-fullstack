@@ -1,11 +1,7 @@
 import { z } from "zod";
 import { env } from "@/env";
 
-export const ALLOWED_MIME_TYPES = [
-  "image/jpeg",
-  "image/png",
-  "image/webp",
-] as const;
+export const ALLOWED_MIME_TYPES = ["image/jpeg", "image/png", "image/webp"] as const;
 
 export type AllowedMimeType = (typeof ALLOWED_MIME_TYPES)[number];
 
@@ -37,7 +33,7 @@ export const presignedUploadRequestSchema = z.object({
     .string()
     .trim()
     .min(1, "Target folder must not be empty")
-    .regex(/^[a-zA-Z0-9_\-\/]+$/, "Folder must be URL-safe without special characters")
+    .regex(/^[a-zA-Z0-9_\-/]+$/, "Folder must be URL-safe without special characters")
     .refine((val) => !val.includes(".."), {
       message: "Folder path must not contain traversal characters",
     }),
@@ -59,17 +55,16 @@ export const bufferUploadRequestSchema = z.object({
     .string()
     .trim()
     .min(1, "Key is required")
-    .regex(/^[a-zA-Z0-9_\-\/\.]+$/, "Key must be a valid S3 path")
+    .regex(/^[a-zA-Z0-9_\-/.]+$/, "Key must be a valid S3 path")
     .refine((val) => !val.includes(".."), {
       message: "Key must not contain traversal characters",
     }),
   contentType: z.enum(ALLOWED_MIME_TYPES, {
     message: "Invalid file type. Only JPEG, PNG, and WebP images are allowed.",
   }),
-  buffer: z.custom<Buffer>(
-    (data) => typeof Buffer !== "undefined" && Buffer.isBuffer(data),
-    { message: "Payload must be a valid Buffer" },
-  ),
+  buffer: z.custom<Buffer>((data) => typeof Buffer !== "undefined" && Buffer.isBuffer(data), {
+    message: "Payload must be a valid Buffer",
+  }),
 });
 
 export type BufferUploadRequest = z.infer<typeof bufferUploadRequestSchema>;
@@ -79,7 +74,7 @@ export const deleteImageRequestSchema = z.object({
     .string()
     .trim()
     .min(1, "Key must not be empty")
-    .regex(/^[a-zA-Z0-9_\-\/\.]+$/, "Key must be a valid S3 path")
+    .regex(/^[a-zA-Z0-9_\-/.]+$/, "Key must be a valid S3 path")
     .refine((val) => !val.includes(".."), {
       message: "Key must not contain traversal characters",
     }),
@@ -88,17 +83,12 @@ export const deleteImageRequestSchema = z.object({
 export type DeleteImageRequest = z.infer<typeof deleteImageRequestSchema>;
 
 export const replaceImageRequestSchema = z.object({
-  oldKey: z
-    .string()
-    .trim()
-    .min(1)
-    .optional()
-    .nullable(),
+  oldKey: z.string().trim().min(1).optional().nullable(),
   newKey: z
     .string()
     .trim()
     .min(1, "newKey is required")
-    .regex(/^[a-zA-Z0-9_\-\/\.]+$/, "newKey must be a valid S3 path")
+    .regex(/^[a-zA-Z0-9_\-/.]+$/, "newKey must be a valid S3 path")
     .refine((val) => !val.includes(".."), {
       message: "newKey must not contain traversal characters",
     }),
@@ -165,7 +155,7 @@ export function generateS3Key(folder: string, fileName: string): string {
   const uuid = crypto.randomUUID();
 
   // Normalize folder prefix (strip leading/trailing slashes)
-  const cleanFolder = folder.replace(/^\/+|\/+$/g, "");
+  const cleanFolder = folder.split("/").filter(Boolean).join("/");
 
   return `${cleanFolder}/${uuid}-${finalName}${cleanExt}`;
 }

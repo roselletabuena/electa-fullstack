@@ -30,7 +30,7 @@ export function DivisionsSection({
   onAddDivision,
   onDeleteRequest,
   disabled = false,
-}: DivisionsSectionProps): React.JSX.Element {
+}: Readonly<DivisionsSectionProps>): React.JSX.Element {
   const [isAdding, setIsAdding] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
 

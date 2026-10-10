@@ -19,7 +19,7 @@ export interface ForbiddenAccessCardProps {
 export function ForbiddenAccessCard({
   eventTitle,
   userEmail,
-}: ForbiddenAccessCardProps): React.JSX.Element {
+}: Readonly<ForbiddenAccessCardProps>): React.JSX.Element {
   return (
     <div className="flex min-h-[70vh] items-center justify-center p-4">
       <Card className="max-w-md border-red-200 shadow-lg dark:border-red-900/50">

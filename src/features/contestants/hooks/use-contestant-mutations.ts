@@ -5,8 +5,8 @@ import type { ApiResponse } from "@/lib/api/response";
 export function useContestantMutations(slug: string) {
   const queryClient = useQueryClient();
 
-  const invalidate = () => {
-    queryClient.invalidateQueries({ queryKey: ["contestants", slug] });
+  const invalidate = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["contestants", slug] });
   };
 
   const createContestant = useMutation({

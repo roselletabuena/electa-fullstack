@@ -14,8 +14,8 @@ import type { PublicEventDto } from "@/features/events/types";
 import EventLoading from "./loading";
 
 interface PageProps {
-  params: Promise<{
-    slug: string;
+  readonly params: Promise<{
+    readonly slug: string;
   }>;
 }
 
@@ -99,7 +99,7 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-export default async function EventPage(props: PageProps): Promise<React.JSX.Element> {
+export default async function EventPage(props: Readonly<PageProps>): Promise<React.JSX.Element> {
   const { slug } = await props.params;
   const event = await getPublicEvent(slug);
 

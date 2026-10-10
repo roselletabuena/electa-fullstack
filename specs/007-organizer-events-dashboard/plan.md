@@ -6,7 +6,7 @@
 
 ## Summary
 
-Deliver a centralized organizer dashboard at `/dashboard` (with `/events` redirect) providing multi-event discovery, aggregate performance metrics (total events, live active voting events, registered contestants, cast votes), reactive keyword search, status filtering (`ALL`, `PUBLISHED`, `DRAFT`, `ARCHIVED`), client-side pagination (12 cards/page), quick-action links (`/contestants`, `/settings`, clipboard URL sharing), and an onboarding empty state. The implementation strictly adheres to the VoteSphere Constitution using React Server Components for authenticated data queries, `nuqs` for URL synchronization, and client-side interaction components.
+Deliver a centralized organizer dashboard at `/dashboard` (with `/events` redirect) providing multi-event discovery, aggregate performance metrics (total events, live active voting events, registered contestants, cast votes), reactive keyword search, status filtering (`ALL`, `PUBLISHED`, `DRAFT`, `ARCHIVED`), client-side pagination (12 cards/page), quick-action links (`/contestants`, `/settings`, clipboard URL sharing), and an onboarding empty state. The implementation strictly adheres to the Electa Constitution using React Server Components for authenticated data queries, `nuqs` for URL synchronization, and client-side interaction components.
 
 ## Technical Context
 

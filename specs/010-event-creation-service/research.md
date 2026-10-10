@@ -22,7 +22,7 @@ Define a dedicated `createEventSchema` in `src/lib/validations/event.ts` (or `sr
 
 ### Rationale
 
-- Complies with VoteSphere Constitution Principle I (Strict Type Safety & Boundary Validation).
+- Complies with Electa Constitution Principle I (Strict Type Safety & Boundary Validation).
 - Enforcing the 1-hour minimum operational window prevents accidental zero-length or inverted competition timelines.
 - Centralized `RESERVED_SLUGS` constant (`['new', 'edit', 'admin', 'api', 'dashboard', 'settings', 'check-slug']`) prevents conflicts with Next.js dynamic routes (`/events/[slug]` vs `/events/new`).
 
@@ -78,7 +78,7 @@ Encapsulate event creation logic in a shared service function `createEvent` in `
 
 ### Rationale
 
-- Atomic transaction ensures 100% data integrity between event creation and audit logging (VoteSphere Constitution Principle VI).
+- Atomic transaction ensures 100% data integrity between event creation and audit logging (Electa Constitution Principle VI).
 - Decoupling the service allows seamless reuse across Server Actions and Route Handlers.
 
 ---
@@ -94,4 +94,4 @@ Expose two distinct consumer entry points:
 
 ### Rationale
 
-- Strictly aligns with VoteSphere Constitution Principle II: Server Actions for UI forms, Route Handlers for standard REST endpoints.
+- Strictly aligns with Electa Constitution Principle II: Server Actions for UI forms, Route Handlers for standard REST endpoints.

@@ -8,7 +8,7 @@
 
 ## Summary
 
-Build and harden the core voting engine, omnichannel voter authentication suite, and multi-layered anti-fraud defense for VoteSphere. Voters can authenticate via Google, Apple, Facebook, Email Magic Links, or Phone OTP (SMS/WhatsApp) in a unified modal dialog. Every free vote is guarded by Cloudflare Turnstile bot verification, device fingerprinting, and IP velocity throttling. High-concurrency voting rushes are protected by atomic Prisma database transactions ensuring zero double-counting, idempotent retries, and strict rolling 24-hour quota enforcement across both free votes and paid boosts.
+Build and harden the core voting engine, omnichannel voter authentication suite, and multi-layered anti-fraud defense for Electa. Voters can authenticate via Google, Apple, Facebook, Email Magic Links, or Phone OTP (SMS/WhatsApp) in a unified modal dialog. Every free vote is guarded by Cloudflare Turnstile bot verification, device fingerprinting, and IP velocity throttling. High-concurrency voting rushes are protected by atomic Prisma database transactions ensuring zero double-counting, idempotent retries, and strict rolling 24-hour quota enforcement across both free votes and paid boosts.
 
 ---
 
@@ -21,7 +21,7 @@ Build and harden the core voting engine, omnichannel voter authentication suite,
 **Testing**: Vitest (`tests/unit/voting/`, `tests/unit/auth/`)  
 **Target Platform**: Responsive Web (Mobile-first & Desktop browsers)  
 **Performance Goals**: Turnstile validation + atomic vote transaction commit $\le 250\text{ms}$; instant optimistic UI feedback  
-**Constraints**: Zero concurrency over-voting leaks (atomic interactive transaction isolation), Cloudflare Turnstile token validation required for free votes, strictly no raw `process.env` (VoteSphere Constitution §IV)  
+**Constraints**: Zero concurrency over-voting leaks (atomic interactive transaction isolation), Cloudflare Turnstile token validation required for free votes, strictly no raw `process.env` (Electa Constitution §IV)  
 **Scale/Scope**: Support 10,000+ daily votes and high-velocity bursts during live pageant finale events
 
 ---

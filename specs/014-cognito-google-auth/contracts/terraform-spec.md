@@ -17,12 +17,12 @@ infra/
 | :---------------------- | :------------- | :---------------------------------------------------- | :------------------------------------------ |
 | `aws_region`            | `string`       | `"ap-southeast-1"`                                    | AWS Region for Cognito deployment           |
 | `environment`           | `string`       | `"dev"`                                               | Environment tier (`dev`, `staging`, `prod`) |
-| `app_name`              | `string`       | `"votesphere"`                                        | Application prefix for resource naming      |
+| `app_name`              | `string`       | `"electa"`                                            | Application prefix for resource naming      |
 | `google_client_id`      | `string`       | `""`                                                  | Google OAuth 2.0 Web Client ID              |
 | `google_client_secret`  | `string`       | `""`                                                  | Google OAuth 2.0 Client Secret (sensitive)  |
 | `callback_urls`         | `list(string)` | `["http://localhost:3000/api/auth/callback/cognito"]` | Allowed OAuth redirect URLs                 |
 | `logout_urls`           | `list(string)` | `["http://localhost:3000/login"]`                     | Allowed post-logout redirect URLs           |
-| `cognito_domain_prefix` | `string`       | `"votesphere-auth"`                                   | Prefix for the Cognito Hosted UI domain     |
+| `cognito_domain_prefix` | `string`       | `"electa-auth"`                                       | Prefix for the Cognito Hosted UI domain     |
 
 ## Terraform Outputs (`outputs.tf`)
 

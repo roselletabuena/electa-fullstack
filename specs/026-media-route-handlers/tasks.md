@@ -4,7 +4,7 @@
 **Tracking Issue**: [VS-43](https://the-three-devsketeers.atlassian.net/browse/VS-43)  
 **Parent Epic**: [VS-40](https://the-three-devsketeers.atlassian.net/browse/VS-40)  
 **Input**: [spec.md](spec.md), [plan.md](plan.md), [research.md](research.md), [data-model.md](data-model.md), [contracts/](contracts/)  
-**Status**: Completed  
+**Status**: Completed
 
 ---
 
@@ -94,7 +94,7 @@
 - [x] T010 [P] Run full media route handler test suites via `npm run test:unit tests/unit/api/media-*.test.ts` and verify 100% pass rate
 - [x] T011 Run strict TypeScript typecheck via `npm run typecheck` and ensure 0 errors
 - [x] T012 Run ESLint code style check via `npm run lint` and ensure 0 violations
-- [x] T013 Audit implementation against VoteSphere Constitution (§I–§VI) and verify zero raw `process.env` access via `env-validator`
+- [x] T013 Audit implementation against Electa Constitution (§I–§VI) and verify zero raw `process.env` access via `env-validator`
 
 ---
 

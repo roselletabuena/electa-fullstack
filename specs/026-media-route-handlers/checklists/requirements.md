@@ -2,7 +2,7 @@
 
 **Purpose**: Validate specification completeness and quality before proceeding to planning  
 **Created**: 2026-10-05  
-**Feature**: [spec.md](../spec.md)  
+**Feature**: [spec.md](../spec.md)
 
 ## Content Quality
 
@@ -27,7 +27,7 @@
 - [x] All functional requirements have clear acceptance criteria
 - [x] User scenarios cover primary and error flows
 - [x] Feature meets measurable outcomes defined in Success Criteria
-- [x] Strict compliance with VoteSphere Constitution (§I–§VI)
+- [x] Strict compliance with Electa Constitution (§I–§VI)
 
 ## Notes
 

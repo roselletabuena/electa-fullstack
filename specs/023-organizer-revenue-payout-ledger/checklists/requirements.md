@@ -28,7 +28,7 @@
 - [x] User scenarios cover primary financial and operational flows
 - [x] Feature meets measurable outcomes defined in Success Criteria
 - [x] Zero-radius brutalist Electa design system guidelines and WCAG 2.1 AA dual-theme parity accounted for in design requirements
-- [x] Strict state separation and single source of truth conformant with VoteSphere Constitution
+- [x] Strict state separation and single source of truth conformant with Electa Constitution
 
 ## Notes
 

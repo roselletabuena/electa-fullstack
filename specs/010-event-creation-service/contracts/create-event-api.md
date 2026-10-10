@@ -20,7 +20,7 @@
   "title": "Miss Universe Philippines 2026",
   "slug": "muph-2026",
   "description": "Official national voting competition for Miss Universe Philippines 2026.",
-  "bannerUrl": "https://assets.votesphere.app/banners/muph-2026.jpg",
+  "bannerUrl": "https://assets.electa.app/banners/muph-2026.jpg",
   "startsAt": "2026-10-01T00:00:00.000Z",
   "endsAt": "2026-10-31T23:59:59.000Z"
 }
@@ -38,7 +38,7 @@
     "slug": "muph-2026",
     "title": "Miss Universe Philippines 2026",
     "description": "Official national voting competition for Miss Universe Philippines 2026.",
-    "bannerUrl": "https://assets.votesphere.app/banners/muph-2026.jpg",
+    "bannerUrl": "https://assets.electa.app/banners/muph-2026.jpg",
     "startsAt": "2026-10-01T00:00:00.000Z",
     "endsAt": "2026-10-31T23:59:59.000Z",
     "publicationStatus": "DRAFT",

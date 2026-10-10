@@ -35,7 +35,7 @@ Build an executive-grade financial command center and payout ledger for pageant 
 
 ## Constitution Check
 
-_GATE: Evaluated against VoteSphere Constitution §I–§VI. Result: ALL GATES PASS._
+_GATE: Evaluated against Electa Constitution §I–§VI. Result: ALL GATES PASS._
 
 - **§I. Strict Type Safety & Boundary Validation**:
   - ✅ All Route Handlers, Server Actions, and forms validate payload boundaries with Zod schemas (`createPayoutRequestSchema`, `auditLogQuerySchema`, etc.).

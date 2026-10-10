@@ -11,7 +11,7 @@
 
 **Purpose**: Register environment configuration and documentation for anti-fraud dependencies
 
-- [x] T001 Register `TURNSTILE_SECRET_KEY` and `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `src/env.ts` (VoteSphere Constitution §IV)
+- [x] T001 Register `TURNSTILE_SECRET_KEY` and `NEXT_PUBLIC_TURNSTILE_SITE_KEY` in `src/env.ts` (Electa Constitution §IV)
 - [x] T002 Document Turnstile keys in `.env.example`
 
 ---

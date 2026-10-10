@@ -6,7 +6,7 @@
 
 ## Executive Summary
 
-To support arbitrary competition formats without relying on fixed global enums (such as `enum ContestantDivision { FEMALE, MALE, LGBTQ, TEEN }`), VoteSphere requires a dynamic, event-scoped taxonomy model. This research establishes the architectural decisions for introducing a database-backed `Division` model, enhancing the `AwardCategory` model with display ordering, updating contestant relationships, and exposing robust, validated REST Route Handlers.
+To support arbitrary competition formats without relying on fixed global enums (such as `enum ContestantDivision { FEMALE, MALE, LGBTQ, TEEN }`), Electa requires a dynamic, event-scoped taxonomy model. This research establishes the architectural decisions for introducing a database-backed `Division` model, enhancing the `AwardCategory` model with display ordering, updating contestant relationships, and exposing robust, validated REST Route Handlers.
 
 ---
 

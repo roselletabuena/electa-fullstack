@@ -6,7 +6,7 @@
 
 ## Overview
 
-This document specifies the database models, relations, Zod validation schemas, and TypeScript domain types for the dynamic competition divisions and award categories taxonomy in VoteSphere.
+This document specifies the database models, relations, Zod validation schemas, and TypeScript domain types for the dynamic competition divisions and award categories taxonomy in Electa.
 
 ---
 

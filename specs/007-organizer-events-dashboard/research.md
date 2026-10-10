@@ -6,7 +6,7 @@
 
 ### Decision 1: Canonical Route & Layout Structure
 
-- **Context**: Organizers need a home portal when logging into VoteSphere to see all their organized competitions.
+- **Context**: Organizers need a home portal when logging into Electa to see all their organized competitions.
 - **Decision**:
   - Canonical route: `src/app/(dashboard)/page.tsx` (served at `/dashboard`).
   - Dedicated alias/redirect: `src/app/(dashboard)/events/page.tsx` (redirects to `/dashboard`).
@@ -21,7 +21,7 @@
 
 ### Decision 3: URL State Synchronization (`nuqs`)
 
-- **Context**: Per VoteSphere Constitution §III, search parameters and filter criteria must be synchronized via `nuqs`.
+- **Context**: Per Electa Constitution §III, search parameters and filter criteria must be synchronized via `nuqs`.
 - **Decision**:
   - `status`: `parseAsStringLiteral(["ALL", "PUBLISHED", "DRAFT", "ARCHIVED"]).withDefault("ALL")`
   - `q`: `parseAsString.withDefault("")`

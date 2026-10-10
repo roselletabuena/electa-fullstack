@@ -2,7 +2,7 @@
 
 **Branch**: `feature/VS-43-media-route-handlers` | **Date**: 2026-10-05 | **Spec**: [spec.md](spec.md)  
 **Tracking Issue**: [VS-43](https://the-three-devsketeers.atlassian.net/browse/VS-43)  
-**Parent Epic**: [VS-40](https://the-three-devsketeers.atlassian.net/browse/VS-40) ([Electa] Media & Image Management via AWS S3)  
+**Parent Epic**: [VS-40](https://the-three-devsketeers.atlassian.net/browse/VS-40) ([Electa] Media & Image Management via AWS S3)
 
 **Input**: Feature specification from `/specs/026-media-route-handlers/spec.md`
 
@@ -11,6 +11,7 @@
 ## Summary
 
 Implement two production-ready Next.js 16 App Router Route Handlers:
+
 1. `POST /api/media/presigned-url` — validates session authentication, checks MIME whitelist and file size constraints, and issues short-lived (300s) presigned S3 PUT upload URLs.
 2. `DELETE /api/media/delete` — enforces organizer/admin authorization, validates object key format, and idempotently deletes assets from S3.
 
@@ -28,22 +29,22 @@ Both endpoints return standard typed `ApiResponse<T>` envelopes (`apiSuccess` / 
 **Project Type**: RESTful API Route Handlers (Web Service)  
 **Performance Goals**: Presigned URL response latency < 35ms; unauthenticated rejection < 15ms  
 **Constraints**: Zero unvalidated inputs; strict Zod parsing; standard `ApiResponse<T>` envelopes; no leaked credentials or stack traces  
-**Scale/Scope**: Two dedicated route handler files under `src/app/api/media/`  
+**Scale/Scope**: Two dedicated route handler files under `src/app/api/media/`
 
 ---
 
 ## Constitution Check
 
-_GATE: All principles from VoteSphere Constitution (§I–§VI) must pass before implementation._
+_GATE: All principles from Electa Constitution (§I–§VI) must pass before implementation._
 
-| Principle | Requirement | Plan Conformance | Status |
-| :--- | :--- | :--- | :---: |
-| **§I. Strict Type Safety** | No `any`, non-null assertions, strict Zod boundary parsing | Handlers parse bodies with `presignedUploadRequestSchema` and `deleteImageRequestSchema`. Full TypeScript strict mode. | ✅ PASS |
-| **§II. Server-First & Boundary Isolation** | Async Next.js request APIs awaited; standard `ApiResponse<T>` returned | `await headers()`, `await cookies()`, `await request.json()`. Responses return `apiSuccess()` and `apiError()`. | ✅ PASS |
-| **§III. State Separation** | Server state via TanStack Query; auth via Zustand/Cognito | Route handlers interact with stateless S3 and Cognito session. | ✅ PASS |
-| **§IV. Secure-by-Design & Auth** | Authenticate via `getSession()`, role authorization, no raw `process.env` | Session verified via `getSession()`; delete requires `ORGANIZER`/`ADMIN`. Environment through `@/env`. | ✅ PASS |
-| **§V. Colocation & Modularity** | Modular routes and shared libraries | Routes located under `src/app/api/media/`, consuming `@/lib/s3` and `@/lib/api/response`. | ✅ PASS |
-| **§VI. Test-First Quality Gates** | Vitest unit tests covering all status codes | Mock test suites for presigned-url and delete routes in `tests/unit/api/`. | ✅ PASS |
+| Principle                                  | Requirement                                                               | Plan Conformance                                                                                                       | Status  |
+| :----------------------------------------- | :------------------------------------------------------------------------ | :--------------------------------------------------------------------------------------------------------------------- | :-----: |
+| **§I. Strict Type Safety**                 | No `any`, non-null assertions, strict Zod boundary parsing                | Handlers parse bodies with `presignedUploadRequestSchema` and `deleteImageRequestSchema`. Full TypeScript strict mode. | ✅ PASS |
+| **§II. Server-First & Boundary Isolation** | Async Next.js request APIs awaited; standard `ApiResponse<T>` returned    | `await headers()`, `await cookies()`, `await request.json()`. Responses return `apiSuccess()` and `apiError()`.        | ✅ PASS |
+| **§III. State Separation**                 | Server state via TanStack Query; auth via Zustand/Cognito                 | Route handlers interact with stateless S3 and Cognito session.                                                         | ✅ PASS |
+| **§IV. Secure-by-Design & Auth**           | Authenticate via `getSession()`, role authorization, no raw `process.env` | Session verified via `getSession()`; delete requires `ORGANIZER`/`ADMIN`. Environment through `@/env`.                 | ✅ PASS |
+| **§V. Colocation & Modularity**            | Modular routes and shared libraries                                       | Routes located under `src/app/api/media/`, consuming `@/lib/s3` and `@/lib/api/response`.                              | ✅ PASS |
+| **§VI. Test-First Quality Gates**          | Vitest unit tests covering all status codes                               | Mock test suites for presigned-url and delete routes in `tests/unit/api/`.                                             | ✅ PASS |
 
 ---
 
@@ -99,6 +100,7 @@ tests/
 ## Implementation Phases
 
 ### Phase 1: Test Suite Scaffolding (TDD Red Phase)
+
 - Write `tests/unit/api/media-presigned-url-route.test.ts` covering:
   - 401 Unauthorized for unauthenticated requests
   - 400 Bad Request for malformed JSON
@@ -114,6 +116,7 @@ tests/
   - 500 Internal Server Error when S3 throws
 
 ### Phase 2: Route Handler Implementation (Green Phase)
+
 - Implement `src/app/api/media/presigned-url/route.ts`:
   - Await `getSession()`
   - Parse and validate JSON with `presignedUploadRequestSchema`
@@ -127,7 +130,8 @@ tests/
   - Return `apiSuccess({ success: true, key: body.key }, 200)`
 
 ### Phase 3: Quality Gates & Verification
+
 - Execute `npm run test:unit tests/unit/api/media-*.test.ts`
 - Run `npm run typecheck`
 - Run `npm run lint`
-- Audit against VoteSphere Constitution (§I–§VI)
+- Audit against Electa Constitution (§I–§VI)

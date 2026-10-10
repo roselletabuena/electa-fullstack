@@ -14,7 +14,7 @@ When an unauthenticated voter attempts to cast a vote (free daily vote or paid b
 The **Frictionless Voter Authentication Modal** provides a fast, zero-friction inline login experience via Google OAuth / AWS Cognito that:
 
 1. Retains the voter's active voting intent (contestant ID, event ID, award category ID, and vote quantity/type).
-2. Adheres strictly to the Electa / VoteSphere brutalist-refined zero-radius design system (`rounded-none`, Light Mode Opal palette default, dark mode scoped, Outfit/Sora typography).
+2. Adheres strictly to the Electa / Electa brutalist-refined zero-radius design system (`rounded-none`, Light Mode Opal palette default, dark mode scoped, Outfit/Sora typography).
 3. Automatically executes the pending vote action immediately upon returning from Google authentication without forcing the user to re-find their contestant or re-trigger the action.
 
 ---

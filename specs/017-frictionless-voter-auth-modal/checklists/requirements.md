@@ -46,6 +46,6 @@
 
 ## 5. Architectural & Constitutional Alignment
 
-- [x] **CHK016** - Does the specification honor VoteSphere Constitution §I (strict TypeScript types, no `any`, Zod schemas)? [Constitution §I]
+- [x] **CHK016** - Does the specification honor Electa Constitution §I (strict TypeScript types, no `any`, Zod schemas)? [Constitution §I]
 - [x] **CHK017** - Does the specification enforce Constitution §III (no mirroring of server state in client global stores, single source of truth)? [Constitution §III]
 - [x] **CHK018** - Does the specification enforce Constitution §IV (auth resolution through `getSession()` and `@/env` secrets)? [Constitution §IV]

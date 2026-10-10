@@ -70,7 +70,7 @@ As a keyboard-only or assistive technology user,
 I want to navigate to the dropzone using Tab, trigger the file picker with Space or Enter, and receive audible status announcements,  
 So that the image upload experience complies with WCAG 2.1 AA accessibility standards.
 
-**Why this priority**: Compliance with VoteSphere Constitution (§VI) and design system accessibility mandates. All core interactive controls must be operable without a mouse.
+**Why this priority**: Compliance with Electa Constitution (§VI) and design system accessibility mandates. All core interactive controls must be operable without a mouse.
 
 **Independent Test**: Can be tested using keyboard navigation only (Tab, Shift+Tab, Enter, Space) and an accessibility tree inspector, verifying focus rings, ARIA roles, live regions for upload progress announcements, and WCAG 2.1 AA contrast ratios in both light and dark themes.
 
@@ -104,7 +104,7 @@ So that the image upload experience complies with WCAG 2.1 AA accessibility stan
 - **FR-006**: The component MUST support cancelling an active transfer at any point before completion, resetting the component to its idle state.
 - **FR-007**: The component MUST support retrying a failed upload without requiring the user to re-select the file or re-enter parent form data.
 - **FR-008**: Upon upload completion, the component MUST render an image preview thumbnail and emit an `onUploadComplete` event containing the storage `key`, `publicUrl`, `fileName`, and `fileSize`.
-- **FR-009**: The component MUST adhere to the VoteSphere brutalist-refined design system with zero-radius geometry (`rounded-none`, hairline borders, no rounded corners).
+- **FR-009**: The component MUST adhere to the Electa brutalist-refined design system with zero-radius geometry (`rounded-none`, hairline borders, no rounded corners).
 - **FR-010**: The component MUST comply with WCAG 2.1 AA dual-theme parity across Light Mode (Opal slate default) and Dark Mode, providing accessible ARIA labels, focus states, and live announcements.
 
 ---

@@ -6,7 +6,7 @@
 
 ## Summary
 
-Implement server-side verification of Cloudflare Turnstile tokens alongside an in-memory sliding-window IP velocity rate limiter (10 attempts/minute/IP) to protect free-tier voting against automated scripts and bot attacks, exposing a dedicated `/api/events/[slug]/vote` App Router route handler conforming to VoteSphere Constitution §I–§VI.
+Implement server-side verification of Cloudflare Turnstile tokens alongside an in-memory sliding-window IP velocity rate limiter (10 attempts/minute/IP) to protect free-tier voting against automated scripts and bot attacks, exposing a dedicated `/api/events/[slug]/vote` App Router route handler conforming to Electa Constitution §I–§VI.
 
 ---
 

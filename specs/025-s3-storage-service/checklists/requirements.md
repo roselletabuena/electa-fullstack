@@ -31,4 +31,4 @@
 
 ## Notes
 
-- Feature specification adheres to VoteSphere Constitution and is ready for `/speckit-plan`.
+- Feature specification adheres to Electa Constitution and is ready for `/speckit-plan`.

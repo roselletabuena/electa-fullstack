@@ -2,14 +2,14 @@
 
 **Feature Branch**: `feature/VS-21-payment-rails-qr-ph`  
 **Tracking Issue**: [VS-21]  
-**Parent Epic**: [VS-18] (VoteSphere Monetization Platform)  
+**Parent Epic**: [VS-18] (Electa Monetization Platform)  
 **Status**: In Progress
 
 ---
 
 ## 1. Executive Summary
 
-VoteSphere enables fans and pageant supporters to purchase vote packages ("Boosts") instantly using Philippine payment rails—primarily dynamic **QR Ph** codes scannable by GCash, Maya, ShopeePay, BDO, BPI, UnionBank, GoTyme, and all BSP-compliant banking apps—along with international credit/debit card support via PayMongo and a frictionless local developer simulator.
+Electa enables fans and pageant supporters to purchase vote packages ("Boosts") instantly using Philippine payment rails—primarily dynamic **QR Ph** codes scannable by GCash, Maya, ShopeePay, BDO, BPI, UnionBank, GoTyme, and all BSP-compliant banking apps—along with international credit/debit card support via PayMongo and a frictionless local developer simulator.
 
 ---
 
@@ -83,7 +83,7 @@ Scenario: Webhook confirmation and atomic vote allocation
 Scenario: Digital receipt presentation
   Given the payment is confirmed
   When the voter views the completion screen
-  Then an official VoteSphere Digital Receipt is displayed
+  Then an official Electa Digital Receipt is displayed
   And provides a downloadable PNG receipt proof containing the transaction reference, candidate name, vote weight, and timestamp
 ```
 

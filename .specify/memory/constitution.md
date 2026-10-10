@@ -7,7 +7,7 @@ Sync Impact Report:
 - Follow-up TODOs: None
 -->
 
-# VoteSphere Constitution
+# Electa Constitution
 
 ## Core Principles
 

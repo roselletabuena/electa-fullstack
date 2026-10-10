@@ -53,7 +53,7 @@ export async function registerUserAction(
       maxAge: 60 * 60 * 24 * 7,
     });
 
-    const targetUrl = returnTo && returnTo.startsWith("/") ? returnTo : "/dashboard";
+    const targetUrl = returnTo?.startsWith("/") ? returnTo : "/dashboard";
 
     return {
       success: true,

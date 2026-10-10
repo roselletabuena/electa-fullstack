@@ -97,7 +97,7 @@ src/
 
 ## Complexity Tracking
 
-> **No violations identified.** Full adherence to VoteSphere Constitution.
+> **No violations identified.** Full adherence to Electa Constitution.
 
 | Violation | Why Needed | Simpler Alternative Rejected Because |
 | :-------- | :--------- | :----------------------------------- |

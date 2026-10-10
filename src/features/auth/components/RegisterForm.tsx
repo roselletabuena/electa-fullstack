@@ -252,6 +252,7 @@ export const RegisterForm: React.FC = () => {
       <div className="mt-6 border-t border-slate-200 pt-5 text-center font-sans text-xs text-slate-600 dark:border-slate-800 dark:text-slate-400">
         Already have an account?{" "}
         <Link
+          // eslint-disable-next-line sonarjs/no-nested-template-literals
           href={`/login${returnTo !== "/dashboard" ? `?returnTo=${encodeURIComponent(returnTo)}` : ""}`}
           className="font-bold text-sky-700 transition hover:underline dark:text-sky-400"
         >

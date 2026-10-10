@@ -52,7 +52,7 @@ Expose `/api/events/[slug]/vote` adhering to Next.js 16 asynchronous request par
 
 ### Rationale
 
-- Conforms to **VoteSphere Constitution §II** (_Server-First & Boundary Isolation_).
+- Conforms to **Electa Constitution §II** (_Server-First & Boundary Isolation_).
 - Directly encapsulates event-level routing and parameter injection into `castVoteAction`.
 - Standardized `ApiResponse<CastVoteResultDto>` envelopes ensure consistency across all client hooks.
 

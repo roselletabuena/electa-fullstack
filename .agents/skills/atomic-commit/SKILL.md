@@ -4,7 +4,7 @@ description: Create clean, bisectable, single-purpose git commits following Conv
 license: MIT
 metadata:
   version: "1.0.0"
-  author: "VoteSphere Engineering Team"
+  author: "Electa Engineering Team"
   tags: "git, commits, version-control, conventional-commits, code-hygiene"
 ---
 

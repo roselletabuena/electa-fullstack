@@ -15,7 +15,7 @@ export async function GET(
 ): Promise<NextResponse<ApiResponse<VotingServiceStatusDto>>> {
   const session = await getSession();
   return apiSuccess({
-    service: "VoteSphere Core Voting Engine",
+    service: "Electa Core Voting Engine",
     authenticated: !!session?.userId,
     ...(session?.userId ? { userId: session.userId } : {}),
   });

@@ -134,4 +134,4 @@ The backend guards private organizer creation endpoints and actions against unau
 
 - Authentication verification utilizes the existing `getSession()` utility and AWS Cognito session tokens.
 - Database access uses the central Prisma singleton (`src/lib/db.ts`).
-- Standard API response envelopes follow the `ApiResponse<T>` structure mandated by the VoteSphere Constitution.
+- Standard API response envelopes follow the `ApiResponse<T>` structure mandated by the Electa Constitution.

@@ -46,7 +46,7 @@ const TABS: Array<{
 export function SettingsTabNav({
   className,
   initialTab = "general",
-}: SettingsTabNavProps): React.JSX.Element {
+}: Readonly<SettingsTabNavProps>): React.JSX.Element {
   const [activeTab, setActiveTab] = useQueryState(
     "tab",
     parseAsStringLiteral(SETTINGS_TABS)

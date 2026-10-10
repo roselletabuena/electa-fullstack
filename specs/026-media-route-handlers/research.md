@@ -3,7 +3,7 @@
 **Tracking Issue**: [VS-43](https://the-three-devsketeers.atlassian.net/browse/VS-43)  
 **Parent Epic**: [VS-40](https://the-three-devsketeers.atlassian.net/browse/VS-40) ([Electa] Media & Image Management via AWS S3)  
 **Feature Branch**: `feature/VS-43-media-route-handlers`  
-**Date**: 2026-10-05  
+**Date**: 2026-10-05
 
 ---
 
@@ -11,7 +11,8 @@
 
 The goal of VS-43 is to expose secure, production-grade HTTP route handlers that bridge the frontend upload components (e.g. `ImageUploadDropzone` in VS-45) with the core S3 storage library (`src/lib/s3/` delivered in VS-42).
 
-All endpoints must comply strictly with the VoteSphere Constitution:
+All endpoints must comply strictly with the Electa Constitution:
+
 - **§I. Strict Type Safety & Boundary Validation**: Zod parsing of incoming request bodies.
 - **§II. Server-First & Boundary Isolation**: Standard typed `ApiResponse<T>` envelopes using `apiSuccess()` and `apiError()`; Next.js 16 asynchronous request primitives (`cookies()`, `headers()`) must be awaited.
 - **§IV. Secure-by-Design & Auth Integrity**: Session verification via `getSession()`, role authorization, and sanitized error messages.

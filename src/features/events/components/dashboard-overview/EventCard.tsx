@@ -10,7 +10,7 @@ export interface EventCardProps {
   event: OrganizerEventItemDto;
 }
 
-export function EventCard({ event }: EventCardProps): React.JSX.Element {
+export function EventCard({ event }: Readonly<EventCardProps>): React.JSX.Element {
   const [copied, setCopied] = useState(false);
 
   const handleCopyLink = async (e: React.MouseEvent) => {
@@ -60,7 +60,8 @@ export function EventCard({ event }: EventCardProps): React.JSX.Element {
               <span className="size-1.5 animate-ping rounded-full bg-white" />
               LIVE VOTING
             </span>
-          ) : event.publicationStatus === "DRAFT" ? (
+          ) : // eslint-disable-next-line sonarjs/no-nested-conditional
+          event.publicationStatus === "DRAFT" ? (
             <span className="inline-flex items-center rounded-full bg-amber-500 px-2.5 py-1 text-[10px] font-bold text-white shadow-md">
               DRAFT
             </span>

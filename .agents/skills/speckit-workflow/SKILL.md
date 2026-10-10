@@ -6,7 +6,7 @@ compatibility: Requires spec-kit directory structure and .agents/skills/speckit-
 
 # SpecKit End-to-End Workflow Orchestrator
 
-This skill orchestrates the entire Spec-Driven Development (SDD) lifecycle for VoteSphere, systematically progressing through requirements, architecture, tasks, and test-driven implementation while honoring project constitutional constraints, complete 8-artifact spec delivery, and atomic commits.
+This skill orchestrates the entire Spec-Driven Development (SDD) lifecycle for Electa, systematically progressing through requirements, architecture, tasks, and test-driven implementation while honoring project constitutional constraints, complete 8-artifact spec delivery, and atomic commits.
 
 ---
 

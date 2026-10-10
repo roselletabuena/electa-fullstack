@@ -30,8 +30,8 @@ export function buildCognitoAuthorizeUrl(options?: {
 }): string {
   const domain =
     process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
-    "https://votesphere-auth-dev.auth.ap-southeast-1.amazoncognito.com";
-  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "votesphere_local_client_id";
+    "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
+  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
   const defaultCallback = "http://localhost:3000/api/auth/callback/cognito";
   const redirectUri =
     options?.redirectUri || process.env.NEXT_PUBLIC_APP_URL
@@ -104,8 +104,8 @@ export async function exchangeCognitoCodeForTokens(params: {
 
   const domain =
     process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
-    "https://votesphere-auth-dev.auth.ap-southeast-1.amazoncognito.com";
-  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "votesphere_local_client_id";
+    "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
+  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
   const defaultCallback = "http://localhost:3000/api/auth/callback/cognito";
   const redirectUri =
     params.redirectUri || process.env.NEXT_PUBLIC_APP_URL

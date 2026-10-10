@@ -6,7 +6,7 @@ license: Complete terms in LICENSE.txt
 
 # Frontend Design
 
-## ⚠️ Core Brand Contract (VoteSphere / Electa)
+## ⚠️ Core Brand Contract (Electa / Electa)
 
 When building UI in this codebase, **always ground your work in the existing brand design system**:
 1. **Default Theme is LIGHT MODE (Opal System)**:

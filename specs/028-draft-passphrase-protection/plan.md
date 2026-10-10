@@ -86,7 +86,7 @@ tests/
         └── draft-auth.test.ts            # Unit tests for digest validation & rotation
 ```
 
-**Structure Decision**: Next.js App Router fullstack structure adhering to VoteSphere feature vertical slice conventions under `src/features/events/`.
+**Structure Decision**: Next.js App Router fullstack structure adhering to Electa feature vertical slice conventions under `src/features/events/`.
 
 ## Complexity Tracking
 

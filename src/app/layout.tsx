@@ -44,7 +44,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var stored=localStorage.getItem('electa-theme')||localStorage.getItem('votesphere-theme');if(stored==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})();`,
+            __html: `(function(){try{var stored=localStorage.getItem('electa-theme')||localStorage.getItem('electa-theme');if(stored==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})();`,
           }}
         />
       </head>

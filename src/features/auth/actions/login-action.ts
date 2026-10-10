@@ -68,7 +68,7 @@ export async function loginAction(
       maxAge: 60 * 60 * 24 * 7, // 7 days
     });
 
-    const targetUrl = returnTo && returnTo.startsWith("/") ? returnTo : "/dashboard";
+    const targetUrl = returnTo?.startsWith("/") ? returnTo : "/dashboard";
 
     return {
       success: true,

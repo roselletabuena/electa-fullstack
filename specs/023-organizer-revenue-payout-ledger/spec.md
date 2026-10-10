@@ -2,7 +2,7 @@
 
 **Feature Branch**: `feature/VS-24-organizer-revenue-payout-ledger`  
 **Tracking Issue**: [VS-24](https://the-three-devsketeers.atlassian.net/browse/VS-24)  
-**Parent Epic**: [VS-18] (VoteSphere Monetization Platform)  
+**Parent Epic**: [VS-18] (Electa Monetization Platform)  
 **Created**: 2026-10-03  
 **Status**: Ready for Planning  
 **Input**: User description: "https://the-three-devsketeers.atlassian.net/browse/VS-24"

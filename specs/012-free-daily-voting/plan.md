@@ -8,7 +8,7 @@
 
 ## Summary
 
-Implement the voter-facing free daily voting system and rolling 24-hour cooldown engine for VoteSphere. Authenticated voters can cast 1 to 5 daily free votes (configured per event) on candidates. The system calculates available allowances over a rolling 24-hour database window, atomically records votes in the database ledger, optimistic-updates candidate vote counts, and transitions to a disabled cooldown state with a live countdown timer (`[HH:MM:SS]`) when the quota is exhausted.
+Implement the voter-facing free daily voting system and rolling 24-hour cooldown engine for Electa. Authenticated voters can cast 1 to 5 daily free votes (configured per event) on candidates. The system calculates available allowances over a rolling 24-hour database window, atomically records votes in the database ledger, optimistic-updates candidate vote counts, and transitions to a disabled cooldown state with a live countdown timer (`[HH:MM:SS]`) when the quota is exhausted.
 
 ---
 

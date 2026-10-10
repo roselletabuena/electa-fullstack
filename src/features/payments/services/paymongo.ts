@@ -130,7 +130,7 @@ export async function createPayMongoPaymentIntent(
       clientKey: `client_key_mock_${params.referenceNumber}`,
       status: "awaiting_payment_method",
       amount: params.amountInCents,
-      qrCodeData: `00020101021228460012ph.gov.bsp.qrph0118VOTESPHERE${params.referenceNumber}5406${(params.amountInCents / 100).toFixed(2)}53036085802PH5910VOTESPHERE6006MANILA6304ABCD`,
+      qrCodeData: `00020101021228460012ph.gov.bsp.qrph0118ELECTA${params.referenceNumber}5406${(params.amountInCents / 100).toFixed(2)}53036085802PH5910ELECTA6006MANILA6304ABCD`,
     };
   }
 

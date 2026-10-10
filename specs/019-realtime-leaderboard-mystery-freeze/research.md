@@ -10,7 +10,7 @@
 
 ### Context
 
-VoteSphere requires instant updates to vote counts and leaderboard rankings when votes are cast without overloading backend databases or exhausting free-tier serverless limits.
+Electa requires instant updates to vote counts and leaderboard rankings when votes are cast without overloading backend databases or exhausting free-tier serverless limits.
 
 ### Decision: Supabase Realtime Broadcast / Polling Fallback
 

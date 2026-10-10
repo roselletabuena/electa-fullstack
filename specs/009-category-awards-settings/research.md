@@ -11,7 +11,7 @@
 
 - **Decision**: Use `@tanstack/react-query` (`useQuery`, `useMutation`, `useQueryClient`) for fetching unified taxonomy (`GET /api/events/[slug]/categories`), creating items (`POST /api/events/[slug]/divisions`, `POST /api/events/[slug]/award-categories`), updating items (`PATCH`), and deleting items (`DELETE`).
 - **Rationale**:
-  - Aligns directly with **VoteSphere Constitution Principle III** (_Server state must be managed solely by TanStack Query; never mirror server data into client global stores_).
+  - Aligns directly with **Electa Constitution Principle III** (_Server state must be managed solely by TanStack Query; never mirror server data into client global stores_).
   - Enables instant optimistic updates for voting toggle switches and badge creations with automatic rollback on network failure.
   - Simplifies cache invalidation across the entire settings slice (`['events', slug, 'taxonomy']`).
 - **Alternatives Considered**:

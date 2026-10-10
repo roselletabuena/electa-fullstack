@@ -27,7 +27,7 @@ As an active voter, I want an automatic post-vote celebration modal offering a 9
    - Official contestant badge: `Contestant #[Number] • [Candidate Name]`
    - Event title & category nomination tag
    - Scannable dynamic QR code leading to candidate's direct voting URL
-   - Electa / VoteSphere branding watermark
+   - Electa / Electa branding watermark
 3. **Given** a user clicking "Download Story", **When** triggered, **Then** a crystal-clear 1080x1920 PNG file downloads immediately with the filename `[event-slug]-candidate-[number]-story.png`.
 4. **Given** a device supporting the Web Share API (mobile Safari / Chrome), **When** clicking "Share Story", **Then** the native OS share sheet opens with the generated image file and pre-filled campaign caption.
 5. **Given** a user clicking "Copy Voting Link", **When** clicked, **Then** the candidate's direct voting link is copied to the clipboard with an interactive toast notification.

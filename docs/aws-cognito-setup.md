@@ -9,9 +9,9 @@ This guide describes how to deploy and configure the AWS Cognito User Pool with 
 1. Go to [Google Cloud Console > APIs & Services > Credentials](https://console.cloud.google.com/apis/credentials).
 2. Create an **OAuth 2.0 Client ID** (Web application).
 3. Set **Authorized JavaScript origins**:
-   - `https://votesphere-auth-dev.auth.ap-southeast-1.amazoncognito.com` (or your chosen Cognito domain prefix)
+   - `https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com` (or your chosen Cognito domain prefix)
 4. Set **Authorized redirect URIs**:
-   - `https://votesphere-auth-dev.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse`
+   - `https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com/oauth2/idpresponse`
 5. Save and copy the **Client ID** and **Client Secret**.
 
 ---
@@ -36,7 +36,7 @@ This guide describes how to deploy and configure the AWS Cognito User Pool with 
    ```env
    NEXT_PUBLIC_COGNITO_USER_POOL_ID="ap-southeast-1_..."
    NEXT_PUBLIC_COGNITO_CLIENT_ID="..."
-   NEXT_PUBLIC_COGNITO_DOMAIN="https://votesphere-auth-dev.auth.ap-southeast-1.amazoncognito.com"
+   NEXT_PUBLIC_COGNITO_DOMAIN="https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com"
    AUTH_PROVIDER="cognito"
    ```
 
@@ -44,4 +44,4 @@ This guide describes how to deploy and configure the AWS Cognito User Pool with 
 
 ## 3. Local Development (Without Live Cloud)
 
-During local development, VoteSphere runs with `AUTH_PROVIDER=local` by default. This simulates Cognito federated login and token exchange without requiring active internet connectivity or AWS deployment.
+During local development, Electa runs with `AUTH_PROVIDER=local` by default. This simulates Cognito federated login and token exchange without requiring active internet connectivity or AWS deployment.

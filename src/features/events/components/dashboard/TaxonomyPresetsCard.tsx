@@ -25,7 +25,7 @@ export function TaxonomyPresetsCard({
   onApplyPreset,
   isApplying,
   disabled = false,
-}: TaxonomyPresetsCardProps): React.JSX.Element {
+}: Readonly<TaxonomyPresetsCardProps>): React.JSX.Element {
   const [selectedPresetId, setSelectedPresetId] = useState<string>("beauty-pageant");
   const [applyingPresetId, setApplyingPresetId] = useState<string | null>(null);
 

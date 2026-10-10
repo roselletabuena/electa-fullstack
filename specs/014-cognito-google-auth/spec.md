@@ -85,7 +85,7 @@ As an organizer attempting to sign in with Google, if I cancel the prompt, decli
 - **FR-006**: System MUST seamlessly link Google federated identities to existing organizer accounts matching the same verified email address.
 - **FR-007**: System MUST issue the standard secure, HTTP-only, SameSite session cookie (`electa_auth_session`) upon successful authentication.
 - **FR-008**: System MUST handle all provider error responses and callback failures gracefully, redirecting to the login screen with localized, actionable error messaging.
-- **FR-009**: System MUST comply with all VoteSphere Constitution principles (strict Zod schema validation for callback search parameters, Route Handler session verification, and environment variable validation).
+- **FR-009**: System MUST comply with all Electa Constitution principles (strict Zod schema validation for callback search parameters, Route Handler session verification, and environment variable validation).
 
 ### Key Entities _(include if feature involves data)_
 

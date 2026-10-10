@@ -10,7 +10,7 @@ describe("Payments - QR Ph Payload & Generator", () => {
     const payload = buildQrPhPayload({
       referenceNumber: "VS-TEST1234",
       amountInPhp: 250,
-      merchantName: "VoteSphere",
+      merchantName: "Electa",
       city: "Manila",
     });
 
@@ -18,7 +18,7 @@ describe("Payments - QR Ph Payload & Generator", () => {
     expect(payload).toContain("ph.gov.bsp.qrph");
     expect(payload).toContain("VS-TEST1234");
     expect(payload).toContain("250.00");
-    expect(payload).toContain("VOTESPHERE");
+    expect(payload).toContain("ELECTA");
   });
 
   it("generates an SVG string from QR payload", async () => {

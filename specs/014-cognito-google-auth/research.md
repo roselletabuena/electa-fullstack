@@ -4,7 +4,7 @@
 
 ### Context
 
-VoteSphere needs centralized, secure organizer authentication allowing 1-click Google Sign-In while keeping all identity records governed by AWS Cognito and the VoteSphere database.
+Electa needs centralized, secure organizer authentication allowing 1-click Google Sign-In while keeping all identity records governed by AWS Cognito and the Electa database.
 
 ### Decision
 
@@ -28,7 +28,7 @@ Implement the standard **OAuth 2.0 Authorization Code Grant with OIDC** using AW
 ### Alternatives Considered
 
 - _Client-side Google Identity Services (GSI SDK) directly in React_: Rejected because it bypasses AWS Cognito federation, creating fragmented authentication paths and violating the architecture decision for unified AWS Cognito governance.
-- _NextAuth / Auth.js library_: Rejected because VoteSphere constitution mandates lightweight, zero-dependency token adapter and direct Next.js 16 App Router Route Handlers / Server Actions.
+- _NextAuth / Auth.js library_: Rejected because Electa constitution mandates lightweight, zero-dependency token adapter and direct Next.js 16 App Router Route Handlers / Server Actions.
 
 ---
 
@@ -44,9 +44,9 @@ Create a clean, modular Terraform configuration in `infra/`:
 
 - **`main.tf`**: AWS provider configuration with regional variables (defaulting to `ap-southeast-1` or configured region) and backend configuration.
 - **`cognito.tf`**:
-  - `aws_cognito_user_pool.votesphere_pool`: User pool with email sign-in alias, auto-verified attributes, standard attributes (email, name), and password policy.
+  - `aws_cognito_user_pool.electa_pool`: User pool with email sign-in alias, auto-verified attributes, standard attributes (email, name), and password policy.
   - `aws_cognito_identity_provider.google`: Configures Google as a social IdP, mapping Google claims (`email`, `name`, `sub`) to Cognito User Pool attributes.
-  - `aws_cognito_user_pool_domain.votesphere_domain`: Provisions Cognito Hosted UI domain prefix.
+  - `aws_cognito_user_pool_domain.electa_domain`: Provisions Cognito Hosted UI domain prefix.
   - `aws_cognito_user_pool_client.app_client`: Configures App Client with `ALLOWED_OAUTH_FLOWS = ["code"]`, scopes `["email", "openid", "profile"]`, supported IdPs `["COGNITO", "Google"]`, and allowed callback/logout URLs.
 - **`variables.tf`**: Input variables for `aws_region`, `environment`, `google_client_id`, `google_client_secret`, and `app_callback_urls`.
 - **`outputs.tf`**: Exports `user_pool_id`, `user_pool_client_id`, `cognito_domain`, and `issuer_url` for easy consumption in `.env.local`.
@@ -81,7 +81,7 @@ An organizer may register with password `organizer@example.com` on Monday and cl
 
 ### Context
 
-The UI must deliver a premium, seamless visual experience in line with the VoteSphere design system.
+The UI must deliver a premium, seamless visual experience in line with the Electa design system.
 
 ### Decision
 

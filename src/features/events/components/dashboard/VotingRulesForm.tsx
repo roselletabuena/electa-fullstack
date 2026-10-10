@@ -39,7 +39,10 @@ export interface VotingRulesFormProps {
 
 const QUOTA_OPTIONS = [1, 2, 3, 4, 5] as const;
 
-export function VotingRulesForm({ event, className }: VotingRulesFormProps): React.JSX.Element {
+export function VotingRulesForm({
+  event,
+  className,
+}: Readonly<VotingRulesFormProps>): React.JSX.Element {
   const [isPending, startTransition] = useTransition();
   const [statusMessage, setStatusMessage] = useState<{
     type: "success" | "error";
@@ -89,7 +92,7 @@ export function VotingRulesForm({ event, className }: VotingRulesFormProps): Rea
 
         if (response.fieldErrors) {
           for (const [field, messages] of Object.entries(response.fieldErrors)) {
-            if (messages && messages[0]) {
+            if (messages?.[0]) {
               setError(field as keyof VotingRulesFormValues, {
                 type: "server",
                 message: messages[0],

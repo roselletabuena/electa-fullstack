@@ -22,7 +22,7 @@ describe("API Route: /api/voting", () => {
 
       expect(res.status).toBe(200);
       expect(json.success).toBe(true);
-      expect(json.data.service).toBe("VoteSphere Core Voting Engine");
+      expect(json.data.service).toBe("Electa Core Voting Engine");
       expect(json.data.authenticated).toBe(false);
     });
   });

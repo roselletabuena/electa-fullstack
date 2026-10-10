@@ -36,7 +36,7 @@ Use the product brief, existing UI, components, and local design system to make 
  
  Read the brief, existing UI, components, tokens, and constraints before designing. They always outrank this skill. Keep familiar interaction conventions and make the product's own objects, workflow, and priorities visually clear. Do not add novelty for its own sake.
  
-- **VoteSphere Brand Mandate**:
+- **Electa Brand Mandate**:
   - Default theme is **Light Mode** (Opal `#F8FAFC`, slate-900 `#0F172A`, Sky Blue `#0284C7`). Never default to dark backgrounds.
   - Geometry is **Strict Zero-Radius (`--radius: 0px`, `rounded-none`)** — no soft rounded cards/buttons.
   - Typography is **Outfit** (Headings) and **Sora** (Body).

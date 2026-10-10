@@ -28,7 +28,7 @@
 
 - **Decision**: Utilize TanStack Query with key `['voting-quota', eventId, voterId]` to cache the voter's quota status, invalidating queries upon mutation.
 - **Rationale**:
-  - Enforces VoteSphere Constitution §III (Server state strictly managed by TanStack Query).
+  - Enforces Electa Constitution §III (Server state strictly managed by TanStack Query).
   - Enables optimistic UI decrement of remaining vote allowance on the client.
 - **Alternatives Considered**:
   - _Zustand Global Store_: Violates Constitution §III by mirroring server state into client global stores.

@@ -31,7 +31,7 @@ function applyDocumentTheme(currentTheme: Theme) {
 export function ThemeProvider({ children, defaultTheme = "light" }: Readonly<ThemeProviderProps>) {
   const [theme, setTheme] = useState<Theme>(() => {
     if (typeof window !== "undefined") {
-      const stored = (localStorage.getItem("electa-theme") ||
+      const stored = (localStorage.getItem("electa-theme") ??
         localStorage.getItem("votesphere-theme")) as Theme | null;
       if (stored === "light" || stored === "dark") {
         return stored;

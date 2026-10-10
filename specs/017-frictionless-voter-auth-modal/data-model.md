@@ -30,7 +30,7 @@ export interface PendingVoteIntent {
 
 **Storage & TTL Invariants**:
 
-- Stored in browser `sessionStorage` under the key: `votesphere_pending_vote_intent`.
+- Stored in browser `sessionStorage` under the key: `electa_pending_vote_intent`.
 - Expiration: 15 minutes (`900,000` ms). Any intent older than 15 minutes is treated as stale and evicted upon retrieval.
 
 ---

@@ -5,7 +5,7 @@ description: >-
 license: MIT
 metadata:
   version: "1.0.0"
-  author: "VoteSphere Core Engineering"
+  author: "Electa Core Engineering"
   tags: "accessibility, wcag, contrast, theme, light-mode, dark-mode, tailwind"
 ---
 
@@ -40,7 +40,7 @@ Ensure all web UI components pass strict accessibility standards across all supp
 
 ---
 
-## 3. Approved Accessible Color Tokens for VoteSphere
+## 3. Approved Accessible Color Tokens for Electa
 
 ### Light Mode (`bg-background: #F8FAFC`, `card: #FFFFFF`)
 

@@ -1,14 +1,14 @@
 ---
-name: "vote-sphere-feature"
-description: "Bootstrap a complete VoteSphere feature from scratch — creates the complete spec directory with all canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md), full src/features slice, API route shell, and test folder in a single command."
+name: "electa-feature"
+description: "Bootstrap a complete Electa feature from scratch — creates the complete spec directory with all canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md), full src/features slice, API route shell, and test folder in a single command."
 metadata:
-  author: "VoteSphere Engineering Team"
+  author: "Electa Engineering Team"
   version: "1.1.0"
 ---
 
-# VoteSphere Feature Bootstrap
+# Electa Feature Bootstrap
 
-Bootstrap a complete, convention-compliant VoteSphere feature in one command. This is always the **first step** before running `/speckit`. It guarantees that **all 8 canonical SpecKit artifacts** are scaffolded properly.
+Bootstrap a complete, convention-compliant Electa feature in one command. This is always the **first step** before running `/speckit`. It guarantees that **all 8 canonical SpecKit artifacts** are scaffolded properly.
 
 ## User Input
 
@@ -54,7 +54,7 @@ Create the following files and directories under `SPEC_DIR/`:
 
 ## Overview
 
-<!-- One paragraph: what this feature does and why it matters to VoteSphere users. -->
+<!-- One paragraph: what this feature does and why it matters to Electa users. -->
 
 ## Actors
 
@@ -95,7 +95,7 @@ Create the following files and directories under `SPEC_DIR/`:
 - Assumes: ...
 ```
 
-#### 2. `SPEC_DIR/research.md` — Pre-seeded with VoteSphere stack decisions:
+#### 2. `SPEC_DIR/research.md` — Pre-seeded with Electa stack decisions:
 ```markdown
 # Research & Architecture Decisions: <FEATURE_NAME_TITLE_CASE>
 

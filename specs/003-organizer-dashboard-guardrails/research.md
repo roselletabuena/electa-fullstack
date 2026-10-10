@@ -26,7 +26,7 @@
 
 - **Decision**: Implement the organizer settings navigation tabs (General, Schedule, Voting Rules) using `nuqs` (`useQueryState`) or searchParams in RSC with a client tab controller wrapped in `<Suspense>`, defaulting to `tab=general`.
 - **Rationale**:
-  - Enforces VoteSphere Constitution §III ("URL State: Search parameters, pagination, and filter criteria MUST be synchronized via `nuqs`").
+  - Enforces Electa Constitution §III ("URL State: Search parameters, pagination, and filter criteria MUST be synchronized via `nuqs`").
   - Deep-linking directly to `/dashboard/events/[slug]/settings?tab=schedule` or `?tab=voting-rules` works seamlessly on initial server render as well as during client interactions.
   - Keeps all settings sections within a unified `/dashboard/events/[slug]/settings` controller while retaining bookmarkable tab state.
 - **Alternatives Considered**:

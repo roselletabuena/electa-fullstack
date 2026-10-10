@@ -4,7 +4,7 @@
 > **Tagline**: _Universal Real-Time Contest, Pageant & Voting Platform_  
 > **Target Domains**: `electa.ph` / `electa.io` / `electa.app`  
 > **Status**: Official Active Brand  
-> **Supersedes**: VoteSphere (Legacy Working Title)
+> **Supersedes**: Electa (Legacy Working Title)
 
 ---
 
@@ -13,7 +13,7 @@
 ### Why "Electa"?
 
 1. **Latin & Classical Roots**: Derived from Latin _ēlectus_ (to choose, to elect, chosen with distinction). It elevates ordinary "voting" into a prestigious coronation and selection process.
-2. **Luxury & Prestige Fit**: Unlike clunky functional compound names ("VoteSphere", "PageantVote"), **Electa** sounds sleek, modern, authoritative, and regal.
+2. **Luxury & Prestige Fit**: Unlike clunky functional compound names ("Electa", "PageantVote"), **Electa** sounds sleek, modern, authoritative, and regal.
 3. **Phonetic Simplicity**: 3 syllables (`Eh-lek-tah`), internationally pronounceable, memorable, and visually balanced in typography.
 4. **Market Scalability**: While perfect for Philippine beauty pageants and coronation nights, **Electa** seamlessly scales to global awards, student elections, entertainment polls, and corporate talent showcases.
 
@@ -53,7 +53,7 @@
 - **Metadata Title**: `Electa | Universal Contest & Voting Engine`
 - **Public Domain**: `electa.ph`
 - **Storage & Cookies**:
-  - Theme Key: `electa-theme` (with automatic fallback to `votesphere-theme`)
+  - Theme Key: `electa-theme` (with automatic fallback to `electa-theme`)
   - Auth Session Cookie: `electa_auth_session`
   - Passphrase Mock Hash: `electa2026`
 - **Communication & Team Channels**: `#team-electa` / `#dev-help`

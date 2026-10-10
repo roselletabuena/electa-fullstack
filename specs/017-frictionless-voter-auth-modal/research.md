@@ -24,7 +24,7 @@
 ### 1. Intent Preservation Mechanism
 
 - **In-Memory Callback**: For OTP/Magic-link flows where the browser does not unload, pass an `onSuccess` callback to `AuthPromptModal` / `OmnichannelAuthModal` that immediately calls `castVote()` with the cached parameters.
-- **`sessionStorage` Intent Buffer**: For OAuth redirects (Google/Apple/Facebook), serialize `{ eventId, contestantId, contestantName, awardCategoryId, timestamp }` to `sessionStorage` key `votesphere_pending_vote_intent`. When the event page mounts with an active session, a hook (`usePendingVoteIntent`) reads and processes the intent.
+- **`sessionStorage` Intent Buffer**: For OAuth redirects (Google/Apple/Facebook), serialize `{ eventId, contestantId, contestantName, awardCategoryId, timestamp }` to `sessionStorage` key `electa_pending_vote_intent`. When the event page mounts with an active session, a hook (`usePendingVoteIntent`) reads and processes the intent.
 
 ### 2. Electa Design System Compliance
 

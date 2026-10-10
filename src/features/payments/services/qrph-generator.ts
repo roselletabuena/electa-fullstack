@@ -9,12 +9,12 @@ export function buildQrPhPayload(params: {
   merchantName?: string;
   city?: string;
 }): string {
-  const merchantName = (params.merchantName ?? "VOTESPHERE").toUpperCase().slice(0, 25);
+  const merchantName = (params.merchantName ?? "ELECTA").toUpperCase().slice(0, 25);
   const city = (params.city ?? "MANILA").toUpperCase().slice(0, 15);
   const amountStr = params.amountInPhp.toFixed(2);
 
   // EMVCo Merchant-Presented QR Code format
-  return `00020101021228480012ph.gov.bsp.qrph0120VOTESPHERE${params.referenceNumber}520453115303608540${amountStr.length.toString().padStart(2, "0")}${amountStr}5802PH59${merchantName.length.toString().padStart(2, "0")}${merchantName}60${city.length.toString().padStart(2, "0")}${city}6304ABCD`;
+  return `00020101021228480012ph.gov.bsp.qrph0120ELECTA${params.referenceNumber}520453115303608540${amountStr.length.toString().padStart(2, "0")}${amountStr}5802PH59${merchantName.length.toString().padStart(2, "0")}${merchantName}60${city.length.toString().padStart(2, "0")}${city}6304ABCD`;
 }
 
 /**

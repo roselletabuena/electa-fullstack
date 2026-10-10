@@ -18,7 +18,7 @@
 
 ```http
 GET /api/events/check-slug?slug=summer-gala-2026 HTTP/1.1
-Host: votesphere.app
+Host: electa.app
 Accept: application/json
 ```
 

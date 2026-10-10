@@ -70,7 +70,7 @@ export const OnboardingForm: React.FC = () => {
           <Sparkles className="size-5" />
         </div>
         <h1 className="font-heading mt-4 text-2xl font-bold tracking-tight text-slate-900 dark:text-white">
-          Welcome to VoteSphere!
+          Welcome to Electa!
         </h1>
         <p className="font-body mt-1 text-xs text-slate-500 sm:text-sm dark:text-slate-400">
           Set up your organization or committee workspace to get started.

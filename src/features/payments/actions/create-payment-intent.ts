@@ -57,7 +57,7 @@ async function resolveQrCodeDisplay(
     const rawQrString = buildQrPhPayload({
       referenceNumber,
       amountInPhp: pricePhp,
-      merchantName: "VoteSphere",
+      merchantName: "Electa",
       city: "Manila",
     });
     const finalQrCode = await generateQrCodeDataUrl(rawQrString);

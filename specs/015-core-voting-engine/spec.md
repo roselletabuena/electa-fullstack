@@ -2,10 +2,10 @@
 
 **Feature ID**: `015-core-voting-engine`  
 **Jira Key**: [VS-20](https://the-three-devsketeers.atlassian.net/browse/VS-20)  
-**Parent Epic**: [VS-18](https://the-three-devsketeers.atlassian.net/browse/VS-18) (VoteSphere: Next-Gen Pageant & Event Monetization Platform)  
+**Parent Epic**: [VS-18](https://the-three-devsketeers.atlassian.net/browse/VS-18) (Electa: Next-Gen Pageant & Event Monetization Platform)  
 **Status**: Ready for Review / Planning  
 **Created**: 2026-10-01  
-**Authors**: VoteSphere Engineering Team
+**Authors**: Electa Engineering Team
 
 ---
 
@@ -13,7 +13,7 @@
 
 In competitive pageants, talent contests, and public events, the voting engine is the mission-critical core of the platform. Voting integrity, voter accessibility, and high-throughput reliability are paramount. If voters encounter login barriers, if malicious bots can spam votes, or if database race conditions cause double-counting during peak voting rushes (e.g., live television broadcasts or finale minutes), community trust collapses and monetization fails.
 
-This feature establishes the production-grade **Core Voting Engine, Omnichannel Authentication & Anti-Fraud Suite** for VoteSphere. It unites multi-provider authentication (Google OAuth, Apple Sign-In, Email Magic Links, Phone OTP via SMS/WhatsApp, Facebook OAuth), strict anti-bot deterrence (Cloudflare Turnstile verification), fraud prevention (client device fingerprinting and IP velocity rate limiting), and transactional voting guarantees (zero race conditions, idempotent submission, and strict single-vote-per-24h window enforcement) across both free daily allowances and paid vote boosts.
+This feature establishes the production-grade **Core Voting Engine, Omnichannel Authentication & Anti-Fraud Suite** for Electa. It unites multi-provider authentication (Google OAuth, Apple Sign-In, Email Magic Links, Phone OTP via SMS/WhatsApp, Facebook OAuth), strict anti-bot deterrence (Cloudflare Turnstile verification), fraud prevention (client device fingerprinting and IP velocity rate limiting), and transactional voting guarantees (zero race conditions, idempotent submission, and strict single-vote-per-24h window enforcement) across both free daily allowances and paid vote boosts.
 
 ---
 
@@ -146,7 +146,7 @@ This feature establishes the production-grade **Core Voting Engine, Omnichannel 
 - **FR-007**: System MUST execute vote recording and tally increments inside an atomic database transaction with zero race conditions.
 - **FR-008**: System MUST support both `FREE` (weight = 1) and `BOOST` (weight $\ge 1$) vote types in the vote ledger.
 - **FR-009**: System MUST support client idempotency keys on vote submissions to safely deduplicate retried network requests.
-- **FR-010**: System MUST expose typed `ApiResponse<T>` envelopes for Route Handlers and Server Actions per VoteSphere Constitution §II.
+- **FR-010**: System MUST expose typed `ApiResponse<T>` envelopes for Route Handlers and Server Actions per Electa Constitution §II.
 
 ---
 

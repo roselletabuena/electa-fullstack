@@ -14,7 +14,7 @@ Use `react-hook-form` paired with `@hookform/resolvers/zod` utilizing the existi
 
 ### Rationale
 
-- Complies with VoteSphere Constitution Principle I (Strict Type Safety & Boundary Validation).
+- Complies with Electa Constitution Principle I (Strict Type Safety & Boundary Validation).
 - Single source of validation truth: The same Zod schema that guards the backend API (`POST /api/events` and `createEventAction`) validates the UI form fields before network submission.
 - Real-time `mode: "onChange"` / `mode: "onBlur"` gives responsive feedback without full re-renders of the entire form shell.
 

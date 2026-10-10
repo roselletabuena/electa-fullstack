@@ -52,7 +52,7 @@ export function PaymentReceiptCard({
     ctx.fillStyle = "#FFFFFF";
     ctx.font = "bold 20px sans-serif";
     ctx.textAlign = "center";
-    ctx.fillText("VOTESPHERE OFFICIAL RECEIPT", 300, 55);
+    ctx.fillText("ELECTA OFFICIAL RECEIPT", 300, 55);
 
     ctx.fillStyle = "#38BDF8";
     ctx.font = "bold 11px monospace";
@@ -133,7 +133,7 @@ export function PaymentReceiptCard({
 
     // Trigger download
     const link = document.createElement("a");
-    link.download = `VoteSphere-Receipt-${receipt.referenceNumber}.png`;
+    link.download = `Electa-Receipt-${receipt.referenceNumber}.png`;
     link.href = canvas.toDataURL("image/png");
     link.click();
   };

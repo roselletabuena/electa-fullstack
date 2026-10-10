@@ -10,7 +10,7 @@ export interface VotingRulesSettingsSummaryCardProps {
 
 export function VotingRulesSettingsSummaryCard({
   event,
-}: VotingRulesSettingsSummaryCardProps): React.JSX.Element {
+}: Readonly<VotingRulesSettingsSummaryCardProps>): React.JSX.Element {
   return (
     <div className="space-y-6">
       <Card>

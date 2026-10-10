@@ -2,7 +2,7 @@
 name: "db-migrate"
 description: "Safe, audited Prisma schema migration workflow. Detects destructive changes, validates conventions, runs migration + client regeneration + typecheck. Always run this after editing prisma/schema.prisma."
 metadata:
-  author: "VoteSphere Engineering Team"
+  author: "Electa Engineering Team"
   version: "1.0.0"
 ---
 
@@ -83,7 +83,7 @@ Type "yes I understand" to proceed, or "no" to cancel:
 
 Wait for user confirmation. If "no" or anything other than "yes I understand" → **HALT**.
 
-#### 3b. Convention checks (VoteSphere AGENTS.md)
+#### 3b. Convention checks (Electa AGENTS.md)
 
 | Check                        | Rule                                                                                                               |
 | ---------------------------- | ------------------------------------------------------------------------------------------------------------------ |

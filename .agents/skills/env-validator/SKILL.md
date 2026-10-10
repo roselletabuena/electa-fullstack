@@ -1,14 +1,14 @@
 ---
 name: "env-validator"
-description: "Detects raw process.env usage that bypasses src/env.ts. Run manually or fires automatically as a PostToolUse hook on every .ts/.tsx file write. Enforces VoteSphere Constitution §IV."
+description: "Detects raw process.env usage that bypasses src/env.ts. Run manually or fires automatically as a PostToolUse hook on every .ts/.tsx file write. Enforces Electa Constitution §IV."
 metadata:
-  author: "VoteSphere Engineering Team"
+  author: "Electa Engineering Team"
   version: "1.0.0"
 ---
 
 # Environment Variable Validator
 
-Enforces **VoteSphere Constitution §IV**: _"Environment secrets MUST NEVER be accessed via `process.env` directly; access MUST go through `src/env.ts`."_
+Enforces **Electa Constitution §IV**: _"Environment secrets MUST NEVER be accessed via `process.env` directly; access MUST go through `src/env.ts`."_
 
 This skill can be invoked manually or runs automatically via the `PostToolUse` hook in `.agents/hooks.json` on every `.ts` / `.tsx` file write.
 

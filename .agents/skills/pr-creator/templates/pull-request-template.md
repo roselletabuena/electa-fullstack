@@ -30,7 +30,7 @@
 
 ---
 
-## 🏛️ VoteSphere Constitution Compliance Checklist
+## 🏛️ Electa Constitution Compliance Checklist
 - [x] **§I: Feature-Sliced Architecture**: Code strictly encapsulated under `src/features/` or shared primitives under `src/components/shared/`.
 - [x] **§II: Route Handler Security & Authorization**: Session verified via `getSession()` and all payloads parsed via Zod.
 - [x] **§III: Zero Regressions**: All existing and new test suites pass with zero regressions.

@@ -15,7 +15,7 @@ The **pr-creator** skill automates the creation of high-quality GitHub Pull Requ
 1. **Always Latest `main`**: Fetches and rebases onto `origin/main` before opening the PR, ensuring zero stale branch divergence or unexpected merge conflicts.
 2. **Consistent Branch Naming**: Enforces `<type>/<JIRA-KEY>-<kebab-case-slug>` naming standards.
 3. **Standardized PR Titles**: Formats titles as `<type>(<scope>): [VS-<KEY>] <imperative description>` (max 72 chars).
-4. **Audit-Ready PR Body**: Automatically populates Jira links, executive summaries, architectural changes, Vitest results, and VoteSphere Constitution compliance (§I–§VI).
+4. **Audit-Ready PR Body**: Automatically populates Jira links, executive summaries, architectural changes, Vitest results, and Electa Constitution compliance (§I–§VI).
 
 ---
 
@@ -139,7 +139,7 @@ Integrates active event divisions and award categories dynamically into the cont
 
 ---
 
-## 🏛️ VoteSphere Constitution Compliance Checklist
+## 🏛️ Electa Constitution Compliance Checklist
 - [x] **§I: Feature-Sliced Architecture**: Code strictly encapsulated under `src/features/`.
 - [x] **§II: Route Handler Security & Authorization**: Session verified via `getSession()` and payloads parsed via Zod.
 - [x] **§III: Zero Regressions**: All test suites pass.

@@ -1,12 +1,12 @@
 ---
 name: "constitution-check"
-description: "Automated audit of code changes against the VoteSphere Constitution (`.specify/memory/constitution.md`). Checks all 6 principles across §I–§VI. Run before committing or as a PostToolUse hook."
+description: "Automated audit of code changes against the Electa Constitution (`.specify/memory/constitution.md`). Checks all 6 principles across §I–§VI. Run before committing or as a PostToolUse hook."
 metadata:
-  author: "VoteSphere Engineering Team"
+  author: "Electa Engineering Team"
   version: "1.0.0"
 ---
 
-# VoteSphere Constitution Check
+# Electa Constitution Check
 
 Enforces every principle in `.specify/memory/constitution.md` on the current changeset. This is your automated code quality gate that runs the same checks a senior engineer would in a PR review — but instantly, every time.
 
@@ -182,7 +182,7 @@ Format the report grouped by section:
 
 ```
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
- CONSTITUTION CHECK — VoteSphere v1.0.0
+ CONSTITUTION CHECK — Electa v1.0.0
 ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
 
 §I  Type Safety         ✅ PASS  (5/5 checks)

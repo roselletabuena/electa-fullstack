@@ -1,11 +1,11 @@
 ---
 trigger: always_on
-description: Non-negotiable Electa / VoteSphere branding, design tokens, typography, and default Light Mode rules.
+description: Non-negotiable Electa / Electa branding, design tokens, typography, and default Light Mode rules.
 ---
 
-# VoteSphere / Electa Branding & Design System Rules
+# Electa / Electa Branding & Design System Rules
 
-All frontend components, pages, and styles created or modified in this repository MUST strictly follow the Electa / VoteSphere design system and branding guidelines defined below:
+All frontend components, pages, and styles created or modified in this repository MUST strictly follow the Electa / Electa design system and branding guidelines defined below:
 
 ## 1. Light Mode is the Default Theme
 

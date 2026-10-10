@@ -96,7 +96,7 @@ npm run typecheck
 npm run test
 npx eslint .
 ```
-Verify that no `process.env` bypasses occur (VoteSphere Constitution §IV).
+Verify that no `process.env` bypasses occur (Electa Constitution §IV).
 
 ### Step 6: Post-Execution Jira Sync
 1. Transition ticket to **`In Review`** (or **`Done`** if configured for auto-close).

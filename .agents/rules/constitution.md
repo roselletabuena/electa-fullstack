@@ -1,11 +1,11 @@
 ---
 trigger: always_on
-description: Always enforce the 6 core principles of the VoteSphere Constitution across all implementation, planning, and review tasks.
+description: Always enforce the 6 core principles of the Electa Constitution across all implementation, planning, and review tasks.
 ---
 
-# VoteSphere Constitutional Rules (§I–§VI)
+# Electa Constitutional Rules (§I–§VI)
 
-All code written or modified in this repository MUST strictly follow the 6 Core Principles of the VoteSphere Constitution (`.specify/memory/constitution.md`):
+All code written or modified in this repository MUST strictly follow the 6 Core Principles of the Electa Constitution (`.specify/memory/constitution.md`):
 
 ## §I. Strict Type Safety & Boundary Validation
 - TypeScript 5 strict mode is non-negotiable.

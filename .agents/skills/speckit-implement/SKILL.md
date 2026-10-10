@@ -161,8 +161,8 @@ You **MUST** consider the user input before proceeding (if not empty).
    - **Tests before code**: If you need to write tests for contracts, entities, and integration scenarios
    - **Core development**: Implement models, services, CLI commands, endpoints
    - **Integration work**: Database connections, middleware, logging, external services
-   - **VoteSphere Brand Enforcement**: UI implementations MUST default to Light Mode (Opal `#F8FAFC`), apply strict zero-radius (`--radius: 0px`, `rounded-none`), use brand fonts (Outfit / Sora), `.btn-primary`, and `.card-style`. Never default to dark backgrounds.
-   - **VoteSphere Constitution Enforcement**: Enforce §I (no `any`, no `!`, Zod schemas), §II (RSC default, `<Suspense>`, `await` async request APIs), §III (Prisma / TanStack Query separation), §IV (`getSession()`, `@/env` only), §V (colocation, named exports).
+   - **Electa Brand Enforcement**: UI implementations MUST default to Light Mode (Opal `#F8FAFC`), apply strict zero-radius (`--radius: 0px`, `rounded-none`), use brand fonts (Outfit / Sora), `.btn-primary`, and `.card-style`. Never default to dark backgrounds.
+   - **Electa Constitution Enforcement**: Enforce §I (no `any`, no `!`, Zod schemas), §II (RSC default, `<Suspense>`, `await` async request APIs), §III (Prisma / TanStack Query separation), §IV (`getSession()`, `@/env` only), §V (colocation, named exports).
    - **Polish and validation**: Unit tests, performance optimization, documentation
 
 

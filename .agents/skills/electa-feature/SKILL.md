@@ -1,5 +1,5 @@
 ---
-name: "vote-sphere-feature"
+name: "electa-feature"
 description: "Bootstrap a complete Electa feature from scratch — creates the complete spec directory with all canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md), full src/features slice, API route shell, and test folder in a single command."
 metadata:
   author: "Electa Engineering Team"

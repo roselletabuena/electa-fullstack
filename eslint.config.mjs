@@ -96,6 +96,7 @@ const eslintConfig = defineConfig([
     "node_modules/**",
     "prisma/migrations/**",
     "src/generated/**",
+    ".agents/**",
   ]),
 ]);
 

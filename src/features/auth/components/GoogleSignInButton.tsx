@@ -14,7 +14,7 @@ export function GoogleSignInButton({
   label = "Continue with Google",
   returnTo = "/dashboard",
   disabled = false,
-}: GoogleSignInButtonProps) {
+}: Readonly<GoogleSignInButtonProps>) {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 

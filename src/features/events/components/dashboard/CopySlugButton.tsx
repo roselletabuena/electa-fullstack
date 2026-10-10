@@ -24,8 +24,7 @@ export function CopySlugButton({
 
   const handleCopy = async () => {
     try {
-      const origin =
-        typeof window !== "undefined" ? window.location.origin : "https://votesphere.app";
+      const origin = typeof window !== "undefined" ? window.location.origin : "https://electa.app";
       const publicUrl = `${origin}/events/${slug}`;
 
       if (navigator.clipboard?.writeText) {
@@ -40,7 +39,7 @@ export function CopySlugButton({
         textArea.focus();
         textArea.select();
         document.execCommand("copy");
-        document.body.removeChild(textArea);
+        textArea.remove();
       }
 
       setCopied(true);

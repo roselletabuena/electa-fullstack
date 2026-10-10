@@ -6,7 +6,9 @@ export interface DashboardMetricsCardsProps {
   metrics: DashboardMetricsDto;
 }
 
-export function DashboardMetricsCards({ metrics }: DashboardMetricsCardsProps): React.JSX.Element {
+export function DashboardMetricsCards({
+  metrics,
+}: Readonly<DashboardMetricsCardsProps>): React.JSX.Element {
   const cards = [
     {
       label: "Total Events",

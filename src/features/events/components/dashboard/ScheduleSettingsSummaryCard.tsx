@@ -11,7 +11,7 @@ export interface ScheduleSettingsSummaryCardProps {
 
 export function ScheduleSettingsSummaryCard({
   event,
-}: ScheduleSettingsSummaryCardProps): React.JSX.Element {
+}: Readonly<ScheduleSettingsSummaryCardProps>): React.JSX.Element {
   const operationalState = deriveEventState({
     publicationStatus: event.publicationStatus,
     startsAt: event.startsAt,

@@ -33,7 +33,7 @@ export function TaxonomyDeleteDialog({
   onConfirm,
   target,
   isDeleting,
-}: TaxonomyDeleteDialogProps): React.JSX.Element {
+}: Readonly<TaxonomyDeleteDialogProps>): React.JSX.Element {
   if (!target) {
     return <></>;
   }

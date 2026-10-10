@@ -109,7 +109,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
   };
 
   const isFreeVotingDisabled = quota !== null && !quota.isFreeVotingEnabled;
-  const isInCooldown = quota !== null && quota.isInCooldown;
+  const isInCooldown = quota?.isInCooldown;
   const remaining = quota ? quota.remainingVotes : 1;
   const total = quota ? quota.dailyLimit : 1;
 

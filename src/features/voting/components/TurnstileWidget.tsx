@@ -128,7 +128,7 @@ export const TurnstileWidget: React.FC<TurnstileWidgetProps> = ({
   return (
     <div
       ref={containerRef}
-      className={`flex min-h-[65px] items-center justify-center ${className}`}
+      className={`flex min-h-16.25 items-center justify-center ${className}`}
       data-testid="turnstile-widget"
     />
   );

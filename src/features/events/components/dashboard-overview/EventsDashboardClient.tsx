@@ -23,7 +23,7 @@ export function EventsDashboardClient({
   events,
   metrics,
   user,
-}: EventsDashboardClientProps): React.JSX.Element {
+}: Readonly<EventsDashboardClientProps>): React.JSX.Element {
   const [, startTransition] = useTransition();
 
   const [status, setStatus] = useQueryState(
@@ -65,25 +65,25 @@ export function EventsDashboardClient({
     limit: 12,
   });
 
-  const handleStatusChange = (newStatus: (typeof STATUS_OPTIONS)[number]) => {
-    setStatus(newStatus);
-    setCurrentPage(1);
+  const handleStatusChange = async (newStatus: (typeof STATUS_OPTIONS)[number]) => {
+    await setStatus(newStatus);
+    await setCurrentPage(1);
   };
 
-  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchQuery(e.target.value);
-    setCurrentPage(1);
+  const handleSearchChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    await setSearchQuery(e.target.value);
+    await setCurrentPage(1);
   };
 
-  const handleClearSearch = () => {
-    setSearchQuery("");
-    setCurrentPage(1);
+  const handleClearSearch = async () => {
+    await setSearchQuery("");
+    await setCurrentPage(1);
   };
 
-  const handleResetFilters = () => {
-    setStatus("ALL");
-    setSearchQuery("");
-    setCurrentPage(1);
+  const handleResetFilters = async () => {
+    await setStatus("ALL");
+    await setSearchQuery("");
+    await setCurrentPage(1);
   };
 
   return (

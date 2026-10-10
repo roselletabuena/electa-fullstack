@@ -13,7 +13,7 @@ export interface DashboardGreetingBannerProps {
 export function DashboardGreetingBanner({
   user,
   metrics,
-}: DashboardGreetingBannerProps): React.JSX.Element {
+}: Readonly<DashboardGreetingBannerProps>): React.JSX.Element {
   const displayName = user.name || user.email.split("@")[0] || "Organizer";
 
   return (

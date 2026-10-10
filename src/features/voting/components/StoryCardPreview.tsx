@@ -14,7 +14,7 @@ interface StoryCardPreviewProps {
 export function StoryCardPreview({
   payload,
   onGenerated,
-}: StoryCardPreviewProps): React.JSX.Element {
+}: Readonly<StoryCardPreviewProps>): React.JSX.Element {
   const [result, setResult] = useState<StoryGeneratorResult | null>(null);
   const [isGenerating, setIsGenerating] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);

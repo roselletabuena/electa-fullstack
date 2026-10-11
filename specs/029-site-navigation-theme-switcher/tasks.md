@@ -54,4 +54,4 @@
 - [x] T013 Run unit test suite: `npm run test:unit tests/unit/navigation/`
 - [x] T014 Run full project tests: `npm run test:unit`
 - [x] T015 Run typecheck and linting: `npm run typecheck` and `npm run lint`
-- [ ] T016 Commit changes using Conventional Commits (`feat`, `test`)
+- [x] T016 Commit changes using Conventional Commits (`feat`, `test`)

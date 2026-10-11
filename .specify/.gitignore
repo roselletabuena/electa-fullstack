@@ -7,3 +7,6 @@ feature.json
 
 # Per-machine extension config overrides.
 extensions/*/local-config.yml
+
+# Ephemeral PR description payload for GitHub CLI (gh pr create --body-file)
+pr-body.md

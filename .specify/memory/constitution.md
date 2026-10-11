@@ -1,8 +1,11 @@
 <!--
 Sync Impact Report:
-- Version change: Unversioned draft -> 1.0.0
-- Modified principles: Replaced template placeholders with 6 project-specific core principles
-- Added sections: Core Principles, Performance, UX & Accessibility Standards, Development Workflow & Quality Gates, Governance
+- Version change: 1.0.0 -> 1.1.0
+- Modified principles:
+  - Section VI (Test-First & Zero-Regression Quality Gates): Formally added Atomic Commits Enforcement and Conventional Commits standards.
+  - Section "Performance, UX & Accessibility Standards": Formally integrated Electa Brand Design System (Opal light mode default, strict zero-radius geometry, Outfit/Sora/JetBrains Mono typography), Dual-Theme WCAG 2.1 AA parity with high-opacity image scrims, and Tailwind CSS v4 syntax conformance (bg-linear-to-*, fraction aspect ratios).
+  - Section "Development Workflow & Quality Gates": Added Single-Command Agent Verification (agent:verify) and environment integrity guardrails.
+- Added sections: None
 - Removed sections: None
 - Follow-up TODOs: None
 -->
@@ -49,18 +52,31 @@ Sync Impact Report:
 - Business logic, voting aggregation algorithms, authorization checks, and validation schemas MUST have automated unit tests written in Vitest (`tests/unit/`).
 - Bug fixes and core feature modifications MUST include accompanying test assertions confirming expected behavior.
 - All staged files MUST pass automated linting (`eslint --fix`) and formatting (`prettier --write`) through `lint-staged` and Husky before committing.
+- **Atomic Commits Enforcement**: Git commits MUST be atomic, bisectable, single-purpose units adhering to Conventional Commits format (`feat`, `fix`, `refactor`, `chore`, `test`, `docs`). Bundled multi-concern commits ("mega-commits", e.g. `git add .` mixing schema, api, ui, and docs) are strictly prohibited.
 
 ## Performance, UX & Accessibility Standards
 
+- **Brand Design System (Opal Theme)**:
+  - **Default Theme**: Default theme MUST be Light Mode (Opal Slate-50 `#F8FAFC`, foreground Slate-900 `#0F172A`, primary accent Sky Blue `#0284C7`). Pages MUST NOT default to dark backgrounds (`bg-slate-900`, `bg-black`) or naked white text without `dark:` scoping.
+  - **Zero-Radius Geometry**: All buttons, inputs, cards, dialogs, dropdowns, badges, and containers MUST adhere to strict 0px corner geometry (`--radius: 0px`, `rounded-none`). Rounded corner utilities (`rounded-md`, `rounded-lg`, `rounded-xl`, `rounded-full`) are strictly prohibited, except for circular avatar photographs.
+  - **Brand Identity & Tagline**: Official brand tagline is "Vote. Engage. Celebrate." Headings MUST use Outfit (`font-heading`), body and UI copy MUST use Sora (`font-sans`), and data/numeric displays MUST use JetBrains Mono (`font-mono`).
+- **Dual-Theme Parity & WCAG 2.1 AA Compliance**:
+  - Every UI component MUST maintain WCAG 2.1 AA color contrast (minimum 4.5:1 for body text, 3:1 for large text and interactive components) in BOTH Light Mode and Dark Mode.
+  - Low-contrast grays on light backgrounds (`text-slate-300`, `text-slate-400`) are prohibited; use `text-slate-900` for headings, `text-slate-700` for body copy and interactive pills, and `text-slate-600` for secondary text.
+  - Text placed over photos or images MUST include a high-opacity dark gradient scrim (`bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent`) to guarantee readability.
+- **Tailwind CSS v4 Conformance**:
+  - All gradient styles MUST use canonical Tailwind CSS v4 `bg-linear-to-*` syntax (e.g. `bg-linear-to-r`, `bg-linear-to-t`), never legacy `bg-gradient-to-*`.
+  - Aspect ratio utilities MUST use native fraction syntax (`aspect-4/5`, `aspect-9/16`, `aspect-16/9`, `aspect-square`), never arbitrary bracket syntax (`aspect-[4/5]`).
 - **Optimistic Interactions**: Polling and vote actions SHOULD leverage optimistic updates for immediate user feedback.
-- **Accessibility (a11y)**: Interactive UI components MUST utilize Radix UI primitives to ensure full keyboard navigation, screen reader accessibility, and WCAG compliance.
-- **Design System & Assets**: Use Tailwind CSS 4 `@theme` design tokens in `src/app/globals.css`. All images MUST use Next.js `<Image>` for automatic optimization.
+- **Accessibility Primitives**: Interactive UI components MUST utilize Radix UI primitives to ensure full keyboard navigation, screen reader accessibility, and focus management.
+- **Optimized Media Assets**: All raster images MUST use Next.js `<Image>` for responsive sizing and automatic format optimization.
 
 ## Development Workflow & Quality Gates
 
-- **Static Analysis & Type Checking**: Code MUST pass `npm run typecheck`, `npm run lint`, and `npm run format:check` with zero warnings or errors.
+- **Static Analysis & Verification**: Code MUST pass type checking (`npm run typecheck`), linting (`npm run lint`), format validation (`npm run format:check`), and unit tests (`npm run test:unit`) with zero warnings or errors.
+- **Single-Command Agent Verification**: Unified verification CLI commands (`npm run agent:verify`) SHOULD be utilized for rapid agent feedback loops to prevent constitutional drift.
 - **Database Migrations**: All schema modifications MUST be accompanied by a generated Prisma migration (`npx prisma migrate dev`). Raw SQL queries are prohibited unless Prisma lacks the expressive capability.
-- **Documentation**: All new environment variables MUST be declared in `src/env.ts` and documented in `.env.example`.
+- **Environment Integrity**: All new environment variables MUST be declared in `src/env.ts` and documented in `.env.example`. Raw `process.env` access is detected and blocked.
 
 ## Governance
 
@@ -68,8 +84,8 @@ Sync Impact Report:
 - Every Spec Kit specification (`/speckit-specify`), implementation plan (`/speckit-plan`), and task list (`/speckit-tasks`) MUST verify compliance against this Constitution.
 - **Versioning Policy**:
   - **MAJOR (X.0.0)**: Breaking redefinitions or removals of architectural principles or governance rules.
-  - **MINOR (1.X.0)**: Introduction of new principles, standards, or significant additions.
+  - **MINOR (1.X.0)**: Introduction of new principles, design system standards, or significant expansions.
   - **PATCH (1.0.X)**: Non-breaking clarifications, formatting, or typo fixes.
 - **Amendment Process**: Amendments require updating `.specify/memory/constitution.md`, recording the change in the Sync Impact Report, and bumping the constitution version accordingly.
 
-**Version**: 1.0.0 | **Ratified**: 2026-08-26 | **Last Amended**: 2026-08-26
+**Version**: 1.1.0 | **Ratified**: 2026-08-26 | **Last Amended**: 2026-10-11

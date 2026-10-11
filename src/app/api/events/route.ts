@@ -11,7 +11,7 @@ import {
   mockClosedEvent,
 } from "@/features/events/utils/mock-data";
 
-export async function GET(): Promise<NextResponse<ApiResponse<PublicEventDto[]>>> {
+export function GET(): NextResponse<ApiResponse<PublicEventDto[]>> {
   return apiSuccess([mockScheduledEvent, mockActiveEvent, mockClosedEvent]);
 }
 

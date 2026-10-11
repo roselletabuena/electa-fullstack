@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   description: "Sign in to your Electa universal account to vote and manage events.",
 };
 
-export default async function LoginPage() {
+export default async function LoginPage(): Promise<React.JSX.Element> {
   const session = await getSession();
   if (session?.userId) {
     redirect("/dashboard");

@@ -106,7 +106,10 @@ Titles must follow the Conventional Commits format combined with the bracketed J
 
 ## 📄 PR Description Template
 
-Load the template from `.agents/skills/pr-creator/templates/pull-request-template.md` and substitute the tokens:
+Load the template from `.github/pull_request_template.md` (or `.agents/skills/pr-creator/templates/pull-request-template.md`) and substitute the tokens with active branch data:
+
+> [!NOTE]
+> `.specify/pr-body.md` is an ephemeral, git-ignored payload file generated solely to feed `gh pr create --body-file ".specify/pr-body.md"` without shell escaping issues. It is intentionally excluded from Git tracking.
 
 ```markdown
 ## 📌 Jira Ticket

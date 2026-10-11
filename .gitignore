@@ -51,6 +51,7 @@ graphify-out/
 # git worktrees
 .worktrees/
 
-# scratch scripts
+# scratch scripts & ephemeral PR artifacts
 scratch/
+.specify/pr-body.md
 

@@ -18,7 +18,7 @@ interface ContestantsPageProps {
 
 export default async function EventContestantsPage({
   params,
-}: ContestantsPageProps): Promise<React.JSX.Element> {
+}: Readonly<ContestantsPageProps>): Promise<React.JSX.Element> {
   const resolvedParams = await params;
   const parsedParams = eventSlugParamsSchema.safeParse(resolvedParams);
 

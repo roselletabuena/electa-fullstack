@@ -27,7 +27,9 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
-export default async function StageDisplayPage(props: PageProps): Promise<React.JSX.Element> {
+export default async function StageDisplayPage(
+  props: Readonly<PageProps>,
+): Promise<React.JSX.Element> {
   const { slug } = await props.params;
   const searchParams = await props.searchParams;
   const divisionId = searchParams.divisionId ?? undefined;

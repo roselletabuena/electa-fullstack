@@ -13,3 +13,6 @@ export * from "./components/revenue/RevenueSummaryCards";
 export * from "./components/revenue/ContestantRevenueShareTable";
 export * from "./components/revenue/PaymentChannelBreakdownCard";
 export * from "./components/revenue/PayoutLedgerTable";
+export * from "./components/trending";
+export * from "./hooks/useTrendingEvents";
+export * from "./utils/trending-helpers";

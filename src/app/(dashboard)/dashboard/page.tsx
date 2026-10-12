@@ -75,7 +75,7 @@ export default async function OrganizerDashboardPage(): Promise<React.JSX.Elemen
   const metrics: DashboardMetricsDto = computeDashboardMetrics(events);
 
   return (
-    <div className="min-h-screen bg-slate-50 pb-16 dark:bg-slate-950">
+    <div className="w-full flex-1 bg-slate-50 pb-16 dark:bg-slate-950">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Suspense
           fallback={

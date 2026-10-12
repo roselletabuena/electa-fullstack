@@ -107,7 +107,7 @@ export function EventPageClient({
   const totalVotes = contestantsToDisplay.reduce((sum, c) => sum + (c.voteCount ?? 0), 0);
 
   return (
-    <div className="bg-background text-foreground min-h-screen px-4 py-8 sm:px-6 lg:px-8">
+    <main className="bg-background text-foreground w-full flex-1 px-4 py-8 sm:px-6 lg:px-8">
       <div className="mx-auto max-w-6xl space-y-8">
         {(isDraftPreview || event.operationalState === "Draft") && (
           <DraftPreviewBanner accessMode={accessMode} />
@@ -156,6 +156,6 @@ export function EventPageClient({
           />
         )}
       </div>
-    </div>
+    </main>
   );
 }

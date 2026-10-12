@@ -139,7 +139,7 @@ export default async function LeaderboardPage(
   }
 
   return (
-    <main className="min-h-screen bg-slate-50 text-slate-900 transition-colors dark:bg-[#070c18] dark:text-slate-100">
+    <main className="w-full flex-1 bg-slate-50 text-slate-900 transition-colors dark:bg-[#070c18] dark:text-slate-100">
       <Suspense
         fallback={
           <div className="p-12 text-center font-mono text-sm">Loading Live Leaderboard...</div>

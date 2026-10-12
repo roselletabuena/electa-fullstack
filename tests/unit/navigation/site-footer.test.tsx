@@ -25,12 +25,8 @@ describe("SiteFooter Component", () => {
 
   it("renders copyright text and system status badge", () => {
     render(<SiteFooter />);
-    expect(
-      screen.getByText("© 2026 Electa Platform. All Rights Reserved."),
-    ).toBeDefined();
-    expect(
-      screen.getByText("SYSTEM OPERATIONAL · AUDIT VERIFIED"),
-    ).toBeDefined();
+    expect(screen.getByText("© 2026 Electa Platform. All Rights Reserved.")).toBeDefined();
+    expect(screen.getByText("SYSTEM OPERATIONAL · AUDIT VERIFIED")).toBeDefined();
   });
 
   it("renders all 4 directory column sections with headings", () => {
@@ -52,14 +48,20 @@ describe("SiteFooter Component", () => {
     expect(liveVotingLink.getAttribute("href")).toBe("/events?filter=live");
 
     // Organizers section links
-    const createEventLink = screen.getByRole("link", { name: /create a new pageant or contest event/i });
+    const createEventLink = screen.getByRole("link", {
+      name: /create a new pageant or contest event/i,
+    });
     expect(createEventLink.getAttribute("href")).toBe("/events/new");
 
-    const portalLink = screen.getByRole("link", { name: /access the organizer management portal/i });
+    const portalLink = screen.getByRole("link", {
+      name: /access the organizer management portal/i,
+    });
     expect(portalLink.getAttribute("href")).toBe("/dashboard");
 
     // Platform section links
-    const statusLink = screen.getByRole("link", { name: /check realtime platform uptime and system status/i });
+    const statusLink = screen.getByRole("link", {
+      name: /check realtime platform uptime and system status/i,
+    });
     expect(statusLink.getAttribute("href")).toBe("/status");
 
     // Legal section links
@@ -69,7 +71,9 @@ describe("SiteFooter Component", () => {
     const privacyLink = screen.getByRole("link", { name: /read our privacy policy/i });
     expect(privacyLink.getAttribute("href")).toBe("/privacy");
 
-    const auditLink = screen.getByRole("link", { name: /platform vote verification and cryptographic audit integrity/i });
+    const auditLink = screen.getByRole("link", {
+      name: /platform vote verification and cryptographic audit integrity/i,
+    });
     expect(auditLink.getAttribute("href")).toBe("/audit");
   });
 
@@ -77,9 +81,7 @@ describe("SiteFooter Component", () => {
     render(<SiteFooter />);
     const links = screen.getAllByRole("link");
     // Verify directory links have min-h-11 or min-h-[44px]
-    const directoryLinks = links.filter((l) =>
-      l.getAttribute("href")?.startsWith("/"),
-    );
+    const directoryLinks = links.filter((l) => l.getAttribute("href")?.startsWith("/"));
     expect(directoryLinks.length).toBeGreaterThan(0);
     for (const link of directoryLinks) {
       if (link.getAttribute("aria-label")?.includes("Electa - Home")) continue;
@@ -107,5 +109,14 @@ describe("SiteFooter Component", () => {
 
     render(<SiteFooter config={customConfig} />);
     expect(screen.getByText("CUSTOM ELECTA")).toBeDefined();
+  });
+
+  it("renders theme toggle in footer utility strip for default and streamlined variants", () => {
+    const { unmount } = render(<SiteFooter />);
+    expect(screen.getByRole("button", { name: /switch to (dark|light) mode/i })).toBeDefined();
+    unmount();
+
+    render(<SiteFooter variant="streamlined" />);
+    expect(screen.getByRole("button", { name: /switch to (dark|light) mode/i })).toBeDefined();
   });
 });

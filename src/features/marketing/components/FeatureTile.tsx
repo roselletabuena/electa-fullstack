@@ -43,11 +43,9 @@ function renderTileIcon(icon: string, id: string): React.ReactNode {
 
 export function FeatureTile({ tile, className = "" }: FeatureTileProps) {
   return (
-    <div
-      className={`group flex items-start gap-3.5 border border-slate-200 bg-slate-50/70 p-4 transition-colors hover:border-slate-300 dark:border-slate-800/80 dark:bg-slate-900/40 dark:hover:border-slate-700 ${className}`}
-    >
+    <div className={`group flex items-start gap-3.5 transition-colors ${className}`}>
       <div
-        className="flex h-9 w-9 shrink-0 items-center justify-center border border-slate-200 bg-white shadow-2xs dark:border-slate-800 dark:bg-slate-800/90"
+        className="flex h-9 w-9 shrink-0 items-center justify-center bg-sky-50 text-sky-600 dark:bg-sky-950/40 dark:text-sky-400"
         aria-hidden="true"
         data-testid={`feature-icon-${tile.id}`}
       >
@@ -60,7 +58,7 @@ export function FeatureTile({ tile, className = "" }: FeatureTileProps) {
             {tile.title}
           </h3>
           {tile.badge && (
-            <span className="border border-sky-200 bg-sky-50 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-sky-700 uppercase dark:border-sky-900/60 dark:bg-sky-950/50 dark:text-sky-300">
+            <span className="bg-sky-50 px-1.5 py-0.5 text-[10px] font-bold tracking-wider text-sky-700 uppercase dark:bg-sky-950/50 dark:text-sky-300">
               {tile.badge}
             </span>
           )}

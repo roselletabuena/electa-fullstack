@@ -25,10 +25,9 @@ describe("HeroMarketingCard Component", () => {
     expect(heading.id).toBe("marketing-showcase-heading");
   });
 
-  it("renders the official credential badge with accent dot", () => {
+  it("does not render the credential badge per design cleanup", () => {
     render(<HeroMarketingCard />);
-    const badge = screen.getByText("OFFICIAL VOTING PLATFORM");
-    expect(badge).toBeDefined();
+    expect(screen.queryByText("OFFICIAL VOTING PLATFORM")).toBeNull();
   });
 
   it("renders all 4 feature tiles with exact titles and descriptions", () => {
@@ -101,7 +100,6 @@ describe("HeroMarketingCard Component", () => {
     };
 
     render(<HeroMarketingCard config={customConfig} />);
-    expect(screen.getByText("VERIFIED PLATFORM")).toBeDefined();
     expect(screen.getByText("CUSTOM MARKETING HEADLINE")).toBeDefined();
     expect(screen.getByText("Tile 1")).toBeDefined();
     expect(screen.getByText("METRIC 1")).toBeDefined();

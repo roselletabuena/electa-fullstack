@@ -13,7 +13,7 @@ interface LeaderboardRosterProps {
 export function LeaderboardRoster({
   entries,
   isFrozen = false,
-}: LeaderboardRosterProps): React.JSX.Element | null {
+}: Readonly<LeaderboardRosterProps>): React.JSX.Element | null {
   if (entries.length === 0) {
     return null;
   }
@@ -57,6 +57,38 @@ export function LeaderboardRoster({
     return (
       <span className="inline-flex h-8 min-w-8 items-center justify-center border border-slate-300 bg-slate-50 px-2 font-mono text-xs font-bold text-slate-800 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-200">
         #{entry.rank}
+      </span>
+    );
+  };
+
+  const getGapStatus = (entry: LeaderboardEntry): React.JSX.Element => {
+    if (isFrozen) {
+      return <span className="font-mono text-[11px] text-slate-400">—</span>;
+    }
+
+    if (entry.rank === 1) {
+      return (
+        <span className="inline-flex items-center gap-1 border border-amber-300 bg-amber-50 px-2 py-1 font-sans text-xs font-bold text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+          <Flame className="h-3 w-3 text-amber-600 dark:text-amber-400" />
+          <span>Leader</span>
+        </span>
+      );
+    }
+
+    if (entry.isPodium) {
+      return (
+        <span className="font-sans text-xs font-medium text-sky-700 dark:text-sky-400">
+          Needs{" "}
+          <strong className="font-mono font-bold">{entry.gapToLeader.toLocaleString()}</strong> for
+          1st
+        </span>
+      );
+    }
+
+    return (
+      <span className="font-sans text-xs font-medium text-slate-600 dark:text-slate-300">
+        +<strong className="font-mono font-bold">{entry.gapToAhead.toLocaleString()}</strong> to
+        pass next
       </span>
     );
   };
@@ -155,30 +187,7 @@ export function LeaderboardRoster({
 
                 {/* Gap Status */}
                 <td className="px-5 py-4 text-right align-middle whitespace-nowrap">
-                  {isFrozen ? (
-                    <span className="font-mono text-[11px] text-slate-400">—</span>
-                  ) : entry.rank === 1 ? (
-                    <span className="inline-flex items-center gap-1 border border-amber-300 bg-amber-50 px-2 py-1 font-sans text-xs font-bold text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                      <Flame className="h-3 w-3 text-amber-600 dark:text-amber-400" />
-                      <span>Leader</span>
-                    </span>
-                  ) : entry.isPodium ? (
-                    <span className="font-sans text-xs font-medium text-sky-700 dark:text-sky-400">
-                      Needs{" "}
-                      <strong className="font-mono font-bold">
-                        {entry.gapToLeader.toLocaleString()}
-                      </strong>{" "}
-                      for 1st
-                    </span>
-                  ) : (
-                    <span className="font-sans text-xs font-medium text-slate-600 dark:text-slate-300">
-                      +
-                      <strong className="font-mono font-bold">
-                        {entry.gapToAhead.toLocaleString()}
-                      </strong>{" "}
-                      to pass next
-                    </span>
-                  )}
+                  {getGapStatus(entry)}
                 </td>
               </tr>
             ))}

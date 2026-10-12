@@ -41,11 +41,11 @@ export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 transition-colors dark:bg-[#090D16]">
       <SiteHeader />
-      <main className="flex flex-1 flex-col items-center justify-start space-y-16 px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
-        <div className="mx-auto w-full max-w-7xl">
+      <main className="w-full flex-1">
+        <div className="mx-auto w-full max-w-7xl space-y-16 px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
             {/* Left Hero Column: Title, Subheading, Search */}
-            <div className="flex flex-col items-start text-left lg:col-span-7">
+            <div className="flex flex-col items-start text-left lg:col-span-6">
               <h1 className="heading-font text-4xl font-black tracking-tight text-slate-900 uppercase sm:text-5xl lg:text-6xl dark:text-white">
                 SUPPORT YOUR{" "}
                 <span className="text-sky-600 dark:text-sky-400">EVENT CANDIDATES</span>
@@ -62,15 +62,15 @@ export default function Home() {
             </div>
 
             {/* Right Hero Column: Marketing Value Showcase Card */}
-            <div className="w-full lg:col-span-5">
+            <div className="w-full lg:col-span-6">
               <HeroMarketingCard />
             </div>
           </div>
-        </div>
 
-        {/* Trending Events & Lifecycle Discovery Grid */}
-        <div className="mx-auto w-full max-w-7xl" id="events">
-          <TrendingEventsSection />
+          {/* Trending Events & Lifecycle Discovery Grid */}
+          <div id="events">
+            <TrendingEventsSection />
+          </div>
         </div>
       </main>
       <SiteFooter variant="streamlined" />

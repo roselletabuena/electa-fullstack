@@ -105,7 +105,7 @@ export function TrendingEventCard({
         </div>
 
         {/* Action Button */}
-        <div className="mt-5 border-t border-slate-100 pt-3 dark:border-slate-800/80">
+        <div className="mt-5">
           <Link
             href={`/events/${event.slug}`}
             className="inline-flex w-full items-center justify-center rounded-none border border-slate-900 bg-slate-900 px-4 py-2.5 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition-all duration-150 hover:bg-slate-800 focus:outline-none focus-visible:ring-2 focus-visible:ring-sky-500 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"

@@ -26,7 +26,7 @@ export function LeaderboardView({
   categories,
   selectedDivisionId,
   selectedCategoryId,
-}: LeaderboardViewProps): React.JSX.Element {
+}: Readonly<LeaderboardViewProps>): React.JSX.Element {
   const { data, isFetching, refetch } = useLeaderboardRealtime({
     slug,
     divisionId: selectedDivisionId,

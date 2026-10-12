@@ -103,4 +103,5 @@ export type FooterConfig = z.infer<typeof footerConfigSchema>;
 export interface SiteFooterProps {
   readonly className?: string;
   readonly config?: FooterConfig;
+  readonly variant?: "default" | "streamlined";
 }

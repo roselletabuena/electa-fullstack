@@ -1,4 +1,3 @@
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
@@ -8,8 +7,51 @@ import type { SiteFooterProps } from "../types";
 export function SiteFooter({
   className,
   config = DEFAULT_SITE_FOOTER_CONFIG,
+  variant = "default",
 }: Readonly<SiteFooterProps>) {
   const { brand, sections, legal } = config;
+
+  if (variant === "streamlined") {
+    return (
+      <footer
+        role="contentinfo"
+        aria-label="Site Footer"
+        className={cn(
+          "w-full border-t border-slate-800 bg-[#0F172A] text-slate-400 transition-colors",
+          className,
+        )}
+      >
+        <div className="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-4 py-8 sm:flex-row sm:px-6 lg:px-8">
+          <Link
+            href={brand.homeHref}
+            className="group inline-flex items-center gap-3 transition-opacity hover:opacity-95 focus-visible:outline-2 focus-visible:outline-sky-400"
+            aria-label="Electa - Home"
+          >
+            <Image
+              src={brand.logoSrc}
+              alt="Electa Logo"
+              width={24}
+              height={30}
+              className="transition-transform group-hover:scale-105"
+              priority={false}
+            />
+            <div className="flex flex-col">
+              <span className="font-heading text-xl leading-none font-black tracking-tight text-white select-none">
+                {brand.title}
+              </span>
+              <span className="font-heading mt-1 text-[9px] font-extrabold tracking-widest text-sky-400 uppercase select-none">
+                {brand.tagline}
+              </span>
+            </div>
+          </Link>
+
+          <p className="font-mono text-xs tracking-tight text-slate-400 select-none">
+            {legal.copyright}
+          </p>
+        </div>
+      </footer>
+    );
+  }
 
   return (
     <footer
@@ -39,10 +81,10 @@ export function SiteFooter({
                 priority={false}
               />
               <div className="flex flex-col">
-                <span className="font-heading text-2xl font-black leading-none tracking-tight text-white select-none">
+                <span className="font-heading text-2xl leading-none font-black tracking-tight text-white select-none">
                   {brand.title}
                 </span>
-                <span className="mt-1 font-heading text-[10px] font-extrabold tracking-widest text-sky-400 uppercase select-none">
+                <span className="font-heading mt-1 text-[10px] font-extrabold tracking-widest text-sky-400 uppercase select-none">
                   {brand.tagline}
                 </span>
               </div>
@@ -101,7 +143,7 @@ export function SiteFooter({
           </p>
 
           <div className="flex items-center gap-6 font-mono text-xs text-slate-400">
-            <span className="text-[11px] uppercase tracking-wider text-slate-400">
+            <span className="text-[11px] tracking-wider text-slate-400 uppercase">
               BRUTALIST OPAL DESIGN SYSTEM
             </span>
           </div>

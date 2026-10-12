@@ -17,6 +17,7 @@ export const mockScheduledEvent: PublicEventDto = {
   isFreeVotingEnabled: true,
   dailyFreeVoteLimit: 1,
   organizerId: "usr_org_01",
+  location: "Baguio City, Northern Luzon",
   contestants: [
     {
       id: "cst_01",
@@ -62,6 +63,9 @@ export const mockActiveEvent: PublicEventDto = {
   id: "evt_active_01",
   slug: "miss-visayas-2026",
   title: "Miss Visayas 2026",
+  bannerUrl:
+    "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?auto=format&fit=crop&w=1600&q=80",
+  location: "Cebu City, Central Visayas",
   startsAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(), // started 1 day ago
   endsAt: new Date(Date.now() + 1000 * 60 * 60 * 48).toISOString(), // ends in 2 days
   operationalState: "Active",
@@ -72,6 +76,9 @@ export const mockClosedEvent: PublicEventDto = {
   id: "evt_closed_01",
   slug: "miss-mindanao-2026",
   title: "Miss Mindanao 2026",
+  bannerUrl:
+    "https://images.unsplash.com/photo-1469488865564-c2de10f69f96?auto=format&fit=crop&w=1600&q=80",
+  location: "Davao City, Southern Mindanao",
   startsAt: new Date(Date.now() - 1000 * 60 * 60 * 72).toISOString(),
   endsAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
   operationalState: "Closed",
@@ -86,6 +93,7 @@ export const mockDraftEvent: PublicEventDto = {
   id: "evt_draft_01",
   slug: "preview-draft-contest",
   title: "Miss Global Philippines 2026 (Internal Preview)",
+  location: "Metro Manila, NCR",
   operationalState: "Draft",
 };
 

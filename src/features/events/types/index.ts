@@ -44,7 +44,38 @@ export interface PublicEventDto {
   isFreeVotingEnabled?: boolean;
   dailyFreeVoteLimit?: number;
   organizerId?: string;
+  location?: string;
   contestants: ContestantDto[];
+}
+
+export const EVENT_LIFECYCLE_FILTERS = ["all", "active", "scheduled", "closed"] as const;
+export type EventLifecycleFilter = (typeof EVENT_LIFECYCLE_FILTERS)[number];
+
+export interface TrendingEventItemDto {
+  id: string;
+  slug: string;
+  title: string;
+  description: string;
+  bannerUrl: string;
+  location?: string;
+  startsAt: string;
+  endsAt: string;
+  operationalState: EventOperationalState;
+  contestantCount: number;
+  serverTime: string;
+}
+
+export interface LifecycleTabOption {
+  key: EventLifecycleFilter;
+  label: string;
+  count?: number;
+}
+
+export interface EventCountdownSnapshot {
+  pillLabel: string;
+  pillVariant: "active" | "scheduled" | "closed";
+  actionLabel: string;
+  isUrgent?: boolean;
 }
 
 export interface EventAuditLogDto {

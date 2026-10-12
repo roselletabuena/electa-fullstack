@@ -57,22 +57,13 @@ function TrendingEventsInner(): React.JSX.Element {
       {/* Section Header & Subtitle */}
       <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-end dark:border-slate-800">
         <div>
-          <div className="inline-flex items-center gap-2 rounded-none border border-slate-300 bg-white px-3 py-1 text-[11px] font-extrabold tracking-widest text-slate-800 uppercase shadow-xs dark:border-slate-800 dark:bg-white/5 dark:text-slate-200">
-            <span className="h-1.5 w-1.5 bg-sky-600 dark:bg-sky-400" />
-            Live & Scheduled Pageants
-          </div>
-
           <h2
             id="trending-events-heading"
-            className="heading-font mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl lg:text-4xl dark:text-white"
+            className="heading-font text-2xl font-black tracking-tight text-slate-900 uppercase sm:text-3xl lg:text-4xl dark:text-white"
           >
-            TRENDING COMPETITIONS & ELECTIONS
+            TRENDING EVENTS
+            <span className="sr-only">TRENDING COMPETITIONS & ELECTIONS</span>
           </h2>
-
-          <p className="mt-2 max-w-2xl font-sans text-xs text-slate-600 sm:text-sm dark:text-slate-400">
-            Explore authenticated public voting across premier pageants and campus elections. Filter
-            by lifecycle status to discover live voting, upcoming previews, or final tallies.
-          </p>
         </div>
 
         {/* Tab Filters */}

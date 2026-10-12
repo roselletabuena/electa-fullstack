@@ -11,9 +11,9 @@
 
 **Purpose**: Define types, Zod schemas, and standard marketing content configuration.
 
-- [ ] T001 Define marketing feature types and Zod schemas in `src/features/marketing/types/index.ts`
-- [ ] T002 Define standard marketing value pillars, highlights metrics, and trust copy in `src/features/marketing/utils/marketing-config.ts`
-- [ ] T003 Export types and utilities in `src/features/marketing/utils/index.ts` and `src/features/marketing/index.ts`
+- [x] T001 Define marketing feature types and Zod schemas in `src/features/marketing/types/index.ts`
+- [x] T002 Define standard marketing value pillars, highlights metrics, and trust copy in `src/features/marketing/utils/marketing-config.ts`
+- [x] T003 Export types and utilities in `src/features/marketing/utils/index.ts` and `src/features/marketing/index.ts`
 
 ---
 
@@ -21,11 +21,11 @@
 
 **Purpose**: Implement the zero-radius `HeroMarketingCard`, `FeatureTile`, and `HighlightsRibbon` components following Electa branding and WCAG 2.1 AA standards.
 
-- [ ] T004 Implement `FeatureTile` in `src/features/marketing/components/FeatureTile.tsx` with high-contrast icon container, zero-radius geometry, and readable typography
-- [ ] T005 Implement `HighlightsRibbon` in `src/features/marketing/components/HighlightsRibbon.tsx` with tabular monospace metrics and hairline borders
-- [ ] T006 Implement `HeroMarketingCard` in `src/features/marketing/components/HeroMarketingCard.tsx` with credential badge, headline, 4 tiles, ribbon, and assurance footnote
-- [ ] T007 Export components in `src/features/marketing/components/index.ts` and `src/features/marketing/index.ts`
-- [ ] T008 Integrate `HeroMarketingCard` into `src/app/page.tsx` hero section
+- [x] T004 Implement `FeatureTile` in `src/features/marketing/components/FeatureTile.tsx` with high-contrast icon container, zero-radius geometry, and readable typography
+- [x] T005 Implement `HighlightsRibbon` in `src/features/marketing/components/HighlightsRibbon.tsx` with tabular monospace metrics and hairline borders
+- [x] T006 Implement `HeroMarketingCard` in `src/features/marketing/components/HeroMarketingCard.tsx` with credential badge, headline, 4 tiles, ribbon, and assurance footnote
+- [x] T007 Export components in `src/features/marketing/components/index.ts` and `src/features/marketing/index.ts`
+- [x] T008 Integrate `HeroMarketingCard` into `src/app/page.tsx` hero section
 
 ---
 
@@ -33,9 +33,9 @@
 
 **Purpose**: Validate component rendering, copy exactness, zero-radius geometry, and accessibility.
 
-- [ ] T009 Implement comprehensive unit tests in `tests/unit/marketing/HeroMarketingCard.test.tsx` verifying badge, headline, all 4 tiles, all 4 metrics, and assurance footnote
-- [ ] T010 Execute unit test suite with Vitest (`npm run test:unit`)
-- [ ] T011 Run typecheck (`npm run typecheck`) and linter (`npm run lint`)
+- [x] T009 Implement comprehensive unit tests in `tests/unit/marketing/HeroMarketingCard.test.tsx` verifying badge, headline, all 4 tiles, all 4 metrics, and assurance footnote
+- [x] T010 Execute unit test suite with Vitest (`npm run test:unit`)
+- [x] T011 Run typecheck (`npm run typecheck`) and linter (`npm run lint`)
 
 ---
 
@@ -43,6 +43,6 @@
 
 **Purpose**: Verify constitutional compliance, sync Jira status, and commit changes.
 
-- [ ] T012 Run constitutional check and graphify auto-sync
-- [ ] T013 Create atomic commits adhering to Conventional Commits standards
-- [ ] T014 Transition Jira issue VS-91 to Done with implementation summary comment
+- [x] T012 Run constitutional check and graphify auto-sync
+- [x] T013 Create atomic commits adhering to Conventional Commits standards
+- [x] T014 Transition Jira issue VS-91 to Done with implementation summary comment

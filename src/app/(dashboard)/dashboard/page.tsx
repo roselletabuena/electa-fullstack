@@ -75,19 +75,14 @@ export default async function OrganizerDashboardPage(): Promise<React.JSX.Elemen
   const metrics: DashboardMetricsDto = computeDashboardMetrics(events);
 
   return (
-    <div className="min-h-screen bg-slate-50/50 pb-16 dark:bg-slate-950">
+    <div className="min-h-screen bg-slate-50 pb-16 dark:bg-slate-950">
       <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <Suspense
           fallback={
             <div className="animate-pulse space-y-8">
-              <div className="h-36 w-full rounded-2xl bg-slate-200 dark:bg-slate-800" />
-              <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                <div className="h-24 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900" />
-                <div className="h-24 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900" />
-                <div className="h-24 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900" />
-                <div className="h-24 rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900" />
-              </div>
-              <div className="h-72 rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
+              <div className="h-28 w-full border-b border-slate-300 dark:border-slate-800" />
+              <div className="h-24 border border-slate-300 bg-white dark:border-slate-800 dark:bg-[#0d1424]" />
+              <div className="h-72 border border-slate-300 bg-white dark:border-slate-800 dark:bg-[#0d1424]" />
             </div>
           }
         >

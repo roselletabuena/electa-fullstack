@@ -1,3 +1,5 @@
+import React from "react";
+import { Check } from "lucide-react";
 import { DEFAULT_HERO_MARKETING_CONFIG } from "../utils";
 import type { HeroMarketingCardProps } from "../types";
 import { FeatureTile } from "./FeatureTile";
@@ -7,6 +9,21 @@ export function HeroMarketingCard({
   className = "",
   config = DEFAULT_HERO_MARKETING_CONFIG,
 }: HeroMarketingCardProps) {
+  // Extract accent words for visual styling (e.g. "CHOOSE ELECTA")
+  const renderStyledHeadline = (headline: string) => {
+    if (headline.includes("CHOOSE ELECTA")) {
+      const parts = headline.split("CHOOSE ELECTA");
+      return (
+        <>
+          {parts[0]}
+          <span className="text-sky-600 dark:text-sky-400">CHOOSE ELECTA</span>
+          {parts[1]}
+        </>
+      );
+    }
+    return headline;
+  };
+
   return (
     <section
       aria-labelledby="marketing-showcase-heading"
@@ -25,7 +42,7 @@ export function HeroMarketingCard({
           id="marketing-showcase-heading"
           className="font-heading mt-3.5 text-lg font-black tracking-tight text-slate-900 sm:text-xl dark:text-white"
         >
-          {config.headline}
+          {renderStyledHeadline(config.headline)}
         </h2>
       </div>
 
@@ -41,9 +58,12 @@ export function HeroMarketingCard({
 
       {/* Assurance Trust Footnote */}
       <div className="flex items-center justify-center border-t border-slate-100 px-4 py-3 text-center sm:px-6 dark:border-slate-800/60">
-        <p className="font-sans text-xs font-semibold text-slate-600 dark:text-slate-400">
-          <span className="mr-1 text-sky-600 dark:text-sky-400">✓</span>
-          {config.assuranceFootnote.replace(/^✓\s*/, "")}
+        <p className="flex items-center justify-center gap-1.5 font-sans text-xs font-semibold text-slate-600 dark:text-slate-400">
+          <Check
+            className="h-3.5 w-3.5 shrink-0 text-emerald-600 dark:text-emerald-400"
+            aria-hidden="true"
+          />
+          <span>{config.assuranceFootnote.replace(/^✓\s*/, "")}</span>
         </p>
       </div>
     </section>

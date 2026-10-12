@@ -1,4 +1,4 @@
-import { SiteHeader } from "@/features/navigation";
+import { SiteHeader, SiteFooter } from "@/features/navigation";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 
 export default function Home() {
@@ -18,6 +18,7 @@ export default function Home() {
           </div>
         </div>
       </main>
+      <SiteFooter />
     </div>
   );
 }

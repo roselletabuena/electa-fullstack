@@ -39,10 +39,7 @@ export function filterContestantsByQuery<T extends FilterableContestant>(
     const nameMatch = normalizeSearchText(contestant.name).includes(query);
     const hometownMatch = normalizeSearchText(contestant.hometown).includes(query);
     const bioMatch = normalizeSearchText(contestant.bio).includes(query);
-    const numberMatch =
-      contestant.contestantNumber !== null &&
-      contestant.contestantNumber !== undefined &&
-      contestant.contestantNumber.toString() === query;
+    const numberMatch = contestant.contestantNumber?.toString() === query;
 
     return nameMatch || hometownMatch || bioMatch || numberMatch;
   });

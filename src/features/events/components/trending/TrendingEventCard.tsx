@@ -72,7 +72,7 @@ export function TrendingEventCard({
             {pillVariant === "closed" && (
               <Lock className="h-3 w-3 shrink-0 text-slate-400" aria-hidden="true" />
             )}
-            <span>{pillLabel}</span>
+            <span>{pillLabel.replace(/^[⏳\s]+/, "")}</span>
           </span>
         </div>
 

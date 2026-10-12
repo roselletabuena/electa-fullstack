@@ -1,8 +1,8 @@
 "use client";
 
-import React from "react";
+import React, { useMemo } from "react";
 import { cn } from "@/lib/utils";
-import { useSearchQuery } from "../hooks/useSearchQuery";
+import { useSearchQuery, type UseSearchQueryOptions } from "../hooks/useSearchQuery";
 import { SearchInput } from "./SearchInput";
 import type { GlobalSearchBarProps } from "../types";
 
@@ -15,6 +15,25 @@ export function GlobalSearchBar({
   ariaLabel = "Global event and candidate search",
   size = "default",
 }: Readonly<GlobalSearchBarProps>) {
+  const queryOptions = useMemo<UseSearchQueryOptions>(() => {
+    const opts: UseSearchQueryOptions = { debounceMs: 300 };
+    if (onSearch) {
+      return {
+        ...opts,
+        onSearch,
+        ...(onClear && { onClear }),
+        ...(scrollTargetId && { scrollTargetId }),
+      };
+    }
+    if (onClear) {
+      return { ...opts, onClear, ...(scrollTargetId && { scrollTargetId }) };
+    }
+    if (scrollTargetId) {
+      return { ...opts, scrollTargetId };
+    }
+    return opts;
+  }, [onSearch, onClear, scrollTargetId]);
+
   const {
     inputValue,
     debouncedQuery,
@@ -23,12 +42,7 @@ export function GlobalSearchBar({
     setInputValue,
     submitQuery,
     clearQuery,
-  } = useSearchQuery({
-    debounceMs: 300,
-    onSearch,
-    onClear,
-    scrollTargetId,
-  });
+  } = useSearchQuery(queryOptions);
 
   const buttonSizeClasses = {
     compact: "h-9 px-3 text-[10px]",

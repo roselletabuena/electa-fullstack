@@ -34,7 +34,7 @@ export function SearchResultsView({
     );
   }
 
-  if (!results || !results.query) {
+  if (!results?.query) {
     return null;
   }
 

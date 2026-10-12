@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach, afterEach } from "vitest";
 import { renderHook, act } from "@testing-library/react";
-import React from "react";
 import { NuqsTestingAdapter } from "nuqs/adapters/testing";
 import { useSearchQuery } from "@/features/search/hooks/useSearchQuery";
 

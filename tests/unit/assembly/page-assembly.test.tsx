@@ -2,8 +2,9 @@ import { describe, it, expect, vi } from "vitest";
 import React from "react";
 import { render, screen } from "@testing-library/react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import Home, { metadata } from "@/app/page";
+import Home, { metadata } from "@/app/(public)/page";
 import { SiteFooter } from "@/features/navigation/components/site-footer";
+import { SiteShell } from "@/features/navigation/components/site-shell";
 
 import { ThemeProvider } from "@/components/shared/theme-provider";
 
@@ -45,7 +46,9 @@ describe("Landing Page Assembly & SEO (VS-93)", () => {
     return render(
       <ThemeProvider defaultTheme="light">
         <QueryClientProvider client={queryClient}>
-          <Home />
+          <SiteShell>
+            <Home />
+          </SiteShell>
         </QueryClientProvider>
       </ThemeProvider>,
     );

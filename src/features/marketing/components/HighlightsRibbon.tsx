@@ -3,7 +3,7 @@ import type { HighlightsRibbonProps } from "../types";
 export function HighlightsRibbon({ metrics, className = "" }: HighlightsRibbonProps) {
   return (
     <div
-      className={`grid grid-cols-2 divide-x divide-y divide-slate-200 border-y border-slate-200 bg-slate-50/50 sm:grid-cols-4 sm:divide-y-0 dark:divide-slate-800 dark:border-slate-800 dark:bg-slate-900/30 ${className}`}
+      className={`grid grid-cols-2 border-t border-slate-100 bg-slate-50/50 sm:grid-cols-4 dark:border-slate-800/80 dark:bg-white/[0.02] ${className}`}
       aria-label="Platform Highlights"
     >
       {metrics.map((metric) => {

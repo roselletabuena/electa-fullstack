@@ -1,12 +1,13 @@
 import { SiteHeader, SiteFooter } from "@/features/navigation";
 import { HomeSearchSection } from "@/features/search";
 import { HeroMarketingCard } from "@/features/marketing";
+import { TrendingEventsSection } from "@/features/events";
 
 export default function Home() {
   return (
     <div className="flex min-h-screen flex-col bg-slate-50 transition-colors dark:bg-[#090D16]">
       <SiteHeader />
-      <main className="flex flex-1 flex-col items-center justify-start px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
+      <main className="flex flex-1 flex-col items-center justify-start space-y-16 px-4 py-10 sm:px-6 sm:py-16 lg:px-8">
         <div className="mx-auto w-full max-w-7xl">
           <div className="grid grid-cols-1 items-start gap-10 lg:grid-cols-12 lg:gap-12">
             {/* Left Hero Column: Title, Subheading, Search */}
@@ -35,6 +36,11 @@ export default function Home() {
               <HeroMarketingCard />
             </div>
           </div>
+        </div>
+
+        {/* Trending Events & Lifecycle Discovery Grid */}
+        <div className="mx-auto w-full max-w-7xl">
+          <TrendingEventsSection />
         </div>
       </main>
       <SiteFooter />

@@ -23,7 +23,9 @@ export function useLeaderboardRealtime({
       if (divisionId) params.set("divisionId", divisionId);
       if (categoryId) params.set("categoryId", categoryId);
 
-      const url = `/api/events/${slug}/leaderboard${params.toString() ? `?${params.toString()}` : ""}`;
+      const queryString = params.toString();
+      const basePath = `/api/events/${slug}/leaderboard`;
+      const url = queryString ? `${basePath}?${queryString}` : basePath;
       const res = await fetch(url);
       if (!res.ok) {
         throw new Error("Failed to fetch leaderboard data");

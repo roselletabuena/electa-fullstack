@@ -4,20 +4,20 @@ import { useState, useEffect, useRef, useTransition, useCallback } from "react";
 import { useQueryState, parseAsString } from "nuqs";
 
 export interface UseSearchQueryOptions {
-  debounceMs?: number | undefined;
-  onSearch?: ((query: string) => void) | undefined;
-  onClear?: (() => void) | undefined;
-  scrollTargetId?: string | undefined;
+  readonly debounceMs?: number | undefined;
+  readonly onSearch?: ((query: string) => void) | undefined;
+  readonly onClear?: (() => void) | undefined;
+  readonly scrollTargetId?: string | undefined;
 }
 
 export interface UseSearchQueryReturn {
-  inputValue: string;
-  debouncedQuery: string;
-  isPending: boolean;
-  isDebouncing: boolean;
-  setInputValue: (value: string) => void;
-  submitQuery: () => void;
-  clearQuery: () => void;
+  readonly inputValue: string;
+  readonly debouncedQuery: string;
+  readonly isPending: boolean;
+  readonly isDebouncing: boolean;
+  readonly setInputValue: (value: string) => void;
+  readonly submitQuery: () => void;
+  readonly clearQuery: () => void;
 }
 
 export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQueryReturn {
@@ -33,19 +33,14 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
     }),
   );
 
-  const [inputValue, setInputValueState] = useState<string>(urlQuery);
+  const [localQuery, setLocalQuery] = useState<string | null>(null);
   const [isDebouncing, setIsDebouncing] = useState<boolean>(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-  const [prevUrlQuery, setPrevUrlQuery] = useState<string>(urlQuery);
+  // Derived input value: uses local typed string while typing, falls back to URL query
+  const inputValue = localQuery ?? urlQuery;
 
-  // Sync external URL changes back to local input state during render
-  if (prevUrlQuery !== urlQuery) {
-    setPrevUrlQuery(urlQuery);
-    setInputValueState(urlQuery);
-  }
-
-  // Clean up timer on unmount
+  // Clean up debounce timer on unmount
   useEffect(() => {
     return () => {
       if (timerRef.current) {
@@ -55,7 +50,9 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
   }, []);
 
   const smoothScrollToTarget = useCallback(() => {
-    if (!scrollTargetId || typeof window === "undefined") return;
+    if (!scrollTargetId || typeof window === "undefined") {
+      return;
+    }
     const target = document.getElementById(scrollTargetId);
     if (target) {
       target.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -64,7 +61,7 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
 
   const setInputValue = useCallback(
     (value: string) => {
-      setInputValueState(value);
+      setLocalQuery(value);
 
       if (timerRef.current) {
         clearTimeout(timerRef.current);
@@ -75,6 +72,7 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
         setIsDebouncing(false);
         const trimmed = value.trim();
         setUrlQuery(trimmed || null);
+        setLocalQuery(null);
         if (trimmed && onSearch) {
           onSearch(trimmed);
         }
@@ -89,6 +87,7 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
     }
     setIsDebouncing(false);
     const trimmed = inputValue.trim();
+    setLocalQuery(null);
     setUrlQuery(trimmed || null);
     if (trimmed && onSearch) {
       onSearch(trimmed);
@@ -101,7 +100,7 @@ export function useSearchQuery(options: UseSearchQueryOptions = {}): UseSearchQu
       clearTimeout(timerRef.current);
     }
     setIsDebouncing(false);
-    setInputValueState("");
+    setLocalQuery(null);
     setUrlQuery(null);
     if (onClear) {
       onClear();

@@ -1,4 +1,3 @@
-import React from "react";
 import Link from "next/link";
 import { ElectaSymbol } from "@/components/shared/electa-symbol";
 import { cn } from "@/lib/utils";
@@ -21,7 +20,7 @@ export function BrandMark({
     >
       <ElectaSymbol size={size} className="transition-transform group-hover:scale-105" />
       <div className="flex flex-col">
-        <span className="font-heading text-xl font-black leading-none tracking-tight text-slate-900 select-none sm:text-2xl dark:text-white">
+        <span className="font-heading text-xl leading-none font-black tracking-tight text-slate-900 select-none sm:text-2xl dark:text-white">
           ELECTA
         </span>
         {showTagline && (

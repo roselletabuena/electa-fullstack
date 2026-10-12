@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { DEFAULT_SITE_FOOTER_CONFIG } from "../utils/footer-config";
 import type { SiteFooterProps } from "../types";
 
@@ -45,9 +46,14 @@ export function SiteFooter({
             </div>
           </Link>
 
-          <p className="font-mono text-xs tracking-tight text-slate-400 select-none">
-            {legal.copyright}
-          </p>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <p className="font-mono text-xs tracking-tight text-slate-400 select-none">
+              {legal.copyright}
+            </p>
+            <div className="flex items-center border-l border-slate-800 pl-4 sm:pl-6">
+              <ThemeToggle variant="ghost" className="text-slate-200 hover:text-white" />
+            </div>
+          </div>
         </div>
       </footer>
     );
@@ -141,11 +147,8 @@ export function SiteFooter({
           <p className="font-mono text-xs tracking-tight text-slate-400 select-none">
             {legal.copyright}
           </p>
-
-          <div className="flex items-center gap-6 font-mono text-xs text-slate-400">
-            <span className="text-[11px] tracking-wider text-slate-400 uppercase">
-              BRUTALIST OPAL DESIGN SYSTEM
-            </span>
+          <div className="flex items-center gap-4 sm:gap-6">
+            <ThemeToggle variant="ghost" className="text-slate-200 hover:text-white" />
           </div>
         </div>
       </div>

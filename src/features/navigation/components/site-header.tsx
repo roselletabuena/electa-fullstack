@@ -4,7 +4,11 @@ import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { cn } from "@/lib/utils";
 import type { SiteHeaderProps } from "../types";
 
-export function SiteHeader({ className, showActions = true }: Readonly<SiteHeaderProps>) {
+export function SiteHeader({
+  className,
+  showActions = true,
+  showThemeToggle = false,
+}: Readonly<SiteHeaderProps>) {
   return (
     <header
       className={cn(
@@ -17,7 +21,7 @@ export function SiteHeader({ className, showActions = true }: Readonly<SiteHeade
 
         {showActions && (
           <nav aria-label="Main Navigation" className="flex items-center gap-2 sm:gap-3">
-            <ThemeToggle variant="icon" />
+            {showThemeToggle && <ThemeToggle variant="icon" />}
 
             <Link
               href="/events/new"

@@ -40,6 +40,7 @@ export type SiteHeaderConfig = z.infer<typeof siteHeaderConfigSchema>;
 export interface SiteHeaderProps {
   readonly className?: string;
   readonly showActions?: boolean;
+  readonly showThemeToggle?: boolean;
 }
 
 /**
@@ -98,10 +99,16 @@ export const footerConfigSchema = z.object({
 export type FooterConfig = z.infer<typeof footerConfigSchema>;
 
 /**
+ * Footer Variant Schema
+ */
+export const footerVariantSchema = z.enum(["default", "streamlined"]);
+export type FooterVariant = z.infer<typeof footerVariantSchema>;
+
+/**
  * Props for SiteFooter Component
  */
 export interface SiteFooterProps {
   readonly className?: string;
   readonly config?: FooterConfig;
-  readonly variant?: "default" | "streamlined";
+  readonly variant?: FooterVariant;
 }

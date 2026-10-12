@@ -36,11 +36,16 @@ describe("SiteHeader Component", () => {
     expect(link.className).toContain("rounded-none");
   });
 
-  it("renders theme toggle button with accessible aria-label", () => {
-    renderWithTheme(<SiteHeader />);
+  it("renders theme toggle button when showThemeToggle is true", () => {
+    renderWithTheme(<SiteHeader showThemeToggle={true} />);
     const themeBtn = screen.getByRole("button", { name: /switch to dark mode/i });
     expect(themeBtn).toBeDefined();
     expect(themeBtn.className).toContain("rounded-none");
+  });
+
+  it("does not render theme toggle by default (relocated to footer)", () => {
+    renderWithTheme(<SiteHeader />);
+    expect(screen.queryByRole("button", { name: /switch to dark mode/i })).toBeNull();
   });
 
   it("hides navigation actions when showActions is false", () => {

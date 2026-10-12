@@ -55,7 +55,7 @@ function TrendingEventsInner(): React.JSX.Element {
   return (
     <section aria-labelledby="trending-events-heading" className="w-full space-y-8">
       {/* Section Header & Subtitle */}
-      <div className="flex flex-col items-start justify-between gap-4 border-b border-slate-200 pb-6 md:flex-row md:items-end dark:border-slate-800">
+      <div className="flex flex-col items-start justify-between gap-4 pb-2 md:flex-row md:items-end">
         <div>
           <h2
             id="trending-events-heading"

@@ -11,7 +11,7 @@ export interface MysteryFreezeBannerProps {
 export function MysteryFreezeBanner({
   message = "Mystery Freeze in Effect — Live rankings are concealed until the grand stage announcement.",
   isOrganizerBypass = false,
-}: MysteryFreezeBannerProps): React.JSX.Element {
+}: Readonly<MysteryFreezeBannerProps>): React.JSX.Element {
   const displayMessage =
     message ||
     "Mystery Freeze in Effect — Live rankings are concealed until the grand stage announcement.";

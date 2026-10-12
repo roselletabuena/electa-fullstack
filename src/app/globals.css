@@ -191,3 +191,42 @@ html.dark body {
   color: #0f172a;
   box-shadow: 0 4px 12px -2px rgba(255, 255, 255, 0.18);
 }
+
+/* Themed, square-cornered scrollbar for floating panels */
+.scrollbar-themed {
+  scrollbar-width: thin;
+  scrollbar-color: #94a3b8 transparent;
+}
+
+.scrollbar-themed::-webkit-scrollbar {
+  width: 8px;
+}
+
+.scrollbar-themed::-webkit-scrollbar-track {
+  background: #f1f5f9;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb {
+  background: #94a3b8;
+  border-radius: 0;
+}
+
+.scrollbar-themed::-webkit-scrollbar-thumb:hover {
+  background: #0284c7;
+}
+
+.dark .scrollbar-themed {
+  scrollbar-color: #475569 transparent;
+}
+
+.dark .scrollbar-themed::-webkit-scrollbar-track {
+  background: #0d1424;
+}
+
+.dark .scrollbar-themed::-webkit-scrollbar-thumb {
+  background: #475569;
+}
+
+.dark .scrollbar-themed::-webkit-scrollbar-thumb:hover {
+  background: #38bdf8;
+}

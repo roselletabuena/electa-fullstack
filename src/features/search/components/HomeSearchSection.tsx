@@ -38,7 +38,7 @@ function HomeSearchInner() {
   });
 
   return (
-    <div className="w-full max-w-3xl space-y-4">
+    <div className="relative w-full max-w-3xl">
       <GlobalSearchBar
         size="large"
         placeholder="Search pageants, campus elections, or candidates..."
@@ -46,11 +46,14 @@ function HomeSearchInner() {
       />
 
       {debouncedQuery && (
-        <SearchResultsView
-          results={searchResponse?.data ?? null}
-          isLoading={isLoading}
-          onClearQuery={clearQuery}
-        />
+        <div className="scrollbar-themed absolute top-full right-0 left-0 z-50 mt-2 max-h-96 overflow-x-hidden overflow-y-auto overscroll-contain border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
+          <SearchResultsView
+            results={searchResponse?.data ?? null}
+            isLoading={isLoading}
+            onClearQuery={clearQuery}
+            className="border-none shadow-none"
+          />
+        </div>
       )}
     </div>
   );

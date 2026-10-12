@@ -1,14 +1,10 @@
-import React from "react";
 import Link from "next/link";
 import { BrandMark } from "./brand-mark";
 import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { cn } from "@/lib/utils";
 import type { SiteHeaderProps } from "../types";
 
-export function SiteHeader({
-  className,
-  showActions = true,
-}: Readonly<SiteHeaderProps>) {
+export function SiteHeader({ className, showActions = true }: Readonly<SiteHeaderProps>) {
   return (
     <header
       className={cn(
@@ -25,7 +21,7 @@ export function SiteHeader({
 
             <Link
               href="/events/new"
-              className="inline-flex h-9 items-center justify-center rounded-none border border-slate-300 bg-transparent px-2.5 font-heading text-xs font-extrabold tracking-wider text-slate-800 uppercase transition-colors hover:border-slate-800 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-sky-600 sm:px-4 dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-400 dark:hover:bg-slate-800 dark:focus-visible:outline-sky-400"
+              className="font-heading inline-flex h-9 items-center justify-center rounded-none border border-slate-300 bg-transparent px-2.5 text-xs font-extrabold tracking-wider text-slate-800 uppercase transition-colors hover:border-slate-800 hover:bg-slate-100 focus-visible:outline-2 focus-visible:outline-sky-600 sm:px-4 dark:border-slate-700 dark:text-slate-200 dark:hover:border-slate-400 dark:hover:bg-slate-800 dark:focus-visible:outline-sky-400"
               aria-label="Create a new event"
             >
               <span className="sm:hidden">+ Event</span>
@@ -34,7 +30,7 @@ export function SiteHeader({
 
             <Link
               href="/login"
-              className="btn-primary inline-flex h-9 items-center justify-center rounded-none border border-slate-900 bg-slate-900 px-3 font-heading text-xs font-extrabold tracking-wider text-white shadow-xs transition-colors hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-sky-600 sm:px-4 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus-visible:outline-sky-400"
+              className="btn-primary font-heading inline-flex h-9 items-center justify-center rounded-none border border-slate-900 bg-slate-900 px-3 text-xs font-extrabold tracking-wider text-white shadow-xs transition-colors hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-sky-600 sm:px-4 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus-visible:outline-sky-400"
               aria-label="Sign in to your account"
             >
               Sign In

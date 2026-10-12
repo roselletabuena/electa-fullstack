@@ -1,6 +1,5 @@
 import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import React from "react";
 import { NuqsTestingAdapter } from "nuqs/adapters/testing";
 import { GlobalSearchBar } from "@/features/search/components/GlobalSearchBar";
 

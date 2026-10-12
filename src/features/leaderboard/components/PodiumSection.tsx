@@ -13,7 +13,7 @@ interface PodiumSectionProps {
 export function PodiumSection({
   entries,
   isFrozen = false,
-}: PodiumSectionProps): React.JSX.Element | null {
+}: Readonly<PodiumSectionProps>): React.JSX.Element | null {
   const top3 = entries.filter((e) => e.isPodium || (e.rank && e.rank <= 3)).slice(0, 3);
 
   if (top3.length === 0) {
@@ -54,6 +54,32 @@ export function PodiumSection({
       heightClass: "md:h-64",
     },
   ];
+
+  const getStatusIndicator = (isGold: boolean, gapToLeader: number): React.JSX.Element => {
+    if (isFrozen) {
+      return (
+        <div className="border border-slate-200 bg-slate-50 px-2 py-1 text-center font-mono text-[11px] font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400">
+          CONCEALED FOR FINALS
+        </div>
+      );
+    }
+
+    if (isGold) {
+      return (
+        <div className="flex items-center justify-center gap-1.5 border border-amber-300 bg-amber-50 px-2 py-1.5 text-center font-sans text-xs font-bold text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
+          <Flame className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
+          <span>Current Event Leader</span>
+        </div>
+      );
+    }
+
+    return (
+      <div className="border border-sky-200 bg-sky-50 px-2 py-1.5 text-center font-sans text-xs font-bold text-sky-950 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-300">
+        Needs <span className="font-mono font-extrabold">{gapToLeader.toLocaleString()}</span> votes
+        to take 1st!
+      </div>
+    );
+  };
 
   return (
     <div className="mb-12">
@@ -136,26 +162,7 @@ export function PodiumSection({
               </div>
 
               {/* Dynamic Gap Indicator or Frozen Notice */}
-              <div>
-                {isFrozen ? (
-                  <div className="border border-slate-200 bg-slate-50 px-2 py-1 text-center font-mono text-[11px] font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400">
-                    CONCEALED FOR FINALS
-                  </div>
-                ) : isGold ? (
-                  <div className="flex items-center justify-center gap-1.5 border border-amber-300 bg-amber-50 px-2 py-1.5 text-center font-sans text-xs font-bold text-amber-950 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-200">
-                    <Flame className="h-3.5 w-3.5 text-amber-600 dark:text-amber-400" />
-                    <span>Current Event Leader</span>
-                  </div>
-                ) : (
-                  <div className="border border-sky-200 bg-sky-50 px-2 py-1.5 text-center font-sans text-xs font-bold text-sky-950 dark:border-sky-900 dark:bg-sky-950/40 dark:text-sky-300">
-                    Needs{" "}
-                    <span className="font-mono font-extrabold">
-                      {entry.gapToLeader.toLocaleString()}
-                    </span>{" "}
-                    votes to take 1st!
-                  </div>
-                )}
-              </div>
+              <div>{getStatusIndicator(isGold, entry.gapToLeader)}</div>
             </div>
           );
         })}

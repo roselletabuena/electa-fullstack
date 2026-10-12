@@ -10,13 +10,8 @@ export interface CreateAuditLogParams {
 }
 
 export function createAuditLogEntry(params: CreateAuditLogParams): EventAuditLogDto {
-  const uniqueId =
-    typeof crypto !== "undefined" && typeof crypto.randomUUID === "function"
-      ? crypto.randomUUID()
-      : `${Date.now()}_${Math.floor(Math.random() * 1_000_000)}`;
-
   return {
-    id: `log_${uniqueId}`,
+    id: `log_${crypto.randomUUID()}`,
     eventId: params.eventId,
     action: params.action,
     changedBy: params.changedBy,

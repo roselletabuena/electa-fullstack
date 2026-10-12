@@ -4,3 +4,4 @@ export * from "./utils/footer-config";
 export * from "./components/brand-mark";
 export * from "./components/site-header";
 export * from "./components/site-footer";
+export * from "./components/site-shell";

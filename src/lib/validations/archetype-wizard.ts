@@ -1,6 +1,6 @@
 import { z } from "zod";
 import { EVENT_ARCHETYPES, type EventArchetype } from "@/features/events/types/archetype";
-import { eventSlugSchema } from "@/lib/validations/event";
+import { eventSlugSchema } from "./event-slug";
 
 export const wizardPositionDraftSchema = z
   .object({
@@ -29,13 +29,10 @@ export const wizardPositionDraftSchema = z
       .default(0),
     displayOrder: z.number().int().default(0),
   })
-  .refine(
-    (data) => data.minSelectionsPerVoter <= data.maxSelectionsPerVoter,
-    {
-      message: "Minimum selections cannot exceed maximum selections",
-      path: ["minSelectionsPerVoter"],
-    }
-  );
+  .refine((data) => data.minSelectionsPerVoter <= data.maxSelectionsPerVoter, {
+    message: "Minimum selections cannot exceed maximum selections",
+    path: ["minSelectionsPerVoter"],
+  });
 
 export type WizardPositionDraftInput = z.infer<typeof wizardPositionDraftSchema>;
 

@@ -32,8 +32,7 @@ export async function loginAction(
         email: "organizer@electa.ph",
         name: "Alex Gonzaga (Organizer)",
         role: "ORGANIZER",
-        avatarUrl:
-          "https://images.unsplash.com/photo-1534528741775-53994a69daeb?auto=format&fit=crop&w=400&q=80",
+        avatarUrl: null,
         expiresAt: new Date(Date.now() + 1000 * 60 * 60 * 24 * 7).toISOString(),
       };
     } else {

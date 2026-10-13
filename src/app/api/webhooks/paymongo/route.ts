@@ -37,6 +37,72 @@ export function verifyPayMongoSignature(
   }
 }
 
+async function handlePaymentPaidEvent(resourceData: Record<string, unknown> | undefined) {
+  const resourceAttrs = resourceData?.attributes as Record<string, unknown> | undefined;
+  const intentId = (resourceAttrs?.payment_intent_id || resourceData?.id) as string | undefined;
+  const metadata = resourceAttrs?.metadata as Record<string, string> | undefined;
+  const referenceNumber = metadata?.reference_number || metadata?.referenceNumber;
+
+  if (!intentId && !referenceNumber) {
+    return { received: true, note: "No transaction identifier" };
+  }
+
+  // Find the pending transaction
+  const transaction = await db.paymentTransaction.findFirst({
+    where: {
+      OR: [
+        ...(referenceNumber ? [{ referenceNumber }] : []),
+        ...(intentId ? [{ paymongoPaymentIntentId: intentId }] : []),
+      ],
+    },
+  });
+
+  if (!transaction || transaction.status === "PAID") {
+    return { received: true, note: "Already processed or not found" };
+  }
+
+  // Atomically update transaction and credit votes
+  await db.$transaction(async (tx) => {
+    const fresh = await tx.paymentTransaction.findUnique({
+      where: { id: transaction.id },
+      select: { status: true },
+    });
+
+    if (fresh?.status === "PAID") return;
+
+    await tx.paymentTransaction.update({
+      where: { id: transaction.id },
+      data: {
+        status: "PAID",
+        paidAt: new Date(),
+      },
+    });
+
+    await tx.vote.create({
+      data: {
+        eventId: transaction.eventId,
+        contestantId: transaction.contestantId,
+        voterId: transaction.voterIdentifier,
+        awardCategoryId: transaction.awardCategoryId,
+        voteType: "BOOST",
+        voteWeight: transaction.votesAwarded,
+        paymentTransactionId: transaction.id,
+      },
+    });
+
+    await tx.contestant.update({
+      where: { id: transaction.contestantId },
+      data: {
+        voteCount: {
+          increment: transaction.votesAwarded,
+        },
+      },
+    });
+  });
+
+  return { received: true };
+}
+
 export async function POST(req: NextRequest) {
   try {
     const rawBody = await req.text();
@@ -59,66 +125,8 @@ export async function POST(req: NextRequest) {
 
     // Check if event relates to a payment or payment intent
     if (eventType === "payment.paid" || eventType === "payment_intent.succeeded") {
-      const intentId = resourceData?.attributes?.payment_intent_id || resourceData?.id;
-      const metadata = resourceData?.attributes?.metadata;
-      const referenceNumber = metadata?.reference_number || metadata?.referenceNumber;
-
-      if (!intentId && !referenceNumber) {
-        return NextResponse.json({ received: true, note: "No transaction identifier" });
-      }
-
-      // Find the pending transaction
-      const transaction = await db.paymentTransaction.findFirst({
-        where: {
-          OR: [
-            ...(referenceNumber ? [{ referenceNumber }] : []),
-            ...(intentId ? [{ paymongoPaymentIntentId: intentId }] : []),
-          ],
-        },
-      });
-
-      if (!transaction || transaction.status === "PAID") {
-        return NextResponse.json({ received: true, note: "Already processed or not found" });
-      }
-
-      // Atomically update transaction and credit votes
-      await db.$transaction(async (tx) => {
-        const fresh = await tx.paymentTransaction.findUnique({
-          where: { id: transaction.id },
-          select: { status: true },
-        });
-
-        if (fresh?.status === "PAID") return;
-
-        await tx.paymentTransaction.update({
-          where: { id: transaction.id },
-          data: {
-            status: "PAID",
-            paidAt: new Date(),
-          },
-        });
-
-        await tx.vote.create({
-          data: {
-            eventId: transaction.eventId,
-            contestantId: transaction.contestantId,
-            voterId: transaction.voterIdentifier,
-            awardCategoryId: transaction.awardCategoryId,
-            voteType: "BOOST",
-            voteWeight: transaction.votesAwarded,
-            paymentTransactionId: transaction.id,
-          },
-        });
-
-        await tx.contestant.update({
-          where: { id: transaction.contestantId },
-          data: {
-            voteCount: {
-              increment: transaction.votesAwarded,
-            },
-          },
-        });
-      });
+      const res = await handlePaymentPaidEvent(resourceData);
+      return NextResponse.json(res);
     }
 
     return NextResponse.json({ received: true });

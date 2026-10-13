@@ -11,19 +11,36 @@ interface RouteParams {
   }>;
 }
 
+function checkOwnershipAuth(authResult: Awaited<ReturnType<typeof requireEventOwnership>>) {
+  if (authResult.authorized) return null;
+  if (authResult.reason === "UNAUTHENTICATED") {
+    return apiError("Authentication required", 401);
+  }
+  if (authResult.reason === "NOT_FOUND") {
+    return apiError("Event not found", 404);
+  }
+  return apiError("You do not have permission to manage this event", 403);
+}
+
+async function isDuplicateCategoryName(eventId: string, categoryId: string, name: string): Promise<boolean> {
+  const duplicate = await db.awardCategory.findFirst({
+    where: {
+      eventId,
+      id: { not: categoryId },
+      name: { equals: name, mode: "insensitive" },
+    },
+  });
+  return Boolean(duplicate);
+}
+
 export async function PATCH(request: NextRequest, context: RouteParams) {
   try {
     const { slug, categoryId } = await context.params;
     const authResult = await requireEventOwnership(slug);
 
-    if (!authResult.authorized) {
-      if (authResult.reason === "UNAUTHENTICATED") {
-        return apiError("Authentication required", 401);
-      }
-      if (authResult.reason === "NOT_FOUND") {
-        return apiError("Event not found", 404);
-      }
-      return apiError("You do not have permission to manage this event", 403);
+    const authError = checkOwnershipAuth(authResult);
+    if (authError || !authResult.authorized) {
+      return authError ?? apiError("Unauthorized", 403);
     }
 
     const category = await db.awardCategory.findUnique({
@@ -42,18 +59,8 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
     }
 
     if (parsed.data.name && parsed.data.name.toLowerCase() !== category.name.toLowerCase()) {
-      const duplicate = await db.awardCategory.findFirst({
-        where: {
-          eventId: authResult.event.id,
-          id: { not: categoryId },
-          name: {
-            equals: parsed.data.name,
-            mode: "insensitive",
-          },
-        },
-      });
-
-      if (duplicate) {
+      const isDup = await isDuplicateCategoryName(authResult.event.id, categoryId, parsed.data.name);
+      if (isDup) {
         return apiError("An award category with this name already exists for this event", 409);
       }
     }
@@ -93,14 +100,9 @@ export async function DELETE(_request: NextRequest, context: RouteParams) {
     const { slug, categoryId } = await context.params;
     const authResult = await requireEventOwnership(slug);
 
-    if (!authResult.authorized) {
-      if (authResult.reason === "UNAUTHENTICATED") {
-        return apiError("Authentication required", 401);
-      }
-      if (authResult.reason === "NOT_FOUND") {
-        return apiError("Event not found", 404);
-      }
-      return apiError("You do not have permission to manage this event", 403);
+    const authError = checkOwnershipAuth(authResult);
+    if (authError || !authResult.authorized) {
+      return authError ?? apiError("Unauthorized", 403);
     }
 
     const category = await db.awardCategory.findUnique({

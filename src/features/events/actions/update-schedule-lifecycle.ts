@@ -11,37 +11,43 @@ import {
 import type { ActionResponse } from "@/features/events/types";
 import type { Event } from "@/generated/client/client";
 
+function getAuthErrorMessage(authResult: Awaited<ReturnType<typeof requireEventOwnership>>): string | null {
+  if (authResult.authorized) return null;
+  if (authResult.reason === "UNAUTHENTICATED") return "You must be signed in to perform this action.";
+  if (authResult.reason === "NOT_FOUND") return "Event not found.";
+  return "Forbidden: You do not have ownership of this event.";
+}
+
+function computeNewPassphraseHash(
+  currentHash: string | null,
+  clearDraftPassphrase?: boolean,
+  draftPassphrase?: string,
+): string | null {
+  if (clearDraftPassphrase) return null;
+  if (draftPassphrase && draftPassphrase.trim().length > 0) {
+    return hashPassphrase(draftPassphrase.trim());
+  }
+  return currentHash;
+}
+
 export async function updateScheduleLifecycleAction(
   slug: string,
   input: UpdateScheduleLifecycleInput,
 ): Promise<ActionResponse<Event>> {
   // 1. Authorize event ownership server-side
   const authResult = await requireEventOwnership(slug);
-  if (!authResult.authorized) {
-    if (authResult.reason === "UNAUTHENTICATED") {
-      return { success: false, error: "You must be signed in to perform this action." };
-    }
-    if (authResult.reason === "NOT_FOUND") {
-      return { success: false, error: "Event not found." };
-    }
-    return { success: false, error: "Forbidden: You do not have ownership of this event." };
+  const authError = getAuthErrorMessage(authResult);
+  if (authError || !authResult.authorized) {
+    return { success: false, error: authError ?? "Unauthorized" };
   }
 
   // 2. Validate input payload against Zod schema
   const parsed = updateScheduleLifecycleSchema.safeParse(input);
   if (!parsed.success) {
-    const fieldErrors: Record<string, string[]> = {};
-    for (const issue of parsed.error.issues) {
-      const field = issue.path[0] as string;
-      if (!fieldErrors[field]) {
-        fieldErrors[field] = [];
-      }
-      fieldErrors[field].push(issue.message);
-    }
     return {
       success: false,
       error: "Validation failed. Please check your inputs.",
-      fieldErrors,
+      fieldErrors: parsed.error.flatten().fieldErrors as Record<string, string[]>,
     };
   }
 
@@ -49,13 +55,11 @@ export async function updateScheduleLifecycleAction(
     parsed.data;
   const currentEvent = authResult.event;
 
-  // Determine new draft passphrase hash
-  let newPassphraseHash: string | null = currentEvent.draftPassphraseHash;
-  if (clearDraftPassphrase) {
-    newPassphraseHash = null;
-  } else if (draftPassphrase && draftPassphrase.trim().length > 0) {
-    newPassphraseHash = hashPassphrase(draftPassphrase.trim());
-  }
+  const newPassphraseHash = computeNewPassphraseHash(
+    currentEvent.draftPassphraseHash,
+    clearDraftPassphrase,
+    draftPassphrase,
+  );
 
   const newStartsAt = new Date(startsAt);
   const newEndsAt = new Date(endsAt);

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import Link from "next/link";
@@ -13,12 +13,27 @@ import {
   AlertCircle,
   Loader2,
   RefreshCw,
+  RotateCcw,
+  CheckCircle2,
 } from "lucide-react";
 import { createEventSchema, sanitizeSlug, type CreateEventInput } from "@/lib/validations/event";
 import { createEventAction } from "../actions/create-event";
 import { useDebouncedSlugCheck } from "../hooks/useDebouncedSlugCheck";
 import { SlugAvailabilityBadge } from "./SlugAvailabilityBadge";
 import { BannerAspectPreview } from "./dashboard/BannerAspectPreview";
+import {
+  TIMELINE_PRESETS,
+  calculateEndsAtFromDuration,
+  getActivePreset,
+  isTemporalWindowValid,
+  formatLocalDateTime,
+} from "../utils/timeline-presets";
+import {
+  saveDraftToSession,
+  loadDraftFromSession,
+  clearDraftFromSession,
+  hasDraftContent,
+} from "../utils/event-draft-storage";
 import { cn } from "@/lib/utils";
 
 export interface CreateEventFormProps {
@@ -43,15 +58,9 @@ function getDefaultDates(): { startsAt: string; endsAt: string } {
   const thirtyDaysLater = new Date(tomorrow.getTime() + 30 * 24 * 60 * 60 * 1000);
   thirtyDaysLater.setMinutes(0, 0, 0);
 
-  // Format to YYYY-MM-DDTHH:mm for datetime-local
-  const formatLocal = (d: Date) => {
-    const pad = (n: number) => n.toString().padStart(2, "0");
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  };
-
   return {
-    startsAt: formatLocal(tomorrow),
-    endsAt: formatLocal(thirtyDaysLater),
+    startsAt: formatLocalDateTime(tomorrow),
+    endsAt: formatLocalDateTime(thirtyDaysLater),
   };
 }
 
@@ -63,6 +72,7 @@ export function CreateEventForm({
   const router = useRouter();
   const [isCustomSlug, setIsCustomSlug] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
+  const [isDraftRestored, setIsDraftRestored] = useState(false);
 
   const defaultDates = getDefaultDates();
 
@@ -71,6 +81,7 @@ export function CreateEventForm({
     handleSubmit,
     control,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<FormRawValues>({
     defaultValues: {
@@ -86,19 +97,85 @@ export function CreateEventForm({
 
   const watchedTitle = useWatch({ control, name: "title" }) ?? "";
   const watchedSlug = useWatch({ control, name: "slug" }) ?? "";
+  const watchedDescription = useWatch({ control, name: "description" }) ?? "";
   const watchedBannerUrl = useWatch({ control, name: "bannerUrl" }) ?? "";
   const watchedStartsAt = useWatch({ control, name: "startsAt" }) ?? defaultDates.startsAt;
   const watchedEndsAt = useWatch({ control, name: "endsAt" }) ?? defaultDates.endsAt;
 
   const slugCheck = useDebouncedSlugCheck(watchedSlug);
 
+  // Restore draft from sessionStorage on mount
+  useEffect(() => {
+    const draft = loadDraftFromSession();
+    if (draft && hasDraftContent(draft)) {
+      if (draft.title) setValue("title", draft.title, { shouldValidate: true });
+      if (draft.slug) setValue("slug", draft.slug, { shouldValidate: true });
+      if (draft.description) setValue("description", draft.description, { shouldValidate: true });
+      if (draft.bannerUrl) setValue("bannerUrl", draft.bannerUrl, { shouldValidate: true });
+      if (draft.startsAt) setValue("startsAt", draft.startsAt, { shouldValidate: true });
+      if (draft.endsAt) setValue("endsAt", draft.endsAt, { shouldValidate: true });
+      if (draft.isCustomSlug) setIsCustomSlug(true);
+      setIsDraftRestored(true);
+    }
+  }, [setValue]);
+
+  // Persist form state to sessionStorage on changes
+  useEffect(() => {
+    if (
+      watchedTitle.trim() ||
+      watchedSlug.trim() ||
+      watchedDescription.trim() ||
+      watchedBannerUrl.trim()
+    ) {
+      saveDraftToSession({
+        title: watchedTitle,
+        slug: watchedSlug,
+        description: watchedDescription,
+        bannerUrl: watchedBannerUrl,
+        startsAt: watchedStartsAt,
+        endsAt: watchedEndsAt,
+        isCustomSlug,
+      });
+    }
+  }, [
+    watchedTitle,
+    watchedSlug,
+    watchedDescription,
+    watchedBannerUrl,
+    watchedStartsAt,
+    watchedEndsAt,
+    isCustomSlug,
+  ]);
+
   // Check 1-hour temporal difference
-  const startTime = watchedStartsAt ? new Date(watchedStartsAt).getTime() : 0;
-  const endTime = watchedEndsAt ? new Date(watchedEndsAt).getTime() : 0;
-  const ONE_HOUR_MS = 60 * 60 * 1000;
-  const isTemporalInvalid = Boolean(
-    watchedStartsAt && watchedEndsAt && endTime - startTime < ONE_HOUR_MS,
-  );
+  const isTemporalValid = isTemporalWindowValid(watchedStartsAt, watchedEndsAt);
+  const isTemporalInvalid = Boolean(watchedStartsAt && watchedEndsAt && !isTemporalValid);
+
+  // Active quick duration preset matching
+  const activePreset = getActivePreset(watchedStartsAt, watchedEndsAt);
+
+  const handleApplyPreset = (days: number) => {
+    const baseStartsAt = watchedStartsAt || defaultDates.startsAt;
+    const computedEndsAt = calculateEndsAtFromDuration(baseStartsAt, days);
+    if (computedEndsAt) {
+      setValue("endsAt", computedEndsAt, { shouldValidate: true });
+    }
+  };
+
+  const handleClearDraft = () => {
+    clearDraftFromSession();
+    const freshDates = getDefaultDates();
+    reset({
+      title: "",
+      slug: "",
+      description: "",
+      bannerUrl: "",
+      startsAt: freshDates.startsAt,
+      endsAt: freshDates.endsAt,
+    });
+    setIsCustomSlug(false);
+    setIsDraftRestored(false);
+  };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newTitle = e.target.value;
@@ -149,6 +226,9 @@ export function CreateEventForm({
         return;
       }
 
+      // Cleanup draft from sessionStorage upon success
+      clearDraftFromSession();
+
       if (onSuccess) {
         onSuccess(result.data.slug);
       } else {
@@ -171,12 +251,35 @@ export function CreateEventForm({
     <form
       onSubmit={handleSubmit(onSubmit)}
       className={cn(
-        "rounded-2xl border border-slate-200 bg-white/90 p-6 shadow-sm backdrop-blur-md transition-colors sm:p-8 dark:border-slate-800 dark:bg-slate-900/90 dark:shadow-xl",
+        "rounded-none border border-slate-300 bg-white p-6 shadow-xs transition-colors sm:p-8 dark:border-slate-800 dark:bg-[#0d1424]",
         className,
       )}
     >
+      {/* Draft Restored Banner */}
+      {isDraftRestored && (
+        <aside
+          aria-label="Draft recovery notification"
+          className="mb-6 flex flex-col items-start justify-between gap-3 rounded-none border border-sky-300 bg-sky-50 p-4 sm:flex-row sm:items-center dark:border-sky-500/30 dark:bg-sky-500/10"
+        >
+          <div className="flex items-center gap-2.5">
+            <CheckCircle2 className="size-4 shrink-0 text-sky-600 dark:text-sky-400" />
+            <p className="text-xs font-semibold text-sky-950 dark:text-sky-200">
+              Draft Restored: We recovered your previously entered event details from this session.
+            </p>
+          </div>
+          <button
+            type="button"
+            onClick={handleClearDraft}
+            className="inline-flex cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+          >
+            <RotateCcw className="size-3" />
+            <span>Clear Draft</span>
+          </button>
+        </aside>
+      )}
+
       {serverError && (
-        <div className="mb-6 flex items-start gap-3 rounded-xl border border-rose-500/30 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+        <div className="mb-6 flex items-start gap-3 rounded-none border border-rose-500/30 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
           <AlertCircle className="size-5 shrink-0 text-rose-500 dark:text-rose-400" />
           <div className="flex-1">
             <p className="font-semibold text-rose-900 dark:text-rose-200">Event Creation Failed</p>
@@ -188,7 +291,7 @@ export function CreateEventForm({
       <div className="space-y-8">
         {/* Basic Event Information */}
         <div className="space-y-4">
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
             1. Competition Details
           </h2>
 
@@ -196,7 +299,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-title"
-              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
             >
               Event Title <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -211,7 +314,7 @@ export function CreateEventForm({
               })}
               onChange={handleTitleChange}
               className={cn(
-                "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                 errors.title &&
                   "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
@@ -228,7 +331,7 @@ export function CreateEventForm({
             <div className="flex items-center justify-between">
               <label
                 htmlFor="event-slug"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
               >
                 Public URL Slug <span className="text-rose-500 dark:text-rose-400">*</span>
               </label>
@@ -236,7 +339,7 @@ export function CreateEventForm({
                 <button
                   type="button"
                   onClick={handleResetSlugToTitle}
-                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-medium text-violet-600 hover:text-violet-700 dark:text-violet-400 dark:hover:text-violet-300"
+                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-bold text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
                 >
                   <RefreshCw className="size-3" />
                   <span>Reset to Title</span>
@@ -244,8 +347,8 @@ export function CreateEventForm({
               )}
             </div>
 
-            <div className="relative mt-1.5 flex rounded-xl border border-slate-300 bg-white focus-within:border-violet-500 focus-within:ring-1 focus-within:ring-violet-500 dark:border-slate-700 dark:bg-slate-950">
-              <span className="inline-flex items-center rounded-l-xl border-r border-slate-200 bg-slate-100 px-3 text-xs text-slate-600 select-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400">
+            <div className="relative mt-1.5 flex rounded-none border border-slate-300 bg-white focus-within:border-sky-600 focus-within:ring-1 focus-within:ring-sky-600 dark:border-slate-700 dark:bg-slate-950">
+              <span className="inline-flex items-center rounded-none border-r border-slate-200 bg-slate-100 px-3 text-xs font-semibold text-slate-600 select-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400">
                 <Globe className="mr-1.5 size-3.5 text-slate-400 dark:text-slate-500" />
                 /events/
               </span>
@@ -262,7 +365,7 @@ export function CreateEventForm({
                     shouldValidate: true,
                   });
                 }}
-                className="w-full bg-transparent px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-hidden dark:text-white dark:placeholder-slate-500"
+                className="w-full rounded-none bg-transparent px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-hidden dark:text-white dark:placeholder-slate-500"
               />
             </div>
 
@@ -280,7 +383,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-description"
-              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
             >
               Description <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -293,7 +396,7 @@ export function CreateEventForm({
                 minLength: { value: 10, message: "Description must be at least 10 characters" },
               })}
               className={cn(
-                "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                 errors.description &&
                   "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
@@ -309,10 +412,10 @@ export function CreateEventForm({
         {/* Banner Configuration */}
         <div className="space-y-4 border-t border-slate-200 pt-6 dark:border-slate-800/80">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+            <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
               2. Visual Branding
             </h2>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+            <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
               Provide a high-resolution banner image URL (16:9 recommended, min 1200x675px).
             </p>
           </div>
@@ -320,7 +423,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-banner"
-              className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
             >
               Banner Image URL <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -336,7 +439,7 @@ export function CreateEventForm({
                   required: "Banner image URL is required",
                 })}
                 className={cn(
-                  "w-full rounded-xl border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                  "w-full rounded-none border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                   errors.bannerUrl &&
                     "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
@@ -359,13 +462,43 @@ export function CreateEventForm({
         {/* Schedule & Operational Window */}
         <div className="space-y-4 border-t border-slate-200 pt-6 dark:border-slate-800/80">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-              3. Operational Schedule
-            </h2>
-            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-              Configure when the competition voting window opens and closes (must be at least 1 hour
-              duration).
-            </p>
+            <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <div>
+                <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
+                  3. Operational Schedule
+                </h2>
+                <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
+                  Configure when the competition voting window opens and closes (must be at least 1
+                  hour duration).
+                </p>
+              </div>
+
+              {/* Quick Duration Presets Chips */}
+              <div className="flex flex-wrap items-center gap-1.5 pt-1 sm:pt-0">
+                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+                  Quick Duration:
+                </span>
+                {TIMELINE_PRESETS.map((preset) => {
+                  const isActive = activePreset === preset.id;
+                  return (
+                    <button
+                      key={preset.id}
+                      type="button"
+                      aria-pressed={isActive}
+                      onClick={() => handleApplyPreset(preset.days)}
+                      className={cn(
+                        "cursor-pointer px-2.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
+                        isActive
+                          ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
+                          : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-950 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-white",
+                      )}
+                    >
+                      {preset.label}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
           </div>
 
           <div className="grid grid-cols-1 gap-6 sm:grid-cols-2">
@@ -373,10 +506,10 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-starts-at"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
-                  <Calendar className="size-4 text-violet-600 dark:text-violet-400" />
+                  <Calendar className="size-4 text-sky-600 dark:text-sky-400" />
                   <span>Voting Starts At</span>{" "}
                   <span className="text-rose-500 dark:text-rose-400">*</span>
                 </span>
@@ -387,7 +520,7 @@ export function CreateEventForm({
                 {...register("startsAt", {
                   required: "Start date is required",
                 })}
-                className="mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
             </div>
 
@@ -395,10 +528,10 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-ends-at"
-                className="block text-sm font-medium text-slate-700 dark:text-slate-300"
+                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
-                  <Clock className="size-4 text-violet-600 dark:text-violet-400" />
+                  <Clock className="size-4 text-sky-600 dark:text-sky-400" />
                   <span>Voting Ends At</span>{" "}
                   <span className="text-rose-500 dark:text-rose-400">*</span>
                 </span>
@@ -410,7 +543,7 @@ export function CreateEventForm({
                   required: "End date is required",
                 })}
                 className={cn(
-                  "mt-1.5 w-full rounded-xl border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-violet-500 focus:ring-1 focus:ring-violet-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white",
+                  "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white",
                   isTemporalInvalid &&
                     "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
@@ -419,8 +552,8 @@ export function CreateEventForm({
           </div>
 
           {isTemporalInvalid && (
-            <div className="flex items-center gap-2 rounded-lg bg-rose-50 p-3 text-xs text-rose-700 dark:bg-rose-500/10 dark:text-rose-400">
-              <AlertCircle className="size-4 shrink-0" />
+            <div className="flex items-center gap-2 rounded-none border border-rose-300 bg-rose-50 p-3 text-xs text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
+              <AlertCircle className="size-4 shrink-0 text-rose-500 dark:text-rose-400" />
               <span>Event end time must be at least 1 hour after the start time.</span>
             </div>
           )}
@@ -432,14 +565,14 @@ export function CreateEventForm({
             <button
               type="button"
               onClick={onCancel}
-              className="w-full cursor-pointer rounded-xl border border-slate-300 bg-slate-100 px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="w-full cursor-pointer rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </button>
           ) : (
             <Link
               href="/dashboard"
-              className="w-full rounded-xl border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-sm font-medium text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="w-full rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </Link>
@@ -448,9 +581,7 @@ export function CreateEventForm({
           <button
             type="submit"
             disabled={isSubmitDisabled}
-            className={cn(
-              "inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-xl bg-linear-to-r from-violet-600 to-indigo-600 px-6 py-2.5 text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:from-violet-500 hover:to-indigo-500 focus:ring-2 focus:ring-violet-400 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto",
-            )}
+            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-none bg-slate-900 px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest text-white shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isSubmitting ? (
               <>

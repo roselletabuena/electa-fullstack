@@ -64,17 +64,81 @@ function getDefaultDates(): { startsAt: string; endsAt: string } {
   };
 }
 
+function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
+  return (
+    <aside
+      aria-label="Draft recovery notification"
+      className="mb-6 flex flex-col items-start justify-between gap-3 rounded-none border border-sky-300 bg-sky-50 p-4 sm:flex-row sm:items-center dark:border-sky-500/30 dark:bg-sky-500/10"
+    >
+      <div className="flex items-center gap-2.5">
+        <CheckCircle2 className="size-4 shrink-0 text-sky-600 dark:text-sky-400" />
+        <p className="text-xs font-semibold text-sky-950 dark:text-sky-200">
+          Draft Restored: We recovered your previously entered event details from this session.
+        </p>
+      </div>
+      <button
+        type="button"
+        onClick={onClear}
+        className="inline-flex cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+      >
+        <RotateCcw className="size-3" />
+        <span>Clear Draft</span>
+      </button>
+    </aside>
+  );
+}
+
+function TimelinePresetsPicker({
+  activePreset,
+  onApplyPreset,
+}: {
+  activePreset: "7d" | "14d" | "30d" | null;
+  onApplyPreset: (days: number) => void;
+}) {
+  return (
+    <div className="flex flex-wrap items-center gap-1.5 pt-1 sm:pt-0">
+      <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
+        Quick Duration:
+      </span>
+      {TIMELINE_PRESETS.map((preset) => {
+        const isActive = activePreset === preset.id;
+        return (
+          <button
+            key={preset.id}
+            type="button"
+            aria-pressed={isActive}
+            onClick={() => onApplyPreset(preset.days)}
+            className={cn(
+              "cursor-pointer px-2.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
+              isActive
+                ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
+                : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-950 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-white",
+            )}
+          >
+            {preset.label}
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
 export function CreateEventForm({
   onSuccess,
   onCancel,
   className,
 }: Readonly<CreateEventFormProps>): React.JSX.Element {
   const router = useRouter();
-  const [isCustomSlug, setIsCustomSlug] = useState(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-  const [isDraftRestored, setIsDraftRestored] = useState(false);
-
   const defaultDates = getDefaultDates();
+
+  const [initialDraft] = useState(() => {
+    const draft = loadDraftFromSession();
+    return draft && hasDraftContent(draft) ? draft : null;
+  });
+
+  const [isCustomSlug, setIsCustomSlug] = useState(() => Boolean(initialDraft?.isCustomSlug));
+  const [serverError, setServerError] = useState<string | null>(null);
+  const [isDraftRestored, setIsDraftRestored] = useState(() => Boolean(initialDraft));
 
   const {
     register,
@@ -85,12 +149,12 @@ export function CreateEventForm({
     formState: { errors, isSubmitting },
   } = useForm<FormRawValues>({
     defaultValues: {
-      title: "",
-      slug: "",
-      description: "",
-      bannerUrl: "",
-      startsAt: defaultDates.startsAt,
-      endsAt: defaultDates.endsAt,
+      title: initialDraft?.title ?? "",
+      slug: initialDraft?.slug ?? "",
+      description: initialDraft?.description ?? "",
+      bannerUrl: initialDraft?.bannerUrl ?? "",
+      startsAt: initialDraft?.startsAt || defaultDates.startsAt,
+      endsAt: initialDraft?.endsAt || defaultDates.endsAt,
     },
     mode: "onChange",
   });
@@ -103,21 +167,6 @@ export function CreateEventForm({
   const watchedEndsAt = useWatch({ control, name: "endsAt" }) ?? defaultDates.endsAt;
 
   const slugCheck = useDebouncedSlugCheck(watchedSlug);
-
-  // Restore draft from sessionStorage on mount
-  useEffect(() => {
-    const draft = loadDraftFromSession();
-    if (draft && hasDraftContent(draft)) {
-      if (draft.title) setValue("title", draft.title, { shouldValidate: true });
-      if (draft.slug) setValue("slug", draft.slug, { shouldValidate: true });
-      if (draft.description) setValue("description", draft.description, { shouldValidate: true });
-      if (draft.bannerUrl) setValue("bannerUrl", draft.bannerUrl, { shouldValidate: true });
-      if (draft.startsAt) setValue("startsAt", draft.startsAt, { shouldValidate: true });
-      if (draft.endsAt) setValue("endsAt", draft.endsAt, { shouldValidate: true });
-      if (draft.isCustomSlug) setIsCustomSlug(true);
-      setIsDraftRestored(true);
-    }
-  }, [setValue]);
 
   // Persist form state to sessionStorage on changes
   useEffect(() => {
@@ -196,7 +245,6 @@ export function CreateEventForm({
   const onSubmit = async (values: FormRawValues) => {
     setServerError(null);
 
-    // Transform datetime-local to ISO strings
     const payload: CreateEventInput = {
       title: values.title.trim(),
       slug: values.slug.trim().toLowerCase(),
@@ -206,7 +254,6 @@ export function CreateEventForm({
       endsAt: new Date(values.endsAt).toISOString(),
     };
 
-    // Client-side schema parse validation
     const validation = createEventSchema.safeParse(payload);
     if (!validation.success) {
       setServerError(validation.error.issues.map((i) => i.message).join(", "));
@@ -226,7 +273,6 @@ export function CreateEventForm({
         return;
       }
 
-      // Cleanup draft from sessionStorage upon success
       clearDraftFromSession();
 
       if (onSuccess) {
@@ -234,8 +280,7 @@ export function CreateEventForm({
       } else {
         router.push(`/events/${result.data.slug}/settings`);
       }
-    } catch (err: unknown) {
-      console.error("Submission error:", err);
+    } catch {
       setServerError("An unexpected error occurred while creating the event.");
     }
   };
@@ -255,28 +300,7 @@ export function CreateEventForm({
         className,
       )}
     >
-      {/* Draft Restored Banner */}
-      {isDraftRestored && (
-        <aside
-          aria-label="Draft recovery notification"
-          className="mb-6 flex flex-col items-start justify-between gap-3 rounded-none border border-sky-300 bg-sky-50 p-4 sm:flex-row sm:items-center dark:border-sky-500/30 dark:bg-sky-500/10"
-        >
-          <div className="flex items-center gap-2.5">
-            <CheckCircle2 className="size-4 shrink-0 text-sky-600 dark:text-sky-400" />
-            <p className="text-xs font-semibold text-sky-950 dark:text-sky-200">
-              Draft Restored: We recovered your previously entered event details from this session.
-            </p>
-          </div>
-          <button
-            type="button"
-            onClick={handleClearDraft}
-            className="inline-flex cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
-          >
-            <RotateCcw className="size-3" />
-            <span>Clear Draft</span>
-          </button>
-        </aside>
-      )}
+      {isDraftRestored && <DraftRestoredBanner onClear={handleClearDraft} />}
 
       {serverError && (
         <div className="mb-6 flex items-start gap-3 rounded-none border border-rose-500/30 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
@@ -473,31 +497,10 @@ export function CreateEventForm({
                 </p>
               </div>
 
-              {/* Quick Duration Presets Chips */}
-              <div className="flex flex-wrap items-center gap-1.5 pt-1 sm:pt-0">
-                <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
-                  Quick Duration:
-                </span>
-                {TIMELINE_PRESETS.map((preset) => {
-                  const isActive = activePreset === preset.id;
-                  return (
-                    <button
-                      key={preset.id}
-                      type="button"
-                      aria-pressed={isActive}
-                      onClick={() => handleApplyPreset(preset.days)}
-                      className={cn(
-                        "cursor-pointer px-2.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
-                        isActive
-                          ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
-                          : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-950 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-white",
-                      )}
-                    >
-                      {preset.label}
-                    </button>
-                  );
-                })}
-              </div>
+              <TimelinePresetsPicker
+                activePreset={activePreset}
+                onApplyPreset={handleApplyPreset}
+              />
             </div>
           </div>
 

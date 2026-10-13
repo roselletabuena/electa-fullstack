@@ -1,6 +1,6 @@
 ---
 name: speckit
-description: Execute the end-to-end SpecKit lifecycle in an isolated git worktree with automated PR creation (worktree -> specify -> clarify -> checklist -> plan -> tasks -> analyze -> implement -> converge -> auto-PR)
+description: Execute the end-to-end SpecKit lifecycle in an isolated git worktree with code review gates and automated PR creation (worktree -> specify -> clarify -> checklist -> plan -> tasks -> analyze -> implement -> converge -> code-review -> auto-PR)
 ---
 
 # Workflow: speckit
@@ -69,9 +69,10 @@ Execute the end-to-end SpecKit pipeline via the `speckit-workflow` skill ([SKILL
    - Activate `speckit-tasks` to generate dependency-ordered `specs/<feature>/tasks.md`.
 6. **Analyze**:
    - Activate `speckit-analyze` to verify consistency across all 8 artifacts before implementation.
-7. **Test-Driven Implementation**:
+7. **Test-Driven Implementation & Jira Comment**:
    - Activate `speckit-implement` to execute tasks in `tasks.md` using TDD (Red-Green-Refactor) and atomic Conventional Commits (`feat(...)`, `test(...)`, `fix(...)`).
-8. **Convergence & Validation**:
+   - Post completion changelog comment to the Jira ticket via `addOrEditJiraIssueComment` detailing fulfilled acceptance criteria, completed tasks, commit SHAs, and test verification receipts.
+8. **Convergence & Initial Verification**:
    - Activate `speckit-converge` to verify 100% of tasks are completed.
    - Run verification gates:
      ```bash
@@ -79,7 +80,26 @@ Execute the end-to-end SpecKit pipeline via the `speckit-workflow` skill ([SKILL
      npm run lint
      npm run test:unit
      ```
-   - Run `constitution-check` and `graphify-auto-sync`.
+9. **Automated Code Review & Standards Audit**:
+   - Activate the `code-review` skill ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/.agents/skills/code-review/SKILL.md)) across parallel sub-agents comparing `origin/main...HEAD`:
+     - **Spec Axis**: Validates diff against `specs/<feature>/spec.md` (user stories, Gherkin acceptance criteria, invariants, and edge cases).
+     - **Standards Axis**: Verifies repository coding standards and Fowler smell baseline (no Mysterious Names, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery, etc.).
+   - Activate the `code-review-and-quality` skill ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/.agents/skills/code-review-and-quality/SKILL.md)) across the 5 core quality dimensions:
+     1. **Correctness**: Edge cases, null/empty states, error boundaries, race conditions.
+     2. **Readability & Simplicity**: No nested ternaries, clean control flow, no dead code, self-documenting naming.
+     3. **Architecture**: Clean vertical slices, zero circular dependencies, single responsibility.
+     4. **Security**: Session verification via `getSession()`, zero raw `process.env` bypasses, secure cryptographically sound APIs.
+     5. **Performance**: No sequential `await` calls inside loops where batching/`Promise.all` applies, zero redundant DB roundtrips.
+   - **Auto-Remediation Gate**: Immediately refactor or fix any critical smells or defects identified, committing fixes atomically (`refactor(...)` or `fix(...)`).
+   - Re-run test and lint gates to ensure clean status:
+     ```bash
+     npm run typecheck
+     npm run lint
+     npm run test:unit
+     ```
+10. **Quality & Constitution Gates**:
+    - Run `constitution-check` to verify principles §I–§VI.
+    - Run `graphify-auto-sync` (`graphify . --update`) to maintain an accurate AST knowledge graph.
 
 ---
 
@@ -105,6 +125,7 @@ Once all tasks pass verification, automatically trigger the `pr-creator` skill (
    - Jira ticket link and type
    - Executive summary
    - Key architectural changes
+   - Code Review & Quality report (two-axis Spec/Standards review + 5-axis quality audit)
    - Vitest & typecheck verification report
    - Electa Constitution checklist (§I–§VI)
 6. Open the Pull Request via GitHub CLI:
@@ -116,6 +137,8 @@ Once all tasks pass verification, automatically trigger the `pr-creator` skill (
      --body-file ".specify/pr-body.md"
    ```
    *(If `gh` CLI is unauthenticated, output the GitHub compare URL and PR description for 1-click creation)*
+7. **Post PR Link Comment to Jira**:
+   - Post an automated update comment to the Jira ticket via `addOrEditJiraIssueComment` linking the newly created PR URL with review status.
 
 ---
 

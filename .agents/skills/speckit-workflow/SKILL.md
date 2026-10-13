@@ -22,9 +22,10 @@ flowchart TD
     E --> F[6. Artifact Analysis\nspeckit-analyze]
     F --> G[7. Implementation\nspeckit-implement + TDD + Atomic Commits]
     G --> H[8. Convergence & Verification\nspeckit-converge]
-    H --> I[9. Quality Gates\nconstitution-check + graphify-auto-sync]
-    I --> J[10. Auto PR & Sync\npr-creator: rebase origin/main -> gh pr create]
-    J --> K[11. Teardown / Summary\nOptional git worktree remove]
+    H --> CR[9. Code Review Gate\ncode-review: Spec & Standards Axes\ncode-review-and-quality: 5-Axis Quality Audit]
+    CR --> I[10. Quality & Constitution Gates\nconstitution-check + graphify-auto-sync]
+    I --> J[11. Auto PR & Sync\npr-creator: rebase origin/main -> gh pr create]
+    J --> K[12. Teardown / Summary\nOptional git worktree remove]
 ```
 
 ---
@@ -91,10 +92,17 @@ Every feature in `specs/<feature>/` MUST produce all 8 artifacts:
 
 ### Phase 7: Test-Driven Implementation
 1. Invoke `speckit-implement` to execute tasks in `tasks.md` (Red-Green-Refactor).
-2. Update Jira ticket status to `In Progress` / `Done` if Jira MCP is active.
-3. Adhere strictly to the Atomic Commit rule (`feat(...)`, `test(...)`, `fix(...)`).
+2. Adhere strictly to the Atomic Commit rule (`feat(...)`, `test(...)`, `fix(...)`).
+3. **Automated Jira Ticket Synchronization & Implementation Comment**:
+   - When implementation starts: Transition ticket to `In Progress` via `transitionJiraIssue`.
+   - When implementation finishes: Post a rich completion comment to the Jira ticket via `addOrEditJiraIssueComment` containing:
+     - Fulfilled Acceptance Criteria from `spec.md`
+     - Completed tasks from `tasks.md`
+     - Associated Git commit SHAs
+     - Vitest test pass counts and typecheck verification receipts
+     - Code review audit confirmation
 
-### Phase 8: Convergence & Verification
+### Phase 8: Convergence & Initial Verification
 1. Run `speckit-converge` to guarantee all tasks in `tasks.md` are completed.
 2. Run automated verification gates:
    ```bash
@@ -103,11 +111,30 @@ Every feature in `specs/<feature>/` MUST produce all 8 artifacts:
    npm run test:unit
    ```
 
-### Phase 9: Quality & Constitution Gates
+### Phase 9: Automated Code Review & Refactoring Gate
+Before moving to PR creation, trigger our dedicated code review skills on the active branch diff against `origin/main`:
+1. **Two-Axis Code Review (`code-review`)**:
+   - Invoke the `code-review` skill ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/.agents/skills/code-review/SKILL.md)) using parallel sub-agents across `origin/main...HEAD`:
+     - **Spec Axis**: Audits implementation strictly against `specs/<feature>/spec.md` (acceptance criteria, Gherkin scenarios, invariants). Ensures zero omitted requirements and zero accidental scope creep.
+     - **Standards Axis**: Verifies adherence to repository standards and Fowler code smells baseline (_Refactoring_, ch.3):
+       - Eliminates Mysterious Names, Duplicated Code, Feature Envy, Data Clumps, Primitive Obsession, Repeated Switches, Shotgun Surgery, Divergent Change, and Speculative Generality.
+2. **Multi-Axis Quality & Correctness Audit (`code-review-and-quality`)**:
+   - Invoke `code-review-and-quality` ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/.agents/skills/code-review-and-quality/SKILL.md)) across the 5 dimensions:
+     - **Correctness**: Validates boundary cases, nullability, error flows, and test validity.
+     - **Readability & Simplicity**: Enforces straightforward control flow, bans nested ternaries, eliminates unused shim code or dead artifacts.
+     - **Architecture**: Enforces clean vertical slices under `src/features/`, dependency direction, and strictly prevents circular module dependencies.
+     - **Security**: Verifies `getSession()` authorization on all mutations/routes, prohibits raw `process.env` bypasses, validates cryptographic RNG usage.
+     - **Performance**: Prohibits sequential `await` calls in iterations when batchable (`Promise.all`), optimizes bundle size and DB queries.
+3. **Auto-Remediation & Bisectable Commit**:
+   - Resolve any identified issues immediately.
+   - Commit refactorings and fixes with atomic Conventional Commits (`refactor(...)`, `fix(...)`).
+   - Re-run test and lint suite (`npm run typecheck`, `npm run lint`, `npm run test:unit`) to confirm 100% green status.
+
+### Phase 10: Quality & Constitution Gates
 1. Run `constitution-check` to verify principles §I–§VI.
 2. Run `graphify-auto-sync` to keep the AST map synchronized.
 
-### Phase 10: Automated Pull Request Generation (Auto PR)
+### Phase 11: Automated Pull Request Generation (Auto PR)
 Invoke `pr-creator` ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/electa-fullstack/.agents/skills/pr-creator/SKILL.md)) inside the worktree:
 1. Verify working tree is clean: `git status -s`.
 2. Rebase onto latest `origin/main`:
@@ -120,7 +147,7 @@ Invoke `pr-creator` ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/ele
    ```bash
    git push -u origin HEAD --force-with-lease
    ```
-5. Populate `.specify/pr-body.md` from the PR template with Jira keys, executive summary, test receipts, and constitution checklist.
+5. Populate `.specify/pr-body.md` from the PR template with Jira keys, executive summary, test receipts, code review audit summary, and constitution checklist.
 6. Open PR via GitHub CLI:
    ```bash
    gh pr create \
@@ -130,9 +157,11 @@ Invoke `pr-creator` ([SKILL.md](file:///c:/Users/Roselle%20Tabuena/workspace/ele
      --body-file ".specify/pr-body.md"
    ```
    *(If `gh` is unauthenticated, emit the compare link and PR body for 1-click creation)*.
+7. **Post PR Link Comment to Jira**:
+   - Post an automated update comment to the Jira ticket linking the created PR URL and transitioning ticket to `In Review` / `Done`.
 
-### Phase 11: Worktree Teardown & Reporting
-1. Return PR URL, summary, and verification receipts to the user.
+### Phase 12: Worktree Teardown & Reporting
+1. Return PR URL, Jira comment status, summary, code review receipts, and verification results to the user.
 2. Provide teardown command for after merge:
    ```bash
    git worktree remove .worktrees/<feature-slug> --force

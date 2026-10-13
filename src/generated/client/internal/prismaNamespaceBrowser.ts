@@ -60,6 +60,7 @@ export const ModelName = {
   ContestantCategoryAssignment: 'ContestantCategoryAssignment',
   EventAuditLog: 'EventAuditLog',
   Vote: 'Vote',
+  BallotSubmission: 'BallotSubmission',
   PaymentTransaction: 'PaymentTransaction',
   PayoutRequest: 'PayoutRequest'
 } as const
@@ -92,6 +93,7 @@ export const EventScalarFieldEnum = {
   draftPassphraseHash: 'draftPassphraseHash',
   showResultsOnClose: 'showResultsOnClose',
   isFreeVotingEnabled: 'isFreeVotingEnabled',
+  isFreeVotingOnly: 'isFreeVotingOnly',
   dailyFreeVoteLimit: 'dailyFreeVoteLimit',
   takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
@@ -221,10 +223,21 @@ export const VoteScalarFieldEnum = {
   voteWeight: 'voteWeight',
   paymentTransactionId: 'paymentTransactionId',
   positionId: 'positionId',
+  ballotSubmissionId: 'ballotSubmissionId',
   createdAt: 'createdAt'
 } as const
 
 export type VoteScalarFieldEnum = (typeof VoteScalarFieldEnum)[keyof typeof VoteScalarFieldEnum]
+
+
+export const BallotSubmissionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  voterId: 'voterId',
+  createdAt: 'createdAt'
+} as const
+
+export type BallotSubmissionScalarFieldEnum = (typeof BallotSubmissionScalarFieldEnum)[keyof typeof BallotSubmissionScalarFieldEnum]
 
 
 export const PaymentTransactionScalarFieldEnum = {

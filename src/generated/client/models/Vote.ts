@@ -44,6 +44,7 @@ export type VoteMinAggregateOutputType = {
   voteWeight: number | null
   paymentTransactionId: string | null
   positionId: string | null
+  ballotSubmissionId: string | null
   createdAt: Date | null
 }
 
@@ -57,6 +58,7 @@ export type VoteMaxAggregateOutputType = {
   voteWeight: number | null
   paymentTransactionId: string | null
   positionId: string | null
+  ballotSubmissionId: string | null
   createdAt: Date | null
 }
 
@@ -70,6 +72,7 @@ export type VoteCountAggregateOutputType = {
   voteWeight: number
   paymentTransactionId: number
   positionId: number
+  ballotSubmissionId: number
   createdAt: number
   _all: number
 }
@@ -93,6 +96,7 @@ export type VoteMinAggregateInputType = {
   voteWeight?: true
   paymentTransactionId?: true
   positionId?: true
+  ballotSubmissionId?: true
   createdAt?: true
 }
 
@@ -106,6 +110,7 @@ export type VoteMaxAggregateInputType = {
   voteWeight?: true
   paymentTransactionId?: true
   positionId?: true
+  ballotSubmissionId?: true
   createdAt?: true
 }
 
@@ -119,6 +124,7 @@ export type VoteCountAggregateInputType = {
   voteWeight?: true
   paymentTransactionId?: true
   positionId?: true
+  ballotSubmissionId?: true
   createdAt?: true
   _all?: true
 }
@@ -219,6 +225,7 @@ export type VoteGroupByOutputType = {
   voteWeight: number
   paymentTransactionId: string | null
   positionId: string | null
+  ballotSubmissionId: string | null
   createdAt: Date
   _count: VoteCountAggregateOutputType | null
   _avg: VoteAvgAggregateOutputType | null
@@ -255,11 +262,13 @@ export type VoteWhereInput = {
   voteWeight?: Prisma.IntFilter<"Vote"> | number
   paymentTransactionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   positionId?: Prisma.StringNullableFilter<"Vote"> | string | null
+  ballotSubmissionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vote"> | Date | string
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   contestant?: Prisma.XOR<Prisma.ContestantScalarRelationFilter, Prisma.ContestantWhereInput>
   paymentTransaction?: Prisma.XOR<Prisma.PaymentTransactionNullableScalarRelationFilter, Prisma.PaymentTransactionWhereInput> | null
   position?: Prisma.XOR<Prisma.EventPositionNullableScalarRelationFilter, Prisma.EventPositionWhereInput> | null
+  ballotSubmission?: Prisma.XOR<Prisma.BallotSubmissionNullableScalarRelationFilter, Prisma.BallotSubmissionWhereInput> | null
 }
 
 export type VoteOrderByWithRelationInput = {
@@ -272,11 +281,13 @@ export type VoteOrderByWithRelationInput = {
   voteWeight?: Prisma.SortOrder
   paymentTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   positionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  ballotSubmissionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   event?: Prisma.EventOrderByWithRelationInput
   contestant?: Prisma.ContestantOrderByWithRelationInput
   paymentTransaction?: Prisma.PaymentTransactionOrderByWithRelationInput
   position?: Prisma.EventPositionOrderByWithRelationInput
+  ballotSubmission?: Prisma.BallotSubmissionOrderByWithRelationInput
 }
 
 export type VoteWhereUniqueInput = Prisma.AtLeast<{
@@ -292,11 +303,13 @@ export type VoteWhereUniqueInput = Prisma.AtLeast<{
   voteWeight?: Prisma.IntFilter<"Vote"> | number
   paymentTransactionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   positionId?: Prisma.StringNullableFilter<"Vote"> | string | null
+  ballotSubmissionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vote"> | Date | string
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   contestant?: Prisma.XOR<Prisma.ContestantScalarRelationFilter, Prisma.ContestantWhereInput>
   paymentTransaction?: Prisma.XOR<Prisma.PaymentTransactionNullableScalarRelationFilter, Prisma.PaymentTransactionWhereInput> | null
   position?: Prisma.XOR<Prisma.EventPositionNullableScalarRelationFilter, Prisma.EventPositionWhereInput> | null
+  ballotSubmission?: Prisma.XOR<Prisma.BallotSubmissionNullableScalarRelationFilter, Prisma.BallotSubmissionWhereInput> | null
 }, "id">
 
 export type VoteOrderByWithAggregationInput = {
@@ -309,6 +322,7 @@ export type VoteOrderByWithAggregationInput = {
   voteWeight?: Prisma.SortOrder
   paymentTransactionId?: Prisma.SortOrderInput | Prisma.SortOrder
   positionId?: Prisma.SortOrderInput | Prisma.SortOrder
+  ballotSubmissionId?: Prisma.SortOrderInput | Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   _count?: Prisma.VoteCountOrderByAggregateInput
   _avg?: Prisma.VoteAvgOrderByAggregateInput
@@ -330,6 +344,7 @@ export type VoteScalarWhereWithAggregatesInput = {
   voteWeight?: Prisma.IntWithAggregatesFilter<"Vote"> | number
   paymentTransactionId?: Prisma.StringNullableWithAggregatesFilter<"Vote"> | string | null
   positionId?: Prisma.StringNullableWithAggregatesFilter<"Vote"> | string | null
+  ballotSubmissionId?: Prisma.StringNullableWithAggregatesFilter<"Vote"> | string | null
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Vote"> | Date | string
 }
 
@@ -344,6 +359,7 @@ export type VoteCreateInput = {
   contestant: Prisma.ContestantCreateNestedOneWithoutVotesInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutVotesInput
   position?: Prisma.EventPositionCreateNestedOneWithoutVotesInput
+  ballotSubmission?: Prisma.BallotSubmissionCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateInput = {
@@ -356,6 +372,7 @@ export type VoteUncheckedCreateInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -370,6 +387,7 @@ export type VoteUpdateInput = {
   contestant?: Prisma.ContestantUpdateOneRequiredWithoutVotesNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutVotesNestedInput
   position?: Prisma.EventPositionUpdateOneWithoutVotesNestedInput
+  ballotSubmission?: Prisma.BallotSubmissionUpdateOneWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateInput = {
@@ -382,6 +400,7 @@ export type VoteUncheckedUpdateInput = {
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -395,6 +414,7 @@ export type VoteCreateManyInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -417,6 +437,7 @@ export type VoteUncheckedUpdateManyInput = {
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -440,6 +461,7 @@ export type VoteCountOrderByAggregateInput = {
   voteWeight?: Prisma.SortOrder
   paymentTransactionId?: Prisma.SortOrder
   positionId?: Prisma.SortOrder
+  ballotSubmissionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -457,6 +479,7 @@ export type VoteMaxOrderByAggregateInput = {
   voteWeight?: Prisma.SortOrder
   paymentTransactionId?: Prisma.SortOrder
   positionId?: Prisma.SortOrder
+  ballotSubmissionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -470,6 +493,7 @@ export type VoteMinOrderByAggregateInput = {
   voteWeight?: Prisma.SortOrder
   paymentTransactionId?: Prisma.SortOrder
   positionId?: Prisma.SortOrder
+  ballotSubmissionId?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
 }
 
@@ -607,6 +631,48 @@ export type EnumVoteTypeFieldUpdateOperationsInput = {
   set?: $Enums.VoteType
 }
 
+export type VoteCreateNestedManyWithoutBallotSubmissionInput = {
+  create?: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput> | Prisma.VoteCreateWithoutBallotSubmissionInput[] | Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput[]
+  connectOrCreate?: Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput | Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput[]
+  createMany?: Prisma.VoteCreateManyBallotSubmissionInputEnvelope
+  connect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+}
+
+export type VoteUncheckedCreateNestedManyWithoutBallotSubmissionInput = {
+  create?: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput> | Prisma.VoteCreateWithoutBallotSubmissionInput[] | Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput[]
+  connectOrCreate?: Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput | Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput[]
+  createMany?: Prisma.VoteCreateManyBallotSubmissionInputEnvelope
+  connect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+}
+
+export type VoteUpdateManyWithoutBallotSubmissionNestedInput = {
+  create?: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput> | Prisma.VoteCreateWithoutBallotSubmissionInput[] | Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput[]
+  connectOrCreate?: Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput | Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput[]
+  upsert?: Prisma.VoteUpsertWithWhereUniqueWithoutBallotSubmissionInput | Prisma.VoteUpsertWithWhereUniqueWithoutBallotSubmissionInput[]
+  createMany?: Prisma.VoteCreateManyBallotSubmissionInputEnvelope
+  set?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  disconnect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  delete?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  connect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  update?: Prisma.VoteUpdateWithWhereUniqueWithoutBallotSubmissionInput | Prisma.VoteUpdateWithWhereUniqueWithoutBallotSubmissionInput[]
+  updateMany?: Prisma.VoteUpdateManyWithWhereWithoutBallotSubmissionInput | Prisma.VoteUpdateManyWithWhereWithoutBallotSubmissionInput[]
+  deleteMany?: Prisma.VoteScalarWhereInput | Prisma.VoteScalarWhereInput[]
+}
+
+export type VoteUncheckedUpdateManyWithoutBallotSubmissionNestedInput = {
+  create?: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput> | Prisma.VoteCreateWithoutBallotSubmissionInput[] | Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput[]
+  connectOrCreate?: Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput | Prisma.VoteCreateOrConnectWithoutBallotSubmissionInput[]
+  upsert?: Prisma.VoteUpsertWithWhereUniqueWithoutBallotSubmissionInput | Prisma.VoteUpsertWithWhereUniqueWithoutBallotSubmissionInput[]
+  createMany?: Prisma.VoteCreateManyBallotSubmissionInputEnvelope
+  set?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  disconnect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  delete?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  connect?: Prisma.VoteWhereUniqueInput | Prisma.VoteWhereUniqueInput[]
+  update?: Prisma.VoteUpdateWithWhereUniqueWithoutBallotSubmissionInput | Prisma.VoteUpdateWithWhereUniqueWithoutBallotSubmissionInput[]
+  updateMany?: Prisma.VoteUpdateManyWithWhereWithoutBallotSubmissionInput | Prisma.VoteUpdateManyWithWhereWithoutBallotSubmissionInput[]
+  deleteMany?: Prisma.VoteScalarWhereInput | Prisma.VoteScalarWhereInput[]
+}
+
 export type VoteCreateNestedManyWithoutPaymentTransactionInput = {
   create?: Prisma.XOR<Prisma.VoteCreateWithoutPaymentTransactionInput, Prisma.VoteUncheckedCreateWithoutPaymentTransactionInput> | Prisma.VoteCreateWithoutPaymentTransactionInput[] | Prisma.VoteUncheckedCreateWithoutPaymentTransactionInput[]
   connectOrCreate?: Prisma.VoteCreateOrConnectWithoutPaymentTransactionInput | Prisma.VoteCreateOrConnectWithoutPaymentTransactionInput[]
@@ -659,6 +725,7 @@ export type VoteCreateWithoutEventInput = {
   contestant: Prisma.ContestantCreateNestedOneWithoutVotesInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutVotesInput
   position?: Prisma.EventPositionCreateNestedOneWithoutVotesInput
+  ballotSubmission?: Prisma.BallotSubmissionCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutEventInput = {
@@ -670,6 +737,7 @@ export type VoteUncheckedCreateWithoutEventInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -712,6 +780,7 @@ export type VoteScalarWhereInput = {
   voteWeight?: Prisma.IntFilter<"Vote"> | number
   paymentTransactionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   positionId?: Prisma.StringNullableFilter<"Vote"> | string | null
+  ballotSubmissionId?: Prisma.StringNullableFilter<"Vote"> | string | null
   createdAt?: Prisma.DateTimeFilter<"Vote"> | Date | string
 }
 
@@ -725,6 +794,7 @@ export type VoteCreateWithoutPositionInput = {
   event: Prisma.EventCreateNestedOneWithoutVotesInput
   contestant: Prisma.ContestantCreateNestedOneWithoutVotesInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutVotesInput
+  ballotSubmission?: Prisma.BallotSubmissionCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutPositionInput = {
@@ -736,6 +806,7 @@ export type VoteUncheckedCreateWithoutPositionInput = {
   voteType?: $Enums.VoteType
   voteWeight?: number
   paymentTransactionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -775,6 +846,7 @@ export type VoteCreateWithoutContestantInput = {
   event: Prisma.EventCreateNestedOneWithoutVotesInput
   paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutVotesInput
   position?: Prisma.EventPositionCreateNestedOneWithoutVotesInput
+  ballotSubmission?: Prisma.BallotSubmissionCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutContestantInput = {
@@ -786,6 +858,7 @@ export type VoteUncheckedCreateWithoutContestantInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -815,6 +888,58 @@ export type VoteUpdateManyWithWhereWithoutContestantInput = {
   data: Prisma.XOR<Prisma.VoteUpdateManyMutationInput, Prisma.VoteUncheckedUpdateManyWithoutContestantInput>
 }
 
+export type VoteCreateWithoutBallotSubmissionInput = {
+  id?: string
+  voterId: string
+  awardCategoryId?: string | null
+  voteType?: $Enums.VoteType
+  voteWeight?: number
+  createdAt?: Date | string
+  event: Prisma.EventCreateNestedOneWithoutVotesInput
+  contestant: Prisma.ContestantCreateNestedOneWithoutVotesInput
+  paymentTransaction?: Prisma.PaymentTransactionCreateNestedOneWithoutVotesInput
+  position?: Prisma.EventPositionCreateNestedOneWithoutVotesInput
+}
+
+export type VoteUncheckedCreateWithoutBallotSubmissionInput = {
+  id?: string
+  eventId: string
+  contestantId: string
+  voterId: string
+  awardCategoryId?: string | null
+  voteType?: $Enums.VoteType
+  voteWeight?: number
+  paymentTransactionId?: string | null
+  positionId?: string | null
+  createdAt?: Date | string
+}
+
+export type VoteCreateOrConnectWithoutBallotSubmissionInput = {
+  where: Prisma.VoteWhereUniqueInput
+  create: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput>
+}
+
+export type VoteCreateManyBallotSubmissionInputEnvelope = {
+  data: Prisma.VoteCreateManyBallotSubmissionInput | Prisma.VoteCreateManyBallotSubmissionInput[]
+  skipDuplicates?: boolean
+}
+
+export type VoteUpsertWithWhereUniqueWithoutBallotSubmissionInput = {
+  where: Prisma.VoteWhereUniqueInput
+  update: Prisma.XOR<Prisma.VoteUpdateWithoutBallotSubmissionInput, Prisma.VoteUncheckedUpdateWithoutBallotSubmissionInput>
+  create: Prisma.XOR<Prisma.VoteCreateWithoutBallotSubmissionInput, Prisma.VoteUncheckedCreateWithoutBallotSubmissionInput>
+}
+
+export type VoteUpdateWithWhereUniqueWithoutBallotSubmissionInput = {
+  where: Prisma.VoteWhereUniqueInput
+  data: Prisma.XOR<Prisma.VoteUpdateWithoutBallotSubmissionInput, Prisma.VoteUncheckedUpdateWithoutBallotSubmissionInput>
+}
+
+export type VoteUpdateManyWithWhereWithoutBallotSubmissionInput = {
+  where: Prisma.VoteScalarWhereInput
+  data: Prisma.XOR<Prisma.VoteUpdateManyMutationInput, Prisma.VoteUncheckedUpdateManyWithoutBallotSubmissionInput>
+}
+
 export type VoteCreateWithoutPaymentTransactionInput = {
   id?: string
   voterId: string
@@ -825,6 +950,7 @@ export type VoteCreateWithoutPaymentTransactionInput = {
   event: Prisma.EventCreateNestedOneWithoutVotesInput
   contestant: Prisma.ContestantCreateNestedOneWithoutVotesInput
   position?: Prisma.EventPositionCreateNestedOneWithoutVotesInput
+  ballotSubmission?: Prisma.BallotSubmissionCreateNestedOneWithoutVotesInput
 }
 
 export type VoteUncheckedCreateWithoutPaymentTransactionInput = {
@@ -836,6 +962,7 @@ export type VoteUncheckedCreateWithoutPaymentTransactionInput = {
   voteType?: $Enums.VoteType
   voteWeight?: number
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -874,6 +1001,7 @@ export type VoteCreateManyEventInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -887,6 +1015,7 @@ export type VoteUpdateWithoutEventInput = {
   contestant?: Prisma.ContestantUpdateOneRequiredWithoutVotesNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutVotesNestedInput
   position?: Prisma.EventPositionUpdateOneWithoutVotesNestedInput
+  ballotSubmission?: Prisma.BallotSubmissionUpdateOneWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutEventInput = {
@@ -898,6 +1027,7 @@ export type VoteUncheckedUpdateWithoutEventInput = {
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -910,6 +1040,7 @@ export type VoteUncheckedUpdateManyWithoutEventInput = {
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -922,6 +1053,7 @@ export type VoteCreateManyPositionInput = {
   voteType?: $Enums.VoteType
   voteWeight?: number
   paymentTransactionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -935,6 +1067,7 @@ export type VoteUpdateWithoutPositionInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutVotesNestedInput
   contestant?: Prisma.ContestantUpdateOneRequiredWithoutVotesNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutVotesNestedInput
+  ballotSubmission?: Prisma.BallotSubmissionUpdateOneWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutPositionInput = {
@@ -946,6 +1079,7 @@ export type VoteUncheckedUpdateWithoutPositionInput = {
   voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -958,6 +1092,7 @@ export type VoteUncheckedUpdateManyWithoutPositionInput = {
   voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -970,6 +1105,7 @@ export type VoteCreateManyContestantInput = {
   voteWeight?: number
   paymentTransactionId?: string | null
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -983,6 +1119,7 @@ export type VoteUpdateWithoutContestantInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutVotesNestedInput
   paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutVotesNestedInput
   position?: Prisma.EventPositionUpdateOneWithoutVotesNestedInput
+  ballotSubmission?: Prisma.BallotSubmissionUpdateOneWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutContestantInput = {
@@ -994,12 +1131,66 @@ export type VoteUncheckedUpdateWithoutContestantInput = {
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
 export type VoteUncheckedUpdateManyWithoutContestantInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  voterId?: Prisma.StringFieldUpdateOperationsInput | string
+  awardCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
+  voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
+  paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VoteCreateManyBallotSubmissionInput = {
+  id?: string
+  eventId: string
+  contestantId: string
+  voterId: string
+  awardCategoryId?: string | null
+  voteType?: $Enums.VoteType
+  voteWeight?: number
+  paymentTransactionId?: string | null
+  positionId?: string | null
+  createdAt?: Date | string
+}
+
+export type VoteUpdateWithoutBallotSubmissionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  voterId?: Prisma.StringFieldUpdateOperationsInput | string
+  awardCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
+  voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  event?: Prisma.EventUpdateOneRequiredWithoutVotesNestedInput
+  contestant?: Prisma.ContestantUpdateOneRequiredWithoutVotesNestedInput
+  paymentTransaction?: Prisma.PaymentTransactionUpdateOneWithoutVotesNestedInput
+  position?: Prisma.EventPositionUpdateOneWithoutVotesNestedInput
+}
+
+export type VoteUncheckedUpdateWithoutBallotSubmissionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantId?: Prisma.StringFieldUpdateOperationsInput | string
+  voterId?: Prisma.StringFieldUpdateOperationsInput | string
+  awardCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
+  voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
+  paymentTransactionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type VoteUncheckedUpdateManyWithoutBallotSubmissionInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantId?: Prisma.StringFieldUpdateOperationsInput | string
   voterId?: Prisma.StringFieldUpdateOperationsInput | string
   awardCategoryId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
@@ -1018,6 +1209,7 @@ export type VoteCreateManyPaymentTransactionInput = {
   voteType?: $Enums.VoteType
   voteWeight?: number
   positionId?: string | null
+  ballotSubmissionId?: string | null
   createdAt?: Date | string
 }
 
@@ -1031,6 +1223,7 @@ export type VoteUpdateWithoutPaymentTransactionInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutVotesNestedInput
   contestant?: Prisma.ContestantUpdateOneRequiredWithoutVotesNestedInput
   position?: Prisma.EventPositionUpdateOneWithoutVotesNestedInput
+  ballotSubmission?: Prisma.BallotSubmissionUpdateOneWithoutVotesNestedInput
 }
 
 export type VoteUncheckedUpdateWithoutPaymentTransactionInput = {
@@ -1042,6 +1235,7 @@ export type VoteUncheckedUpdateWithoutPaymentTransactionInput = {
   voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1054,6 +1248,7 @@ export type VoteUncheckedUpdateManyWithoutPaymentTransactionInput = {
   voteType?: Prisma.EnumVoteTypeFieldUpdateOperationsInput | $Enums.VoteType
   voteWeight?: Prisma.IntFieldUpdateOperationsInput | number
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  ballotSubmissionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -1069,11 +1264,13 @@ export type VoteSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   voteWeight?: boolean
   paymentTransactionId?: boolean
   positionId?: boolean
+  ballotSubmissionId?: boolean
   createdAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }, ExtArgs["result"]["vote"]>
 
 export type VoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1086,11 +1283,13 @@ export type VoteSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   voteWeight?: boolean
   paymentTransactionId?: boolean
   positionId?: boolean
+  ballotSubmissionId?: boolean
   createdAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }, ExtArgs["result"]["vote"]>
 
 export type VoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
@@ -1103,11 +1302,13 @@ export type VoteSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   voteWeight?: boolean
   paymentTransactionId?: boolean
   positionId?: boolean
+  ballotSubmissionId?: boolean
   createdAt?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }, ExtArgs["result"]["vote"]>
 
 export type VoteSelectScalar = {
@@ -1120,27 +1321,31 @@ export type VoteSelectScalar = {
   voteWeight?: boolean
   paymentTransactionId?: boolean
   positionId?: boolean
+  ballotSubmissionId?: boolean
   createdAt?: boolean
 }
 
-export type VoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "contestantId" | "voterId" | "awardCategoryId" | "voteType" | "voteWeight" | "paymentTransactionId" | "positionId" | "createdAt", ExtArgs["result"]["vote"]>
+export type VoteOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "contestantId" | "voterId" | "awardCategoryId" | "voteType" | "voteWeight" | "paymentTransactionId" | "positionId" | "ballotSubmissionId" | "createdAt", ExtArgs["result"]["vote"]>
 export type VoteInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }
 export type VoteIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }
 export type VoteIncludeUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestant?: boolean | Prisma.ContestantDefaultArgs<ExtArgs>
   paymentTransaction?: boolean | Prisma.Vote$paymentTransactionArgs<ExtArgs>
   position?: boolean | Prisma.Vote$positionArgs<ExtArgs>
+  ballotSubmission?: boolean | Prisma.Vote$ballotSubmissionArgs<ExtArgs>
 }
 
 export type $VotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1150,6 +1355,7 @@ export type $VotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     contestant: Prisma.$ContestantPayload<ExtArgs>
     paymentTransaction: Prisma.$PaymentTransactionPayload<ExtArgs> | null
     position: Prisma.$EventPositionPayload<ExtArgs> | null
+    ballotSubmission: Prisma.$BallotSubmissionPayload<ExtArgs> | null
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1161,6 +1367,7 @@ export type $VotePayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     voteWeight: number
     paymentTransactionId: string | null
     positionId: string | null
+    ballotSubmissionId: string | null
     createdAt: Date
   }, ExtArgs["result"]["vote"]>
   composites: {}
@@ -1560,6 +1767,7 @@ export interface Prisma__VoteClient<T, Null = never, ExtArgs extends runtime.Typ
   contestant<T extends Prisma.ContestantDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ContestantDefaultArgs<ExtArgs>>): Prisma.Prisma__ContestantClient<runtime.Types.Result.GetResult<Prisma.$ContestantPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   paymentTransaction<T extends Prisma.Vote$paymentTransactionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vote$paymentTransactionArgs<ExtArgs>>): Prisma.Prisma__PaymentTransactionClient<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   position<T extends Prisma.Vote$positionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vote$positionArgs<ExtArgs>>): Prisma.Prisma__EventPositionClient<runtime.Types.Result.GetResult<Prisma.$EventPositionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
+  ballotSubmission<T extends Prisma.Vote$ballotSubmissionArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Vote$ballotSubmissionArgs<ExtArgs>>): Prisma.Prisma__BallotSubmissionClient<runtime.Types.Result.GetResult<Prisma.$BallotSubmissionPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | null, null, ExtArgs, GlobalOmitOptions>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1598,6 +1806,7 @@ export interface VoteFieldRefs {
   readonly voteWeight: Prisma.FieldRef<"Vote", 'Int'>
   readonly paymentTransactionId: Prisma.FieldRef<"Vote", 'String'>
   readonly positionId: Prisma.FieldRef<"Vote", 'String'>
+  readonly ballotSubmissionId: Prisma.FieldRef<"Vote", 'String'>
   readonly createdAt: Prisma.FieldRef<"Vote", 'DateTime'>
 }
     
@@ -2035,6 +2244,25 @@ export type Vote$positionArgs<ExtArgs extends runtime.Types.Extensions.InternalA
    */
   include?: Prisma.EventPositionInclude<ExtArgs> | null
   where?: Prisma.EventPositionWhereInput
+}
+
+/**
+ * Vote.ballotSubmission
+ */
+export type Vote$ballotSubmissionArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BallotSubmission
+   */
+  select?: Prisma.BallotSubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BallotSubmission
+   */
+  omit?: Prisma.BallotSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BallotSubmissionInclude<ExtArgs> | null
+  where?: Prisma.BallotSubmissionWhereInput
 }
 
 /**

@@ -50,5 +50,6 @@
 
 **Purpose**: Open Pull Request via `pr-creator` targeting `main` and sync Jira ticket.
 
-- [ ] T012 Push branch and create PR via `pr-creator` targeting `origin/main`
-- [ ] T013 Update Jira ticket VS-83 with implementation summary and PR link
+- [x] T012 Push branch and create PR via `pr-creator` targeting `origin/main`
+- [x] T013 Update Jira ticket VS-83 with implementation summary and PR link
+

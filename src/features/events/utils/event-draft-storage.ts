@@ -7,7 +7,8 @@ export interface CreateEventDraftData {
   bannerUrl: string;
   startsAt: string;
   endsAt: string;
-  isCustomSlug?: boolean;
+  isCustomSlug?: boolean | undefined;
+  archetype?: string | undefined;
 }
 
 interface StoredDraftEnvelope extends CreateEventDraftData {
@@ -57,6 +58,7 @@ export function loadDraftFromSession(): CreateEventDraftData | null {
       startsAt: typeof parsed.startsAt === "string" ? parsed.startsAt : "",
       endsAt: typeof parsed.endsAt === "string" ? parsed.endsAt : "",
       isCustomSlug: Boolean(parsed.isCustomSlug),
+      archetype: typeof parsed.archetype === "string" ? parsed.archetype : undefined,
     };
   } catch {
     return null;

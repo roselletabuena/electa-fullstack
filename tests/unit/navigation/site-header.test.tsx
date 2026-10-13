@@ -60,4 +60,25 @@ describe("SiteHeader Component", () => {
     const nav = screen.getByRole("navigation", { name: /main navigation/i });
     expect(nav).toBeDefined();
   });
+
+  it("renders authenticated account trigger instead of Sign In button when user is logged in", () => {
+    const mockUser = {
+      userId: "usr_auth_1",
+      name: "Maria Santos",
+      email: "maria@electa.ph",
+      role: "ORGANIZER" as const,
+      avatarUrl: null,
+      expiresAt: new Date(Date.now() + 3600000).toISOString(),
+    };
+
+    renderWithTheme(<SiteHeader user={mockUser} />);
+    expect(screen.queryByRole("link", { name: /sign in to your account/i })).toBeNull();
+
+    const trigger = screen.getByRole("button", {
+      name: /user account menu for maria santos/i,
+    });
+    expect(trigger).toBeDefined();
+    expect(screen.getByText("MS")).toBeDefined();
+  });
 });
+

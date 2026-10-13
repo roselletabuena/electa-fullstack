@@ -5,3 +5,5 @@ export * from "./components/brand-mark";
 export * from "./components/site-header";
 export * from "./components/site-footer";
 export * from "./components/site-shell";
+export * from "./components/user-avatar";
+export * from "./components/user-account-nav";

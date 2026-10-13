@@ -4,10 +4,13 @@ import { ThemeToggle } from "@/components/shared/theme-toggle";
 import { cn } from "@/lib/utils";
 import type { SiteHeaderProps } from "../types";
 
+import { UserAccountNav } from "./user-account-nav";
+
 export function SiteHeader({
   className,
   showActions = true,
   showThemeToggle = false,
+  user,
 }: Readonly<SiteHeaderProps>) {
   return (
     <header
@@ -32,13 +35,7 @@ export function SiteHeader({
               <span className="hidden sm:inline">+ Create Event</span>
             </Link>
 
-            <Link
-              href="/login"
-              className="btn-primary font-heading inline-flex h-9 items-center justify-center rounded-none border border-slate-900 bg-slate-900 px-3 text-xs font-extrabold tracking-wider text-white shadow-xs transition-colors hover:bg-slate-800 focus-visible:outline-2 focus-visible:outline-sky-600 sm:px-4 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 dark:focus-visible:outline-sky-400"
-              aria-label="Sign in to your account"
-            >
-              Sign In
-            </Link>
+            <UserAccountNav user={user} />
           </nav>
         )}
       </div>

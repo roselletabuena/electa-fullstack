@@ -5,6 +5,7 @@ export * from "./utils/passwordless-auth";
 export * from "./actions/login-action";
 export * from "./actions/register-action";
 export * from "./actions/logout-action";
+export * from "./actions/get-session-action";
 export * from "./components/LoginForm";
 export * from "./components/RegisterForm";
 export * from "./components/OmnichannelAuthModal";

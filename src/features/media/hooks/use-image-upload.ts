@@ -8,11 +8,13 @@ import type {
   UploadStatus,
   UploadProgress,
 } from '../types';
-import { uploadToS3WithProgress, type S3UploadHandle } from '../utils/s3-upload-client';
+import { uploadToS3WithProgress } from '../utils/s3-upload-client';
+import { uploadToSupabaseWithProgress } from '../utils/supabase-upload-client';
 import { validateImageFile } from '../utils/client-validation';
 
 export interface UseImageUploadOptions {
   folder: MediaFolder;
+  provider?: 'supabase' | 's3' | undefined;
   maxSizeBytes?: number | undefined;
   allowedMimeTypes?: readonly string[] | undefined;
   initialPreviewUrl?: string | undefined;
@@ -20,8 +22,13 @@ export interface UseImageUploadOptions {
   onError?: ((error: UploadError) => void) | undefined;
 }
 
+interface AbortableUploadHandle {
+  abort: () => void;
+}
+
 export function useImageUpload({
   folder,
+  provider = 's3',
   maxSizeBytes = 10 * 1024 * 1024,
   allowedMimeTypes = ['image/jpeg', 'image/png', 'image/webp'],
   initialPreviewUrl,
@@ -38,7 +45,7 @@ export function useImageUpload({
   const [uploadedAsset, setUploadedAsset] = useState<UploadedMedia | null>(null);
   const [error, setError] = useState<UploadError | null>(null);
 
-  const activeUploadRef = useRef<S3UploadHandle | null>(null);
+  const activeUploadRef = useRef<AbortableUploadHandle | null>(null);
   const selectedFileRef = useRef<File | null>(null);
   const localBlobUrlRef = useRef<string | null>(null);
 
@@ -63,32 +70,58 @@ export function useImageUpload({
     [onError]
   );
 
-  const uploadFile = useCallback(
+  const executeSupabaseUpload = useCallback(
     async (file: File) => {
-      selectedFileRef.current = file;
-      setError(null);
-      setStatus('validating');
+      setStatus('uploading');
+      setProgressPercent(0);
+      setLoadedBytes(0);
+      setTotalBytes(file.size);
 
-      // 1. Client-side boundary validation
-      const validation = validateImageFile(file, {
-        maxSizeBytes,
-        allowedMimeTypes,
-      });
+      try {
+        const handle = uploadToSupabaseWithProgress({
+          file,
+          folder,
+          onProgress: (progress: UploadProgress) => {
+            setProgressPercent(progress.percentage);
+            setLoadedBytes(progress.loadedBytes);
+            setTotalBytes(progress.totalBytes);
+          },
+        });
 
-      if (!validation.valid && validation.error) {
-        triggerError(validation.error);
-        return;
+        activeUploadRef.current = handle;
+        const asset = await handle.promise;
+
+        setUploadedAsset(asset);
+        setPreviewUrl(asset.publicUrl);
+        setStatus('success');
+        setProgressPercent(100);
+        onUploadComplete?.(asset);
+      } catch (err) {
+        const message = err instanceof Error ? err.message : 'Upload failed.';
+        if (message.includes('aborted')) {
+          setStatus('idle');
+          setProgressPercent(0);
+          setError({
+            code: 'ABORTED',
+            message: 'Upload cancelled by user.',
+            retryable: true,
+          });
+        } else {
+          triggerError({
+            code: 'UPLOAD_FAILED',
+            message: message || 'Upload failed. Please check connection and retry.',
+            retryable: true,
+          });
+        }
+      } finally {
+        activeUploadRef.current = null;
       }
+    },
+    [folder, onUploadComplete, triggerError]
+  );
 
-      // 2. Generate local object preview
-      if (localBlobUrlRef.current) {
-        URL.revokeObjectURL(localBlobUrlRef.current);
-      }
-      const blobUrl = URL.createObjectURL(file);
-      localBlobUrlRef.current = blobUrl;
-      setPreviewUrl(blobUrl);
-
-      // 3. Handshake with presigned URL API
+  const executeS3Upload = useCallback(
+    async (file: File) => {
       setStatus('presigning');
       let presignData: {
         uploadUrl: string;
@@ -139,7 +172,6 @@ export function useImageUpload({
         return;
       }
 
-      // 4. Execute direct S3 binary transfer via XMLHttpRequest
       setStatus('uploading');
       setProgressPercent(0);
       setLoadedBytes(0);
@@ -194,7 +226,42 @@ export function useImageUpload({
         activeUploadRef.current = null;
       }
     },
-    [folder, maxSizeBytes, allowedMimeTypes, triggerError, onUploadComplete]
+    [folder, onUploadComplete, triggerError]
+  );
+
+  const uploadFile = useCallback(
+    async (file: File) => {
+      selectedFileRef.current = file;
+      setError(null);
+      setStatus('validating');
+
+      const validation = validateImageFile(file, {
+        maxSizeBytes,
+        allowedMimeTypes,
+      });
+
+      if (!validation.valid && validation.error) {
+        triggerError(validation.error);
+        return;
+      }
+
+      if (localBlobUrlRef.current) {
+        URL.revokeObjectURL(localBlobUrlRef.current);
+      }
+      const blobUrl = URL.createObjectURL(file);
+      localBlobUrlRef.current = blobUrl;
+      setPreviewUrl(blobUrl);
+
+      await (provider === 'supabase' ? executeSupabaseUpload(file) : executeS3Upload(file));
+    },
+    [
+      maxSizeBytes,
+      allowedMimeTypes,
+      provider,
+      triggerError,
+      executeSupabaseUpload,
+      executeS3Upload,
+    ]
   );
 
   const cancelUpload = useCallback(() => {

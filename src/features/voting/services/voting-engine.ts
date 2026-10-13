@@ -7,7 +7,9 @@ import type {
   CastBallotInput,
   CastBallotResponse,
   CastBallotResultDto,
+  CastBallotErrorDto,
   BallotVoteSummaryDto,
+  OfficeSelection,
 } from "../types/ballot";
 
 export interface CastInstitutionalBallotParams extends CastBallotInput {
@@ -20,6 +22,35 @@ interface EventZeroCostEligibility {
   archetype?: EventArchetype | string | null;
 }
 
+interface SecurityCheckParams {
+  clientIp?: string;
+  deviceFingerprint?: string;
+  turnstileToken?: string;
+  eventId: string;
+  voterId: string;
+}
+
+interface EventScheduleData {
+  publicationStatus: string;
+  startsAt: Date;
+  endsAt: Date;
+}
+
+interface CandidatePositionPair {
+  contestantId: string;
+  positionId: string | null;
+}
+
+interface PositionSelectionValidationResult {
+  error: CastBallotErrorDto | null;
+  pairs: CandidatePositionPair[];
+  candidateIds: string[];
+}
+
+interface PrismaErrorWithCode extends Error {
+  code?: string;
+}
+
 /**
  * Determines whether an election operates under the zero-cost institutional policy.
  */
@@ -27,10 +58,7 @@ export function isZeroCostElection(event: EventZeroCostEligibility): boolean {
   if (event.isFreeVotingOnly === true) {
     return true;
   }
-  if (event.archetype === "STUDENT_COUNCIL" || event.archetype === "HACKATHON") {
-    return true;
-  }
-  return false;
+  return event.archetype === "STUDENT_COUNCIL" || event.archetype === "HACKATHON";
 }
 
 /**
@@ -52,8 +80,230 @@ export async function hasVoterSubmittedBallot(
   return existingSubmission !== null;
 }
 
-interface PrismaErrorWithCode extends Error {
-  code?: string;
+async function validateVoterSecurity(
+  params: SecurityCheckParams,
+): Promise<CastBallotErrorDto | null> {
+  const { clientIp, deviceFingerprint, turnstileToken, eventId, voterId } = params;
+
+  if (clientIp) {
+    const ipCheck = checkIpVelocity(clientIp);
+    if (!ipCheck.allowed) {
+      return {
+        code: "RATE_LIMIT_EXCEEDED",
+        message: "Too many requests from this IP. Please slow down.",
+      };
+    }
+  }
+
+  if (deviceFingerprint) {
+    const deviceCheck = checkDeviceAccountLimit(deviceFingerprint, eventId, voterId);
+    if (!deviceCheck.allowed) {
+      return {
+        code: "DEVICE_ACCOUNT_LIMIT_EXCEEDED",
+        message:
+          "Maximum voter account limit reached on this device for this competition.",
+      };
+    }
+  }
+
+  if (turnstileToken && clientIp) {
+    const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
+    if (!turnstileCheck.success) {
+      return {
+        code: "BOT_DETECTION_FAILED",
+        message: "Security verification failed. Please refresh and try again.",
+      };
+    }
+  }
+
+  return null;
+}
+
+function validateEventOperationalStatus(
+  event: EventScheduleData | null,
+): CastBallotErrorDto | null {
+  if (!event) {
+    return {
+      code: "EVENT_NOT_ACTIVE",
+      message: "The requested event could not be found.",
+    };
+  }
+
+  const now = new Date();
+  const isEventActive =
+    event.publicationStatus === "PUBLISHED" &&
+    now >= new Date(event.startsAt) &&
+    now <= new Date(event.endsAt);
+
+  if (!isEventActive) {
+    return {
+      code: "EVENT_NOT_ACTIVE",
+      message: "Voting is currently closed for this election.",
+    };
+  }
+
+  return null;
+}
+
+function validateOfficeSelections(
+  selections: OfficeSelection[],
+  positionsMap: Map<
+    string,
+    {
+      id: string;
+      name: string;
+      isVotingOpen: boolean;
+      minSelectionsPerVoter: number;
+      maxSelectionsPerVoter: number;
+    }
+  >,
+): PositionSelectionValidationResult {
+  const pairs: CandidatePositionPair[] = [];
+  const candidateIdsSet = new Set<string>();
+
+  for (const selection of selections) {
+    const { positionId, contestantIds } = selection;
+
+    const uniqueContestantIds = new Set(contestantIds);
+    if (uniqueContestantIds.size !== contestantIds.length) {
+      return {
+        error: {
+          code: "INVALID_BALLOT_SELECTIONS",
+          message: "Duplicate candidates selected within the same office.",
+        },
+        pairs: [],
+        candidateIds: [],
+      };
+    }
+
+    if (positionId) {
+      const position = positionsMap.get(positionId);
+      if (!position || !position.isVotingOpen) {
+        return {
+          error: {
+            code: "POSITION_SELECTION_LIMIT_VIOLATION",
+            message: `Voting is closed or position does not exist for office: ${positionId}`,
+          },
+          pairs: [],
+          candidateIds: [],
+        };
+      }
+
+      const count = contestantIds.length;
+      if (count < position.minSelectionsPerVoter || count > position.maxSelectionsPerVoter) {
+        return {
+          error: {
+            code: "POSITION_SELECTION_LIMIT_VIOLATION",
+            message: `Selections for ${position.name} must be between ${position.minSelectionsPerVoter} and ${position.maxSelectionsPerVoter}.`,
+            details: {
+              positionId,
+              min: position.minSelectionsPerVoter,
+              max: position.maxSelectionsPerVoter,
+              selectedCount: count,
+            },
+          },
+          pairs: [],
+          candidateIds: [],
+        };
+      }
+    }
+
+    for (const contestantId of contestantIds) {
+      candidateIdsSet.add(contestantId);
+      pairs.push({ contestantId, positionId: positionId ?? null });
+    }
+  }
+
+  return {
+    error: null,
+    pairs,
+    candidateIds: Array.from(candidateIdsSet),
+  };
+}
+
+function validateCandidateEligibility(
+  pairs: CandidatePositionPair[],
+  contestants: Array<{ id: string; status: string; positionId: string | null }>,
+): CastBallotErrorDto | null {
+  const contestantsMap = new Map(contestants.map((c) => [c.id, c]));
+
+  for (const pair of pairs) {
+    const candidate = contestantsMap.get(pair.contestantId);
+    if (!candidate || candidate.status !== "ACTIVE") {
+      return {
+        code: "CONTESTANT_NOT_ELIGIBLE",
+        message: "One or more selected candidates are not eligible for this election.",
+      };
+    }
+
+    if (pair.positionId && candidate.positionId && candidate.positionId !== pair.positionId) {
+      return {
+        code: "CONTESTANT_NOT_ELIGIBLE",
+        message: "Candidate does not belong to the selected position office.",
+      };
+    }
+  }
+
+  return null;
+}
+
+async function executeBallotTransaction(
+  eventId: string,
+  voterId: string,
+  pairs: CandidatePositionPair[],
+): Promise<CastBallotResultDto> {
+  return await db.$transaction(async (tx) => {
+    const ballot = await tx.ballotSubmission.create({
+      data: {
+        eventId,
+        voterId,
+      },
+    });
+
+    const votesSummary: BallotVoteSummaryDto[] = [];
+
+    for (const pair of pairs) {
+      const vote = await tx.vote.create({
+        data: {
+          eventId,
+          voterId,
+          contestantId: pair.contestantId,
+          positionId: pair.positionId,
+          voteType: "FREE",
+          voteWeight: 1,
+          ballotSubmissionId: ballot.id,
+        },
+        select: {
+          id: true,
+          contestantId: true,
+          positionId: true,
+        },
+      });
+
+      await tx.contestant.update({
+        where: { id: pair.contestantId },
+        data: {
+          voteCount: { increment: 1 },
+        },
+      });
+
+      votesSummary.push({
+        voteId: vote.id,
+        contestantId: vote.contestantId,
+        positionId: vote.positionId,
+      });
+    }
+
+    return {
+      success: true,
+      ballotId: ballot.id,
+      eventId,
+      voterId,
+      votesCount: votesSummary.length,
+      votes: votesSummary,
+      submittedAt: new Date().toISOString(),
+    };
+  });
 }
 
 /**
@@ -92,48 +342,15 @@ export async function castInstitutionalBallot(
   const { eventId, selections, turnstileToken, deviceFingerprint } = parseResult.data;
 
   // Rate Limiting & Bot Verification
-  if (clientIp) {
-    const ipCheck = checkIpVelocity(clientIp);
-    if (!ipCheck.allowed) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "RATE_LIMIT_EXCEEDED",
-          message: "Too many requests from this IP. Please slow down.",
-        },
-      };
-    }
-  }
-
-  if (deviceFingerprint) {
-    const deviceCheck = checkDeviceAccountLimit(deviceFingerprint, eventId, voterId);
-    if (!deviceCheck.allowed) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "DEVICE_ACCOUNT_LIMIT_EXCEEDED",
-          message:
-            "Maximum voter account limit reached on this device for this competition.",
-        },
-      };
-    }
-  }
-
-  if (turnstileToken && clientIp) {
-    const turnstileCheck = await verifyTurnstileToken(turnstileToken, clientIp);
-    if (!turnstileCheck.success) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "BOT_DETECTION_FAILED",
-          message:
-            "Security verification failed. Please refresh and try again.",
-        },
-      };
-    }
+  const securityError = await validateVoterSecurity({
+    clientIp,
+    deviceFingerprint,
+    turnstileToken,
+    eventId,
+    voterId,
+  });
+  if (securityError) {
+    return { success: false, data: null, error: securityError };
   }
 
   // Event Eligibility Check
@@ -150,35 +367,12 @@ export async function castInstitutionalBallot(
     },
   });
 
-  if (!event) {
-    return {
-      success: false,
-      data: null,
-      error: {
-        code: "EVENT_NOT_ACTIVE",
-        message: "The requested event could not be found.",
-      },
-    };
+  const operationalError = validateEventOperationalStatus(event);
+  if (operationalError) {
+    return { success: false, data: null, error: operationalError };
   }
 
-  const now = new Date();
-  const isEventActive =
-    event.publicationStatus === "PUBLISHED" &&
-    now >= new Date(event.startsAt) &&
-    now <= new Date(event.endsAt);
-
-  if (!isEventActive) {
-    return {
-      success: false,
-      data: null,
-      error: {
-        code: "EVENT_NOT_ACTIVE",
-        message: "Voting is currently closed for this election.",
-      },
-    };
-  }
-
-  // Pre-flight check: duplicate ballot check
+  // Pre-flight duplicate ballot check
   const alreadySubmitted = await hasVoterSubmittedBallot(eventId, voterId);
   if (alreadySubmitted) {
     return {
@@ -191,76 +385,19 @@ export async function castInstitutionalBallot(
     };
   }
 
-  // Fetch Event Positions for limit validation
-  const positions = await db.eventPosition.findMany({
-    where: { eventId },
-  });
+  // Validate Position Selections
+  const positions = await db.eventPosition.findMany({ where: { eventId } });
   const positionsMap = new Map(positions.map((p) => [p.id, p]));
 
-  // Validate Position Selections & Bounds
-  const candidatePositionPairs: Array<{ contestantId: string; positionId: string | null }> = [];
-  const candidateIdsSet = new Set<string>();
-
-  for (const selection of selections) {
-    const { positionId, contestantIds } = selection;
-
-    // Check for internal duplicates within a single office
-    const uniqueContestantIds = new Set(contestantIds);
-    if (uniqueContestantIds.size !== contestantIds.length) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "INVALID_BALLOT_SELECTIONS",
-          message: "Duplicate candidates selected within the same office.",
-        },
-      };
-    }
-
-    if (positionId) {
-      const position = positionsMap.get(positionId);
-      if (!position || !position.isVotingOpen) {
-        return {
-          success: false,
-          data: null,
-          error: {
-            code: "POSITION_SELECTION_LIMIT_VIOLATION",
-            message: `Voting is closed or position does not exist for office: ${positionId}`,
-          },
-        };
-      }
-
-      if (
-        contestantIds.length < position.minSelectionsPerVoter ||
-        contestantIds.length > position.maxSelectionsPerVoter
-      ) {
-        return {
-          success: false,
-          data: null,
-          error: {
-            code: "POSITION_SELECTION_LIMIT_VIOLATION",
-            message: `Selections for ${position.name} must be between ${position.minSelectionsPerVoter} and ${position.maxSelectionsPerVoter}.`,
-            details: {
-              positionId,
-              min: position.minSelectionsPerVoter,
-              max: position.maxSelectionsPerVoter,
-              selectedCount: contestantIds.length,
-            },
-          },
-        };
-      }
-    }
-
-    for (const contestantId of contestantIds) {
-      candidateIdsSet.add(contestantId);
-      candidatePositionPairs.push({ contestantId, positionId: positionId ?? null });
-    }
+  const selectionResult = validateOfficeSelections(selections, positionsMap);
+  if (selectionResult.error) {
+    return { success: false, data: null, error: selectionResult.error };
   }
 
-  // Verify all candidates are ACTIVE and belong to this event
+  // Verify candidate eligibility
   const contestants = await db.contestant.findMany({
     where: {
-      id: { in: Array.from(candidateIdsSet) },
+      id: { in: selectionResult.candidateIds },
       eventId,
     },
     select: {
@@ -270,100 +407,17 @@ export async function castInstitutionalBallot(
     },
   });
 
-  const contestantsMap = new Map(contestants.map((c) => [c.id, c]));
-
-  for (const pair of candidatePositionPairs) {
-    const candidate = contestantsMap.get(pair.contestantId);
-    if (!candidate || candidate.status !== "ACTIVE") {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "CONTESTANT_NOT_ELIGIBLE",
-          message: "One or more selected candidates are not eligible for this election.",
-        },
-      };
-    }
-
-    if (pair.positionId && candidate.positionId && candidate.positionId !== pair.positionId) {
-      return {
-        success: false,
-        data: null,
-        error: {
-          code: "CONTESTANT_NOT_ELIGIBLE",
-          message: "Candidate does not belong to the selected position office.",
-        },
-      };
-    }
+  const candidateError = validateCandidateEligibility(selectionResult.pairs, contestants);
+  if (candidateError) {
+    return { success: false, data: null, error: candidateError };
   }
 
-  // Atomic Database Transaction with P2002 unique constraint handling
+  // Atomic Database Transaction
   try {
-    const result = await db.$transaction(async (tx) => {
-      // Step 1: Create BallotSubmission (Row lock / Unique constraint @@unique([eventId, voterId]))
-      const ballot = await tx.ballotSubmission.create({
-        data: {
-          eventId,
-          voterId,
-        },
-      });
-
-      const votesSummary: BallotVoteSummaryDto[] = [];
-
-      // Step 2: Create Vote records and increment vote counts
-      for (const pair of candidatePositionPairs) {
-        const vote = await tx.vote.create({
-          data: {
-            eventId,
-            voterId,
-            contestantId: pair.contestantId,
-            positionId: pair.positionId,
-            voteType: "FREE",
-            voteWeight: 1,
-            ballotSubmissionId: ballot.id,
-          },
-          select: {
-            id: true,
-            contestantId: true,
-            positionId: true,
-          },
-        });
-
-        await tx.contestant.update({
-          where: { id: pair.contestantId },
-          data: {
-            voteCount: { increment: 1 },
-          },
-        });
-
-        votesSummary.push({
-          voteId: vote.id,
-          contestantId: vote.contestantId,
-          positionId: vote.positionId,
-        });
-      }
-
-      const receipt: CastBallotResultDto = {
-        success: true,
-        ballotId: ballot.id,
-        eventId,
-        voterId,
-        votesCount: votesSummary.length,
-        votes: votesSummary,
-        submittedAt: new Date().toISOString(),
-      };
-
-      return receipt;
-    });
-
-    return {
-      success: true,
-      data: result,
-      error: null,
-    };
+    const result = await executeBallotTransaction(eventId, voterId, selectionResult.pairs);
+    return { success: true, data: result, error: null };
   } catch (error) {
     const prismaError = error as PrismaErrorWithCode;
-    // P2002 = Unique constraint failed
     if (prismaError.code === "P2002") {
       return {
         success: false,

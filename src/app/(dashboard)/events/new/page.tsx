@@ -3,11 +3,11 @@ import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, Sparkles, Loader2 } from "lucide-react";
 import { getSession } from "@/lib/auth/get-session";
-import { CreateEventForm } from "@/features/events";
+import { EventCreationWizard } from "@/features/events";
 
 export const metadata = {
   title: "Create New Event | Electa",
-  description: "Set up a new pageant competition on Electa.",
+  description: "Set up a new election, hackathon, or competition on Electa.",
 };
 
 export default async function NewEventPage(): Promise<React.JSX.Element> {
@@ -41,12 +41,12 @@ export default async function NewEventPage(): Promise<React.JSX.Element> {
             Create New Event
           </h1>
           <p className="font-sans mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Set up the profile, custom URL slug, and timeline schedule for your competition. You can
-            add divisions, awards, and custom voting rules in subsequent steps.
+            Configure your event profile, URL slug, timeline schedule, and archetype-tailored taxonomy
+            (offices for student elections, tracks for hackathons, divisions for pageants).
           </p>
         </div>
 
-        {/* Creation Form with Suspense boundary */}
+        {/* Creation Wizard with Suspense boundary */}
         <Suspense
           fallback={
             <div className="flex h-96 items-center justify-center rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
@@ -54,7 +54,7 @@ export default async function NewEventPage(): Promise<React.JSX.Element> {
             </div>
           }
         >
-          <CreateEventForm />
+          <EventCreationWizard />
         </Suspense>
       </div>
     </main>

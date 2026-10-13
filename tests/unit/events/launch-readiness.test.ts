@@ -14,6 +14,7 @@ const mockBaseEvent: Event = {
   draftPassphraseHash: null,
   showResultsOnClose: true,
   isFreeVotingEnabled: true,
+  isFreeVotingOnly: false,
   dailyFreeVoteLimit: 1,
   takeRatePercentage: "12.00" as unknown as Event["takeRatePercentage"],
   organizerId: "org-123",

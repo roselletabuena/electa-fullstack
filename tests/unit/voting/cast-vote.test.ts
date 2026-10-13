@@ -83,6 +83,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       showResultsOnClose: true,
       organizerId: "org-1",
       archetype: "PAGEANT",
+      isFreeVotingOnly: false,
       startsAt: new Date(Date.now() - 3600 * 1000),
       endsAt: new Date(Date.now() + 3600 * 1000),
       isFreeVotingEnabled: true,
@@ -318,6 +319,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       voteWeight: 1,
       paymentTransactionId: null,
       positionId: null,
+      ballotSubmissionId: null,
       createdAt: new Date(),
     });
 

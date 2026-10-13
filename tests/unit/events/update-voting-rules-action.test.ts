@@ -35,6 +35,7 @@ describe("updateVotingRulesAction", () => {
     draftPassphraseHash: null,
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
+    isFreeVotingOnly: false,
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "usr_organizer_mock_01",

@@ -84,6 +84,7 @@ describe("POST /api/events/[slug]/divisions", () => {
     draftPassphraseHash: null,
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
+    isFreeVotingOnly: false,
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",

@@ -8,19 +8,19 @@
 
 ## Task Matrix
 
-- [ ] **Task 1: Core Timeline Calculation Helpers & Unit Tests**
+- [x] **Task 1: Core Timeline Calculation Helpers & Unit Tests**
   - **File(s)**: `src/features/events/utils/timeline-presets.ts`, `tests/unit/events/timeline-presets.test.ts`
   - Implement `TIMELINE_PRESETS`, `formatLocalDateTime`, `calculateEndsAtFromDuration`, `getActivePreset`, `isTemporalWindowValid`.
   - Add unit tests verifying edge cases (leap years, month rollovers, exactly 1 hour, < 1 hour).
   - Commit: `test(events): add unit tests for timeline duration presets and date calculations` & `feat(events): implement timeline presets and date calculation utilities`
 
-- [ ] **Task 2: Draft Recovery Storage Hook & Session Synchronization**
-  - **File(s)**: `src/features/events/hooks/useCreateEventDraft.ts` (or integrated helper), `tests/unit/events/create-event-draft.test.ts`
+- [x] **Task 2: Draft Recovery Storage Hook & Session Synchronization**
+  - **File(s)**: `src/features/events/utils/event-draft-storage.ts`, `tests/unit/events/event-draft-storage.test.ts`
   - Implement safe `sessionStorage` persistence with key `electa:create_event_draft`.
   - Expose draft restoration, draft clearing, and auto-cleanup triggers.
-  - Commit: `feat(events): add sessionStorage draft recovery hook for create event form`
+  - Commit: `test(events): add unit tests for event draft sessionStorage helpers` & `feat(events): implement sessionStorage draft storage utility for CreateEventForm`
 
-- [ ] **Task 3: Integrate Quick Duration Presets & Draft Recovery in CreateEventForm**
+- [x] **Task 3: Integrate Quick Duration Presets & Draft Recovery in CreateEventForm**
   - **File(s)**: `src/features/events/components/CreateEventForm.tsx`
   - Mount duration preset chips (`+7 Days`, `+14 Days`, `+30 Days`) with zero-radius styling (`rounded-none`).
   - Active styling: `bg-sky-600 text-white font-bold dark:bg-sky-500 dark:text-slate-950 rounded-none`.
@@ -30,14 +30,14 @@
   - Align form container, inputs, alerts, and buttons to Electa zero-radius standards (`rounded-none`).
   - Commit: `feat(events): integrate quick duration chips and draft restoration into CreateEventForm`
 
-- [ ] **Task 4: Comprehensive Integration Tests & Verification**
+- [x] **Task 4: Comprehensive Integration Tests & Verification**
   - **File(s)**: `tests/unit/events/create-event-form.test.tsx`
   - Add tests for chip clicks updating `endsAt`.
   - Add tests for temporal warning and disabled submit button.
   - Add tests for `sessionStorage` draft recovery on mount, "Clear Draft" button, and draft cleanup on successful submission.
   - Commit: `test(events): cover duration chips, temporal warning, and draft recovery in CreateEventForm`
 
-- [ ] **Task 5: Convergence, Quality Gates & Auto PR**
+- [x] **Task 5: Convergence, Quality Gates & Auto PR**
   - Run `npm run typecheck`, `npm run lint`, `npm run test:unit`.
   - Verify Electa Constitution §I–§VI compliance.
   - Prepare PR description in `.specify/pr-body.md` and trigger auto PR.

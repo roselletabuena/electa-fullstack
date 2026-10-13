@@ -14,6 +14,7 @@ export const env = createEnv({
     AWS_REGION: z.string().min(1).default("ap-southeast-1"),
     S3_MEDIA_BUCKET: z.string().min(1).default("electa-dev-media-assets"),
     COGNITO_DOMAIN: z.string().url().optional(),
+    SUPABASE_SERVICE_ROLE_KEY: z.string().optional(),
   },
   client: {
     NEXT_PUBLIC_SUPABASE_URL: z.string().url().optional(),

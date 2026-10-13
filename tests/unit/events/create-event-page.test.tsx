@@ -11,7 +11,8 @@ vi.mock("next/navigation", () => ({
   redirect: vi.fn(),
 }));
 
-vi.mock("@/features/events/components/CreateEventForm", () => ({
+vi.mock("@/features/events", () => ({
+  EventCreationWizard: () => <div data-testid="event-creation-wizard">Event Creation Wizard</div>,
   CreateEventForm: () => <div data-testid="create-event-form">Create Event Form</div>,
 }));
 

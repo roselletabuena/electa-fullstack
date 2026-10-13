@@ -17,4 +17,6 @@ export * from "./components/trending";
 export * from "./hooks/useTrendingEvents";
 export * from "./utils/trending-helpers";
 export * from "./services/taxonomy-service";
-
+export * from "./components/archetype-selector";
+export * from "./components/taxonomy-editor";
+export * from "./components/event-creation-wizard";

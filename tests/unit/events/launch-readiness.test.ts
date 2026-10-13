@@ -37,22 +37,22 @@ describe("computeLaunchReadinessSnapshot", () => {
     expect(snapshot.percentageComplete).toBe(25);
     expect(snapshot.isAllCompleted).toBe(false);
 
-    const [profile, divisions, contestants, votingRules] = snapshot.items;
+    const profile = snapshot.items.find((i) => i.id === "event-profile");
+    expect(profile?.isCompleted).toBe(true);
 
-    expect(profile.id).toBe("event-profile");
-    expect(profile.isCompleted).toBe(true);
+    const divisions = snapshot.items.find((i) => i.id === "divisions");
+    expect(divisions?.isCompleted).toBe(false);
+    expect(divisions?.actionHref).toBe("/events/mutya-ng-pilipinas-2026/settings?tab=categories");
 
-    expect(divisions.id).toBe("divisions");
-    expect(divisions.isCompleted).toBe(false);
-    expect(divisions.actionHref).toBe("/events/mutya-ng-pilipinas-2026/settings?tab=categories");
+    const contestants = snapshot.items.find((i) => i.id === "contestants");
+    expect(contestants?.isCompleted).toBe(false);
+    expect(contestants?.actionHref).toBe("/events/mutya-ng-pilipinas-2026/contestants");
 
-    expect(contestants.id).toBe("contestants");
-    expect(contestants.isCompleted).toBe(false);
-    expect(contestants.actionHref).toBe("/events/mutya-ng-pilipinas-2026/contestants");
-
-    expect(votingRules.id).toBe("voting-rules");
-    expect(votingRules.isCompleted).toBe(false);
-    expect(votingRules.actionHref).toBe("/events/mutya-ng-pilipinas-2026/settings?tab=voting-rules");
+    const votingRules = snapshot.items.find((i) => i.id === "voting-rules");
+    expect(votingRules?.isCompleted).toBe(false);
+    expect(votingRules?.actionHref).toBe(
+      "/events/mutya-ng-pilipinas-2026/settings?tab=voting-rules",
+    );
   });
 
   it("marks divisions completed when divisionsCount > 0", () => {
@@ -64,7 +64,8 @@ describe("computeLaunchReadinessSnapshot", () => {
 
     expect(snapshot.completedMilestones).toBe(2);
     expect(snapshot.percentageComplete).toBe(50);
-    expect(snapshot.items[1].isCompleted).toBe(true);
+    const divisions = snapshot.items.find((i) => i.id === "divisions");
+    expect(divisions?.isCompleted).toBe(true);
   });
 
   it("marks contestants completed when contestantsCount > 0", () => {
@@ -76,7 +77,8 @@ describe("computeLaunchReadinessSnapshot", () => {
 
     expect(snapshot.completedMilestones).toBe(3);
     expect(snapshot.percentageComplete).toBe(75);
-    expect(snapshot.items[2].isCompleted).toBe(true);
+    const contestants = snapshot.items.find((i) => i.id === "contestants");
+    expect(contestants?.isCompleted).toBe(true);
   });
 
   it("marks voting rules completed when votingRulesAuditCount > 0", () => {
@@ -89,7 +91,8 @@ describe("computeLaunchReadinessSnapshot", () => {
     expect(snapshot.completedMilestones).toBe(4);
     expect(snapshot.percentageComplete).toBe(100);
     expect(snapshot.isAllCompleted).toBe(true);
-    expect(snapshot.items[3].isCompleted).toBe(true);
+    const votingRules = snapshot.items.find((i) => i.id === "voting-rules");
+    expect(votingRules?.isCompleted).toBe(true);
   });
 
   it("reflects PUBLISHED publication status correctly", () => {

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useCallback, useSyncExternalStore } from "react";
 import Link from "next/link";
 import {
   CheckCircle2,
@@ -28,25 +28,31 @@ export function LaunchReadinessChecklist({
   className,
 }: Readonly<LaunchReadinessChecklistProps>): React.JSX.Element | null {
   const [isCopied, setIsCopied] = useState(false);
-  const [isDismissed, setIsDismissed] = useState(false);
-
   const storageKey = `electa_dismissed_readiness_${snapshot.eventId}`;
 
-  // Read localStorage on client mount
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      const dismissed = localStorage.getItem(storageKey) === "true";
-      if (dismissed) {
-        setIsDismissed(true);
-      }
+  const subscribe = useCallback((callback: () => void) => {
+    window.addEventListener("storage", callback);
+    return () => window.removeEventListener("storage", callback);
+  }, []);
+
+  const getSnapshot = useCallback(() => {
+    if (typeof window === "undefined") return false;
+    try {
+      return localStorage.getItem(storageKey) === "true";
+    } catch {
+      return false;
     }
   }, [storageKey]);
 
+  const getServerSnapshot = () => false;
+
+  const isDismissed = useSyncExternalStore(subscribe, getSnapshot, getServerSnapshot);
+
   const handleDismiss = () => {
-    setIsDismissed(true);
     if (typeof window !== "undefined") {
       try {
         localStorage.setItem(storageKey, "true");
+        window.dispatchEvent(new Event("storage"));
       } catch {
         // Safe fallback in restricted environments
       }

@@ -13,12 +13,16 @@ import {
   useUpdateAwardCategory,
   useDeleteAwardCategory,
   useApplyTaxonomyPreset,
+  useCreateEventPosition,
+  useDeleteEventPosition,
 } from "../../hooks/useEventTaxonomy";
 import { TaxonomyPresetsCard } from "./TaxonomyPresetsCard";
 import { DivisionsSection } from "./DivisionsSection";
 import { AwardCategoriesSection } from "./AwardCategoriesSection";
+import { PositionsSection } from "./PositionsSection";
 import { TaxonomyDeleteDialog, type DeletionTarget } from "./TaxonomyDeleteDialog";
 import type { DivisionDto, AwardCategoryDto } from "../../types";
+import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype } from "../../types/archetype";
 import type { TaxonomyPreset } from "../../constants/taxonomy-presets";
 import type { Event } from "@/generated/client/client";
 import { cn } from "@/lib/utils";
@@ -43,6 +47,9 @@ export function CategoryAwardsSettingsForm({
 
   const applyPresetMutation = useApplyTaxonomyPreset(event.slug);
 
+  const createPositionMutation = useCreateEventPosition(event.slug);
+  const deletePositionMutation = useDeleteEventPosition(event.slug);
+
   // Deletion guard modal state
   const [deleteTarget, setDeleteTarget] = useState<DeletionTarget | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -51,6 +58,11 @@ export function CategoryAwardsSettingsForm({
     message: string;
   } | null>(null);
 
+  const archetype: EventArchetype = (event.archetype ?? taxonomy?.archetype ?? "PAGEANT") as EventArchetype;
+  const isPositionBased = archetype === "STUDENT_COUNCIL" || archetype === "HACKATHON" || archetype === "CUSTOM";
+  const config = EVENT_ARCHETYPE_CONFIGS[archetype];
+
+  const positions = taxonomy?.positions ?? [];
   const divisions = taxonomy?.divisions ?? [];
   const awardCategories = taxonomy?.awardCategories ?? [];
   const openVotingAwardsCount = awardCategories.filter((a) => a.isVotingOpen).length;
@@ -187,37 +199,57 @@ export function CategoryAwardsSettingsForm({
               <div className="flex items-center gap-2">
                 <Layers className="size-5 text-indigo-600 dark:text-indigo-400" />
                 <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                  Categories & Award Tracks
+                  {isPositionBased
+                    ? `${config.label} Taxonomy & Ballot Structure`
+                    : "Categories & Award Tracks"}
                 </CardTitle>
               </div>
               <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
-                Structure competition brackets, customize award categories, and control public
-                voting availability.
+                {isPositionBased
+                  ? `Configure ${config.groupingTerm.toLowerCase()}s, voting limits, and candidate ballot slots.`
+                  : "Structure competition brackets, customize award categories, and control public voting availability."}
               </CardDescription>
             </div>
 
             {/* Quick Metrics Badges */}
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-                <Layers className="size-3 text-indigo-500" />
-                {divisions.length} Divisions
-              </Badge>
-              <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-                <Award className="size-3 text-amber-500" />
-                {awardCategories.length} Award Tracks
-              </Badge>
-              <Badge
-                variant="outline"
-                className={cn(
-                  "gap-1.5 px-2.5 py-1 text-xs font-medium",
-                  openVotingAwardsCount > 0
-                    ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
-                    : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-400",
-                )}
-              >
-                <Vote className="size-3" />
-                {openVotingAwardsCount} Voting Open
-              </Badge>
+              {isPositionBased ? (
+                <>
+                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
+                    <Layers className="size-3 text-sky-500" />
+                    {positions.length} {config.groupingTerm}s
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300 gap-1.5 px-2.5 py-1 text-xs font-medium"
+                  >
+                    {config.label}
+                  </Badge>
+                </>
+              ) : (
+                <>
+                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
+                    <Layers className="size-3 text-indigo-500" />
+                    {divisions.length} Divisions
+                  </Badge>
+                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
+                    <Award className="size-3 text-amber-500" />
+                    {awardCategories.length} Award Tracks
+                  </Badge>
+                  <Badge
+                    variant="outline"
+                    className={cn(
+                      "gap-1.5 px-2.5 py-1 text-xs font-medium",
+                      openVotingAwardsCount > 0
+                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
+                        : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-400",
+                    )}
+                  >
+                    <Vote className="size-3" />
+                    {openVotingAwardsCount} Voting Open
+                  </Badge>
+                </>
+              )}
             </div>
           </div>
         </CardHeader>
@@ -253,46 +285,72 @@ export function CategoryAwardsSettingsForm({
         </div>
       )}
 
-      {/* 1-Click Presets Selection */}
-      <TaxonomyPresetsCard
-        onApplyPreset={handleApplyPreset}
-        isApplying={applyPresetMutation.isPending}
-      />
+      {isPositionBased ? (
+        /* Positions / Tracks Configuration Section */
+        <PositionsSection
+          slug={event.slug}
+          archetype={archetype}
+          positions={positions}
+          isLoading={createPositionMutation.isPending || deletePositionMutation.isPending}
+          onAddPosition={async (data) => {
+            await createPositionMutation.mutateAsync(data);
+            setNotification({
+              type: "success",
+              message: `${config.groupingTerm} "${data.name}" added successfully!`,
+            });
+          }}
+          onDeletePosition={async (positionId) => {
+            await deletePositionMutation.mutateAsync(positionId);
+            setNotification({
+              type: "success",
+              message: `${config.groupingTerm} deleted successfully.`,
+            });
+          }}
+        />
+      ) : (
+        <>
+          {/* 1-Click Presets Selection */}
+          <TaxonomyPresetsCard
+            onApplyPreset={handleApplyPreset}
+            isApplying={applyPresetMutation.isPending}
+          />
 
-      {/* Divisions Configuration Section */}
-      <DivisionsSection
-        slug={event.slug}
-        divisions={divisions}
-        isLoading={createDivisionMutation.isPending || deleteDivisionMutation.isPending}
-        onAddDivision={async (data) => {
-          await createDivisionMutation.mutateAsync(data);
-          setNotification({
-            type: "success",
-            message: `Division "${data.name}" added successfully!`,
-          });
-        }}
-        onDeleteRequest={handleOpenDeleteDivision}
-      />
+          {/* Divisions Configuration Section */}
+          <DivisionsSection
+            slug={event.slug}
+            divisions={divisions}
+            isLoading={createDivisionMutation.isPending || deleteDivisionMutation.isPending}
+            onAddDivision={async (data) => {
+              await createDivisionMutation.mutateAsync(data);
+              setNotification({
+                type: "success",
+                message: `Division "${data.name}" added successfully!`,
+              });
+            }}
+            onDeleteRequest={handleOpenDeleteDivision}
+          />
 
-      {/* Award Tracks & Voting Availability Section */}
-      <AwardCategoriesSection
-        slug={event.slug}
-        awardCategories={awardCategories}
-        isLoading={
-          createAwardCategoryMutation.isPending ||
-          updateAwardCategoryMutation.isPending ||
-          deleteAwardCategoryMutation.isPending
-        }
-        onAddCategory={async (data) => {
-          await createAwardCategoryMutation.mutateAsync(data);
-          setNotification({
-            type: "success",
-            message: `Award category "${data.name}" added successfully!`,
-          });
-        }}
-        onToggleVoting={handleToggleAwardVoting}
-        onDeleteRequest={handleOpenDeleteAwardCategory}
-      />
+          {/* Award Tracks & Voting Availability Section */}
+          <AwardCategoriesSection
+            slug={event.slug}
+            awardCategories={awardCategories}
+            isLoading={
+              createAwardCategoryMutation.isPending ||
+              updateAwardCategoryMutation.isPending ||
+              deleteAwardCategoryMutation.isPending
+            }
+            onAddCategory={async (data) => {
+              await createAwardCategoryMutation.mutateAsync(data);
+              setNotification({
+                type: "success",
+                message: `Award category "${data.name}" added successfully!`,
+              });
+            }}
+            onToggleVoting={handleToggleAwardVoting}
+            onDeleteRequest={handleOpenDeleteAwardCategory}
+          />
+        </>
+      )}
 
       {/* Referential Integrity Deletion Blocker & Confirmation Dialog */}
       <TaxonomyDeleteDialog

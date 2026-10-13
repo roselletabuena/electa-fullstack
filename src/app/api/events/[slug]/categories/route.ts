@@ -5,6 +5,22 @@ import { requireEventOwnership } from "@/features/events/utils/ownership-guard";
 import { createAwardCategorySchema } from "@/lib/validations/category-awards";
 import type { EventTaxonomyDto } from "@/features/events/types";
 
+import type { EventArchetype, EventPositionDto } from "@/features/events/types/archetype";
+
+interface RawPositionRecord {
+  id: string;
+  eventId: string;
+  name: string;
+  description: string | null;
+  maxSelectionsPerVoter: number;
+  minSelectionsPerVoter: number;
+  displayOrder: number;
+  isVotingOpen: boolean;
+  createdAt: Date | string;
+  updatedAt: Date | string;
+  _count?: { contestants: number };
+}
+
 interface RouteParams {
   params: Promise<{
     slug: string;
@@ -16,14 +32,14 @@ export async function GET(_request: NextRequest, context: RouteParams) {
     const { slug } = await context.params;
     const event = await db.event.findUnique({
       where: { slug },
-      select: { id: true },
+      select: { id: true, archetype: true },
     });
 
     if (!event) {
       return apiError("Event not found", 404);
     }
 
-    const [divisions, categories] = await Promise.all([
+    const [divisions, categories, positions] = await Promise.all([
       db.division.findMany({
         where: { eventId: event.id },
         orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
@@ -42,6 +58,17 @@ export async function GET(_request: NextRequest, context: RouteParams) {
           },
         },
       }),
+      db.eventPosition?.findMany
+        ? db.eventPosition.findMany({
+            where: { eventId: event.id },
+            orderBy: [{ displayOrder: "asc" }, { name: "asc" }],
+            include: {
+              _count: {
+                select: { contestants: true },
+              },
+            },
+          })
+        : Promise.resolve([]),
     ]);
 
     const formattedDivisions = divisions.map((div) => ({
@@ -67,7 +94,25 @@ export async function GET(_request: NextRequest, context: RouteParams) {
       updatedAt: cat.updatedAt.toISOString(),
     }));
 
+    const formattedPositions: EventPositionDto[] = (
+      (positions ?? []) as unknown as RawPositionRecord[]
+    ).map((p) => ({
+      id: p.id,
+      eventId: p.eventId,
+      name: p.name,
+      description: p.description,
+      maxSelectionsPerVoter: p.maxSelectionsPerVoter,
+      minSelectionsPerVoter: p.minSelectionsPerVoter,
+      displayOrder: p.displayOrder,
+      isVotingOpen: p.isVotingOpen,
+      candidateCount: p._count?.contestants ?? 0,
+      createdAt: p.createdAt instanceof Date ? p.createdAt.toISOString() : String(p.createdAt),
+      updatedAt: p.updatedAt instanceof Date ? p.updatedAt.toISOString() : String(p.updatedAt),
+    }));
+
     const responseData: EventTaxonomyDto = {
+      archetype: (event.archetype ?? "PAGEANT") as EventArchetype,
+      positions: formattedPositions,
       divisions: formattedDivisions,
       awardCategories: formattedCategories,
     };

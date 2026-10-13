@@ -33,7 +33,18 @@ export async function createEvent(input: CreateEventInput): Promise<CreateEventR
     };
   }
 
-  const { title, slug, description, bannerUrl, startsAt, endsAt } = validation.data;
+  const {
+    title,
+    slug,
+    description,
+    bannerUrl,
+    startsAt,
+    endsAt,
+    archetype = "PAGEANT",
+    positions,
+    divisions,
+    awardCategories,
+  } = validation.data;
   const normalizedSlug = slug.toLowerCase().trim();
 
   // 3. Check for existing slug collision
@@ -73,8 +84,55 @@ export async function createEvent(input: CreateEventInput): Promise<CreateEventR
           dailyFreeVoteLimit: 1,
           showResultsOnClose: true,
           organizerId: session.userId,
+          archetype,
         },
       });
+
+      // Atomically create initial positions if provided
+      if (positions && positions.length > 0) {
+        for (const pos of positions) {
+          await tx.eventPosition.create({
+            data: {
+              eventId: event.id,
+              name: pos.name,
+              description: pos.description ?? null,
+              maxSelectionsPerVoter: pos.maxSelectionsPerVoter,
+              minSelectionsPerVoter: pos.minSelectionsPerVoter,
+              displayOrder: pos.displayOrder,
+              isVotingOpen: true,
+            },
+          });
+        }
+      }
+
+      // Atomically create initial divisions if provided
+      if (divisions && divisions.length > 0) {
+        for (const div of divisions) {
+          await tx.division.create({
+            data: {
+              eventId: event.id,
+              name: div.name,
+              description: div.description ?? null,
+              displayOrder: div.displayOrder,
+            },
+          });
+        }
+      }
+
+      // Atomically create initial award categories if provided
+      if (awardCategories && awardCategories.length > 0) {
+        for (const award of awardCategories) {
+          await tx.awardCategory.create({
+            data: {
+              eventId: event.id,
+              name: award.name,
+              description: award.description ?? null,
+              isVotingOpen: award.isVotingOpen,
+              displayOrder: award.displayOrder,
+            },
+          });
+        }
+      }
 
       await tx.eventAuditLog.create({
         data: {
@@ -89,6 +147,7 @@ export async function createEvent(input: CreateEventInput): Promise<CreateEventR
             endsAt: event.endsAt.toISOString(),
             publicationStatus: event.publicationStatus,
             organizerId: event.organizerId,
+            archetype: event.archetype,
           },
           reason: "Initial event record creation",
         },

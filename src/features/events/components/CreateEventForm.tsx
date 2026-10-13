@@ -79,7 +79,7 @@ function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
       <button
         type="button"
         onClick={onClear}
-        className="inline-flex cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+        className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
       >
         <RotateCcw className="size-3" />
         <span>Clear Draft</span>
@@ -109,7 +109,7 @@ function TimelinePresetsPicker({
             aria-pressed={isActive}
             onClick={() => onApplyPreset(preset.days)}
             className={cn(
-              "cursor-pointer px-2.5 py-1 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
+              "inline-flex min-h-[44px] cursor-pointer items-center justify-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
               isActive
                 ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
                 : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-950 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-white",
@@ -306,16 +306,18 @@ export function CreateEventForm({
         <div className="mb-6 flex items-start gap-3 rounded-none border border-rose-500/30 bg-rose-50 p-4 text-sm text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300">
           <AlertCircle className="size-5 shrink-0 text-rose-500 dark:text-rose-400" />
           <div className="flex-1">
-            <p className="font-semibold text-rose-900 dark:text-rose-200">Event Creation Failed</p>
-            <p className="mt-0.5">{serverError}</p>
+            <p className="font-heading font-semibold text-rose-900 dark:text-rose-200">
+              Event Creation Failed
+            </p>
+            <p className="mt-0.5 text-xs text-rose-800 dark:text-rose-300">{serverError}</p>
           </div>
         </div>
       )}
 
-      <div className="space-y-8">
+      <div className="space-y-8 font-sans">
         {/* Basic Event Information */}
         <div className="space-y-4">
-          <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
+          <h2 className="font-heading text-lg font-bold tracking-tight text-slate-900 dark:text-white">
             1. Competition Details
           </h2>
 
@@ -323,7 +325,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-title"
-              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
             >
               Event Title <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -338,7 +340,7 @@ export function CreateEventForm({
               })}
               onChange={handleTitleChange}
               className={cn(
-                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 font-sans text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                 errors.title &&
                   "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
@@ -355,7 +357,7 @@ export function CreateEventForm({
             <div className="flex items-center justify-between">
               <label
                 htmlFor="event-slug"
-                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
               >
                 Public URL Slug <span className="text-rose-500 dark:text-rose-400">*</span>
               </label>
@@ -363,7 +365,7 @@ export function CreateEventForm({
                 <button
                   type="button"
                   onClick={handleResetSlugToTitle}
-                  className="inline-flex cursor-pointer items-center gap-1 text-xs font-bold text-sky-600 hover:text-sky-700 dark:text-sky-400 dark:hover:text-sky-300"
+                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 px-2 py-1 text-xs font-bold text-sky-700 hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-200 transition-colors"
                 >
                   <RefreshCw className="size-3" />
                   <span>Reset to Title</span>
@@ -372,7 +374,7 @@ export function CreateEventForm({
             </div>
 
             <div className="relative mt-1.5 flex rounded-none border border-slate-300 bg-white focus-within:border-sky-600 focus-within:ring-1 focus-within:ring-sky-600 dark:border-slate-700 dark:bg-slate-950">
-              <span className="inline-flex items-center rounded-none border-r border-slate-200 bg-slate-100 px-3 text-xs font-semibold text-slate-600 select-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400">
+              <span className="inline-flex items-center rounded-none border-r border-slate-200 bg-slate-100 px-3 font-mono text-xs font-semibold text-slate-600 select-none dark:border-slate-800 dark:bg-slate-900/80 dark:text-slate-400">
                 <Globe className="mr-1.5 size-3.5 text-slate-400 dark:text-slate-500" />
                 /events/
               </span>
@@ -389,7 +391,7 @@ export function CreateEventForm({
                     shouldValidate: true,
                   });
                 }}
-                className="w-full rounded-none bg-transparent px-3 py-2.5 text-sm text-slate-900 placeholder-slate-400 focus:outline-hidden dark:text-white dark:placeholder-slate-500"
+                className="w-full rounded-none bg-transparent px-3 py-2.5 font-mono text-sm text-slate-900 placeholder-slate-400 focus:outline-hidden dark:text-white dark:placeholder-slate-500"
               />
             </div>
 
@@ -407,7 +409,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-description"
-              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
             >
               Description <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -420,7 +422,7 @@ export function CreateEventForm({
                 minLength: { value: 10, message: "Description must be at least 10 characters" },
               })}
               className={cn(
-                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 font-sans text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                 errors.description &&
                   "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
               )}
@@ -436,7 +438,7 @@ export function CreateEventForm({
         {/* Banner Configuration */}
         <div className="space-y-4 border-t border-slate-200 pt-6 dark:border-slate-800/80">
           <div>
-            <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
+            <h2 className="font-heading text-lg font-bold tracking-tight text-slate-900 dark:text-white">
               2. Visual Branding
             </h2>
             <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
@@ -447,7 +449,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-banner"
-              className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
             >
               Banner Image URL <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -463,7 +465,7 @@ export function CreateEventForm({
                   required: "Banner image URL is required",
                 })}
                 className={cn(
-                  "w-full rounded-none border border-slate-300 bg-white py-2.5 pr-4 pl-10 text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
+                  "w-full rounded-none border border-slate-300 bg-white py-2.5 pr-4 pl-10 font-sans text-sm text-slate-900 placeholder-slate-400 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white dark:placeholder-slate-500",
                   errors.bannerUrl &&
                     "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
@@ -488,7 +490,7 @@ export function CreateEventForm({
           <div>
             <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="font-heading text-lg font-bold text-slate-900 dark:text-white">
+                <h2 className="font-heading text-lg font-bold tracking-tight text-slate-900 dark:text-white">
                   3. Operational Schedule
                 </h2>
                 <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
@@ -509,7 +511,7 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-starts-at"
-                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
                   <Calendar className="size-4 text-sky-600 dark:text-sky-400" />
@@ -523,7 +525,7 @@ export function CreateEventForm({
                 {...register("startsAt", {
                   required: "Start date is required",
                 })}
-                className="mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 font-sans text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white"
               />
             </div>
 
@@ -531,7 +533,7 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-ends-at"
-                className="block text-sm font-semibold text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
                   <Clock className="size-4 text-sky-600 dark:text-sky-400" />
@@ -546,7 +548,7 @@ export function CreateEventForm({
                   required: "End date is required",
                 })}
                 className={cn(
-                  "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white",
+                  "mt-1.5 w-full rounded-none border border-slate-300 bg-white px-4 py-2.5 font-sans text-sm text-slate-900 transition focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-950 dark:text-white",
                   isTemporalInvalid &&
                     "border-rose-500 focus:border-rose-500 focus:ring-rose-500 dark:border-rose-500",
                 )}
@@ -568,14 +570,14 @@ export function CreateEventForm({
             <button
               type="button"
               onClick={onCancel}
-              className="w-full cursor-pointer rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </button>
           ) : (
             <Link
               href="/dashboard"
-              className="w-full rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </Link>
@@ -584,7 +586,7 @@ export function CreateEventForm({
           <button
             type="submit"
             disabled={isSubmitDisabled}
-            className="inline-flex w-full cursor-pointer items-center justify-center gap-2 rounded-none bg-slate-900 px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest text-white shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="btn-primary inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest text-white shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isSubmitting ? (
               <>

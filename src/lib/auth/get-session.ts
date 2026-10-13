@@ -51,7 +51,7 @@ function resolveSessionFromCookie(authCookie: string): UserSession | null {
       email: verified.email,
       name: verified.name,
       role: verified.role,
-      avatarUrl: verified.avatarUrl,
+      avatarUrl: verified.avatarUrl ?? null,
       organizationName: verified.organizationName,
       expiresAt: verified.expiresAt,
     };
@@ -62,7 +62,10 @@ function resolveSessionFromCookie(authCookie: string): UserSession | null {
     const decoded = decodeURIComponent(authCookie);
     const parsed = JSON.parse(decoded) as UserSession;
     if (parsed?.userId) {
-      return parsed;
+      return {
+        ...parsed,
+        avatarUrl: parsed.avatarUrl ?? null,
+      };
     }
   } catch {
     if (typeof authCookie === "string" && authCookie.trim().length > 0) {
@@ -72,6 +75,7 @@ function resolveSessionFromCookie(authCookie: string): UserSession | null {
         email: "organizer@electa.ph",
         name: "Alex Gonzaga (Organizer)",
         role: "ORGANIZER",
+        avatarUrl: null,
       };
     }
   }

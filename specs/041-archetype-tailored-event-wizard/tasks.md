@@ -64,6 +64,6 @@
 
 **Purpose**: Open PR targeting `main` and report progress.
 
-- [ ] T019 Rebase onto latest `origin/main` and push branch `feature/VS-84-archetype-tailored-event-wizard`
-- [ ] T020 Open Pull Request via GitHub CLI with comprehensive description
-- [ ] T021 Add implementation comment to Jira ticket VS-84 and mark complete
+- [x] T019 Rebase onto latest `origin/main` and push branch `feature/VS-84-archetype-tailored-event-wizard`
+- [x] T020 Open Pull Request via GitHub CLI with comprehensive description
+- [x] T021 Add implementation comment to Jira ticket VS-84 and mark complete

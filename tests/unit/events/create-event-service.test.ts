@@ -105,6 +105,7 @@ describe("createEvent Service", () => {
       dailyFreeVoteLimit: 1,
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_user_123",
+      archetype: "PAGEANT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

@@ -82,6 +82,7 @@ describe("POST /api/events/[slug]/award-categories", () => {
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
+    archetype: "PAGEANT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

@@ -49,6 +49,7 @@ describe("Division Lifecycle (PATCH & DELETE)", () => {
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
+    archetype: "PAGEANT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -191,6 +192,7 @@ describe("Award Category Lifecycle (PATCH & DELETE)", () => {
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
+    archetype: "PAGEANT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

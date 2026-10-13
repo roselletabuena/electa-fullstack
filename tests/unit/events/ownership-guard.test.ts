@@ -65,6 +65,7 @@ describe("requireEventOwnership", () => {
       dailyFreeVoteLimit: 1,
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_owner_123",
+      archetype: "PAGEANT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -94,6 +95,7 @@ describe("requireEventOwnership", () => {
       dailyFreeVoteLimit: 1,
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_owner_123",
+      archetype: "PAGEANT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

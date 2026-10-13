@@ -38,6 +38,7 @@ describe("updateScheduleLifecycleAction", () => {
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "usr_organizer_mock_01",
+    archetype: "PAGEANT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

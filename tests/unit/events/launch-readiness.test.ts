@@ -17,6 +17,7 @@ const mockBaseEvent: Event = {
   dailyFreeVoteLimit: 1,
   takeRatePercentage: "12.00" as unknown as Event["takeRatePercentage"],
   organizerId: "org-123",
+  archetype: "PAGEANT",
   createdAt: new Date("2026-10-13T00:00:00.000Z"),
   updatedAt: new Date("2026-10-13T00:00:00.000Z"),
 };

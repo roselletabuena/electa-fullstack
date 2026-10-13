@@ -82,6 +82,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       draftPassphraseHash: null,
       showResultsOnClose: true,
       organizerId: "org-1",
+      archetype: "PAGEANT",
       startsAt: new Date(Date.now() - 3600 * 1000),
       endsAt: new Date(Date.now() + 3600 * 1000),
       isFreeVotingEnabled: true,
@@ -98,6 +99,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       name: "Maria Santos",
       division: "FEMALE",
       divisionId: null,
+      positionId: null,
       status: "ACTIVE" as ContestantStatus,
       hometown: "Cebu",
       heightCm: 175,
@@ -315,6 +317,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       voteType: "FREE",
       voteWeight: 1,
       paymentTransactionId: null,
+      positionId: null,
       createdAt: new Date(),
     });
 
@@ -325,6 +328,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       name: "Maria Santos",
       division: "FEMALE",
       divisionId: null,
+      positionId: null,
       status: "ACTIVE" as ContestantStatus,
       hometown: "Cebu",
       heightCm: 175,

@@ -46,6 +46,7 @@ const mockEvent: Event = {
   dailyFreeVoteLimit: 1,
   takeRatePercentage: new Prisma.Decimal(12.0),
   organizerId: "org-123",
+  archetype: "PAGEANT",
   createdAt: new Date("2026-09-01T00:00:00Z"),
   updatedAt: new Date("2026-09-01T00:00:00Z"),
 };
@@ -113,6 +114,7 @@ function createMockContestant(overrides: Partial<Contestant>): Contestant {
     name: "Default Candidate",
     division: "FEMALE",
     divisionId: null,
+    positionId: null,
     status: "ACTIVE",
     hometown: null,
     heightCm: null,

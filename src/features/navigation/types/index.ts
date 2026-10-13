@@ -132,3 +132,12 @@ export interface SiteFooterProps {
   readonly config?: FooterConfig;
   readonly variant?: FooterVariant;
 }
+
+/**
+ * Props for SiteShell Component
+ */
+export interface SiteShellProps {
+  readonly children: React.ReactNode;
+  readonly className?: string | undefined;
+  readonly user?: UserSessionDto | null | undefined;
+}

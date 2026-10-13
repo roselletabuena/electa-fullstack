@@ -11,11 +11,7 @@ const SIZE_CLASSES = {
   lg: "h-10 w-10 text-sm",
 } as const;
 
-export function UserAvatar({
-  user,
-  size = "md",
-  className,
-}: Readonly<UserAvatarProps>) {
+export function UserAvatar({ user, size = "md", className }: Readonly<UserAvatarProps>) {
   const [imageError, setImageError] = useState(false);
   const sizeClass = SIZE_CLASSES[size] ?? SIZE_CLASSES.md;
   const hasAvatarImage = Boolean(user?.avatarUrl) && !imageError;
@@ -26,7 +22,10 @@ export function UserAvatar({
       <img
         src={user.avatarUrl}
         alt={user.name ? `${user.name}'s avatar` : "User avatar"}
+        referrerPolicy="no-referrer"
+        crossOrigin="anonymous"
         onError={() => setImageError(true)}
+        style={{ borderRadius: "9999px" }}
         className={cn(
           "aspect-square shrink-0 rounded-full border border-slate-300 object-cover dark:border-slate-700",
           sizeClass,
@@ -41,8 +40,9 @@ export function UserAvatar({
   return (
     <div
       aria-hidden="true"
+      style={{ borderRadius: "9999px" }}
       className={cn(
-        "font-mono aspect-square shrink-0 rounded-full border border-slate-300 bg-slate-100 font-bold text-slate-800 select-none",
+        "aspect-square shrink-0 rounded-full border border-slate-300 bg-slate-100 font-mono font-bold text-slate-800 select-none",
         "flex items-center justify-center transition-colors",
         "dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200",
         sizeClass,

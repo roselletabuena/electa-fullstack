@@ -3,7 +3,7 @@
 **Feature ID**: `039-authenticated-user-menu`  
 **Ticket**: [VS-107](https://the-three-devsketeers.atlassian.net/browse/VS-107)  
 **Parent Epic**: [VS-55 (Authentication)](https://the-three-devsketeers.atlassian.net/browse/VS-55)  
-**Status**: Draft  
+**Status**: Draft
 
 ---
 
@@ -18,6 +18,7 @@ This specification defines the replacement of the static "Sign In" button with a
 ## 2. User Stories & Acceptance Criteria
 
 ### User Story
+
 > **As an** authenticated user (organizer or voter),  
 > **I want to** see my circular account avatar and profile trigger in the site header instead of the generic "Sign In" button,  
 > **so that** I have immediate visibility of my logged-in status, can access my account settings/dashboard, and can easily log out from any page.
@@ -27,30 +28,34 @@ This specification defines the replacement of the static "Sign In" button with a
 ### Gherkin Acceptance Scenarios
 
 #### Scenario 1: Unauthenticated Visitor Header (Guest State)
+
 - **Given** a user is not authenticated (`isAuthenticated === false` or `user === null`),
 - **When** they view the site header on any page,
 - **Then** the existing **"Sign In"** button is displayed linking to `/login`,
 - **And** no account dropdown trigger is rendered.
 
 #### Scenario 2: Authenticated User Header (Circular Avatar Trigger)
+
 - **Given** a user is logged in (`isAuthenticated === true` and valid `user` object in `useAuth`),
 - **When** they view the site header,
-- **Then** the "Sign In" button is replaced by an **Account Profile** trigger button,
+- **Then** the "Sign In" button is replaced by a circular **Account Profile** avatar trigger button,
 - **And** the trigger displays a **circular avatar photo** (`rounded-full aspect-square`) or circular initials fallback when no photo exists,
-- **And** on desktop screens, the user's name is displayed alongside a subtle chevron icon.
+- **And** the trigger button is vertically centered with header action items and displays the avatar circle only (no name or chevron in the header bar).
 
 #### Scenario 3: Account Menu Dropdown Interaction & Accessibility
+
 - **Given** an authenticated user is viewing the header,
 - **When** they click or activate the Account Profile trigger with keyboard (`Enter` / `Space`),
 - **Then** an accessible zero-radius dropdown menu opens displaying:
   1. User info header (name, email address, and optional role badge),
-  2. Quick navigation links (e.g., _Dashboard_, _Create Event_, _Account Settings_),
+  2. Quick navigation link (_Dashboard_),
   3. A distinct **"Sign Out"** / **"Log Out"** action button,
 - **And** the dropdown container and menu items strictly follow brutalist zero-radius styling (`rounded-none`),
 - **And** pressing `Escape` closes the menu and returns focus to the trigger button,
 - **And** clicking outside closes the dropdown menu.
 
 #### Scenario 4: User Logout Flow
+
 - **Given** the account dropdown menu is open,
 - **When** the user clicks or activates the **"Sign Out"** button,
 - **Then** `logout()` from `useAuth()` is executed,

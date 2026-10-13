@@ -96,7 +96,7 @@ describe("UserAccountNav Component", () => {
       expect(menu.className).toContain("rounded-none");
 
       // Verify user header
-      expect(screen.getAllByText("Maria Santos")).toHaveLength(2);
+      expect(screen.getByText("Maria Santos")).toBeDefined();
       expect(screen.getByText("maria.santos@electa.ph")).toBeDefined();
       expect(screen.getByText("ORGANIZER")).toBeDefined();
 
@@ -105,9 +105,8 @@ describe("UserAccountNav Component", () => {
       expect(dashboardLink.getAttribute("href")).toBe("/dashboard");
       expect(dashboardLink.className).toContain("rounded-none");
 
-      const createEventLink = screen.getByRole("menuitem", { name: /create event/i });
-      expect(createEventLink.getAttribute("href")).toBe("/events/new");
-      expect(createEventLink.className).toContain("rounded-none");
+      // Verify create event is not in user account dropdown
+      expect(screen.queryByRole("menuitem", { name: /create event/i })).toBeNull();
 
       // Verify sign out button
       const signOutBtn = screen.getByRole("menuitem", { name: /sign out/i });
@@ -132,7 +131,9 @@ describe("UserAccountNav Component", () => {
     it("closes menu when clicking outside container", () => {
       render(
         <div>
-          <button type="button" data-testid="outside-el">Outside</button>
+          <button type="button" data-testid="outside-el">
+            Outside
+          </button>
           <UserAccountNav user={mockUser} />
         </div>,
       );

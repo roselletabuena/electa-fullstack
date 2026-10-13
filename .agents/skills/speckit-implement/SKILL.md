@@ -213,9 +213,10 @@ You **MUST** consider the user input before proceeding (if not empty).
         - `<commit-sha>`: <commit message>
         - `<commit-sha>`: <commit message>
 
-        #### 🧪 Test Verification
+        #### 🧪 Test & Code Review Verification
 
-        - <Test results, e.g., "Vitest: X passed, 0 failed">
+        - Vitest / Typecheck: <Test results, e.g., "Vitest: X passed, 0 failed, Typecheck clean">
+        - Code Review: PASSED via `code-review` & `code-review-and-quality` (Spec, Standards, & 5-Axis Quality Audited)
         ```
     - **Step 10.4 — Log Output**:
       - Output a clear confirmation in the agent transcript with the Jira ticket URL: `Updated Jira ticket <KEY>: Transitioned to Done and posted implementation changelog.`
@@ -266,6 +267,7 @@ Report final status with summary of completed work, including Jira ticket link a
 
 - [ ] All tasks in tasks.md completed and marked `[X]`
 - [ ] Implementation validated against specification, plan, and test coverage
-- [ ] Associated Jira ticket transitioned to Done/In Review and updated with implementation changelog comment (if Jira key exists)
+- [ ] Code review completed via `code-review` (Spec and Standards axes) and `code-review-and-quality` (5-axis quality audit) with zero unresolved defects
+- [ ] Associated Jira ticket transitioned to Done and updated with implementation changelog comment (if Jira key exists)
 - [ ] Extension hooks dispatched or skipped according to the rules in Mandatory Post-Execution Hooks above
 - [ ] Completion reported to user with summary of completed work

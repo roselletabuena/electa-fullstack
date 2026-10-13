@@ -82,13 +82,13 @@ The Orchestrator launches independent worker subagents for non-conflicting ticke
       "TypeName": "self",
       "Role": "SpecKit Worker: VS-38",
       "Workspace": "share",
-      "Prompt": "Implement ticket VS-38 in isolated worktree. 1) Checkout/create branch feature/VS-38-dynamic-category-integration from latest origin/main. 2) Run speckit-multi-implement for VS-38 delivering all 8 canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md). 3) Enforce TDD, Constitution checks, and atomic commits. 4) Use pr-creator to rebase onto latest main and open a GitHub PR. 5) Return ONLY a structured completion receipt containing PR URL, test results, and commit summary."
+      "Prompt": "Implement ticket VS-38 in isolated worktree. 1) Checkout/create branch feature/VS-38-dynamic-category-integration from latest origin/main. 2) Run speckit-multi-implement for VS-38 delivering all 8 canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md). 3) Enforce TDD, Constitution checks, and atomic commits. 4) Run code-review and code-review-and-quality skills to audit Spec fidelity and 5-axis quality, resolving any smells. 5) Use pr-creator to rebase onto latest main and open a GitHub PR. 6) Return ONLY a structured completion receipt containing PR URL, test results, code review confirmation, and commit summary."
     },
     {
       "TypeName": "self",
       "Role": "SpecKit Worker: VS-25",
       "Workspace": "share",
-      "Prompt": "Implement ticket VS-25 in isolated worktree. 1) Checkout/create branch feature/VS-25-social-share-story-generator from latest origin/main. 2) Run speckit-multi-implement for VS-25 delivering all 8 canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md). 3) Enforce TDD, Constitution checks, and atomic commits. 4) Use pr-creator to rebase onto latest main and open a GitHub PR. 5) Return ONLY a structured completion receipt containing PR URL, test results, and commit summary."
+      "Prompt": "Implement ticket VS-25 in isolated worktree. 1) Checkout/create branch feature/VS-25-social-share-story-generator from latest origin/main. 2) Run speckit-multi-implement for VS-25 delivering all 8 canonical SpecKit artifacts (spec.md, research.md, data-model.md, contracts/, checklists/requirements.md, plan.md, quickstart.md, tasks.md). 3) Enforce TDD, Constitution checks, and atomic commits. 4) Run code-review and code-review-and-quality skills to audit Spec fidelity and 5-axis quality, resolving any smells. 5) Use pr-creator to rebase onto latest main and open a GitHub PR. 6) Return ONLY a structured completion receipt containing PR URL, test results, code review confirmation, and commit summary."
     }
   ]
 }
@@ -105,7 +105,7 @@ git worktree add .worktrees/VS-38 -b feature/VS-38-dynamic-category-integration 
 
 # 3. Execute implementation & testing inside worktree
 cd .worktrees/VS-38
-# ... SpecKit lifecycle, TDD, atomic commits, pr-creator ...
+# ... SpecKit lifecycle, TDD, atomic commits, code review gate, pr-creator ...
 
 # 4. Clean up worktree after PR creation
 cd ../..

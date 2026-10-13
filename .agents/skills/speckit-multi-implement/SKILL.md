@@ -35,8 +35,10 @@ flowchart TD
     E --> F[5. Task Generation\nspeckit-tasks]
     F --> G[6. TDD Implementation\nspeckit-implement & atomic-commit]
     G --> H[7. Verification Gate\ntypecheck + tests + constitution-check]
-    H -->|Pass| I[8. Jira Completion\nPost Comment & Transition to 'In Review' / 'Done']
-    H -->|Fail| J[8b. Failure Log\nTag Blocker & Post Diagnostic]
+    H --> CR[7b. Code Review Gate\ncode-review: Spec & Standards Axes\ncode-review-and-quality: 5-Axis Audit]
+    CR -->|Pass| I[8. Jira Completion\nPost Comment & Transition to 'In Review' / 'Done']
+    CR -->|Fail| J[8b. Failure Log\nTag Blocker & Post Diagnostic]
+    H -->|Fail| J
 ```
 
 ---
@@ -57,7 +59,7 @@ For each ticket key (e.g., `VS-38`):
    ```markdown
    🤖 **SpecKit Automation Started**
    - **Branch**: `feature/<KEY>-<slug>`
-   - **Pipeline**: Specification ➔ Architecture Plan ➔ Tasks ➔ TDD Implementation
+   - **Pipeline**: Specification ➔ Architecture Plan ➔ Tasks ➔ TDD Implementation ➔ Code Review Gate
    ```
 
 ### Step 3: Run Full SpecKit Lifecycle (Complete 8-Artifact Gate)
@@ -93,22 +95,34 @@ For each ticket key (e.g., `VS-38`):
 Run comprehensive project checks:
 ```bash
 npm run typecheck
-npm run test
-npx eslint .
+npm run test:unit
+npm run lint
 ```
 Verify that no `process.env` bypasses occur (Electa Constitution §IV).
 
-### Step 6: Post-Execution Jira Sync
+### Step 6: Automated Code Review & Refactoring Gate
+Trigger repository code review skills on the active changes:
+1. **`code-review`**:
+   - **Spec Axis**: Verifies that code strictly fulfills the Jira story's acceptance criteria and invariants in `spec.md`.
+   - **Standards Axis**: Verifies repository coding standards and Fowler code smell baseline (Mysterious Names, Duplicated Code, Feature Envy, Primitive Obsession, Repeated Switches, Shotgun Surgery).
+2. **`code-review-and-quality`**:
+   - Audits code across Correctness, Readability (no nested ternaries), Architecture (clean vertical slices, zero circular dependencies), Security, and Performance.
+3. **Auto-Remediate**:
+   - Fix all flagged issues and stage as atomic commits (`refactor(...)` / `fix(...)`).
+   - Re-run verification (`npm run typecheck && npm run test:unit && npm run lint`).
+
+### Step 7: Post-Execution Jira Sync
 1. Transition ticket to **`In Review`** (or **`Done`** if configured for auto-close).
 2. Post a rich summary comment to the Jira ticket:
    ```markdown
-   ✅ **SpecKit Implementation Complete**
+   ✅ **SpecKit Implementation & Code Review Complete**
    - **Pull Request / Branch**: `feature/<KEY>-<slug>`
    - **Files Modified**:
      - `src/features/...`
-   - **Verification**:
+   - **Verification & Review**:
      - Typecheck: PASSED (0 errors)
      - Unit Tests: PASSED (100% tests passing)
+     - Code Review: PASSED (Spec, Standards, & 5-Axis Quality Audited)
      - Constitution Compliance: §I–§VI Verified
    ```
 

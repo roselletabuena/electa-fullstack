@@ -78,7 +78,7 @@ graph TD
   - Run `npm run typecheck`, `npm run lint`, and `npm run test:unit`.
   - Run code review gates (`code-review` and `code-review-and-quality`).
   - Commit any refactorings atomically (`refactor(...)`).
-- [ ] **Task 5.2: Automated PR Creation & Jira Update**
+- [x] **Task 5.2: Automated PR Creation & Jira Update**
   - Rebase on `origin/main`.
   - Open PR via `gh pr create` with `.specify/pr-body.md`.
   - Post update comment to Jira issue VS-85.

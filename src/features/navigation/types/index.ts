@@ -1,4 +1,5 @@
 import { z } from "zod";
+import type { UserSessionDto } from "@/features/auth/types";
 
 /**
  * Supported Theme Modes
@@ -38,9 +39,28 @@ export type SiteHeaderConfig = z.infer<typeof siteHeaderConfigSchema>;
  * Props for SiteHeader Component
  */
 export interface SiteHeaderProps {
-  readonly className?: string;
-  readonly showActions?: boolean;
-  readonly showThemeToggle?: boolean;
+  readonly className?: string | undefined;
+  readonly showActions?: boolean | undefined;
+  readonly showThemeToggle?: boolean | undefined;
+  readonly user?: UserSessionDto | null | undefined;
+}
+
+/**
+ * Props for UserAvatar Component
+ */
+export interface UserAvatarProps {
+  readonly user?: Pick<UserSessionDto, "name" | "avatarUrl" | "email"> | null | undefined;
+  readonly size?: ("sm" | "md" | "lg") | undefined;
+  readonly className?: string | undefined;
+}
+
+/**
+ * Props for UserAccountNav Component
+ */
+export interface UserAccountNavProps {
+  readonly user?: UserSessionDto | null | undefined;
+  readonly onLogout?: (() => Promise<void> | void) | undefined;
+  readonly className?: string | undefined;
 }
 
 /**

@@ -46,7 +46,7 @@ describe("voting-engine", () => {
     vi.clearAllMocks();
     vi.mocked(rateLimiter.checkIpVelocity).mockReturnValue({ allowed: true, error: null });
     vi.mocked(rateLimiter.checkDeviceAccountLimit).mockReturnValue({ allowed: true, error: null });
-    vi.mocked(turnstile.verifyTurnstileToken).mockResolvedValue({ success: true });
+    vi.mocked(turnstile.verifyTurnstileToken).mockResolvedValue({ success: true, error: null });
   });
 
   describe("isZeroCostElection", () => {

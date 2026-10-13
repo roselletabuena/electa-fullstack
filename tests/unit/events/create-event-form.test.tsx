@@ -256,6 +256,7 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
     organizerId: "org_123",
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
+    isFreeVotingOnly: false,
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     archetype: "PAGEANT" as const,

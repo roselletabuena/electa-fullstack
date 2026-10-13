@@ -12,6 +12,8 @@ export * from "./components/AuthPromptModal";
 export * from "./components/TurnstileWidget";
 export * from "./utils/quota-calculator";
 export * from "./utils/turnstile";
+export * from "./actions/cast-ballot";
+export * from "./services/voting-engine";
 export * from "./utils/rate-limiter";
 export * from "./utils/fingerprint";
 export * from "./utils/vote-intent";

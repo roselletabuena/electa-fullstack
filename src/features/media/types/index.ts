@@ -69,6 +69,8 @@ export interface UploadState {
 export interface ImageDropzoneProps {
   /** Target S3 storage folder category */
   folder: MediaFolder;
+  /** Storage provider backend (defaults to supabase) */
+  provider?: 'supabase' | 's3' | undefined;
   /** Maximum allowed file size in bytes (defaults: 5MB for avatars, 10MB for banners) */
   maxSizeBytes?: number | undefined;
   /** Allowed MIME types (defaults to image/jpeg, image/png, image/webp) */

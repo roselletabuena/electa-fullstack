@@ -7,6 +7,7 @@ import { useImageUpload } from "../hooks/use-image-upload";
 
 export function ImageDropzone({
   folder,
+  provider = "s3",
   maxSizeBytes,
   allowedMimeTypes,
   initialPreviewUrl,
@@ -35,6 +36,7 @@ export function ImageDropzone({
     reset,
   } = useImageUpload({
     folder,
+    provider,
     maxSizeBytes,
     allowedMimeTypes,
     initialPreviewUrl,
@@ -211,8 +213,8 @@ export function ImageDropzone({
           <div className="flex items-center justify-between text-xs">
             <span className="font-heading font-bold tracking-wider text-sky-900 uppercase dark:text-sky-200">
               {status === "validating" && "Validating..."}
-              {status === "presigning" && "Authorizing S3 Upload..."}
-              {status === "uploading" && "Uploading directly to S3..."}
+              {status === "presigning" && "Authorizing Upload..."}
+              {status === "uploading" && "Uploading image..."}
             </span>
             <span className="font-mono font-bold text-sky-800 dark:text-sky-300">
               {progressPercent}%

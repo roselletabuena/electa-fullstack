@@ -79,3 +79,5 @@ export interface PendingVoteIntent {
   voteType?: "FREE" | "BOOST" | undefined;
   timestamp: number;
 }
+
+export * from "./ballot";

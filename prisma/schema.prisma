@@ -20,6 +20,13 @@ enum ContestantDivision {
   TEEN
 }
 
+enum EventArchetype {
+  PAGEANT
+  STUDENT_COUNCIL
+  HACKATHON
+  CUSTOM
+}
+
 enum ContestantStatus {
   ACTIVE
   HIDDEN
@@ -54,11 +61,13 @@ model Event {
   dailyFreeVoteLimit  Int                    @default(1)
   takeRatePercentage  Decimal                @default(12.00) @db.Decimal(5, 2)
   organizerId         String
+  archetype           EventArchetype         @default(PAGEANT)
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
 
   contestants         Contestant[]
   divisions           Division[]
+  positions           EventPosition[]
   awardCategories     AwardCategory[]
   auditLogs           EventAuditLog[]
   votes               Vote[]
@@ -87,6 +96,27 @@ model Division {
   @@index([eventId, displayOrder])
 }
 
+model EventPosition {
+  id                   String       @id @default(uuid())
+  eventId              String
+  name                 String
+  description          String?
+  maxSelectionsPerVoter Int         @default(1)
+  minSelectionsPerVoter Int         @default(0)
+  displayOrder         Int          @default(0)
+  isVotingOpen         Boolean      @default(true)
+  createdAt            DateTime     @default(now())
+  updatedAt            DateTime     @updatedAt
+
+  event                Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  contestants          Contestant[]
+  votes                Vote[]
+
+  @@unique([eventId, name])
+  @@index([eventId])
+  @@index([eventId, displayOrder])
+}
+
 model Contestant {
   id               String                         @id @default(uuid())
   eventId          String
@@ -109,6 +139,8 @@ model Contestant {
 
   event            Event                          @relation(fields: [eventId], references: [id], onDelete: Cascade)
   divisionRef      Division?                      @relation(fields: [divisionId], references: [id], onDelete: SetNull)
+  positionId       String?
+  position         EventPosition?                 @relation(fields: [positionId], references: [id], onDelete: SetNull)
   media            ContestantMedia[]
   categories       ContestantCategoryAssignment[]
   votes            Vote[]
@@ -119,6 +151,7 @@ model Contestant {
   @@index([eventId, status])
   @@index([eventId, division])
   @@index([eventId, divisionId])
+  @@index([eventId, positionId])
 }
 
 model ContestantMedia {
@@ -199,16 +232,19 @@ model Vote {
   voteType             VoteType            @default(FREE)
   voteWeight           Int                 @default(1)
   paymentTransactionId String?
+  positionId           String?
   createdAt            DateTime            @default(now())
 
   event                Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
   contestant           Contestant          @relation(fields: [contestantId], references: [id], onDelete: Cascade)
   paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
+  position             EventPosition?      @relation(fields: [positionId], references: [id], onDelete: SetNull)
 
   @@index([eventId, voterId, createdAt])
   @@index([eventId, voterId, voteType, createdAt])
   @@index([contestantId])
   @@index([paymentTransactionId])
+  @@index([positionId])
   @@index([eventId, createdAt])
 }
 

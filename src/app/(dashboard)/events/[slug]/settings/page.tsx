@@ -8,6 +8,9 @@ import {
 import { OrganizerDashboardHeader } from "@/features/events/components/dashboard/OrganizerDashboardHeader";
 import { SettingsTabsContainer } from "@/features/events/components/dashboard/SettingsTabsContainer";
 import { ForbiddenAccessCard } from "@/features/events/components/dashboard/ForbiddenAccessCard";
+import { LaunchReadinessChecklist } from "@/features/events/components/dashboard/LaunchReadinessChecklist";
+import { computeLaunchReadinessSnapshot } from "@/features/events/utils/launch-readiness";
+import { db } from "@/lib/db";
 
 interface SettingsPageProps {
   params: Promise<{ slug: string }>;
@@ -54,16 +57,30 @@ export default async function EventSettingsPage({
 
   const { event, session } = authResult;
 
+  const [divisionsCount, contestantsCount, votingRulesAuditCount] = await Promise.all([
+    db.division.count({ where: { eventId: event.id } }),
+    db.contestant.count({ where: { eventId: event.id } }),
+    db.eventAuditLog.count({ where: { eventId: event.id, action: "UPDATE_VOTING_RULES" } }),
+  ]);
+
+  const readinessSnapshot = computeLaunchReadinessSnapshot(event, {
+    divisionsCount,
+    contestantsCount,
+    votingRulesAuditCount,
+  });
+
   return (
     <div className="min-h-screen bg-slate-50/50 pb-16 dark:bg-slate-950">
       <OrganizerDashboardHeader event={event} user={session} />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
+        <LaunchReadinessChecklist snapshot={readinessSnapshot} />
+
         <Suspense
           fallback={
             <div className="space-y-6">
               <div className="h-12 w-full animate-pulse border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
-              <div className="h-96 w-full animate-pulse rounded-2xl bg-white dark:bg-slate-900" />
+              <div className="h-96 w-full animate-pulse rounded-none bg-white dark:bg-slate-900" />
             </div>
           }
         >

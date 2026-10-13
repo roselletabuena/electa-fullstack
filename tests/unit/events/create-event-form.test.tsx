@@ -4,6 +4,7 @@ import userEvent from "@testing-library/user-event";
 import { Prisma } from "@/generated/client/client";
 import { CreateEventForm } from "@/features/events/components/CreateEventForm";
 import { createEventAction } from "@/features/events/actions/create-event";
+import { EVENT_CREATE_DRAFT_KEY } from "@/features/events/utils/event-draft-storage";
 import { useRouter } from "next/navigation";
 
 vi.mock("next/navigation", () => ({
@@ -22,6 +23,7 @@ describe("CreateEventForm", () => {
   const pushMock = vi.fn();
 
   beforeEach(() => {
+    sessionStorage.clear();
     vi.clearAllMocks();
     vi.mocked(useRouter).mockReturnValue({
       push: pushMock,
@@ -41,7 +43,7 @@ describe("CreateEventForm", () => {
     });
   });
 
-  it("renders all key form input sections and buttons", () => {
+  it("renders all key form input sections, buttons, and duration preset chips", () => {
     render(<CreateEventForm />);
 
     expect(screen.getByLabelText(/Event Title/i)).toBeInTheDocument();
@@ -50,6 +52,12 @@ describe("CreateEventForm", () => {
     expect(screen.getByLabelText(/Banner Image URL/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Voting Starts At/i)).toBeInTheDocument();
     expect(screen.getByLabelText(/Voting Ends At/i)).toBeInTheDocument();
+
+    // Duration preset chips
+    expect(screen.getByRole("button", { name: /\+7 Days/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /\+14 Days/i })).toBeInTheDocument();
+    expect(screen.getByRole("button", { name: /\+30 Days/i })).toBeInTheDocument();
+
     expect(screen.getByRole("button", { name: /Create Event/i })).toBeInTheDocument();
   });
 
@@ -76,6 +84,38 @@ describe("CreateEventForm", () => {
     expect(slugInput).toHaveValue("gala-night-2026");
   });
 
+  it("calculates end date automatically when duration preset chip is clicked", async () => {
+    const user = userEvent.setup();
+    render(<CreateEventForm />);
+
+    const startsAtInput = screen.getByLabelText(/Voting Starts At/i) as HTMLInputElement;
+    const endsAtInput = screen.getByLabelText(/Voting Ends At/i) as HTMLInputElement;
+
+    // Set a known startsAt
+    fireEvent.change(startsAtInput, { target: { value: "2026-11-01T10:00" } });
+
+    const chip7 = screen.getByRole("button", { name: /\+7 Days/i });
+    const chip14 = screen.getByRole("button", { name: /\+14 Days/i });
+    const chip30 = screen.getByRole("button", { name: /\+30 Days/i });
+
+    // Click +7 Days
+    await user.click(chip7);
+    expect(endsAtInput.value).toBe("2026-11-08T10:00");
+    expect(chip7).toHaveAttribute("aria-pressed", "true");
+    expect(chip14).toHaveAttribute("aria-pressed", "false");
+
+    // Click +14 Days
+    await user.click(chip14);
+    expect(endsAtInput.value).toBe("2026-11-15T10:00");
+    expect(chip14).toHaveAttribute("aria-pressed", "true");
+    expect(chip7).toHaveAttribute("aria-pressed", "false");
+
+    // Click +30 Days
+    await user.click(chip30);
+    expect(endsAtInput.value).toBe("2026-12-01T10:00");
+    expect(chip30).toHaveAttribute("aria-pressed", "true");
+  });
+
   it("shows temporal error and disables submit when end time is less than 1 hour after start time", async () => {
     render(<CreateEventForm />);
 
@@ -94,6 +134,51 @@ describe("CreateEventForm", () => {
 
     const submitBtn = screen.getByRole("button", { name: /Create Event/i });
     expect(submitBtn).toBeDisabled();
+  });
+
+  it("recovers draft form state from sessionStorage and allows clearing it", async () => {
+    const user = userEvent.setup();
+
+    // Seed sessionStorage with saved draft
+    sessionStorage.setItem(
+      EVENT_CREATE_DRAFT_KEY,
+      JSON.stringify({
+        title: "Saved Pageant 2026",
+        slug: "saved-pageant-2026",
+        description: "Recovered description from previous session.",
+        bannerUrl: "https://example.com/recovered.jpg",
+        startsAt: "2026-12-01T10:00",
+        endsAt: "2026-12-15T10:00",
+        isCustomSlug: true,
+        savedAt: Date.now(),
+      }),
+    );
+
+    render(<CreateEventForm />);
+
+    // Assert inputs are prefilled
+    await waitFor(() => {
+      expect(screen.getByLabelText(/Event Title/i)).toHaveValue("Saved Pageant 2026");
+      expect(screen.getByLabelText(/Public URL Slug/i)).toHaveValue("saved-pageant-2026");
+      expect(screen.getByLabelText(/Description/i)).toHaveValue(
+        "Recovered description from previous session.",
+      );
+    });
+
+    // Alert banner must be visible
+    expect(
+      screen.getByText(/Draft Restored: We recovered your previously entered event details/i),
+    ).toBeInTheDocument();
+
+    // Click "Clear Draft"
+    const clearDraftBtn = screen.getByRole("button", { name: /Clear Draft/i });
+    await user.click(clearDraftBtn);
+
+    // Values should be reset
+    expect(screen.getByLabelText(/Event Title/i)).toHaveValue("");
+    expect(screen.getByLabelText(/Public URL Slug/i)).toHaveValue("");
+    expect(sessionStorage.getItem(EVENT_CREATE_DRAFT_KEY)).toBeNull();
+    expect(screen.queryByText(/Draft Restored/i)).not.toBeInTheDocument();
   });
 
   it("calls onCancel callback when cancel button is clicked", async () => {
@@ -130,7 +215,7 @@ describe("CreateEventForm", () => {
     updatedAt: new Date(),
   };
 
-  it("successfully submits the form and navigates on success", async () => {
+  it("successfully submits the form, clears draft from sessionStorage, and navigates", async () => {
     const user = userEvent.setup();
     vi.mocked(createEventAction).mockResolvedValue({
       success: true,
@@ -161,6 +246,8 @@ describe("CreateEventForm", () => {
     await waitFor(() => {
       expect(createEventAction).toHaveBeenCalled();
       expect(pushMock).toHaveBeenCalledWith("/events/super-star-2026/settings");
+      // Session storage draft should be cleared on success
+      expect(sessionStorage.getItem(EVENT_CREATE_DRAFT_KEY)).toBeNull();
     });
   });
 

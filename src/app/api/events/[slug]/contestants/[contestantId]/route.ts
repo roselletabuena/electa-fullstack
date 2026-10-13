@@ -2,7 +2,7 @@ import type { NextRequest } from "next/server";
 import { db } from "@/lib/db";
 import { apiError, apiSuccess } from "@/lib/api/response";
 import { getSession } from "@/lib/auth/get-session";
-import { updateContestantSchema } from "@/lib/validations/contestant";
+import { updateContestantSchema, type UpdateContestantSchema } from "@/lib/validations/contestant";
 import { normalizeSocialLinks } from "@/features/contestants/utils/normalize-social-links";
 import { parseVideoEmbedUrl } from "@/features/contestants/utils/parse-video-embed";
 import type { ContestantDivision, ContestantDto } from "@/features/contestants/types";
@@ -84,6 +84,112 @@ export async function GET(_request: NextRequest, context: RouteParams) {
   }
 }
 
+type TransactionClient = Parameters<Parameters<typeof db.$transaction>[0]>[0];
+
+async function checkContestantNumberCollision(
+  existing: { eventId: string; division: ContestantDivision; contestantNumber: number },
+  data: UpdateContestantSchema,
+  contestantId: string,
+): Promise<string | null> {
+  const isNumberChanged = data.contestantNumber !== undefined && data.contestantNumber !== existing.contestantNumber;
+  const isDivisionChanged = data.division !== undefined && data.division !== existing.division;
+
+  if (!isNumberChanged && !isDivisionChanged) {
+    return null;
+  }
+
+  const isStandard = data.division
+    ? ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(data.division.toUpperCase())
+    : false;
+  const divisionToCheck: ContestantDivision =
+    data.division && isStandard
+      ? (data.division.toUpperCase() as ContestantDivision)
+      : existing.division;
+  const numberToCheck = data.contestantNumber || existing.contestantNumber;
+
+  const duplicate = await db.contestant.findUnique({
+    where: {
+      eventId_division_contestantNumber: {
+        eventId: existing.eventId,
+        division: divisionToCheck,
+        contestantNumber: numberToCheck,
+      },
+    },
+  });
+
+  if (duplicate && duplicate.id !== contestantId) {
+    return `Candidate number #${numberToCheck} is already taken in ${divisionToCheck}`;
+  }
+  return null;
+}
+
+function buildContestantUpdateData(
+  data: UpdateContestantSchema,
+  social: ReturnType<typeof normalizeSocialLinks>,
+) {
+  const updateData: Parameters<TransactionClient["contestant"]["update"]>[0]["data"] = {};
+  if (data.name !== undefined) updateData.name = data.name;
+  if (data.contestantNumber !== undefined) updateData.contestantNumber = data.contestantNumber;
+  if (data.division !== undefined) {
+    const isStandard = ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(data.division.toUpperCase());
+    updateData.division = isStandard
+      ? (data.division.toUpperCase() as ContestantDivision)
+      : "FEMALE";
+  }
+  if (data.divisionId !== undefined) updateData.divisionId = data.divisionId;
+  if (data.hometown !== undefined) updateData.hometown = data.hometown;
+  if (data.heightCm !== undefined) updateData.heightCm = data.heightCm;
+  if (data.bio !== undefined) updateData.bio = data.bio;
+  if (data.advocacy !== undefined) updateData.advocacy = data.advocacy;
+  if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
+  if (data.instagramUrl !== undefined) updateData.instagramUrl = social.instagramUrl ?? null;
+  if (data.tiktokUrl !== undefined) updateData.tiktokUrl = social.tiktokUrl ?? null;
+  if (data.facebookUrl !== undefined) updateData.facebookUrl = social.facebookUrl ?? null;
+  if (data.status !== undefined) updateData.status = data.status;
+  return updateData;
+}
+
+async function syncContestantMedia(
+  tx: TransactionClient,
+  contestantId: string,
+  media: UpdateContestantSchema["media"],
+) {
+  if (!media) return;
+  await tx.contestantMedia.deleteMany({ where: { contestantId } });
+  if (media.length === 0) return;
+  await tx.contestantMedia.createMany({
+    data: media.map((m, index) => {
+      const parsedVideo = m.mediaType === "VIDEO_EMBED" ? parseVideoEmbedUrl(m.url) : null;
+      return {
+        contestantId,
+        mediaType: m.mediaType,
+        url: m.url,
+        embedPlatform: parsedVideo ? parsedVideo.platform : m.embedPlatform || "NONE",
+        embedId: parsedVideo ? parsedVideo.embedId : m.embedId || null,
+        displayOrder: m.displayOrder ?? index,
+        aspectRatio: m.aspectRatio || "4:5",
+        isCover: m.isCover ?? index === 0,
+      };
+    }),
+  });
+}
+
+async function syncContestantCategories(
+  tx: TransactionClient,
+  contestantId: string,
+  categoryIds: UpdateContestantSchema["categoryIds"],
+) {
+  if (!categoryIds) return;
+  await tx.contestantCategoryAssignment.deleteMany({ where: { contestantId } });
+  if (categoryIds.length === 0) return;
+  await tx.contestantCategoryAssignment.createMany({
+    data: categoryIds.map((awardCategoryId) => ({
+      contestantId,
+      awardCategoryId,
+    })),
+  });
+}
+
 export async function PATCH(request: NextRequest, context: RouteParams) {
   try {
     const session = await getSession();
@@ -107,34 +213,9 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
       return apiError("Contestant not found", 404);
     }
 
-    // Check number collision if changing number or division
-    if (
-      (data.contestantNumber && data.contestantNumber !== existing.contestantNumber) ||
-      (data.division && data.division !== existing.division)
-    ) {
-      const isStandard = data.division
-        ? ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(data.division.toUpperCase())
-        : false;
-      const divisionToCheck: ContestantDivision =
-        data.division && isStandard
-          ? (data.division.toUpperCase() as ContestantDivision)
-          : existing.division;
-      const numberToCheck = data.contestantNumber || existing.contestantNumber;
-      const duplicate = await db.contestant.findUnique({
-        where: {
-          eventId_division_contestantNumber: {
-            eventId: existing.eventId,
-            division: divisionToCheck,
-            contestantNumber: numberToCheck,
-          },
-        },
-      });
-      if (duplicate && duplicate.id !== contestantId) {
-        return apiError(
-          `Candidate number #${numberToCheck} is already taken in ${divisionToCheck}`,
-          409,
-        );
-      }
+    const collisionError = await checkContestantNumberCollision(existing, data, contestantId);
+    if (collisionError) {
+      return apiError(collisionError, 409);
     }
 
     const social = normalizeSocialLinks({
@@ -143,68 +224,16 @@ export async function PATCH(request: NextRequest, context: RouteParams) {
       facebookUrl: data.facebookUrl,
     });
 
-    const updated = await db.$transaction(async (tx) => {
-      const updateData: Parameters<typeof tx.contestant.update>[0]["data"] = {};
-      if (data.name !== undefined) updateData.name = data.name;
-      if (data.contestantNumber !== undefined) updateData.contestantNumber = data.contestantNumber;
-      if (data.division !== undefined) {
-        const isStandard = ["FEMALE", "MALE", "LGBTQ", "TEEN"].includes(
-          data.division.toUpperCase(),
-        );
-        updateData.division = isStandard
-          ? (data.division.toUpperCase() as ContestantDivision)
-          : "FEMALE";
-      }
-      if (data.divisionId !== undefined) {
-        updateData.divisionId = data.divisionId;
-      }
-      if (data.hometown !== undefined) updateData.hometown = data.hometown;
-      if (data.heightCm !== undefined) updateData.heightCm = data.heightCm;
-      if (data.bio !== undefined) updateData.bio = data.bio;
-      if (data.advocacy !== undefined) updateData.advocacy = data.advocacy;
-      if (data.avatarUrl !== undefined) updateData.avatarUrl = data.avatarUrl;
-      if (data.instagramUrl !== undefined) updateData.instagramUrl = social.instagramUrl ?? null;
-      if (data.tiktokUrl !== undefined) updateData.tiktokUrl = social.tiktokUrl ?? null;
-      if (data.facebookUrl !== undefined) updateData.facebookUrl = social.facebookUrl ?? null;
-      if (data.status !== undefined) updateData.status = data.status;
+    const updateData = buildContestantUpdateData(data, social);
 
+    const updated = await db.$transaction(async (tx) => {
       const contestant = await tx.contestant.update({
         where: { id: contestantId },
         data: updateData,
       });
 
-      if (data.media) {
-        await tx.contestantMedia.deleteMany({ where: { contestantId } });
-        if (data.media.length > 0) {
-          await tx.contestantMedia.createMany({
-            data: data.media.map((m, index) => {
-              const parsedVideo = m.mediaType === "VIDEO_EMBED" ? parseVideoEmbedUrl(m.url) : null;
-              return {
-                contestantId,
-                mediaType: m.mediaType,
-                url: m.url,
-                embedPlatform: parsedVideo ? parsedVideo.platform : m.embedPlatform || "NONE",
-                embedId: parsedVideo ? parsedVideo.embedId : m.embedId || null,
-                displayOrder: m.displayOrder ?? index,
-                aspectRatio: m.aspectRatio || "4:5",
-                isCover: m.isCover ?? index === 0,
-              };
-            }),
-          });
-        }
-      }
-
-      if (data.categoryIds) {
-        await tx.contestantCategoryAssignment.deleteMany({ where: { contestantId } });
-        if (data.categoryIds.length > 0) {
-          await tx.contestantCategoryAssignment.createMany({
-            data: data.categoryIds.map((awardCategoryId) => ({
-              contestantId,
-              awardCategoryId,
-            })),
-          });
-        }
-      }
+      await syncContestantMedia(tx, contestantId, data.media);
+      await syncContestantCategories(tx, contestantId, data.categoryIds);
 
       return tx.contestant.findUnique({
         where: { id: contestant.id },

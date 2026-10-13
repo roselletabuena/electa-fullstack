@@ -15,6 +15,66 @@ interface RouteParams {
   }>;
 }
 
+import { env } from "@/env";
+
+const MOCK_PREVIEW_SECRET = "judge-preview-2026";
+
+interface PassphraseVerificationResult {
+  errorResponse?: NextResponse<ApiResponse<PreviewAuthResponse>>;
+  activeDigest?: string | null;
+}
+
+async function verifyDraftPassphrase(slug: string, passphrase: string): Promise<PassphraseVerificationResult> {
+  let isDbDraft = false;
+  let draftHash: string | null = null;
+
+  try {
+    const dbEvent = await db.event.findUnique({
+      where: { slug },
+    });
+
+    if (dbEvent) {
+      if (dbEvent.publicationStatus !== "DRAFT") {
+        return { errorResponse: apiError("Event is already published", 400) };
+      }
+      isDbDraft = true;
+      draftHash = dbEvent.draftPassphraseHash;
+    }
+  } catch {
+    // Database query optional in mock test runs
+  }
+
+  if (!isDbDraft) {
+    const event = getMockEventBySlug(slug);
+    if (!event) {
+      return { errorResponse: apiError("Event not found", 404) };
+    }
+    if (event.operationalState !== "Draft") {
+      return { errorResponse: apiError("Event is already published", 400) };
+    }
+    if (passphrase !== MOCK_PREVIEW_SECRET) {
+      return { errorResponse: apiError("Invalid draft preview passphrase", 401) };
+    }
+    return { activeDigest: computePassphraseDigest(MOCK_PREVIEW_SECRET) };
+  }
+
+  if (!draftHash) {
+    return {
+      errorResponse: apiError(
+        "This draft event does not have a public preview passphrase configured.",
+        403,
+      ),
+    };
+  }
+
+  const isValid = verifyPassphrase(passphrase, draftHash);
+  if (!isValid) {
+    return { errorResponse: apiError("Invalid draft preview passphrase", 401) };
+  }
+
+  return { activeDigest: computePassphraseDigest(draftHash) };
+}
+
 export async function POST(
   request: NextRequest,
   context: RouteParams,
@@ -34,67 +94,18 @@ export async function POST(
     }
 
     const { passphrase } = validation.data;
+    const { errorResponse, activeDigest } = await verifyDraftPassphrase(slug, passphrase);
 
-    let isDbDraft = false;
-    let draftHash: string | null = null;
-
-    try {
-      const dbEvent = await db.event.findUnique({
-        where: { slug },
-      });
-
-      if (dbEvent) {
-        if (dbEvent.publicationStatus !== "DRAFT") {
-          return apiError("Event is already published", 400);
-        }
-        isDbDraft = true;
-        draftHash = dbEvent.draftPassphraseHash;
-      }
-    } catch {
-      // Database query optional in mock test runs
+    if (errorResponse || !activeDigest) {
+      return errorResponse ?? apiError("Unauthorized", 401);
     }
-
-    if (!isDbDraft) {
-      const event = getMockEventBySlug(slug);
-
-      if (!event) {
-        return apiError("Event not found", 404);
-      }
-
-      if (event.operationalState !== "Draft") {
-        return apiError("Event is already published", 400);
-      }
-
-      // For mock draft contest, valid passphrase is 'judge-preview-2026'
-      const validPassphrase = "judge-preview-2026";
-
-      if (passphrase !== validPassphrase) {
-        return apiError("Invalid draft preview passphrase", 401);
-      }
-    } else {
-      if (!draftHash) {
-        return apiError(
-          "This draft event does not have a public preview passphrase configured.",
-          403,
-        );
-      }
-
-      const isValid = verifyPassphrase(passphrase, draftHash);
-      if (!isValid) {
-        return apiError("Invalid draft preview passphrase", 401);
-      }
-    }
-
-    const activeDigest = isDbDraft
-      ? computePassphraseDigest(draftHash)
-      : computePassphraseDigest("judge-preview-2026");
 
     const { token, expiresAt } = signPreviewToken(slug, activeDigest);
 
     const cookieStore = await cookies();
     cookieStore.set(`vs_preview_${slug}`, token, {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 60 * 60 * 24, // 24 hours
       path: `/`,

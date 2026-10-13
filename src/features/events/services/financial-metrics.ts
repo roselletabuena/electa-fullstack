@@ -31,6 +31,72 @@ const CHANNEL_DISPLAY_NAMES: Record<string, string> = {
  * - Locked Payouts & Available Payout Balance
  * - Contestant and Payment Channel breakdowns
  */
+function aggregateTransactions(
+  transactions: Array<{
+    amountInPhp: unknown;
+    votesAwarded: number | null;
+    bonusVotes: number | null;
+    paymentChannel: string;
+    contestantId: string | null;
+  }>,
+) {
+  let grossSalesPhp = 0;
+  let gatewayFeesPhp = 0;
+  const contestantMap = new Map<string, { gross: number; votes: number }>();
+  const channelMap = new Map<string, { volume: number; count: number; fee: number }>();
+
+  for (const tx of transactions) {
+    const amount = Number(tx.amountInPhp);
+    const votes = (tx.votesAwarded ?? 0) + (tx.bonusVotes ?? 0);
+    const channel = tx.paymentChannel;
+    const fee = calculateGatewayFee(amount, channel);
+
+    grossSalesPhp += amount;
+    gatewayFeesPhp += fee;
+
+    if (tx.contestantId) {
+      const current = contestantMap.get(tx.contestantId) ?? { gross: 0, votes: 0 };
+      contestantMap.set(tx.contestantId, {
+        gross: current.gross + amount,
+        votes: current.votes + votes,
+      });
+    }
+
+    const curChannel = channelMap.get(channel) ?? { volume: 0, count: 0, fee: 0 };
+    channelMap.set(channel, {
+      volume: curChannel.volume + amount,
+      count: curChannel.count + 1,
+      fee: curChannel.fee + fee,
+    });
+  }
+
+  return {
+    grossSalesPhp: Math.round(grossSalesPhp * 100) / 100,
+    gatewayFeesPhp: Math.round(gatewayFeesPhp * 100) / 100,
+    contestantMap,
+    channelMap,
+  };
+}
+
+function aggregatePayouts(payouts: Array<{ amountInPhp: unknown; status: string }>) {
+  let totalPendingPayoutPhp = 0;
+  let totalDisbursedPhp = 0;
+
+  for (const po of payouts) {
+    const poAmount = Number(po.amountInPhp);
+    if (po.status === "PENDING" || po.status === "PROCESSING") {
+      totalPendingPayoutPhp += poAmount;
+    } else if (po.status === "COMPLETED") {
+      totalDisbursedPhp += poAmount;
+    }
+  }
+
+  return {
+    totalPendingPayoutPhp: Math.round(totalPendingPayoutPhp * 100) / 100,
+    totalDisbursedPhp: Math.round(totalDisbursedPhp * 100) / 100,
+  };
+}
+
 export async function calculateFinancialMetrics(eventId: string): Promise<EventFinancialData> {
   const event = await db.event.findUnique({
     where: { id: eventId },
@@ -70,44 +136,8 @@ export async function calculateFinancialMetrics(eventId: string): Promise<EventF
     }),
   ]);
 
-  // Aggregate gross revenue and gateway fees
-  let grossSalesPhp = 0;
-  let gatewayFeesPhp = 0;
-
-  // Breakdown aggregators
-  const contestantMap = new Map<string, { gross: number; votes: number }>();
-  const channelMap = new Map<string, { volume: number; count: number; fee: number }>();
-
-  for (const tx of transactions) {
-    const amount = Number(tx.amountInPhp);
-    const votes = (tx.votesAwarded ?? 0) + (tx.bonusVotes ?? 0);
-    const channel = tx.paymentChannel;
-    const fee = calculateGatewayFee(amount, channel);
-
-    grossSalesPhp += amount;
-    gatewayFeesPhp += fee;
-
-    // Contestant aggregation
-    if (tx.contestantId) {
-      const current = contestantMap.get(tx.contestantId) ?? { gross: 0, votes: 0 };
-      contestantMap.set(tx.contestantId, {
-        gross: current.gross + amount,
-        votes: current.votes + votes,
-      });
-    }
-
-    // Channel aggregation
-    const curChannel = channelMap.get(channel) ?? { volume: 0, count: 0, fee: 0 };
-    channelMap.set(channel, {
-      volume: curChannel.volume + amount,
-      count: curChannel.count + 1,
-      fee: curChannel.fee + fee,
-    });
-  }
-
-  // Round summary figures to 2 decimal places
-  grossSalesPhp = Math.round(grossSalesPhp * 100) / 100;
-  gatewayFeesPhp = Math.round(gatewayFeesPhp * 100) / 100;
+  const { grossSalesPhp, gatewayFeesPhp, contestantMap, channelMap } =
+    aggregateTransactions(transactions);
 
   const platformCommissionRate = takeRate / 100;
   const platformCommissionPhp = Math.round(grossSalesPhp * platformCommissionRate * 100) / 100;
@@ -117,21 +147,7 @@ export async function calculateFinancialMetrics(eventId: string): Promise<EventF
     Math.round((grossSalesPhp - gatewayFeesPhp - platformCommissionPhp) * 100) / 100,
   );
 
-  // Payout aggregations
-  let totalPendingPayoutPhp = 0;
-  let totalDisbursedPhp = 0;
-
-  for (const po of payouts) {
-    const poAmount = Number(po.amountInPhp);
-    if (po.status === "PENDING" || po.status === "PROCESSING") {
-      totalPendingPayoutPhp += poAmount;
-    } else if (po.status === "COMPLETED") {
-      totalDisbursedPhp += poAmount;
-    }
-  }
-
-  totalPendingPayoutPhp = Math.round(totalPendingPayoutPhp * 100) / 100;
-  totalDisbursedPhp = Math.round(totalDisbursedPhp * 100) / 100;
+  const { totalPendingPayoutPhp, totalDisbursedPhp } = aggregatePayouts(payouts);
 
   const availablePayoutBalancePhp = Math.max(
     0,

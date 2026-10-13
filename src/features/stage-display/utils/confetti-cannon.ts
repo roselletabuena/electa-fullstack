@@ -28,9 +28,23 @@ const LUXURY_PALETTE = [
   "#FB923C", // Copper Bronze
 ];
 
+/**
+ * Cryptographically secure floating-point number generator in [0, 1).
+ * Resolves SonarQube S2245 ("Using pseudorandom number generators is security-sensitive")
+ * while maintaining smooth visual particle dispersion.
+ */
+function getRandomFloat(): number {
+  if (typeof crypto !== "undefined" && typeof crypto.getRandomValues === "function") {
+    const buffer = new Uint32Array(1);
+    crypto.getRandomValues(buffer);
+    return (buffer[0] ?? 0) / 4294967296;
+  }
+  return 0.5;
+}
+
 export class ConfettiCannon {
-  private canvas: HTMLCanvasElement;
-  private ctx: CanvasRenderingContext2D | null;
+  private readonly canvas: HTMLCanvasElement;
+  private readonly ctx: CanvasRenderingContext2D | null;
   private particles: Particle[] = [];
   private animationFrameId: number | null = null;
   private isRunning = false;
@@ -55,22 +69,22 @@ export class ConfettiCannon {
     const originY = this.canvas.height * 0.4;
 
     for (let i = 0; i < particleCount; i++) {
-      const angle = Math.random() * Math.PI * 2;
-      const speed = Math.random() * 16 + 6;
-      const color = LUXURY_PALETTE[Math.floor(Math.random() * LUXURY_PALETTE.length)] ?? "#F59E0B";
+      const angle = getRandomFloat() * Math.PI * 2;
+      const speed = getRandomFloat() * 16 + 6;
+      const color = LUXURY_PALETTE[Math.floor(getRandomFloat() * LUXURY_PALETTE.length)] ?? "#F59E0B";
 
       this.particles.push({
         x: originX,
         y: originY,
-        w: Math.random() * 10 + 6,
-        h: Math.random() * 6 + 4,
+        w: getRandomFloat() * 10 + 6,
+        h: getRandomFloat() * 6 + 4,
         color,
         vx: Math.cos(angle) * speed,
         vy: Math.sin(angle) * speed - 8, // strong upward thrust
-        rotation: Math.random() * 360,
-        rotationSpeed: (Math.random() - 0.5) * 15,
+        rotation: getRandomFloat() * 360,
+        rotationSpeed: (getRandomFloat() - 0.5) * 15,
         opacity: 1,
-        decay: Math.random() * 0.008 + 0.004,
+        decay: getRandomFloat() * 0.008 + 0.004,
       });
     }
 
@@ -80,7 +94,7 @@ export class ConfettiCannon {
     }
   }
 
-  private animate = (): void => {
+  private readonly animate = (): void => {
     if (!this.ctx) return;
 
     this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);

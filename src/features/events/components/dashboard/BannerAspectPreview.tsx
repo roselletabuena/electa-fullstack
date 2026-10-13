@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
-import { Image as ImageIcon, ImageOff, Monitor, Clapperboard } from "lucide-react";
+import { Image as ImageIcon, ImageOff, Monitor, Clapperboard, Loader2 } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export type AspectRatioPreset = "16:9" | "21:9";
@@ -42,9 +42,9 @@ export function BannerAspectPreview({
 
   return (
     <div className={cn("space-y-3", className)}>
-      <div className="flex items-center justify-between">
-        <label className="flex items-center gap-1.5 text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400">
-          <ImageIcon className="size-3.5 text-slate-400" />
+      <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+        <label className="flex items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+          <ImageIcon className="size-3.5 text-sky-600 dark:text-sky-400" />
           <span>Live Aspect Ratio Preview</span>
         </label>
 
@@ -52,7 +52,7 @@ export function BannerAspectPreview({
         <div
           role="radiogroup"
           aria-label="Banner aspect ratio selection"
-          className="inline-flex rounded-lg border border-slate-200 bg-slate-100 p-0.5 dark:border-slate-800 dark:bg-slate-900"
+          className="inline-flex rounded-none border border-slate-300 bg-slate-100 p-0.5 dark:border-slate-800 dark:bg-slate-900"
         >
           <button
             type="button"
@@ -60,9 +60,9 @@ export function BannerAspectPreview({
             aria-checked={aspectRatio === "16:9"}
             onClick={() => setAspectRatio("16:9")}
             className={cn(
-              "flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition",
+              "flex cursor-pointer items-center gap-1.5 rounded-none px-2.5 py-1 text-xs font-semibold transition",
               aspectRatio === "16:9"
-                ? "bg-white font-semibold text-slate-900 shadow-xs dark:bg-slate-800 dark:text-slate-100"
+                ? "border border-slate-300 bg-white text-slate-900 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200",
             )}
           >
@@ -76,9 +76,9 @@ export function BannerAspectPreview({
             aria-checked={aspectRatio === "21:9"}
             onClick={() => setAspectRatio("21:9")}
             className={cn(
-              "flex cursor-pointer items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium transition",
+              "flex cursor-pointer items-center gap-1.5 rounded-none px-2.5 py-1 text-xs font-semibold transition",
               aspectRatio === "21:9"
-                ? "bg-white font-semibold text-slate-900 shadow-xs dark:bg-slate-800 dark:text-slate-100"
+                ? "border border-slate-300 bg-white text-slate-900 shadow-xs dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
                 : "text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200",
             )}
           >
@@ -91,7 +91,7 @@ export function BannerAspectPreview({
       {/* Preview Viewport Container */}
       <div
         className={cn(
-          "relative w-full overflow-hidden rounded-xl border border-slate-200 bg-slate-100/90 transition-all duration-300 dark:border-slate-800 dark:bg-slate-900/90",
+          "relative w-full overflow-hidden rounded-none border border-slate-300 bg-slate-100 transition-all duration-300 dark:border-slate-800 dark:bg-slate-950",
           aspectRatio === "16:9" ? "aspect-video" : "aspect-21/9",
         )}
       >
@@ -114,8 +114,8 @@ export function BannerAspectPreview({
               unoptimized
             />
             {isLoading && (
-              <div className="absolute inset-0 flex items-center justify-center bg-slate-900/20 backdrop-blur-xs dark:bg-slate-900/50">
-                <div className="size-6 animate-spin rounded-full border-2 border-violet-500 border-t-transparent" />
+              <div className="absolute inset-0 flex items-center justify-center bg-slate-950/30 backdrop-blur-xs">
+                <Loader2 className="size-6 animate-spin text-sky-500" />
               </div>
             )}
           </>
@@ -123,25 +123,25 @@ export function BannerAspectPreview({
           <div className="flex h-full w-full flex-col items-center justify-center p-6 text-center">
             {hasError ? (
               <>
-                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-rose-500/10 text-rose-500 dark:text-rose-400">
+                <div className="mb-2 flex size-10 items-center justify-center rounded-none border border-rose-500/30 bg-rose-500/10 text-rose-500 dark:text-rose-400">
                   <ImageOff className="size-5" />
                 </div>
-                <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+                <p className="font-heading text-sm font-bold text-slate-900 dark:text-slate-100">
                   Unable to load image preview
                 </p>
-                <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
+                <p className="mt-1 max-w-xs text-xs text-slate-600 dark:text-slate-400">
                   Please verify that the URL is a reachable, public HTTPS image asset.
                 </p>
               </>
             ) : (
               <>
-                <div className="mb-2 flex size-10 items-center justify-center rounded-full bg-slate-200/80 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+                <div className="mb-2 flex size-10 items-center justify-center rounded-none border border-slate-300 bg-white text-slate-600 shadow-xs dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400">
                   <ImageIcon className="size-5" />
                 </div>
-                <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                <p className="font-heading text-sm font-bold text-slate-900 dark:text-slate-100">
                   No banner image URL provided
                 </p>
-                <p className="mt-1 max-w-xs text-xs text-slate-500 dark:text-slate-400">
+                <p className="mt-1 max-w-xs text-xs text-slate-600 dark:text-slate-400">
                   Enter an HTTPS image URL above to see a live preview in {aspectRatio} format.
                 </p>
               </>
@@ -150,7 +150,7 @@ export function BannerAspectPreview({
         )}
 
         {/* Aspect Ratio Badge Overlay */}
-        <div className="absolute top-2.5 right-2.5 rounded-md bg-slate-900/70 px-2 py-0.5 font-mono text-[10px] font-medium text-slate-100 backdrop-blur-md dark:bg-black/60 dark:text-slate-200">
+        <div className="absolute top-2.5 right-2.5 rounded-none border border-slate-700 bg-slate-950/80 px-2 py-0.5 font-mono text-[10px] font-bold text-white shadow-xs backdrop-blur-md">
           {aspectRatio}
         </div>
       </div>

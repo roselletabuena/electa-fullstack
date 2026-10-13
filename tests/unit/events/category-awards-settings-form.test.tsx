@@ -99,4 +99,67 @@ describe("CategoryAwardsSettingsForm", () => {
       expect(screen.getByText("1-Click Competition Taxonomy Presets")).toBeDefined();
     });
   });
+
+  it("Scenario 4: renders PositionsSection instead of pageant divisions when event is STUDENT_COUNCIL", async () => {
+    const studentCouncilEvent: Event = {
+      ...mockEvent,
+      archetype: "STUDENT_COUNCIL",
+    };
+
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        data: {
+          archetype: "STUDENT_COUNCIL",
+          positions: [
+            {
+              id: "pos_1",
+              eventId: "evt_123",
+              name: "President",
+              description: "Executive President",
+              maxSelectionsPerVoter: 1,
+              minSelectionsPerVoter: 0,
+              displayOrder: 1,
+              isVotingOpen: true,
+              candidateCount: 2,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+            {
+              id: "pos_2",
+              eventId: "evt_123",
+              name: "Senators",
+              description: "Legislative senators",
+              maxSelectionsPerVoter: 5,
+              minSelectionsPerVoter: 1,
+              displayOrder: 2,
+              isVotingOpen: true,
+              candidateCount: 8,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+          ],
+          divisions: [],
+          awardCategories: [],
+        },
+      }),
+    });
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <CategoryAwardsSettingsForm event={studentCouncilEvent} />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(
+        screen.getByText("Student Council Election Taxonomy & Ballot Structure")
+      ).toBeDefined();
+      expect(screen.getByText("President")).toBeDefined();
+      expect(screen.getByText("Senators")).toBeDefined();
+      expect(screen.getByText("Up to 5 Seats")).toBeDefined();
+      expect(screen.queryByText("1-Click Competition Taxonomy Presets")).toBeNull();
+    });
+  });
 });

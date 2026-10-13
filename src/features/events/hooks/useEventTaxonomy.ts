@@ -6,11 +6,16 @@ import type {
   EventTaxonomyDto,
   DivisionDto,
   AwardCategoryDto,
+  EventPositionDto,
   CreateDivisionInput,
   UpdateDivisionInput,
   CreateAwardCategoryInput,
   UpdateAwardCategoryInput,
 } from "../types";
+import type {
+  CreateEventPositionInput,
+  UpdateEventPositionInput,
+} from "@/lib/validations/archetypes";
 import type { TaxonomyPreset } from "../constants/taxonomy-presets";
 
 export const eventTaxonomyQueryKey = (slug: string) => ["events", slug, "taxonomy"] as const;
@@ -60,7 +65,7 @@ export function useCreateDivision(slug: string) {
       return result.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -90,7 +95,7 @@ export function useUpdateDivision(slug: string) {
       return result.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -112,7 +117,7 @@ export function useDeleteDivision(slug: string) {
       return result.data ?? { id: divisionId };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -136,7 +141,7 @@ export function useCreateAwardCategory(slug: string) {
       return result.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -166,7 +171,7 @@ export function useUpdateAwardCategory(slug: string) {
       return result.data;
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -188,7 +193,7 @@ export function useDeleteAwardCategory(slug: string) {
       return result.data ?? { id: categoryId };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }
@@ -200,10 +205,7 @@ export function useApplyTaxonomyPreset(slug: string) {
     mutationFn: async (
       preset: TaxonomyPreset,
     ): Promise<{ divisionsCreated: number; awardsCreated: number }> => {
-      let divisionsCreated = 0;
-      let awardsCreated = 0;
-
-      for (const div of preset.divisions) {
+      const divisionPromises = preset.divisions.map(async (div) => {
         const res = await fetch(`/api/events/${slug}/divisions`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -213,12 +215,10 @@ export function useApplyTaxonomyPreset(slug: string) {
             displayOrder: div.displayOrder,
           }),
         });
-        if (res.ok) {
-          divisionsCreated++;
-        }
-      }
+        return res.ok;
+      });
 
-      for (const award of preset.awardCategories) {
+      const awardPromises = preset.awardCategories.map(async (award) => {
         const res = await fetch(`/api/events/${slug}/award-categories`, {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -229,15 +229,97 @@ export function useApplyTaxonomyPreset(slug: string) {
             displayOrder: award.displayOrder,
           }),
         });
-        if (res.ok) {
-          awardsCreated++;
-        }
-      }
+        return res.ok;
+      });
+
+      const [divisionResults, awardResults] = await Promise.all([
+        Promise.all(divisionPromises),
+        Promise.all(awardPromises),
+      ]);
+
+      const divisionsCreated = divisionResults.filter(Boolean).length;
+      const awardsCreated = awardResults.filter(Boolean).length;
 
       return { divisionsCreated, awardsCreated };
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+    },
+  });
+}
+
+export function useCreateEventPosition(slug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (input: CreateEventPositionInput): Promise<EventPositionDto> => {
+      const response = await fetch(`/api/events/${slug}/positions`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(input),
+      });
+
+      const result = (await response.json()) as ApiResponse<EventPositionDto>;
+      if (!response.ok || !result.success || !result.data) {
+        throw new Error(result.error || "Failed to create position");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+    },
+  });
+}
+
+export function useUpdateEventPosition(slug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async ({
+      positionId,
+      data,
+    }: {
+      positionId: string;
+      data: UpdateEventPositionInput;
+    }): Promise<EventPositionDto> => {
+      const response = await fetch(`/api/events/${slug}/positions/${positionId}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
+
+      const result = (await response.json()) as ApiResponse<EventPositionDto>;
+      if (!response.ok || !result.success || !result.data) {
+        throw new Error(result.error || "Failed to update position");
+      }
+
+      return result.data;
+    },
+    onSuccess: () => {
+      void queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
+    },
+  });
+}
+
+export function useDeleteEventPosition(slug: string) {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: async (positionId: string): Promise<{ success: boolean; deletedId: string }> => {
+      const response = await fetch(`/api/events/${slug}/positions/${positionId}`, {
+        method: "DELETE",
+      });
+
+      const result = (await response.json()) as ApiResponse<{ success: boolean; deletedId: string }>;
+      if (!response.ok || !result.success) {
+        throw new Error(result.error || "Failed to delete position");
+      }
+
+      return result.data ?? { success: true, deletedId: positionId };
+    },
+    onSuccess: () => {
+      void  queryClient.invalidateQueries({ queryKey: eventTaxonomyQueryKey(slug) });
     },
   });
 }

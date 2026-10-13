@@ -145,4 +145,92 @@ describe("createEvent Service", () => {
       expect(result.data?.showResultsOnClose).toBe(true);
     }
   });
+
+  it("creates event with STUDENT_COUNCIL archetype and initial positions atomically", async () => {
+    const mockSession = {
+      userId: "org_user_123",
+      email: "organizer@example.com",
+    };
+    vi.mocked(getSession).mockResolvedValue(mockSession);
+    vi.mocked(db.event.findFirst).mockResolvedValue(null);
+
+    const mockCreatedEvent: Event = {
+      id: "evt_sc_123",
+      slug: "ssc-2026",
+      title: "Student Council Election",
+      description: "Annual university council voting.",
+      bannerUrl: "https://example.com/banner.jpg",
+      startsAt: new Date("2026-10-01T00:00:00.000Z"),
+      endsAt: new Date("2026-10-31T23:59:59.000Z"),
+      publicationStatus: "DRAFT",
+      draftPassphraseHash: null,
+      showResultsOnClose: true,
+      isFreeVotingEnabled: true,
+      dailyFreeVoteLimit: 1,
+      takeRatePercentage: new Prisma.Decimal(12.0),
+      organizerId: "org_user_123",
+      archetype: "STUDENT_COUNCIL",
+      createdAt: new Date(),
+      updatedAt: new Date(),
+    };
+
+    const mockEventPositionCreate = vi.fn().mockResolvedValue({});
+
+    vi.mocked(db.$transaction).mockImplementation(async (callback) => {
+      const tx = {
+        event: {
+          create: vi.fn().mockResolvedValue(mockCreatedEvent),
+        },
+        eventPosition: {
+          create: mockEventPositionCreate,
+        },
+        division: {
+          create: vi.fn().mockResolvedValue({}),
+        },
+        awardCategory: {
+          create: vi.fn().mockResolvedValue({}),
+        },
+        eventAuditLog: {
+          create: vi.fn().mockResolvedValue({}),
+        },
+      };
+      return (callback as unknown as (prisma: typeof tx) => Promise<Event>)(tx);
+    });
+
+    const result = await createEvent({
+      ...validPayload,
+      title: "Student Council Election",
+      slug: "ssc-2026",
+      archetype: "STUDENT_COUNCIL",
+      positions: [
+        {
+          name: "President",
+          maxSelectionsPerVoter: 1,
+          minSelectionsPerVoter: 0,
+          displayOrder: 1,
+        },
+        {
+          name: "Senators",
+          maxSelectionsPerVoter: 5,
+          minSelectionsPerVoter: 1,
+          displayOrder: 2,
+        },
+      ],
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data?.archetype).toBe("STUDENT_COUNCIL");
+    }
+    expect(mockEventPositionCreate).toHaveBeenCalledTimes(2);
+    expect(mockEventPositionCreate).toHaveBeenCalledWith(
+      expect.objectContaining({
+        data: expect.objectContaining({
+          eventId: "evt_sc_123",
+          name: "President",
+          maxSelectionsPerVoter: 1,
+        }),
+      })
+    );
+  });
 });

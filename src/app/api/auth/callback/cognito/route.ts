@@ -15,6 +15,69 @@ import {
 
 export const dynamic = "force-dynamic";
 
+function handleOAuthError(
+  error: string,
+  errorDescription: string | undefined,
+  baseUrl: string,
+): NextResponse {
+  const errorCode = error === "access_denied" ? "auth_cancelled" : "auth_failed";
+  const redirectUrl = new URL(`/login?error=${errorCode}`, baseUrl);
+  if (errorDescription) {
+    redirectUrl.searchParams.set("reason", errorDescription);
+  }
+  return NextResponse.redirect(redirectUrl);
+}
+
+function parseAndValidateState(
+  stateCookie: string | undefined,
+  state: string,
+): { valid: boolean; payload: OAuthStatePayload | null } {
+  if (!stateCookie) {
+    return { valid: true, payload: null };
+  }
+
+  try {
+    const decoded = JSON.parse(decodeURIComponent(stateCookie));
+    const validated = oauthStateSchema.safeParse(decoded);
+    if (validated.success) {
+      if (validated.data.state !== state) {
+        return { valid: false, payload: null };
+      }
+      return { valid: true, payload: validated.data };
+    }
+  } catch {
+    // In local testing or fallback, ignore JSON parse error
+  }
+
+  return { valid: true, payload: null };
+}
+
+async function fetchAvatarFromUserInfo(accessToken?: string): Promise<string | undefined> {
+  if (!accessToken) {
+    return undefined;
+  }
+
+  try {
+    const domain =
+      process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
+      "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
+    const userInfoRes = await fetch(`${domain.replace(/\/$/, "")}/oauth2/userInfo`, {
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+
+    if (userInfoRes.ok) {
+      const userInfo = (await userInfoRes.json()) as { picture?: string; avatarUrl?: string };
+      return userInfo.picture || userInfo.avatarUrl || undefined;
+    }
+  } catch {
+    // Gracefully ignore network errors
+  }
+
+  return undefined;
+}
+
 export async function GET(request: NextRequest) {
   const url = new URL(request.url);
   const rawParams = {
@@ -25,7 +88,6 @@ export async function GET(request: NextRequest) {
   };
 
   const parsedQuery = cognitoCallbackQuerySchema.safeParse(rawParams);
-
   if (!parsedQuery.success) {
     return NextResponse.redirect(new URL("/login?error=invalid_request", request.url));
   }
@@ -34,12 +96,7 @@ export async function GET(request: NextRequest) {
 
   // 1. Handle OAuth errors (e.g., user clicked Cancel or denied permission)
   if (error) {
-    const errorCode = error === "access_denied" ? "auth_cancelled" : "auth_failed";
-    const redirectUrl = new URL(`/login?error=${errorCode}`, request.url);
-    if (error_description) {
-      redirectUrl.searchParams.set("reason", error_description);
-    }
-    return NextResponse.redirect(redirectUrl);
+    return handleOAuthError(error, error_description, request.url);
   }
 
   if (!code || !state) {
@@ -48,32 +105,16 @@ export async function GET(request: NextRequest) {
 
   // 2. Validate CSRF State Cookie
   const stateCookie = request.cookies.get(OAUTH_STATE_COOKIE_NAME)?.value;
-  let storedStatePayload: OAuthStatePayload | null = null;
+  const { valid, payload: storedStatePayload } = parseAndValidateState(stateCookie, state);
 
-  if (stateCookie) {
-    try {
-      const decoded = JSON.parse(decodeURIComponent(stateCookie));
-      const validated = oauthStateSchema.safeParse(decoded);
-      if (validated.success) {
-        storedStatePayload = validated.data;
-      }
-    } catch {
-      // In local testing or fallback, ignore JSON parse error
-    }
-  }
-
-  // Validate state matching
-  if (storedStatePayload && storedStatePayload.state !== state) {
-    console.error("[Cognito Callback Error] State mismatch:", {
-      stored: storedStatePayload.state,
-      received: state,
-    });
+  if (!valid) {
+    console.error("[Cognito Callback Error] State mismatch received:", state);
     return NextResponse.redirect(new URL("/login?error=invalid_state", request.url));
   }
 
   // 3. Exchange authorization code for Cognito tokens
   const tokenResponse = await exchangeCognitoCodeForTokens({ code });
-  if (!tokenResponse || !tokenResponse.id_token) {
+  if (!tokenResponse?.id_token) {
     console.error(
       "[Cognito Callback Error] Token exchange failed for code:",
       code.slice(0, 8) + "...",
@@ -88,18 +129,20 @@ export async function GET(request: NextRequest) {
     return NextResponse.redirect(new URL("/login?error=invalid_token", request.url));
   }
 
+  const avatarUrl =
+    verifiedUser.avatarUrl || (await fetchAvatarFromUserInfo(tokenResponse.access_token));
+
   // 5. Generate unified session token
   const sessionToken = generateLocalCognitoToken({
     userId: verifiedUser.userId,
     email: verifiedUser.email,
     name: verifiedUser.name,
     role: "ORGANIZER",
-    avatarUrl: verifiedUser.avatarUrl || undefined,
+    avatarUrl,
   });
 
-  // 6. Direct user to their intended destination (defaults to /dashboard, or /onboarding if explicitly initiated from register)
+  // 6. Direct user to their intended destination (defaults to /dashboard)
   const destinationPath = storedStatePayload?.returnTo || "/dashboard";
-
   const response = NextResponse.redirect(new URL(destinationPath, request.url));
 
   // Set session cookie

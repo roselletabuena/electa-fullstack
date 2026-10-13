@@ -58,6 +58,7 @@ model Event {
   draftPassphraseHash String?
   showResultsOnClose  Boolean                @default(true)
   isFreeVotingEnabled Boolean                @default(true)
+  isFreeVotingOnly    Boolean                @default(false)
   dailyFreeVoteLimit  Int                    @default(1)
   takeRatePercentage  Decimal                @default(12.00) @db.Decimal(5, 2)
   organizerId         String
@@ -71,6 +72,7 @@ model Event {
   awardCategories     AwardCategory[]
   auditLogs           EventAuditLog[]
   votes               Vote[]
+  ballotSubmissions   BallotSubmission[]
   paymentTransactions PaymentTransaction[]
   payoutRequests      PayoutRequest[]
 
@@ -233,19 +235,36 @@ model Vote {
   voteWeight           Int                 @default(1)
   paymentTransactionId String?
   positionId           String?
+  ballotSubmissionId   String?
   createdAt            DateTime            @default(now())
 
   event                Event               @relation(fields: [eventId], references: [id], onDelete: Cascade)
   contestant           Contestant          @relation(fields: [contestantId], references: [id], onDelete: Cascade)
   paymentTransaction   PaymentTransaction? @relation(fields: [paymentTransactionId], references: [id], onDelete: SetNull)
   position             EventPosition?      @relation(fields: [positionId], references: [id], onDelete: SetNull)
+  ballotSubmission     BallotSubmission?   @relation(fields: [ballotSubmissionId], references: [id], onDelete: SetNull)
 
   @@index([eventId, voterId, createdAt])
   @@index([eventId, voterId, voteType, createdAt])
   @@index([contestantId])
   @@index([paymentTransactionId])
   @@index([positionId])
+  @@index([ballotSubmissionId])
   @@index([eventId, createdAt])
+}
+
+model BallotSubmission {
+  id        String   @id @default(uuid())
+  eventId   String
+  voterId   String
+  createdAt DateTime @default(now())
+
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  votes     Vote[]
+
+  @@unique([eventId, voterId])
+  @@index([eventId])
+  @@index([voterId])
 }
 
 enum PaymentStatus {

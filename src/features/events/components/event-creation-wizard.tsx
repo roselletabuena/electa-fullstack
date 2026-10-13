@@ -550,7 +550,7 @@ export function EventCreationWizard({
                       type="button"
                       onClick={() => handleApplyPreset(preset.days)}
                       className={cn(
-                        "inline-flex min-h-[44px] cursor-pointer items-center justify-center px-2.5 text-xs font-bold uppercase tracking-wider rounded-none transition",
+                        "inline-flex min-h-11 cursor-pointer items-center justify-center px-2.5 text-xs font-bold uppercase tracking-wider rounded-none transition",
                         activePreset === preset.id
                           ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
                           : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 dark:bg-white/5 dark:text-slate-300 dark:border-white/10"
@@ -634,7 +634,7 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={handleProceedToStep2}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 <span>Continue to Archetype & Taxonomy</span>
                 <ArrowRight className="size-4" />

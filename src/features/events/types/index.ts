@@ -208,3 +208,12 @@ export {
   launchReadinessCountsSchema,
   launchReadinessSnapshotSchema,
 } from "./launch-readiness";
+
+export type {
+  EventArchetype,
+  ArchetypeConfig,
+  EventPositionDto,
+  UnifiedTaxonomyDto,
+} from "./archetype";
+export { EVENT_ARCHETYPES, EVENT_ARCHETYPE_CONFIGS } from "./archetype";
+

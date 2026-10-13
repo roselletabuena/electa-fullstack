@@ -16,3 +16,5 @@ export * from "./components/revenue/PayoutLedgerTable";
 export * from "./components/trending";
 export * from "./hooks/useTrendingEvents";
 export * from "./utils/trending-helpers";
+export * from "./services/taxonomy-service";
+

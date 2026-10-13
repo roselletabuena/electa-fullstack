@@ -33,36 +33,36 @@ export function SlugAvailabilityBadge({
       icon: Loader2,
       label: "Checking availability...",
       badgeClass:
-        "border-sky-500/20 bg-sky-500/10 text-sky-700 dark:border-sky-500/30 dark:bg-sky-500/20 dark:text-sky-300",
+        "border-sky-500/30 bg-sky-50 text-sky-800 dark:border-sky-500/30 dark:bg-sky-500/10 dark:text-sky-300",
       iconClass: "animate-spin text-sky-600 dark:text-sky-400",
     },
     available: {
       icon: CheckCircle2,
       label: "Slug available",
       badgeClass:
-        "border-emerald-500/20 bg-emerald-500/10 text-emerald-700 dark:border-emerald-500/30 dark:bg-emerald-500/20 dark:text-emerald-300",
-      iconClass: "text-emerald-600 dark:text-emerald-400",
+        "border-emerald-600/30 bg-emerald-50 text-emerald-800 dark:border-emerald-500/30 dark:bg-emerald-500/10 dark:text-emerald-300",
+      iconClass: "text-emerald-700 dark:text-emerald-400",
     },
     unavailable: {
       icon: XCircle,
       label: "Slug already in use",
       badgeClass:
-        "border-rose-500/20 bg-rose-500/10 text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/20 dark:text-rose-300",
-      iconClass: "text-rose-600 dark:text-rose-400",
+        "border-rose-600/30 bg-rose-50 text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300",
+      iconClass: "text-rose-700 dark:text-rose-400",
     },
     reserved: {
       icon: AlertTriangle,
       label: "Reserved system keyword",
       badgeClass:
-        "border-amber-500/20 bg-amber-500/10 text-amber-700 dark:border-amber-500/30 dark:bg-amber-500/20 dark:text-amber-300",
-      iconClass: "text-amber-600 dark:text-amber-400",
+        "border-amber-600/30 bg-amber-50 text-amber-900 dark:border-amber-500/30 dark:bg-amber-500/10 dark:text-amber-300",
+      iconClass: "text-amber-700 dark:text-amber-400",
     },
     invalid: {
       icon: AlertCircle,
       label: "Invalid slug format",
       badgeClass:
-        "border-rose-500/20 bg-rose-500/10 text-rose-700 dark:border-rose-500/30 dark:bg-rose-500/20 dark:text-rose-300",
-      iconClass: "text-rose-600 dark:text-rose-400",
+        "border-rose-600/30 bg-rose-50 text-rose-800 dark:border-rose-500/30 dark:bg-rose-500/10 dark:text-rose-300",
+      iconClass: "text-rose-700 dark:text-rose-400",
     },
   };
 
@@ -77,7 +77,7 @@ export function SlugAvailabilityBadge({
       role="status"
       aria-live="polite"
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-full border px-2.5 py-0.5 text-xs font-medium transition-colors",
+        "inline-flex items-center gap-1.5 rounded-none border px-2.5 py-1 font-mono text-xs font-semibold uppercase tracking-wider transition-colors",
         config.badgeClass,
         className,
       )}

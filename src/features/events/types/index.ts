@@ -1,5 +1,6 @@
 import type { Event } from "@/generated/client/client";
 import type { UserSession } from "@/lib/auth/get-session";
+import type { EventArchetype, EventPositionDto } from "./archetype";
 
 export type EventPublicationStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -167,6 +168,8 @@ export interface AwardCategoryDto {
 }
 
 export interface EventTaxonomyDto {
+  archetype?: EventArchetype;
+  positions?: EventPositionDto[];
   divisions: DivisionDto[];
   awardCategories: AwardCategoryDto[];
 }

@@ -1,4 +1,10 @@
 import { z } from "zod";
+import { EVENT_ARCHETYPES } from "@/features/events/types/archetype";
+import {
+  wizardPositionDraftSchema,
+  wizardDivisionDraftSchema,
+  wizardAwardDraftSchema,
+} from "./archetype-wizard";
 
 export const RESERVED_SLUGS = [
   "new",
@@ -52,6 +58,10 @@ export const createEventSchema = z
     bannerUrl: z.string().url("Banner URL must be a valid URL"),
     startsAt: z.string().datetime({ message: "startsAt must be a valid ISO-8601 datetime string" }),
     endsAt: z.string().datetime({ message: "endsAt must be a valid ISO-8601 datetime string" }),
+    archetype: z.enum(EVENT_ARCHETYPES).default("PAGEANT").optional(),
+    positions: z.array(wizardPositionDraftSchema).optional(),
+    divisions: z.array(wizardDivisionDraftSchema).optional(),
+    awardCategories: z.array(wizardAwardDraftSchema).optional(),
   })
   .refine(
     (data) => {

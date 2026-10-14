@@ -6,6 +6,7 @@ export interface UserSession {
   email: string;
   name?: string | undefined;
   role?: string | undefined;
+  isJudge?: boolean | undefined;
   avatarUrl?: string | null | undefined;
   organizationName?: string | null | undefined;
   expiresAt?: string | undefined;
@@ -17,6 +18,16 @@ function resolveSessionFromAuthHeader(authHeader: string | null): UserSession | 
   }
 
   const token = authHeader.slice(7);
+  if (token === "mock-judge-token" || token.includes("judge")) {
+    return {
+      userId: "usr_judge_mock_01",
+      email: "judge@electa.ph",
+      name: "Marcus Aurelius (Judge)",
+      role: "JUDGE",
+      isJudge: true,
+    };
+  }
+
   if (token === "mock-organizer-token" || token.includes("organizer")) {
     return {
       userId: "usr_organizer_mock_01",

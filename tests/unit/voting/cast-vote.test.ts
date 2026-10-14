@@ -84,6 +84,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       organizerId: "org-1",
       archetype: "PAGEANT",
       isFreeVotingOnly: false,
+      allowedEmailDomains: [],
       startsAt: new Date(Date.now() - 3600 * 1000),
       endsAt: new Date(Date.now() + 3600 * 1000),
       isFreeVotingEnabled: true,

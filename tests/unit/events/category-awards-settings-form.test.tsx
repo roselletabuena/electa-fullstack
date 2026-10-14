@@ -21,6 +21,7 @@ describe("CategoryAwardsSettingsForm", () => {
     showResultsOnClose: true,
     isFreeVotingEnabled: true,
     isFreeVotingOnly: false,
+    allowedEmailDomains: [],
     dailyFreeVoteLimit: 1,
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",

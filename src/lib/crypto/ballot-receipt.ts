@@ -66,7 +66,10 @@ export function generateBallotReceiptHash(
 ): GeneratedBallotReceipt {
   const nonce = params.nonce ?? crypto.randomBytes(16).toString("hex");
   const timestamp = normalizeTimestamp(params.timestamp);
-  const secret = secretKey ?? env.AUTH_SECRET;
+  const secret =
+    secretKey ??
+    env.AUTH_SECRET ??
+    "electa_default_secret_ballot_pepper_key_32_bytes_long";
 
   const canonicalBody = canonicalizeSelections(params.selections);
   const payload = `${params.eventId}|${nonce}|${timestamp}|${canonicalBody}`;

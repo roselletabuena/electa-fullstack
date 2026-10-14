@@ -333,6 +333,7 @@ export type EventWhereInput = {
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
+  projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
 }
 
 export type EventOrderByWithRelationInput = {
@@ -363,6 +364,7 @@ export type EventOrderByWithRelationInput = {
   ballotSubmissions?: Prisma.BallotSubmissionOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   payoutRequests?: Prisma.PayoutRequestOrderByRelationAggregateInput
+  projectSubmissions?: Prisma.ProjectSubmissionOrderByRelationAggregateInput
 }
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -396,6 +398,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
+  projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
 }, "id" | "slug">
 
 export type EventOrderByWithAggregationInput = {
@@ -476,6 +479,7 @@ export type EventCreateInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateInput = {
@@ -506,6 +510,7 @@ export type EventUncheckedCreateInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventUpdateInput = {
@@ -536,6 +541,7 @@ export type EventUpdateInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateInput = {
@@ -566,6 +572,7 @@ export type EventUncheckedUpdateInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyInput = {
@@ -875,6 +882,20 @@ export type EventUpdateOneRequiredWithoutPayoutRequestsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutPayoutRequestsInput, Prisma.EventUpdateWithoutPayoutRequestsInput>, Prisma.EventUncheckedUpdateWithoutPayoutRequestsInput>
 }
 
+export type EventCreateNestedOneWithoutProjectSubmissionsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutProjectSubmissionsInput, Prisma.EventUncheckedCreateWithoutProjectSubmissionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutProjectSubmissionsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutProjectSubmissionsInput, Prisma.EventUncheckedCreateWithoutProjectSubmissionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutProjectSubmissionsInput
+  upsert?: Prisma.EventUpsertWithoutProjectSubmissionsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutProjectSubmissionsInput, Prisma.EventUpdateWithoutProjectSubmissionsInput>, Prisma.EventUncheckedUpdateWithoutProjectSubmissionsInput>
+}
+
 export type EventCreateWithoutDivisionsInput = {
   id?: string
   slug: string
@@ -902,6 +923,7 @@ export type EventCreateWithoutDivisionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutDivisionsInput = {
@@ -931,6 +953,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutDivisionsInput = {
@@ -976,6 +999,7 @@ export type EventUpdateWithoutDivisionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutDivisionsInput = {
@@ -1005,6 +1029,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPositionsInput = {
@@ -1034,6 +1059,7 @@ export type EventCreateWithoutPositionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPositionsInput = {
@@ -1063,6 +1089,7 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPositionsInput = {
@@ -1108,6 +1135,7 @@ export type EventUpdateWithoutPositionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPositionsInput = {
@@ -1137,6 +1165,7 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutContestantsInput = {
@@ -1166,6 +1195,7 @@ export type EventCreateWithoutContestantsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutContestantsInput = {
@@ -1195,6 +1225,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutContestantsInput = {
@@ -1240,6 +1271,7 @@ export type EventUpdateWithoutContestantsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutContestantsInput = {
@@ -1269,6 +1301,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAwardCategoriesInput = {
@@ -1298,6 +1331,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAwardCategoriesInput = {
@@ -1327,6 +1361,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAwardCategoriesInput = {
@@ -1372,6 +1407,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
@@ -1401,6 +1437,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAuditLogsInput = {
@@ -1430,6 +1467,7 @@ export type EventCreateWithoutAuditLogsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAuditLogsInput = {
@@ -1459,6 +1497,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAuditLogsInput = {
@@ -1504,6 +1543,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAuditLogsInput = {
@@ -1533,6 +1573,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutVotesInput = {
@@ -1562,6 +1603,7 @@ export type EventCreateWithoutVotesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutVotesInput = {
@@ -1591,6 +1633,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutVotesInput = {
@@ -1636,6 +1679,7 @@ export type EventUpdateWithoutVotesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutVotesInput = {
@@ -1665,6 +1709,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutBallotSubmissionsInput = {
@@ -1694,6 +1739,7 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
@@ -1723,6 +1769,7 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutBallotSubmissionsInput = {
@@ -1768,6 +1815,7 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
@@ -1797,6 +1845,7 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPaymentTransactionsInput = {
@@ -1826,6 +1875,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
@@ -1855,6 +1905,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPaymentTransactionsInput = {
@@ -1900,6 +1951,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
@@ -1929,6 +1981,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPayoutRequestsInput = {
@@ -1958,6 +2011,7 @@ export type EventCreateWithoutPayoutRequestsInput = {
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPayoutRequestsInput = {
@@ -1987,6 +2041,7 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPayoutRequestsInput = {
@@ -2032,6 +2087,7 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
@@ -2061,6 +2117,143 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutProjectSubmissionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutProjectSubmissionsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutProjectSubmissionsInput, Prisma.EventUncheckedCreateWithoutProjectSubmissionsInput>
+}
+
+export type EventUpsertWithoutProjectSubmissionsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutProjectSubmissionsInput, Prisma.EventUncheckedUpdateWithoutProjectSubmissionsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutProjectSubmissionsInput, Prisma.EventUncheckedCreateWithoutProjectSubmissionsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutProjectSubmissionsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutProjectSubmissionsInput, Prisma.EventUncheckedUpdateWithoutProjectSubmissionsInput>
+}
+
+export type EventUpdateWithoutProjectSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
 }
 
 
@@ -2078,6 +2271,7 @@ export type EventCountOutputType = {
   ballotSubmissions: number
   paymentTransactions: number
   payoutRequests: number
+  projectSubmissions: number
 }
 
 export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -2090,6 +2284,7 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   ballotSubmissions?: boolean | EventCountOutputTypeCountBallotSubmissionsArgs
   paymentTransactions?: boolean | EventCountOutputTypeCountPaymentTransactionsArgs
   payoutRequests?: boolean | EventCountOutputTypeCountPayoutRequestsArgs
+  projectSubmissions?: boolean | EventCountOutputTypeCountProjectSubmissionsArgs
 }
 
 /**
@@ -2165,6 +2360,13 @@ export type EventCountOutputTypeCountPayoutRequestsArgs<ExtArgs extends runtime.
   where?: Prisma.PayoutRequestWhereInput
 }
 
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountProjectSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectSubmissionWhereInput
+}
+
 
 export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -2194,6 +2396,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
+  projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["event"]>
 
@@ -2271,6 +2474,7 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
+  projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -2288,6 +2492,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     ballotSubmissions: Prisma.$BallotSubmissionPayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     payoutRequests: Prisma.$PayoutRequestPayload<ExtArgs>[]
+    projectSubmissions: Prisma.$ProjectSubmissionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -2711,6 +2916,7 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   ballotSubmissions<T extends Prisma.Event$ballotSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$ballotSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Event$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payoutRequests<T extends Prisma.Event$payoutRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$payoutRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  projectSubmissions<T extends Prisma.Event$projectSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$projectSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -3364,6 +3570,30 @@ export type Event$payoutRequestsArgs<ExtArgs extends runtime.Types.Extensions.In
   take?: number
   skip?: number
   distinct?: Prisma.PayoutRequestScalarFieldEnum | Prisma.PayoutRequestScalarFieldEnum[]
+}
+
+/**
+ * Event.projectSubmissions
+ */
+export type Event$projectSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectSubmission
+   */
+  select?: Prisma.ProjectSubmissionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProjectSubmission
+   */
+  omit?: Prisma.ProjectSubmissionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectSubmissionInclude<ExtArgs> | null
+  where?: Prisma.ProjectSubmissionWhereInput
+  orderBy?: Prisma.ProjectSubmissionOrderByWithRelationInput | Prisma.ProjectSubmissionOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectSubmissionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectSubmissionScalarFieldEnum | Prisma.ProjectSubmissionScalarFieldEnum[]
 }
 
 /**

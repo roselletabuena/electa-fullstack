@@ -122,3 +122,14 @@ export const PayoutMethod = {
 } as const
 
 export type PayoutMethod = (typeof PayoutMethod)[keyof typeof PayoutMethod]
+
+
+export const ProjectSubmissionStatus = {
+  DRAFT: 'DRAFT',
+  SUBMITTED: 'SUBMITTED',
+  UNDER_REVIEW: 'UNDER_REVIEW',
+  ACCEPTED: 'ACCEPTED',
+  REJECTED: 'REJECTED'
+} as const
+
+export type ProjectSubmissionStatus = (typeof ProjectSubmissionStatus)[keyof typeof ProjectSubmissionStatus]

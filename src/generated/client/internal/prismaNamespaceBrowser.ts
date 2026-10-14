@@ -62,7 +62,11 @@ export const ModelName = {
   Vote: 'Vote',
   BallotSubmission: 'BallotSubmission',
   PaymentTransaction: 'PaymentTransaction',
-  PayoutRequest: 'PayoutRequest'
+  PayoutRequest: 'PayoutRequest',
+  ProjectSubmission: 'ProjectSubmission',
+  ProjectMember: 'ProjectMember',
+  ProjectTrackTag: 'ProjectTrackTag',
+  ProjectSubmissionLink: 'ProjectSubmissionLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -293,6 +297,57 @@ export const PayoutRequestScalarFieldEnum = {
 } as const
 
 export type PayoutRequestScalarFieldEnum = (typeof PayoutRequestScalarFieldEnum)[keyof typeof PayoutRequestScalarFieldEnum]
+
+
+export const ProjectSubmissionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  teamLeadId: 'teamLeadId',
+  title: 'title',
+  tagline: 'tagline',
+  description: 'description',
+  repositoryUrl: 'repositoryUrl',
+  demoUrl: 'demoUrl',
+  videoUrl: 'videoUrl',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectSubmissionScalarFieldEnum = (typeof ProjectSubmissionScalarFieldEnum)[keyof typeof ProjectSubmissionScalarFieldEnum]
+
+
+export const ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  name: 'name',
+  email: 'email',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
+
+
+export const ProjectTrackTagScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  trackName: 'trackName',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectTrackTagScalarFieldEnum = (typeof ProjectTrackTagScalarFieldEnum)[keyof typeof ProjectTrackTagScalarFieldEnum]
+
+
+export const ProjectSubmissionLinkScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  label: 'label',
+  url: 'url',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectSubmissionLinkScalarFieldEnum = (typeof ProjectSubmissionLinkScalarFieldEnum)[keyof typeof ProjectSubmissionLinkScalarFieldEnum]
 
 
 export const SortOrder = {

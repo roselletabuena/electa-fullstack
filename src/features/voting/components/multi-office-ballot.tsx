@@ -15,8 +15,8 @@ import type {
 
 export interface MultiOfficeBallotProps {
   event: PublicBallotEventDto;
-  initialReceipt?: BallotSubmissionReceiptDto | null | undefined;
-  onCastBallot?: ((input: unknown) => ReturnType<typeof castBallotAction>) | undefined;
+  initialReceipt?: BallotSubmissionReceiptDto | null;
+  onCastBallot?: (input: unknown) => ReturnType<typeof castBallotAction>;
 }
 
 function getCandidateCardStyle(isChecked: boolean, isBlocked: boolean): string {
@@ -264,20 +264,13 @@ export function MultiOfficeBallot({
                   const isBlocked = isAtLimit && !isChecked && position.maxSelectionsPerVoter > 1;
 
                   return (
-                    <div
+                    <label
                       key={candidate.id}
-                      onClick={() =>
-                        handleToggleCandidate(
-                          position.id,
-                          candidate.id,
-                          position.maxSelectionsPerVoter,
-                        )
-                      }
+                      htmlFor={`candidate-checkbox-${candidate.id}`}
                       className={`group relative flex cursor-pointer flex-col justify-between border p-4 transition-all ${getCandidateCardStyle(
                         isChecked,
                         isBlocked,
                       )}`}
-
                     >
                       <div className="flex items-start gap-3">
                         {/* Candidate Avatar or Number */}
@@ -316,45 +309,48 @@ export function MultiOfficeBallot({
 
                       {/* Interactive Selection Row */}
                       <div className="mt-4 flex items-center justify-between border-t border-slate-200/80 pt-3 dark:border-slate-800">
-                        <button
-                          type="button"
-                          role="checkbox"
-                          aria-checked={isChecked}
-                          aria-label={`Select ${candidate.name} for ${position.name}`}
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            handleToggleCandidate(
-                              position.id,
-                              candidate.id,
-                              position.maxSelectionsPerVoter,
-                            );
-                          }}
-                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition focus-visible:ring-2 focus-visible:ring-sky-500 ${
+                        <div
+                          className={`inline-flex items-center gap-1.5 px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition focus-within:ring-2 focus-within:ring-sky-500 ${
                             isChecked
                               ? "border border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
                               : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
                           }`}
                         >
+                          <input
+                            id={`candidate-checkbox-${candidate.id}`}
+                            type="checkbox"
+                            checked={isChecked}
+                            aria-checked={isChecked}
+                            aria-label={`Select ${candidate.name} for ${position.name}`}
+                            onChange={() => {
+                              handleToggleCandidate(
+                                position.id,
+                                candidate.id,
+                                position.maxSelectionsPerVoter,
+                              );
+                            }}
+                            className="sr-only"
+                          />
                           {isChecked ? (
                             <>
-                              <CheckSquare className="size-3.5" />
+                              <CheckSquare className="size-3.5" aria-hidden="true" />
                               <span>Selected</span>
                             </>
                           ) : (
                             <>
-                              <Square className="size-3.5 text-slate-400" />
+                              <Square className="size-3.5 text-slate-400" aria-hidden="true" />
                               <span>Select</span>
                             </>
                           )}
-                        </button>
+                        </div>
 
                         {isChecked && (
                           <div className="flex items-center text-sky-600 dark:text-sky-400">
-                            <Check className="size-4 stroke-[3]" />
+                            <Check className="size-4 stroke-3" />
                           </div>
                         )}
                       </div>
-                    </div>
+                    </label>
                   );
                 })}
               </div>

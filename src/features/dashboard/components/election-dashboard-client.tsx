@@ -20,7 +20,7 @@ export interface ElectionDashboardClientProps {
   offices: OfficeTallyDto[];
   user: {
     userId: string;
-    email?: string;
+    email?: string | undefined;
   };
 }
 
@@ -29,7 +29,7 @@ export function ElectionDashboardClient({
   turnout,
   offices,
   user,
-}: ElectionDashboardClientProps): React.JSX.Element {
+}: Readonly<ElectionDashboardClientProps>): React.JSX.Element {
   const router = useRouter();
   const [isPending, startTransition] = useTransition();
 

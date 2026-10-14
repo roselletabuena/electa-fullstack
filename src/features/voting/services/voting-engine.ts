@@ -23,9 +23,9 @@ interface EventZeroCostEligibility {
 }
 
 interface SecurityCheckParams {
-  clientIp?: string;
-  deviceFingerprint?: string;
-  turnstileToken?: string;
+  clientIp?: string | undefined;
+  deviceFingerprint?: string | undefined;
+  turnstileToken?: string | undefined;
   eventId: string;
   voterId: string;
 }

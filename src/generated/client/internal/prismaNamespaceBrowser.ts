@@ -72,7 +72,8 @@ export const ModelName = {
   RubricCriterion: 'RubricCriterion',
   StudentRosterEntry: 'StudentRosterEntry',
   JudgeEvaluation: 'JudgeEvaluation',
-  JudgeScore: 'JudgeScore'
+  JudgeScore: 'JudgeScore',
+  ProjectVote: 'ProjectVote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -340,7 +341,8 @@ export const ProjectSubmissionScalarFieldEnum = {
   videoUrl: 'videoUrl',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  voteCount: 'voteCount'
 } as const
 
 export type ProjectSubmissionScalarFieldEnum = (typeof ProjectSubmissionScalarFieldEnum)[keyof typeof ProjectSubmissionScalarFieldEnum]
@@ -431,6 +433,17 @@ export const JudgeScoreScalarFieldEnum = {
 } as const
 
 export type JudgeScoreScalarFieldEnum = (typeof JudgeScoreScalarFieldEnum)[keyof typeof JudgeScoreScalarFieldEnum]
+
+
+export const ProjectVoteScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  submissionId: 'submissionId',
+  voterId: 'voterId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectVoteScalarFieldEnum = (typeof ProjectVoteScalarFieldEnum)[keyof typeof ProjectVoteScalarFieldEnum]
 
 
 export const SortOrder = {

@@ -151,3 +151,8 @@ export type JudgeEvaluation = Prisma.JudgeEvaluationModel
  * 
  */
 export type JudgeScore = Prisma.JudgeScoreModel
+/**
+ * Model ProjectVote
+ * 
+ */
+export type ProjectVote = Prisma.ProjectVoteModel

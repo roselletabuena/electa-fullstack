@@ -412,7 +412,10 @@ export const ModelName = {
   ProjectSubmission: 'ProjectSubmission',
   ProjectMember: 'ProjectMember',
   ProjectTrackTag: 'ProjectTrackTag',
-  ProjectSubmissionLink: 'ProjectSubmissionLink'
+  ProjectSubmissionLink: 'ProjectSubmissionLink',
+  RubricCriterion: 'RubricCriterion',
+  JudgeEvaluation: 'JudgeEvaluation',
+  JudgeScore: 'JudgeScore'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -428,7 +431,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink"
+    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "judgeEvaluation" | "judgeScore"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1616,6 +1619,228 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    RubricCriterion: {
+      payload: Prisma.$RubricCriterionPayload<ExtArgs>
+      fields: Prisma.RubricCriterionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.RubricCriterionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.RubricCriterionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        findFirst: {
+          args: Prisma.RubricCriterionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.RubricCriterionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        findMany: {
+          args: Prisma.RubricCriterionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>[]
+        }
+        create: {
+          args: Prisma.RubricCriterionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        createMany: {
+          args: Prisma.RubricCriterionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.RubricCriterionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>[]
+        }
+        delete: {
+          args: Prisma.RubricCriterionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        update: {
+          args: Prisma.RubricCriterionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        deleteMany: {
+          args: Prisma.RubricCriterionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.RubricCriterionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.RubricCriterionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>[]
+        }
+        upsert: {
+          args: Prisma.RubricCriterionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$RubricCriterionPayload>
+        }
+        aggregate: {
+          args: Prisma.RubricCriterionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateRubricCriterion>
+        }
+        groupBy: {
+          args: Prisma.RubricCriterionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RubricCriterionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.RubricCriterionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.RubricCriterionCountAggregateOutputType> | number
+        }
+      }
+    }
+    JudgeEvaluation: {
+      payload: Prisma.$JudgeEvaluationPayload<ExtArgs>
+      fields: Prisma.JudgeEvaluationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.JudgeEvaluationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.JudgeEvaluationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        findFirst: {
+          args: Prisma.JudgeEvaluationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.JudgeEvaluationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        findMany: {
+          args: Prisma.JudgeEvaluationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>[]
+        }
+        create: {
+          args: Prisma.JudgeEvaluationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        createMany: {
+          args: Prisma.JudgeEvaluationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.JudgeEvaluationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>[]
+        }
+        delete: {
+          args: Prisma.JudgeEvaluationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        update: {
+          args: Prisma.JudgeEvaluationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        deleteMany: {
+          args: Prisma.JudgeEvaluationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.JudgeEvaluationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.JudgeEvaluationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>[]
+        }
+        upsert: {
+          args: Prisma.JudgeEvaluationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeEvaluationPayload>
+        }
+        aggregate: {
+          args: Prisma.JudgeEvaluationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateJudgeEvaluation>
+        }
+        groupBy: {
+          args: Prisma.JudgeEvaluationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JudgeEvaluationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.JudgeEvaluationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JudgeEvaluationCountAggregateOutputType> | number
+        }
+      }
+    }
+    JudgeScore: {
+      payload: Prisma.$JudgeScorePayload<ExtArgs>
+      fields: Prisma.JudgeScoreFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.JudgeScoreFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.JudgeScoreFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        findFirst: {
+          args: Prisma.JudgeScoreFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.JudgeScoreFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        findMany: {
+          args: Prisma.JudgeScoreFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>[]
+        }
+        create: {
+          args: Prisma.JudgeScoreCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        createMany: {
+          args: Prisma.JudgeScoreCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.JudgeScoreCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>[]
+        }
+        delete: {
+          args: Prisma.JudgeScoreDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        update: {
+          args: Prisma.JudgeScoreUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        deleteMany: {
+          args: Prisma.JudgeScoreDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.JudgeScoreUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.JudgeScoreUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>[]
+        }
+        upsert: {
+          args: Prisma.JudgeScoreUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$JudgeScorePayload>
+        }
+        aggregate: {
+          args: Prisma.JudgeScoreAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateJudgeScore>
+        }
+        groupBy: {
+          args: Prisma.JudgeScoreGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JudgeScoreGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.JudgeScoreCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.JudgeScoreCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1918,6 +2143,48 @@ export const ProjectSubmissionLinkScalarFieldEnum = {
 } as const
 
 export type ProjectSubmissionLinkScalarFieldEnum = (typeof ProjectSubmissionLinkScalarFieldEnum)[keyof typeof ProjectSubmissionLinkScalarFieldEnum]
+
+
+export const RubricCriterionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  title: 'title',
+  description: 'description',
+  weight: 'weight',
+  maxScore: 'maxScore',
+  displayOrder: 'displayOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RubricCriterionScalarFieldEnum = (typeof RubricCriterionScalarFieldEnum)[keyof typeof RubricCriterionScalarFieldEnum]
+
+
+export const JudgeEvaluationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  judgeId: 'judgeId',
+  submissionId: 'submissionId',
+  isDraft: 'isDraft',
+  notes: 'notes',
+  compositeScore: 'compositeScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JudgeEvaluationScalarFieldEnum = (typeof JudgeEvaluationScalarFieldEnum)[keyof typeof JudgeEvaluationScalarFieldEnum]
+
+
+export const JudgeScoreScalarFieldEnum = {
+  id: 'id',
+  evaluationId: 'evaluationId',
+  criterionId: 'criterionId',
+  score: 'score',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JudgeScoreScalarFieldEnum = (typeof JudgeScoreScalarFieldEnum)[keyof typeof JudgeScoreScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2413,6 +2680,9 @@ export type GlobalOmitConfig = {
   projectMember?: Prisma.ProjectMemberOmit
   projectTrackTag?: Prisma.ProjectTrackTagOmit
   projectSubmissionLink?: Prisma.ProjectSubmissionLinkOmit
+  rubricCriterion?: Prisma.RubricCriterionOmit
+  judgeEvaluation?: Prisma.JudgeEvaluationOmit
+  judgeScore?: Prisma.JudgeScoreOmit
 }
 
 /* Types for Logging */

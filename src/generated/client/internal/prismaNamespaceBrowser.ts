@@ -66,7 +66,10 @@ export const ModelName = {
   ProjectSubmission: 'ProjectSubmission',
   ProjectMember: 'ProjectMember',
   ProjectTrackTag: 'ProjectTrackTag',
-  ProjectSubmissionLink: 'ProjectSubmissionLink'
+  ProjectSubmissionLink: 'ProjectSubmissionLink',
+  RubricCriterion: 'RubricCriterion',
+  JudgeEvaluation: 'JudgeEvaluation',
+  JudgeScore: 'JudgeScore'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -348,6 +351,48 @@ export const ProjectSubmissionLinkScalarFieldEnum = {
 } as const
 
 export type ProjectSubmissionLinkScalarFieldEnum = (typeof ProjectSubmissionLinkScalarFieldEnum)[keyof typeof ProjectSubmissionLinkScalarFieldEnum]
+
+
+export const RubricCriterionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  title: 'title',
+  description: 'description',
+  weight: 'weight',
+  maxScore: 'maxScore',
+  displayOrder: 'displayOrder',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type RubricCriterionScalarFieldEnum = (typeof RubricCriterionScalarFieldEnum)[keyof typeof RubricCriterionScalarFieldEnum]
+
+
+export const JudgeEvaluationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  judgeId: 'judgeId',
+  submissionId: 'submissionId',
+  isDraft: 'isDraft',
+  notes: 'notes',
+  compositeScore: 'compositeScore',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JudgeEvaluationScalarFieldEnum = (typeof JudgeEvaluationScalarFieldEnum)[keyof typeof JudgeEvaluationScalarFieldEnum]
+
+
+export const JudgeScoreScalarFieldEnum = {
+  id: 'id',
+  evaluationId: 'evaluationId',
+  criterionId: 'criterionId',
+  score: 'score',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type JudgeScoreScalarFieldEnum = (typeof JudgeScoreScalarFieldEnum)[keyof typeof JudgeScoreScalarFieldEnum]
 
 
 export const SortOrder = {

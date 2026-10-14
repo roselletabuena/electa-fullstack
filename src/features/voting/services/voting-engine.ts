@@ -14,12 +14,12 @@ import type {
 
 export interface CastInstitutionalBallotParams extends CastBallotInput {
   voterId: string;
-  clientIp?: string;
+  clientIp?: string | undefined;
 }
 
 interface EventZeroCostEligibility {
-  isFreeVotingOnly?: boolean | null;
-  archetype?: EventArchetype | string | null;
+  isFreeVotingOnly?: boolean | null | undefined;
+  archetype?: EventArchetype | string | null | undefined;
 }
 
 interface SecurityCheckParams {

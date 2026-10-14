@@ -97,3 +97,18 @@ export type ProjectTrackTag = Prisma.ProjectTrackTagModel
  * 
  */
 export type ProjectSubmissionLink = Prisma.ProjectSubmissionLinkModel
+/**
+ * Model RubricCriterion
+ * 
+ */
+export type RubricCriterion = Prisma.RubricCriterionModel
+/**
+ * Model JudgeEvaluation
+ * 
+ */
+export type JudgeEvaluation = Prisma.JudgeEvaluationModel
+/**
+ * Model JudgeScore
+ * 
+ */
+export type JudgeScore = Prisma.JudgeScoreModel

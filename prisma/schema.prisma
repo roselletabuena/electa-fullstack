@@ -75,6 +75,7 @@ model Event {
   ballotSubmissions   BallotSubmission[]
   paymentTransactions PaymentTransaction[]
   payoutRequests      PayoutRequest[]
+  projectSubmissions  ProjectSubmission[]
 
   @@index([slug])
   @@index([organizerId])
@@ -371,4 +372,77 @@ model PayoutRequest {
   @@index([referenceNumber])
   @@index([createdAt])
 }
+
+enum ProjectSubmissionStatus {
+  DRAFT
+  SUBMITTED
+  UNDER_REVIEW
+  ACCEPTED
+  REJECTED
+}
+
+model ProjectSubmission {
+  id            String                  @id @default(uuid())
+  eventId       String
+  teamLeadId    String
+  title         String
+  tagline       String?
+  description   String                  @db.Text
+  repositoryUrl String
+  demoUrl       String?
+  videoUrl      String?
+  status        ProjectSubmissionStatus @default(SUBMITTED)
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+
+  event         Event                   @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  members       ProjectMember[]
+  trackTags     ProjectTrackTag[]
+  links         ProjectSubmissionLink[]
+
+  @@unique([eventId, teamLeadId, title])
+  @@index([eventId])
+  @@index([teamLeadId])
+  @@index([eventId, status])
+  @@index([createdAt])
+}
+
+model ProjectMember {
+  id           String            @id @default(uuid())
+  submissionId String
+  name         String
+  email        String
+  role         String?           @default("Contributor")
+  createdAt    DateTime          @default(now())
+
+  submission   ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
+model ProjectTrackTag {
+  id           String            @id @default(uuid())
+  submissionId String
+  trackName    String
+  createdAt    DateTime          @default(now())
+
+  submission   ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([submissionId, trackName])
+  @@index([submissionId])
+  @@index([trackName])
+}
+
+model ProjectSubmissionLink {
+  id           String            @id @default(uuid())
+  submissionId String
+  label        String
+  url          String
+  createdAt    DateTime          @default(now())
+
+  submission   ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@index([submissionId])
+}
+
 

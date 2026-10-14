@@ -101,3 +101,23 @@ export type PaymentTransaction = Prisma.PaymentTransactionModel
  * 
  */
 export type PayoutRequest = Prisma.PayoutRequestModel
+/**
+ * Model ProjectSubmission
+ * 
+ */
+export type ProjectSubmission = Prisma.ProjectSubmissionModel
+/**
+ * Model ProjectMember
+ * 
+ */
+export type ProjectMember = Prisma.ProjectMemberModel
+/**
+ * Model ProjectTrackTag
+ * 
+ */
+export type ProjectTrackTag = Prisma.ProjectTrackTagModel
+/**
+ * Model ProjectSubmissionLink
+ * 
+ */
+export type ProjectSubmissionLink = Prisma.ProjectSubmissionLinkModel

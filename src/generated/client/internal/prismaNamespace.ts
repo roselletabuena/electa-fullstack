@@ -408,7 +408,11 @@ export const ModelName = {
   Vote: 'Vote',
   BallotSubmission: 'BallotSubmission',
   PaymentTransaction: 'PaymentTransaction',
-  PayoutRequest: 'PayoutRequest'
+  PayoutRequest: 'PayoutRequest',
+  ProjectSubmission: 'ProjectSubmission',
+  ProjectMember: 'ProjectMember',
+  ProjectTrackTag: 'ProjectTrackTag',
+  ProjectSubmissionLink: 'ProjectSubmissionLink'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -424,7 +428,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest"
+    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1316,6 +1320,302 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProjectSubmission: {
+      payload: Prisma.$ProjectSubmissionPayload<ExtArgs>
+      fields: Prisma.ProjectSubmissionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectSubmissionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectSubmissionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectSubmissionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectSubmissionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectSubmissionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectSubmissionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectSubmissionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectSubmissionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectSubmissionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        update: {
+          args: Prisma.ProjectSubmissionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectSubmissionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectSubmissionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectSubmissionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectSubmissionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectSubmissionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectSubmission>
+        }
+        groupBy: {
+          args: Prisma.ProjectSubmissionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectSubmissionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectSubmissionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProjectMember: {
+      payload: Prisma.$ProjectMemberPayload<ExtArgs>
+      fields: Prisma.ProjectMemberFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectMemberFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectMemberFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectMemberFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectMemberFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectMemberFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectMemberCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectMemberCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectMemberCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectMemberDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        update: {
+          args: Prisma.ProjectMemberUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectMemberDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectMemberUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectMemberUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectMemberUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectMemberPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectMemberAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectMember>
+        }
+        groupBy: {
+          args: Prisma.ProjectMemberGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectMemberGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectMemberCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectMemberCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProjectTrackTag: {
+      payload: Prisma.$ProjectTrackTagPayload<ExtArgs>
+      fields: Prisma.ProjectTrackTagFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectTrackTagFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectTrackTagFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectTrackTagFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectTrackTagFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectTrackTagFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectTrackTagCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectTrackTagCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectTrackTagCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectTrackTagDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        update: {
+          args: Prisma.ProjectTrackTagUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectTrackTagDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectTrackTagUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectTrackTagUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectTrackTagUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectTrackTagPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectTrackTagAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectTrackTag>
+        }
+        groupBy: {
+          args: Prisma.ProjectTrackTagGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectTrackTagGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectTrackTagCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectTrackTagCountAggregateOutputType> | number
+        }
+      }
+    }
+    ProjectSubmissionLink: {
+      payload: Prisma.$ProjectSubmissionLinkPayload<ExtArgs>
+      fields: Prisma.ProjectSubmissionLinkFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectSubmissionLinkFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectSubmissionLinkFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectSubmissionLinkFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectSubmissionLinkFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        findMany: {
+          args: Prisma.ProjectSubmissionLinkFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>[]
+        }
+        create: {
+          args: Prisma.ProjectSubmissionLinkCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        createMany: {
+          args: Prisma.ProjectSubmissionLinkCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectSubmissionLinkCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectSubmissionLinkDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        update: {
+          args: Prisma.ProjectSubmissionLinkUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectSubmissionLinkDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectSubmissionLinkUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectSubmissionLinkUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectSubmissionLinkUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectSubmissionLinkPayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectSubmissionLinkAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectSubmissionLink>
+        }
+        groupBy: {
+          args: Prisma.ProjectSubmissionLinkGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectSubmissionLinkGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectSubmissionLinkCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectSubmissionLinkCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -1567,6 +1867,57 @@ export const PayoutRequestScalarFieldEnum = {
 } as const
 
 export type PayoutRequestScalarFieldEnum = (typeof PayoutRequestScalarFieldEnum)[keyof typeof PayoutRequestScalarFieldEnum]
+
+
+export const ProjectSubmissionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  teamLeadId: 'teamLeadId',
+  title: 'title',
+  tagline: 'tagline',
+  description: 'description',
+  repositoryUrl: 'repositoryUrl',
+  demoUrl: 'demoUrl',
+  videoUrl: 'videoUrl',
+  status: 'status',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type ProjectSubmissionScalarFieldEnum = (typeof ProjectSubmissionScalarFieldEnum)[keyof typeof ProjectSubmissionScalarFieldEnum]
+
+
+export const ProjectMemberScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  name: 'name',
+  email: 'email',
+  role: 'role',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectMemberScalarFieldEnum = (typeof ProjectMemberScalarFieldEnum)[keyof typeof ProjectMemberScalarFieldEnum]
+
+
+export const ProjectTrackTagScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  trackName: 'trackName',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectTrackTagScalarFieldEnum = (typeof ProjectTrackTagScalarFieldEnum)[keyof typeof ProjectTrackTagScalarFieldEnum]
+
+
+export const ProjectSubmissionLinkScalarFieldEnum = {
+  id: 'id',
+  submissionId: 'submissionId',
+  label: 'label',
+  url: 'url',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectSubmissionLinkScalarFieldEnum = (typeof ProjectSubmissionLinkScalarFieldEnum)[keyof typeof ProjectSubmissionLinkScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -1869,6 +2220,20 @@ export type ListEnumPayoutStatusFieldRefInput<$PrismaModel> = FieldRefInputType<
 
 
 /**
+ * Reference to a field of type 'ProjectSubmissionStatus'
+ */
+export type EnumProjectSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectSubmissionStatus'>
+    
+
+
+/**
+ * Reference to a field of type 'ProjectSubmissionStatus[]'
+ */
+export type ListEnumProjectSubmissionStatusFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'ProjectSubmissionStatus[]'>
+    
+
+
+/**
  * Reference to a field of type 'Float'
  */
 export type FloatFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'Float'>
@@ -2044,6 +2409,10 @@ export type GlobalOmitConfig = {
   ballotSubmission?: Prisma.BallotSubmissionOmit
   paymentTransaction?: Prisma.PaymentTransactionOmit
   payoutRequest?: Prisma.PayoutRequestOmit
+  projectSubmission?: Prisma.ProjectSubmissionOmit
+  projectMember?: Prisma.ProjectMemberOmit
+  projectTrackTag?: Prisma.ProjectTrackTagOmit
+  projectSubmissionLink?: Prisma.ProjectSubmissionLinkOmit
 }
 
 /* Types for Logging */

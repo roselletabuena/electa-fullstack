@@ -6,3 +6,7 @@ export * from "./actions/submit-project";
 export * from "./components/project-card";
 export * from "./components/submission-form";
 export * from "./components/exhibition-grid";
+export * from "./components/judging-progress-bar";
+export * from "./components/rubric-scorecard-modal";
+export * from "./components/judge-portal";
+export * from "./components/judge-auth-guard";

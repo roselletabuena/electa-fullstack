@@ -2,7 +2,6 @@ import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MultiOfficeBallot } from "@/features/voting/components/multi-office-ballot";
-import { BallotReviewModal } from "@/features/voting/components/ballot-review-modal";
 import { BallotReceiptCard } from "@/features/voting/components/ballot-receipt-card";
 import { VoterAuthGuard } from "@/features/voting/components/voter-auth-guard";
 import type { PublicBallotEventDto } from "@/features/voting/types/ballot";

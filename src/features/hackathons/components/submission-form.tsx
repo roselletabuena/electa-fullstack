@@ -5,7 +5,6 @@ import { useState, useTransition } from "react";
 import { Plus, Trash2, CheckCircle2, AlertCircle, X } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { Badge } from "@/components/ui/badge";
 import { submitProjectAction } from "../actions/submit-project";
 import type { ProjectSubmissionDto } from "../types/submission";
 

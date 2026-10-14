@@ -4,8 +4,16 @@ import JudgingPage, {
   generateMetadata,
 } from "@/app/(dashboard)/events/[slug]/judging/page";
 import { db } from "@/lib/db";
-import { getSession } from "@/lib/auth/get-session";
+import { getSession, type UserSession } from "@/lib/auth/get-session";
 import { notFound } from "next/navigation";
+import { Prisma } from "@/generated/client/client";
+import type {
+  Event,
+  RubricCriterion,
+  ProjectSubmission,
+  ProjectTrackTag,
+} from "@/generated/client/client";
+import type { JudgePortalProps } from "@/features/hackathons/components/judge-portal";
 
 vi.mock("@/lib/db", () => ({
   db: {
@@ -32,17 +40,13 @@ vi.mock("next/navigation", () => ({
   notFound: vi.fn(),
 }));
 
-// Mock JudgePortal component to verify props
+// Mock JudgePortal component to verify props with strict type
 vi.mock("@/features/hackathons/components/judge-portal", () => ({
   JudgePortal: ({
     eventTitle,
     criteria,
     projects,
-  }: {
-    eventTitle: string;
-    criteria: Array<{ id: string }>;
-    projects: Array<{ id: string; title: string }>;
-  }) => (
+  }: Readonly<JudgePortalProps>) => (
     <div data-testid="mock-judge-portal">
       <span>Portal for {eventTitle}</span>
       <span>Criteria count: {criteria.length}</span>
@@ -50,6 +54,80 @@ vi.mock("@/features/hackathons/components/judge-portal", () => ({
     </div>
   ),
 }));
+
+type ProjectWithTrackTags = ProjectSubmission & {
+  trackTags: ProjectTrackTag[];
+};
+
+function createMockEvent(overrides: Partial<Event> = {}): Event {
+  return {
+    id: "evt-1",
+    slug: "hack-2026",
+    title: "Hack 2026",
+    description: "Official Hackathon",
+    bannerUrl: "https://example.com/banner.jpg",
+    startsAt: new Date(),
+    endsAt: new Date(Date.now() + 86400000),
+    publicationStatus: "PUBLISHED",
+    draftPassphraseHash: null,
+    showResultsOnClose: true,
+    isFreeVotingEnabled: true,
+    isFreeVotingOnly: false,
+    dailyFreeVoteLimit: 1,
+    takeRatePercentage: new Prisma.Decimal("12.00"),
+    organizerId: "org-1",
+    archetype: "HACKATHON",
+    allowedEmailDomains: [],
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...overrides,
+  };
+}
+
+function createMockCriterion(
+  overrides: Partial<RubricCriterion> = {},
+): RubricCriterion {
+  return {
+    id: "c-1",
+    eventId: "evt-1",
+    title: "Code Quality",
+    description: "Clean code",
+    weight: new Prisma.Decimal("40.00"),
+    maxScore: 10,
+    displayOrder: 1,
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    ...overrides,
+  };
+}
+
+function createMockProjectSubmission(
+  overrides: Partial<ProjectWithTrackTags> = {},
+): ProjectWithTrackTags {
+  return {
+    id: "sub-1",
+    eventId: "evt-1",
+    teamLeadId: "lead-1",
+    title: "Smart Agent",
+    tagline: "Autonomous Agent",
+    description: "Agent project",
+    repositoryUrl: "https://github.com/test",
+    demoUrl: null,
+    videoUrl: null,
+    status: "SUBMITTED",
+    createdAt: new Date(),
+    updatedAt: new Date(),
+    trackTags: [
+      {
+        id: "t-1",
+        submissionId: "sub-1",
+        trackName: "AI",
+        createdAt: new Date(),
+      },
+    ],
+    ...overrides,
+  };
+}
 
 describe("JudgingPage Route Component", () => {
   beforeEach(() => {
@@ -68,11 +146,13 @@ describe("JudgingPage Route Component", () => {
     });
 
     it("returns formatted title when event exists", async () => {
-      vi.mocked(db.event.findUnique).mockResolvedValueOnce({
-        id: "evt-1",
-        title: "AI Hackathon 2026",
-        description: "Official Hackathon",
-      } as unknown as Awaited<ReturnType<typeof db.event.findUnique>>);
+      vi.mocked(db.event.findUnique).mockResolvedValueOnce(
+        createMockEvent({
+          id: "evt-1",
+          title: "AI Hackathon 2026",
+          description: "Official Hackathon",
+        }),
+      );
 
       const metadata = await generateMetadata({
         params: Promise.resolve({ slug: "ai-hackathon-2026" }),
@@ -98,12 +178,7 @@ describe("JudgingPage Route Component", () => {
     });
 
     it("renders unauthenticated JudgeAuthGuard when user is not logged in", async () => {
-      vi.mocked(db.event.findUnique).mockResolvedValueOnce({
-        id: "evt-1",
-        slug: "hack-2026",
-        title: "Hack 2026",
-        description: "Test",
-      } as unknown as Awaited<ReturnType<typeof db.event.findUnique>>);
+      vi.mocked(db.event.findUnique).mockResolvedValueOnce(createMockEvent());
       vi.mocked(getSession).mockResolvedValueOnce(null);
 
       const component = await JudgingPage({
@@ -113,23 +188,19 @@ describe("JudgingPage Route Component", () => {
 
       expect(screen.getByText(/judge sign-in required/i)).toBeInTheDocument();
       expect(
-        screen.getByRole("link", { name: /sign in as judge/i })
+        screen.getByRole("link", { name: /sign in as judge/i }),
       ).toBeInTheDocument();
     });
 
     it("renders forbidden JudgeAuthGuard when user does not have judge privileges", async () => {
-      vi.mocked(db.event.findUnique).mockResolvedValueOnce({
-        id: "evt-1",
-        slug: "hack-2026",
-        title: "Hack 2026",
-        description: "Test",
-      } as unknown as Awaited<ReturnType<typeof db.event.findUnique>>);
-      vi.mocked(getSession).mockResolvedValueOnce({
+      vi.mocked(db.event.findUnique).mockResolvedValueOnce(createMockEvent());
+
+      const attendeeSession: UserSession = {
         userId: "user-attendee",
         email: "attendee@example.com",
         role: "ATTENDEE",
-        isJudge: false,
-      } as unknown as Awaited<ReturnType<typeof getSession>>);
+      };
+      vi.mocked(getSession).mockResolvedValueOnce(attendeeSession);
 
       const component = await JudgingPage({
         params: Promise.resolve({ slug: "hack-2026" }),
@@ -137,50 +208,40 @@ describe("JudgingPage Route Component", () => {
       render(component);
 
       expect(
-        screen.getByText(/judge portal access restricted/i)
+        screen.getByText(/judge portal access restricted/i),
       ).toBeInTheDocument();
       expect(screen.getByText(/attendee@example.com/i)).toBeInTheDocument();
     });
 
     it("renders JudgePortal when authenticated user has JUDGE role", async () => {
-      vi.mocked(db.event.findUnique).mockResolvedValueOnce({
-        id: "evt-1",
-        slug: "hack-2026",
-        title: "Hack 2026",
-        description: "Test",
-      } as unknown as Awaited<ReturnType<typeof db.event.findUnique>>);
-      vi.mocked(getSession).mockResolvedValueOnce({
+      vi.mocked(db.event.findUnique).mockResolvedValueOnce(createMockEvent());
+
+      const judgeSession: UserSession = {
         userId: "judge-42",
         email: "judge@example.com",
         role: "JUDGE",
-      } as unknown as Awaited<ReturnType<typeof getSession>>);
+      };
+      vi.mocked(getSession).mockResolvedValueOnce(judgeSession);
 
       vi.mocked(db.rubricCriterion.findMany).mockResolvedValueOnce([
-        {
+        createMockCriterion({
           id: "c-1",
-          eventId: "evt-1",
           title: "Code Quality",
           description: "Clean code",
-          weight: 40 as unknown,
+          weight: new Prisma.Decimal("40.00"),
           maxScore: 10,
           displayOrder: 1,
-        },
-      ] as unknown as Awaited<ReturnType<typeof db.rubricCriterion.findMany>>);
+        }),
+      ]);
 
       vi.mocked(db.projectSubmission.findMany).mockResolvedValueOnce([
-        {
+        createMockProjectSubmission({
           id: "sub-1",
-          eventId: "evt-1",
           title: "Smart Agent",
           tagline: "Autonomous Agent",
           description: "Agent project",
-          repositoryUrl: "https://github.com/test",
-          demoUrl: null,
-          videoUrl: null,
-          status: "SUBMITTED",
-          trackTags: [{ id: "t-1", trackName: "AI" }],
-        },
-      ] as unknown as Awaited<ReturnType<typeof db.projectSubmission.findMany>>);
+        }),
+      ]);
 
       vi.mocked(db.judgeEvaluation.findMany).mockResolvedValueOnce([]);
 

@@ -22,7 +22,7 @@ export interface JudgePortalProjectItem {
   readonly repositoryUrl: string;
   readonly demoUrl?: string | null | undefined;
   readonly videoUrl?: string | null | undefined;
-  readonly status: "SUBMITTED" | "ACCEPTED" | "REJECTED" | "WINNER";
+  readonly status: "DRAFT" | "SUBMITTED" | "UNDER_REVIEW" | "ACCEPTED" | "REJECTED";
   readonly trackTags: readonly string[];
   readonly evaluationStatus: "PENDING" | "DRAFT" | "COMPLETED";
   readonly existingEvaluation?: {
@@ -52,13 +52,45 @@ export interface JudgePortalProps {
   readonly currentJudgeId: string;
 }
 
+function ProjectStatusBadge({
+  project,
+}: {
+  readonly project: JudgePortalProjectItem;
+}): React.JSX.Element {
+  if (project.evaluationStatus === "COMPLETED") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-none border border-emerald-300 bg-emerald-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+        <CheckCircle2 className="h-3 w-3" />
+        <span>
+          Evaluated ({project.existingEvaluation?.compositeScore.toFixed(2)})
+        </span>
+      </span>
+    );
+  }
+
+  if (project.evaluationStatus === "DRAFT") {
+    return (
+      <span className="inline-flex items-center gap-1 rounded-none border border-amber-300 bg-amber-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-amber-800 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
+        <Clock className="h-3 w-3" />
+        <span>Draft In Progress</span>
+      </span>
+    );
+  }
+
+  return (
+    <span className="rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+      Pending Review
+    </span>
+  );
+}
+
 export function JudgePortal({
   eventId,
-  eventSlug,
+  eventSlug: _eventSlug,
   eventTitle,
   criteria,
   projects: initialProjects,
-  currentJudgeId,
+  currentJudgeId: _currentJudgeId,
 }: Readonly<JudgePortalProps>): React.JSX.Element {
   const [projects, setProjects] =
     useState<ReadonlyArray<JudgePortalProjectItem>>(initialProjects);
@@ -255,40 +287,37 @@ export function JudgePortal({
               const isCompleted = project.evaluationStatus === "COMPLETED";
               const isDraft = project.evaluationStatus === "DRAFT";
 
+              let cardBorderClass = "border-slate-300 dark:border-slate-800";
+              let buttonClass =
+                "border border-slate-900 bg-slate-900 text-white hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200";
+              let buttonLabel = "Evaluate Project";
+
+              if (isCompleted) {
+                cardBorderClass =
+                  "border-emerald-300/80 dark:border-emerald-900/60";
+                buttonClass =
+                  "border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700";
+                buttonLabel = "Review / Edit Scorecard";
+              } else if (isDraft) {
+                cardBorderClass =
+                  "border-amber-300/80 dark:border-amber-900/60";
+                buttonClass =
+                  "border border-amber-600 bg-amber-600 text-white hover:bg-amber-700 dark:border-amber-500 dark:bg-amber-500 dark:text-slate-950";
+                buttonLabel = "Resume Evaluation";
+              }
+
               return (
                 <div
                   key={project.id}
                   className={cn(
                     "flex flex-col justify-between rounded-none border bg-white p-5 shadow-xs transition-all hover:border-slate-400 hover:shadow-md dark:bg-slate-900",
-                    isCompleted
-                      ? "border-emerald-300/80 dark:border-emerald-900/60"
-                      : isDraft
-                        ? "border-amber-300/80 dark:border-amber-900/60"
-                        : "border-slate-300 dark:border-slate-800"
+                    cardBorderClass
                   )}
                 >
                   <div className="space-y-3">
                     {/* Status Badge Row */}
                     <div className="flex items-center justify-between gap-2">
-                      {isCompleted ? (
-                        <span className="inline-flex items-center gap-1 rounded-none border border-emerald-300 bg-emerald-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
-                          <CheckCircle2 className="h-3 w-3" />
-                          <span>
-                            Evaluated (
-                            {project.existingEvaluation?.compositeScore.toFixed(2)}
-                            )
-                          </span>
-                        </span>
-                      ) : isDraft ? (
-                        <span className="inline-flex items-center gap-1 rounded-none border border-amber-300 bg-amber-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-amber-800 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
-                          <Clock className="h-3 w-3" />
-                          <span>Draft In Progress</span>
-                        </span>
-                      ) : (
-                        <span className="rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
-                          Pending Review
-                        </span>
-                      )}
+                      <ProjectStatusBadge project={project} />
 
                       <span className="font-mono text-[10px] font-bold text-slate-400">
                         {project.trackTags[0] || "General Track"}
@@ -370,18 +399,10 @@ export function JudgePortal({
                       onClick={() => setSelectedProject(project)}
                       className={cn(
                         "w-full rounded-none px-4 py-2 font-mono text-xs font-black uppercase tracking-wider transition-all",
-                        isCompleted
-                          ? "border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700"
-                          : isDraft
-                            ? "border border-amber-600 bg-amber-600 text-white hover:bg-amber-700 dark:border-amber-500 dark:bg-amber-500 dark:text-slate-950"
-                            : "border border-slate-900 bg-slate-900 text-white hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                        buttonClass
                       )}
                     >
-                      {isCompleted
-                        ? "Review / Edit Scorecard"
-                        : isDraft
-                          ? "Resume Evaluation"
-                          : "Evaluate Project"}
+                      {buttonLabel}
                     </button>
                   </div>
                 </div>

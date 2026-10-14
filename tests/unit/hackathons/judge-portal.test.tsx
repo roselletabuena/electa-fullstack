@@ -213,7 +213,10 @@ describe("JudgePortal Component", () => {
       name: /evaluate project|resume evaluation|review \/ edit/i,
     });
     // The second project is EcoTrack IoT
-    fireEvent.click(evaluateBtns[1]);
+    const targetBtn = evaluateBtns[1];
+    expect(targetBtn).toBeDefined();
+    if (!targetBtn) throw new Error("Evaluate button not found");
+    fireEvent.click(targetBtn);
 
     expect(screen.getByTestId("mock-scorecard-modal")).toBeInTheDocument();
     expect(

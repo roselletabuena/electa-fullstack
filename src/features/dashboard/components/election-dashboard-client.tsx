@@ -21,7 +21,7 @@ export interface ElectionDashboardClientProps {
   offices: OfficeTallyDto[];
   user: {
     userId: string;
-    email?: string;
+    email?: string | undefined;
   };
 }
 

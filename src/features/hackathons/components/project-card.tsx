@@ -7,10 +7,10 @@ import { PeoplesChoiceVoteButton } from "./peoples-choice-vote-button";
 
 export interface ProjectCardProps {
   readonly submission: ProjectSubmissionDto;
-  readonly className?: string;
-  readonly isVotingOpen?: boolean;
-  readonly initialHasVoted?: boolean;
-  readonly onVoteSuccess?: ((totalVotes: number) => void);
+  readonly className?: string | undefined;
+  readonly isVotingOpen?: boolean | undefined;
+  readonly initialHasVoted?: boolean | undefined;
+  readonly onVoteSuccess?: ((totalVotes: number) => void) | undefined;
 }
 
 function getStatusBadgeClasses(status: ProjectSubmissionDto["status"]): string {

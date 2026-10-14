@@ -1,5 +1,5 @@
-import React from "react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
+
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
 import { MultiOfficeBallot } from "@/features/voting/components/multi-office-ballot";
 import { BallotReceiptCard } from "@/features/voting/components/ballot-receipt-card";

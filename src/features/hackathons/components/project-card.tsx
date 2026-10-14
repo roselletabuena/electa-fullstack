@@ -9,6 +9,19 @@ export interface ProjectCardProps {
   readonly className?: string | undefined;
 }
 
+function getStatusBadgeClasses(status: ProjectSubmissionDto["status"]): string {
+  switch (status) {
+    case "ACCEPTED":
+      return "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800";
+    case "UNDER_REVIEW":
+      return "bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800";
+    case "REJECTED":
+      return "bg-rose-50 text-rose-800 border-rose-300 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800";
+    default:
+      return "bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700";
+  }
+}
+
 /**
  * Renders a zero-radius brutalist project card showcasing hackathon deliverables,
  * track tags, team members, and external link chips.
@@ -58,15 +71,9 @@ export function ProjectCard({ submission, className }: Readonly<ProjectCardProps
           </div>
 
           <span
-            className={`font-mono text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border ${
-              status === "ACCEPTED"
-                ? "bg-emerald-50 text-emerald-800 border-emerald-300 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800"
-                : status === "UNDER_REVIEW"
-                  ? "bg-amber-50 text-amber-800 border-amber-300 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800"
-                  : status === "REJECTED"
-                    ? "bg-rose-50 text-rose-800 border-rose-300 dark:bg-rose-950/60 dark:text-rose-300 dark:border-rose-800"
-                    : "bg-slate-100 text-slate-700 border-slate-300 dark:bg-slate-800 dark:text-slate-300 dark:border-slate-700"
-            }`}
+            className={`font-mono text-[10px] font-bold tracking-widest uppercase px-2 py-0.5 border ${getStatusBadgeClasses(
+              status
+            )}`}
           >
             {status}
           </span>

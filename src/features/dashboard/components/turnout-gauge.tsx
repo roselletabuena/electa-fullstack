@@ -6,7 +6,7 @@ export interface TurnoutGaugeProps {
   className?: string;
 }
 
-export function TurnoutGauge({ metrics, className = "" }: TurnoutGaugeProps): React.JSX.Element {
+export function TurnoutGauge({ metrics, className = "" }: Readonly<TurnoutGaugeProps>): React.JSX.Element {
   const {
     totalWhitelistedVoters,
     recordedParticipations,

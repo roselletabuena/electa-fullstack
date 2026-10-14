@@ -3,6 +3,7 @@
 import React, { useTransition } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { ArrowLeft, RefreshCw } from "lucide-react";
 import { TurnoutGauge } from "./turnout-gauge";
 import { ElectionAuditPanel } from "./election-audit-panel";
 import type { TurnoutMetricsDto, OfficeTallyDto } from "../types/turnout-audit";
@@ -20,7 +21,7 @@ export interface ElectionDashboardClientProps {
   offices: OfficeTallyDto[];
   user: {
     userId: string;
-    email?: string | undefined;
+    email?: string;
   };
 }
 
@@ -48,9 +49,10 @@ export function ElectionDashboardClient({
             <div className="flex items-center gap-2">
               <Link
                 href={`/events/${event.slug}`}
-                className="text-xs font-bold uppercase tracking-wider text-sky-700 hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-300"
+                className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-wider text-sky-700 hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-300"
               >
-                ← Back to Event Overview
+                <ArrowLeft className="h-3.5 w-3.5" aria-hidden="true" />
+                Back to Event Overview
               </Link>
             </div>
             <h1 className="text-2xl font-black tracking-tight text-slate-900 dark:text-slate-100 font-heading">
@@ -67,9 +69,10 @@ export function ElectionDashboardClient({
               data-testid="refresh-metrics-button"
               disabled={isPending}
               onClick={handleRefresh}
-              className="border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 rounded-none cursor-pointer disabled:opacity-50"
+              className="inline-flex items-center gap-1.5 border border-slate-300 bg-white px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700 rounded-none cursor-pointer disabled:opacity-50"
             >
-              {isPending ? "Refreshing..." : "↻ Refresh Live Data"}
+              <RefreshCw className={`h-3.5 w-3.5 ${isPending ? "animate-spin" : ""}`} aria-hidden="true" />
+              {isPending ? "Refreshing..." : "Refresh Live Data"}
             </button>
           </div>
         </div>

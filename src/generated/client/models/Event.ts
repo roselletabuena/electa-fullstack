@@ -95,6 +95,7 @@ export type EventCountAggregateOutputType = {
   takeRatePercentage: number
   organizerId: number
   archetype: number
+  allowedEmailDomains: number
   createdAt: number
   updatedAt: number
   _all: number
@@ -170,6 +171,7 @@ export type EventCountAggregateInputType = {
   takeRatePercentage?: true
   organizerId?: true
   archetype?: true
+  allowedEmailDomains?: true
   createdAt?: true
   updatedAt?: true
   _all?: true
@@ -278,6 +280,7 @@ export type EventGroupByOutputType = {
   takeRatePercentage: runtime.Decimal
   organizerId: string
   archetype: $Enums.EventArchetype
+  allowedEmailDomains: string[]
   createdAt: Date
   updatedAt: Date
   _count: EventCountAggregateOutputType | null
@@ -322,6 +325,7 @@ export type EventWhereInput = {
   takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeFilter<"Event"> | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   contestants?: Prisma.ContestantListRelationFilter
@@ -331,6 +335,7 @@ export type EventWhereInput = {
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
+  studentRoster?: Prisma.StudentRosterEntryListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
   projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
@@ -355,6 +360,7 @@ export type EventOrderByWithRelationInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   contestants?: Prisma.ContestantOrderByRelationAggregateInput
@@ -364,6 +370,7 @@ export type EventOrderByWithRelationInput = {
   auditLogs?: Prisma.EventAuditLogOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
   ballotSubmissions?: Prisma.BallotSubmissionOrderByRelationAggregateInput
+  studentRoster?: Prisma.StudentRosterEntryOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   payoutRequests?: Prisma.PayoutRequestOrderByRelationAggregateInput
   projectSubmissions?: Prisma.ProjectSubmissionOrderByRelationAggregateInput
@@ -391,6 +398,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeFilter<"Event"> | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   contestants?: Prisma.ContestantListRelationFilter
@@ -400,6 +408,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
+  studentRoster?: Prisma.StudentRosterEntryListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
   projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
@@ -424,6 +433,7 @@ export type EventOrderByWithAggregationInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.EventCountOrderByAggregateInput
@@ -453,6 +463,7 @@ export type EventScalarWhereWithAggregatesInput = {
   takeRatePercentage?: Prisma.DecimalWithAggregatesFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringWithAggregatesFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeWithAggregatesFilter<"Event"> | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
 }
@@ -474,6 +485,7 @@ export type EventCreateInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -483,6 +495,7 @@ export type EventCreateInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -507,6 +520,7 @@ export type EventUncheckedCreateInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -516,6 +530,7 @@ export type EventUncheckedCreateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -540,6 +555,7 @@ export type EventUpdateInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -549,6 +565,7 @@ export type EventUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -573,6 +590,7 @@ export type EventUncheckedUpdateInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -582,6 +600,7 @@ export type EventUncheckedUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -606,6 +625,7 @@ export type EventCreateManyInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
 }
@@ -627,6 +647,7 @@ export type EventUpdateManyMutationInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
@@ -648,8 +669,17 @@ export type EventUncheckedUpdateManyInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+}
+
+export type StringNullableListFilter<$PrismaModel = never> = {
+  equals?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel> | null
+  has?: string | Prisma.StringFieldRefInput<$PrismaModel> | null
+  hasEvery?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  hasSome?: string[] | Prisma.ListStringFieldRefInput<$PrismaModel>
+  isEmpty?: boolean
 }
 
 export type EventCountOrderByAggregateInput = {
@@ -669,6 +699,7 @@ export type EventCountOrderByAggregateInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -730,6 +761,10 @@ export type EventScalarRelationFilter = {
   isNot?: Prisma.EventWhereInput
 }
 
+export type EventCreateallowedEmailDomainsInput = {
+  set: string[]
+}
+
 export type StringFieldUpdateOperationsInput = {
   set?: string
 }
@@ -768,6 +803,11 @@ export type DecimalFieldUpdateOperationsInput = {
 
 export type EnumEventArchetypeFieldUpdateOperationsInput = {
   set?: $Enums.EventArchetype
+}
+
+export type EventUpdateallowedEmailDomainsInput = {
+  set?: string[]
+  push?: string | string[]
 }
 
 export type EventCreateNestedOneWithoutDivisionsInput = {
@@ -924,6 +964,20 @@ export type EventUpdateOneRequiredWithoutRubricCriteriaNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutRubricCriteriaInput, Prisma.EventUpdateWithoutRubricCriteriaInput>, Prisma.EventUncheckedUpdateWithoutRubricCriteriaInput>
 }
 
+export type EventCreateNestedOneWithoutStudentRosterInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutStudentRosterInput, Prisma.EventUncheckedCreateWithoutStudentRosterInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutStudentRosterInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutStudentRosterNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutStudentRosterInput, Prisma.EventUncheckedCreateWithoutStudentRosterInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutStudentRosterInput
+  upsert?: Prisma.EventUpsertWithoutStudentRosterInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutStudentRosterInput, Prisma.EventUpdateWithoutStudentRosterInput>, Prisma.EventUncheckedUpdateWithoutStudentRosterInput>
+}
+
 export type EventCreateNestedOneWithoutJudgeEvaluationsInput = {
   create?: Prisma.XOR<Prisma.EventCreateWithoutJudgeEvaluationsInput, Prisma.EventUncheckedCreateWithoutJudgeEvaluationsInput>
   connectOrCreate?: Prisma.EventCreateOrConnectWithoutJudgeEvaluationsInput
@@ -955,6 +1009,7 @@ export type EventCreateWithoutDivisionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -963,6 +1018,7 @@ export type EventCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -987,6 +1043,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -995,6 +1052,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1035,6 +1093,7 @@ export type EventUpdateWithoutDivisionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1043,6 +1102,7 @@ export type EventUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1067,6 +1127,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1075,6 +1136,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1099,6 +1161,7 @@ export type EventCreateWithoutPositionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1107,6 +1170,7 @@ export type EventCreateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1131,6 +1195,7 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -1139,6 +1204,7 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1179,6 +1245,7 @@ export type EventUpdateWithoutPositionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1187,6 +1254,7 @@ export type EventUpdateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1211,6 +1279,7 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1219,6 +1288,7 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1243,6 +1313,7 @@ export type EventCreateWithoutContestantsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
@@ -1251,6 +1322,7 @@ export type EventCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1275,6 +1347,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
@@ -1283,6 +1356,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1323,6 +1397,7 @@ export type EventUpdateWithoutContestantsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
@@ -1331,6 +1406,7 @@ export type EventUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1355,6 +1431,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
@@ -1363,6 +1440,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1387,6 +1465,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1395,6 +1474,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1419,6 +1499,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -1427,6 +1508,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1467,6 +1549,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1475,6 +1558,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1499,6 +1583,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1507,6 +1592,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1531,6 +1617,7 @@ export type EventCreateWithoutAuditLogsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1539,6 +1626,7 @@ export type EventCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1563,6 +1651,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -1571,6 +1660,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1611,6 +1701,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1619,6 +1710,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1643,6 +1735,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1651,6 +1744,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1675,6 +1769,7 @@ export type EventCreateWithoutVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1683,6 +1778,7 @@ export type EventCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1707,6 +1803,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -1715,6 +1812,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1755,6 +1853,7 @@ export type EventUpdateWithoutVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1763,6 +1862,7 @@ export type EventUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1787,6 +1887,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1795,6 +1896,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1819,6 +1921,7 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1827,6 +1930,7 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -1851,6 +1955,7 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -1859,6 +1964,7 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -1899,6 +2005,7 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -1907,6 +2014,7 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -1931,6 +2039,7 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -1939,6 +2048,7 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -1963,6 +2073,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -1972,6 +2083,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
@@ -1995,6 +2107,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -2004,6 +2117,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
@@ -2043,6 +2157,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -2052,6 +2167,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
@@ -2075,6 +2191,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -2084,6 +2201,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
@@ -2107,6 +2225,7 @@ export type EventCreateWithoutPayoutRequestsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -2116,6 +2235,7 @@ export type EventCreateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
@@ -2139,6 +2259,7 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -2148,6 +2269,7 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
@@ -2187,6 +2309,7 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -2196,6 +2319,7 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
@@ -2219,6 +2343,7 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -2228,6 +2353,7 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
@@ -2251,6 +2377,7 @@ export type EventCreateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -2260,6 +2387,7 @@ export type EventCreateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
@@ -2283,6 +2411,7 @@ export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -2292,6 +2421,7 @@ export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
@@ -2331,6 +2461,7 @@ export type EventUpdateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -2340,6 +2471,7 @@ export type EventUpdateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
@@ -2363,6 +2495,7 @@ export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -2372,6 +2505,7 @@ export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
@@ -2395,6 +2529,7 @@ export type EventCreateWithoutRubricCriteriaInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -2404,6 +2539,7 @@ export type EventCreateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -2427,6 +2563,7 @@ export type EventUncheckedCreateWithoutRubricCriteriaInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -2436,6 +2573,7 @@ export type EventUncheckedCreateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -2475,6 +2613,7 @@ export type EventUpdateWithoutRubricCriteriaInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -2484,6 +2623,7 @@ export type EventUpdateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -2507,6 +2647,159 @@ export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutStudentRosterInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutStudentRosterInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutStudentRosterInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutStudentRosterInput, Prisma.EventUncheckedCreateWithoutStudentRosterInput>
+}
+
+export type EventUpsertWithoutStudentRosterInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutStudentRosterInput, Prisma.EventUncheckedUpdateWithoutStudentRosterInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutStudentRosterInput, Prisma.EventUncheckedCreateWithoutStudentRosterInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutStudentRosterInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutStudentRosterInput, Prisma.EventUncheckedUpdateWithoutStudentRosterInput>
+}
+
+export type EventUpdateWithoutStudentRosterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutStudentRosterInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -2519,6 +2812,7 @@ export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
 }
 
@@ -2539,6 +2833,7 @@ export type EventCreateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
@@ -2548,6 +2843,7 @@ export type EventCreateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -2571,6 +2867,7 @@ export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
@@ -2580,6 +2877,7 @@ export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -2619,6 +2917,7 @@ export type EventUpdateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
@@ -2628,6 +2927,7 @@ export type EventUpdateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -2651,6 +2951,7 @@ export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
@@ -2660,6 +2961,7 @@ export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -2679,6 +2981,7 @@ export type EventCountOutputType = {
   auditLogs: number
   votes: number
   ballotSubmissions: number
+  studentRoster: number
   paymentTransactions: number
   payoutRequests: number
   projectSubmissions: number
@@ -2694,6 +2997,7 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs
   votes?: boolean | EventCountOutputTypeCountVotesArgs
   ballotSubmissions?: boolean | EventCountOutputTypeCountBallotSubmissionsArgs
+  studentRoster?: boolean | EventCountOutputTypeCountStudentRosterArgs
   paymentTransactions?: boolean | EventCountOutputTypeCountPaymentTransactionsArgs
   payoutRequests?: boolean | EventCountOutputTypeCountPayoutRequestsArgs
   projectSubmissions?: boolean | EventCountOutputTypeCountProjectSubmissionsArgs
@@ -2763,6 +3067,13 @@ export type EventCountOutputTypeCountBallotSubmissionsArgs<ExtArgs extends runti
 /**
  * EventCountOutputType without action
  */
+export type EventCountOutputTypeCountStudentRosterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.StudentRosterEntryWhereInput
+}
+
+/**
+ * EventCountOutputType without action
+ */
 export type EventCountOutputTypeCountPaymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentTransactionWhereInput
 }
@@ -2813,6 +3124,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
   contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>
@@ -2822,6 +3134,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
+  studentRoster?: boolean | Prisma.Event$studentRosterArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
   projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
@@ -2847,6 +3160,7 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["event"]>
@@ -2868,6 +3182,7 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }, ExtArgs["result"]["event"]>
@@ -2889,11 +3204,12 @@ export type EventSelectScalar = {
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "isFreeVotingOnly" | "dailyFreeVoteLimit" | "takeRatePercentage" | "organizerId" | "archetype" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "isFreeVotingOnly" | "dailyFreeVoteLimit" | "takeRatePercentage" | "organizerId" | "archetype" | "allowedEmailDomains" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>
   divisions?: boolean | Prisma.Event$divisionsArgs<ExtArgs>
@@ -2902,6 +3218,7 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
+  studentRoster?: boolean | Prisma.Event$studentRosterArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
   projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
@@ -2922,6 +3239,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     auditLogs: Prisma.$EventAuditLogPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
     ballotSubmissions: Prisma.$BallotSubmissionPayload<ExtArgs>[]
+    studentRoster: Prisma.$StudentRosterEntryPayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     payoutRequests: Prisma.$PayoutRequestPayload<ExtArgs>[]
     projectSubmissions: Prisma.$ProjectSubmissionPayload<ExtArgs>[]
@@ -2945,6 +3263,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     takeRatePercentage: runtime.Decimal
     organizerId: string
     archetype: $Enums.EventArchetype
+    allowedEmailDomains: string[]
     createdAt: Date
     updatedAt: Date
   }, ExtArgs["result"]["event"]>
@@ -3348,6 +3667,7 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   auditLogs<T extends Prisma.Event$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Event$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ballotSubmissions<T extends Prisma.Event$ballotSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$ballotSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  studentRoster<T extends Prisma.Event$studentRosterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$studentRosterArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentRosterEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Event$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payoutRequests<T extends Prisma.Event$payoutRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$payoutRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   projectSubmissions<T extends Prisma.Event$projectSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$projectSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -3398,6 +3718,7 @@ export interface EventFieldRefs {
   readonly takeRatePercentage: Prisma.FieldRef<"Event", 'Decimal'>
   readonly organizerId: Prisma.FieldRef<"Event", 'String'>
   readonly archetype: Prisma.FieldRef<"Event", 'EventArchetype'>
+  readonly allowedEmailDomains: Prisma.FieldRef<"Event", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"Event", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Event", 'DateTime'>
 }
@@ -3958,6 +4279,30 @@ export type Event$ballotSubmissionsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.BallotSubmissionScalarFieldEnum | Prisma.BallotSubmissionScalarFieldEnum[]
+}
+
+/**
+ * Event.studentRoster
+ */
+export type Event$studentRosterArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the StudentRosterEntry
+   */
+  select?: Prisma.StudentRosterEntrySelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the StudentRosterEntry
+   */
+  omit?: Prisma.StudentRosterEntryOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.StudentRosterEntryInclude<ExtArgs> | null
+  where?: Prisma.StudentRosterEntryWhereInput
+  orderBy?: Prisma.StudentRosterEntryOrderByWithRelationInput | Prisma.StudentRosterEntryOrderByWithRelationInput[]
+  cursor?: Prisma.StudentRosterEntryWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.StudentRosterEntryScalarFieldEnum | Prisma.StudentRosterEntryScalarFieldEnum[]
 }
 
 /**

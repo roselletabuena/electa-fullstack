@@ -414,6 +414,7 @@ export const ModelName = {
   ProjectTrackTag: 'ProjectTrackTag',
   ProjectSubmissionLink: 'ProjectSubmissionLink',
   RubricCriterion: 'RubricCriterion',
+  StudentRosterEntry: 'StudentRosterEntry',
   JudgeEvaluation: 'JudgeEvaluation',
   JudgeScore: 'JudgeScore'
 } as const
@@ -431,7 +432,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "judgeEvaluation" | "judgeScore"
+    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "studentRosterEntry" | "judgeEvaluation" | "judgeScore"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1693,6 +1694,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    StudentRosterEntry: {
+      payload: Prisma.$StudentRosterEntryPayload<ExtArgs>
+      fields: Prisma.StudentRosterEntryFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.StudentRosterEntryFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.StudentRosterEntryFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        findFirst: {
+          args: Prisma.StudentRosterEntryFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.StudentRosterEntryFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        findMany: {
+          args: Prisma.StudentRosterEntryFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>[]
+        }
+        create: {
+          args: Prisma.StudentRosterEntryCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        createMany: {
+          args: Prisma.StudentRosterEntryCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.StudentRosterEntryCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>[]
+        }
+        delete: {
+          args: Prisma.StudentRosterEntryDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        update: {
+          args: Prisma.StudentRosterEntryUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        deleteMany: {
+          args: Prisma.StudentRosterEntryDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.StudentRosterEntryUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.StudentRosterEntryUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>[]
+        }
+        upsert: {
+          args: Prisma.StudentRosterEntryUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$StudentRosterEntryPayload>
+        }
+        aggregate: {
+          args: Prisma.StudentRosterEntryAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateStudentRosterEntry>
+        }
+        groupBy: {
+          args: Prisma.StudentRosterEntryGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentRosterEntryGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.StudentRosterEntryCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.StudentRosterEntryCountAggregateOutputType> | number
+        }
+      }
+    }
     JudgeEvaluation: {
       payload: Prisma.$JudgeEvaluationPayload<ExtArgs>
       fields: Prisma.JudgeEvaluationFieldRefs
@@ -1897,6 +1972,7 @@ export const EventScalarFieldEnum = {
   takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
   archetype: 'archetype',
+  allowedEmailDomains: 'allowedEmailDomains',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -2158,6 +2234,18 @@ export const RubricCriterionScalarFieldEnum = {
 } as const
 
 export type RubricCriterionScalarFieldEnum = (typeof RubricCriterionScalarFieldEnum)[keyof typeof RubricCriterionScalarFieldEnum]
+
+
+export const StudentRosterEntryScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  studentIdHash: 'studentIdHash',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentRosterEntryScalarFieldEnum = (typeof StudentRosterEntryScalarFieldEnum)[keyof typeof StudentRosterEntryScalarFieldEnum]
 
 
 export const JudgeEvaluationScalarFieldEnum = {
@@ -2681,6 +2769,7 @@ export type GlobalOmitConfig = {
   projectTrackTag?: Prisma.ProjectTrackTagOmit
   projectSubmissionLink?: Prisma.ProjectSubmissionLinkOmit
   rubricCriterion?: Prisma.RubricCriterionOmit
+  studentRosterEntry?: Prisma.StudentRosterEntryOmit
   judgeEvaluation?: Prisma.JudgeEvaluationOmit
   judgeScore?: Prisma.JudgeScoreOmit
 }

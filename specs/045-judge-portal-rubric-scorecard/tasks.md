@@ -70,11 +70,11 @@ flowchart TD
 ### Phase 2: Convergence, Quality & Verification Gates
 
 #### Task 5: End-to-End Verification & Quality Gates
-- [ ] Run full test suite: `npm run test:unit`.
-- [ ] Run strict typecheck: `npm run typecheck`.
-- [ ] Run linter: `npm run lint`.
-- [ ] Run Constitution check (§I–§VI) and Graphify auto-sync.
-- [ ] Atomic Commit: `chore(hackathons): verify all judging portal quality gates and ast sync`
+- [x] Run full test suite: `npm run test:unit`.
+- [x] Run strict typecheck: `npm run typecheck`.
+- [x] Run linter: `npm run lint`.
+- [x] Run Constitution check (§I–§VI) and Graphify auto-sync.
+- [x] Atomic Commit: `chore(hackathons): verify all judging portal quality gates and ast sync`
 
 ---
 

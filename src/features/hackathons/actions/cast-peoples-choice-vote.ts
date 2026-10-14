@@ -1,6 +1,7 @@
 "use server";
 
 import { cookies } from "next/headers";
+import { env } from "@/env";
 import { getSession } from "@/lib/auth/get-session";
 import {
   CastPeoplesChoiceVoteSchema,
@@ -52,7 +53,7 @@ export async function castPeoplesChoiceVoteAction(
       voterId = `att_${crypto.randomUUID()}`;
       cookieStore.set(ATTENDEE_COOKIE_NAME, voterId, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: env.NODE_ENV === "production",
         sameSite: "lax",
         path: "/",
         maxAge: 60 * 60 * 24 * 30, // 30 days

@@ -407,6 +407,8 @@ export const ModelName = {
   EventAuditLog: 'EventAuditLog',
   Vote: 'Vote',
   BallotSubmission: 'BallotSubmission',
+  VoterParticipation: 'VoterParticipation',
+  BallotSelection: 'BallotSelection',
   PaymentTransaction: 'PaymentTransaction',
   PayoutRequest: 'PayoutRequest',
   ProjectSubmission: 'ProjectSubmission',
@@ -432,7 +434,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "studentRosterEntry" | "judgeEvaluation" | "judgeScore"
+    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "voterParticipation" | "ballotSelection" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "studentRosterEntry" | "judgeEvaluation" | "judgeScore"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -1173,6 +1175,154 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         count: {
           args: Prisma.BallotSubmissionCountArgs<ExtArgs>
           result: runtime.Types.Utils.Optional<Prisma.BallotSubmissionCountAggregateOutputType> | number
+        }
+      }
+    }
+    VoterParticipation: {
+      payload: Prisma.$VoterParticipationPayload<ExtArgs>
+      fields: Prisma.VoterParticipationFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.VoterParticipationFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.VoterParticipationFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        findFirst: {
+          args: Prisma.VoterParticipationFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.VoterParticipationFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        findMany: {
+          args: Prisma.VoterParticipationFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>[]
+        }
+        create: {
+          args: Prisma.VoterParticipationCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        createMany: {
+          args: Prisma.VoterParticipationCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.VoterParticipationCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>[]
+        }
+        delete: {
+          args: Prisma.VoterParticipationDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        update: {
+          args: Prisma.VoterParticipationUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        deleteMany: {
+          args: Prisma.VoterParticipationDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.VoterParticipationUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.VoterParticipationUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>[]
+        }
+        upsert: {
+          args: Prisma.VoterParticipationUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$VoterParticipationPayload>
+        }
+        aggregate: {
+          args: Prisma.VoterParticipationAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateVoterParticipation>
+        }
+        groupBy: {
+          args: Prisma.VoterParticipationGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoterParticipationGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.VoterParticipationCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.VoterParticipationCountAggregateOutputType> | number
+        }
+      }
+    }
+    BallotSelection: {
+      payload: Prisma.$BallotSelectionPayload<ExtArgs>
+      fields: Prisma.BallotSelectionFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.BallotSelectionFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.BallotSelectionFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        findFirst: {
+          args: Prisma.BallotSelectionFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.BallotSelectionFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        findMany: {
+          args: Prisma.BallotSelectionFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>[]
+        }
+        create: {
+          args: Prisma.BallotSelectionCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        createMany: {
+          args: Prisma.BallotSelectionCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.BallotSelectionCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>[]
+        }
+        delete: {
+          args: Prisma.BallotSelectionDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        update: {
+          args: Prisma.BallotSelectionUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        deleteMany: {
+          args: Prisma.BallotSelectionDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.BallotSelectionUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.BallotSelectionUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>[]
+        }
+        upsert: {
+          args: Prisma.BallotSelectionUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$BallotSelectionPayload>
+        }
+        aggregate: {
+          args: Prisma.BallotSelectionAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateBallotSelection>
+        }
+        groupBy: {
+          args: Prisma.BallotSelectionGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BallotSelectionGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.BallotSelectionCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.BallotSelectionCountAggregateOutputType> | number
         }
       }
     }
@@ -2115,6 +2265,28 @@ export const BallotSubmissionScalarFieldEnum = {
 export type BallotSubmissionScalarFieldEnum = (typeof BallotSubmissionScalarFieldEnum)[keyof typeof BallotSubmissionScalarFieldEnum]
 
 
+export const VoterParticipationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  votedAt: 'votedAt'
+} as const
+
+export type VoterParticipationScalarFieldEnum = (typeof VoterParticipationScalarFieldEnum)[keyof typeof VoterParticipationScalarFieldEnum]
+
+
+export const BallotSelectionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  officeId: 'officeId',
+  candidateId: 'candidateId',
+  receiptHash: 'receiptHash',
+  createdAt: 'createdAt'
+} as const
+
+export type BallotSelectionScalarFieldEnum = (typeof BallotSelectionScalarFieldEnum)[keyof typeof BallotSelectionScalarFieldEnum]
+
+
 export const PaymentTransactionScalarFieldEnum = {
   id: 'id',
   referenceNumber: 'referenceNumber',
@@ -2762,6 +2934,8 @@ export type GlobalOmitConfig = {
   eventAuditLog?: Prisma.EventAuditLogOmit
   vote?: Prisma.VoteOmit
   ballotSubmission?: Prisma.BallotSubmissionOmit
+  voterParticipation?: Prisma.VoterParticipationOmit
+  ballotSelection?: Prisma.BallotSelectionOmit
   paymentTransaction?: Prisma.PaymentTransactionOmit
   payoutRequest?: Prisma.PayoutRequestOmit
   projectSubmission?: Prisma.ProjectSubmissionOmit

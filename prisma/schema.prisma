@@ -63,6 +63,7 @@ model Event {
   takeRatePercentage  Decimal                @default(12.00) @db.Decimal(5, 2)
   organizerId         String
   archetype           EventArchetype         @default(PAGEANT)
+  allowedEmailDomains String[]               @default([])
   createdAt           DateTime               @default(now())
   updatedAt           DateTime               @updatedAt
 
@@ -73,6 +74,7 @@ model Event {
   auditLogs           EventAuditLog[]
   votes               Vote[]
   ballotSubmissions   BallotSubmission[]
+  studentRoster       StudentRosterEntry[]
   paymentTransactions PaymentTransaction[]
   payoutRequests      PayoutRequest[]
   projectSubmissions  ProjectSubmission[]
@@ -463,6 +465,23 @@ model RubricCriterion {
 
   @@index([eventId])
   @@index([eventId, displayOrder])
+}
+
+model StudentRosterEntry {
+  id            String   @id @default(uuid())
+  eventId       String
+  studentIdHash String
+  email         String
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  event         Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, email])
+  @@unique([eventId, studentIdHash])
+  @@index([eventId])
+  @@index([studentIdHash])
+  @@index([email])
 }
 
 model JudgeEvaluation {

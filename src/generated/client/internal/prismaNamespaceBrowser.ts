@@ -68,6 +68,7 @@ export const ModelName = {
   ProjectTrackTag: 'ProjectTrackTag',
   ProjectSubmissionLink: 'ProjectSubmissionLink',
   RubricCriterion: 'RubricCriterion',
+  StudentRosterEntry: 'StudentRosterEntry',
   JudgeEvaluation: 'JudgeEvaluation',
   JudgeScore: 'JudgeScore'
 } as const
@@ -105,6 +106,7 @@ export const EventScalarFieldEnum = {
   takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
   archetype: 'archetype',
+  allowedEmailDomains: 'allowedEmailDomains',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
 } as const
@@ -366,6 +368,18 @@ export const RubricCriterionScalarFieldEnum = {
 } as const
 
 export type RubricCriterionScalarFieldEnum = (typeof RubricCriterionScalarFieldEnum)[keyof typeof RubricCriterionScalarFieldEnum]
+
+
+export const StudentRosterEntryScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  studentIdHash: 'studentIdHash',
+  email: 'email',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type StudentRosterEntryScalarFieldEnum = (typeof StudentRosterEntryScalarFieldEnum)[keyof typeof StudentRosterEntryScalarFieldEnum]
 
 
 export const JudgeEvaluationScalarFieldEnum = {

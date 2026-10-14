@@ -103,6 +103,11 @@ export type ProjectSubmissionLink = Prisma.ProjectSubmissionLinkModel
  */
 export type RubricCriterion = Prisma.RubricCriterionModel
 /**
+ * Model StudentRosterEntry
+ * 
+ */
+export type StudentRosterEntry = Prisma.StudentRosterEntryModel
+/**
  * Model JudgeEvaluation
  * 
  */

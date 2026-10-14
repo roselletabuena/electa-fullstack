@@ -73,3 +73,10 @@ export type GetSubmissionsResult =
 export type GetSubmissionResult =
   | { success: true; data: ProjectSubmissionDto }
   | { success: false; error: SubmissionServiceError };
+
+export interface SubmitProjectActionResult {
+  success: boolean;
+  data?: ProjectSubmissionDto | undefined;
+  error?: string | undefined;
+  fieldErrors?: Record<string, string> | undefined;
+}

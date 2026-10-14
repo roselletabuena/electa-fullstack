@@ -21,6 +21,23 @@ export interface PeoplesChoiceVoteButtonProps {
  * 1-Tap People's Choice voting button for Hackathon project cards.
  * Enforces strict zero-radius brutalist aesthetics and dual-theme accessibility.
  */
+function getButtonClasses(hasVoted: boolean, isVotingOpen: boolean): string {
+  if (hasVoted) {
+    return "border-sky-600 bg-sky-600 text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 font-black cursor-default";
+  }
+  if (isVotingOpen) {
+    return "border-slate-300 bg-white text-slate-800 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white";
+  }
+  return "border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600 cursor-not-allowed";
+}
+
+function getBadgeClasses(hasVoted: boolean): string {
+  if (hasVoted) {
+    return "border-white/30 bg-white/20 text-white dark:border-slate-900/30 dark:bg-slate-900/20 dark:text-slate-950";
+  }
+  return "border-slate-200 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
+}
+
 export function PeoplesChoiceVoteButton({
   eventId,
   submissionId,
@@ -74,11 +91,15 @@ export function PeoplesChoiceVoteButton({
     }
   };
 
-  const buttonClasses = hasVoted
-    ? "border-sky-600 bg-sky-600 text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 font-black cursor-default"
-    : isVotingOpen
-    ? "border-slate-300 bg-white text-slate-800 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10 dark:hover:text-white"
-    : "border-slate-200 bg-slate-100 text-slate-400 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-600 cursor-not-allowed";
+  const buttonClasses = getButtonClasses(hasVoted, isVotingOpen);
+  const badgeClasses = getBadgeClasses(hasVoted);
+
+  let iconNode = <Trophy className="size-3.5 text-amber-500 dark:text-amber-400" />;
+  if (isPending) {
+    iconNode = <Loader2 className="size-3.5 animate-spin text-current" />;
+  } else if (hasVoted) {
+    iconNode = <Check className="size-3.5 text-current stroke-[3]" />;
+  }
 
   return (
     <button
@@ -90,24 +111,14 @@ export function PeoplesChoiceVoteButton({
       data-testid={`peoples-choice-vote-btn-${submissionId}`}
       className={`inline-flex items-center gap-2 rounded-none px-3.5 py-1.5 font-mono text-xs font-bold uppercase tracking-wider transition ${buttonClasses} ${className}`}
     >
-      {isPending ? (
-        <Loader2 className="size-3.5 animate-spin text-current" />
-      ) : hasVoted ? (
-        <Check className="size-3.5 text-current stroke-[3]" />
-      ) : (
-        <Trophy className="size-3.5 text-amber-500 dark:text-amber-400" />
-      )}
+      {iconNode}
 
       <span>{hasVoted ? "Voted" : "Vote People's Choice"}</span>
 
       {voteCount > 0 ? (
         <span
           data-testid={`vote-count-badge-${submissionId}`}
-          className={`ml-1 border px-1.5 py-0.2 font-mono text-[10px] font-extrabold ${
-            hasVoted
-              ? "border-white/30 bg-white/20 text-white dark:border-slate-900/30 dark:bg-slate-900/20 dark:text-slate-950"
-              : "border-slate-200 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
-          }`}
+          className={`ml-1 border px-1.5 py-0.2 font-mono text-[10px] font-extrabold ${badgeClasses}`}
         >
           {voteCount}
         </span>

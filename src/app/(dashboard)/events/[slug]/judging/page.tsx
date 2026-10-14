@@ -109,7 +109,7 @@ export default async function JudgingPage(
     where: {
       eventId: event.id,
       status: {
-        in: ["SUBMITTED", "ACCEPTED", "WINNER"],
+        in: ["SUBMITTED", "UNDER_REVIEW", "ACCEPTED"],
       },
     },
     include: {

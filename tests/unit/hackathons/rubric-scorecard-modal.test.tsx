@@ -95,25 +95,25 @@ describe("RubricScorecardModal Component", () => {
     expect(screen.getByTestId("composite-score")).toHaveTextContent("0.00");
 
     // Click score 8 for Criterion 1 (Technical Complexity 30%)
-    const crit1Score8 = screen.getByRole("button", {
+    const crit1Score8 = screen.getByRole("radio", {
       name: /criterion technical complexity score 8/i,
     });
     fireEvent.click(crit1Score8);
 
     // Click score 9 for Criterion 2 (Impact 30%)
-    const crit2Score9 = screen.getByRole("button", {
+    const crit2Score9 = screen.getByRole("radio", {
       name: /criterion impact & utility score 9/i,
     });
     fireEvent.click(crit2Score9);
 
     // Click score 7 for Criterion 3 (Innovation 20%)
-    const crit3Score7 = screen.getByRole("button", {
+    const crit3Score7 = screen.getByRole("radio", {
       name: /criterion innovation & originality score 7/i,
     });
     fireEvent.click(crit3Score7);
 
     // Click score 10 for Criterion 4 (Presentation 20%)
-    const crit4Score10 = screen.getByRole("button", {
+    const crit4Score10 = screen.getByRole("radio", {
       name: /criterion presentation & demo score 10/i,
     });
     fireEvent.click(crit4Score10);
@@ -134,19 +134,22 @@ describe("RubricScorecardModal Component", () => {
       />
     );
 
-    const radiogroup = screen.getAllByRole("radiogroup")[0];
+    const radiogroups = screen.getAllByRole("radiogroup");
+    const radiogroup = radiogroups[0];
+    expect(radiogroup).toBeDefined();
+    if (!radiogroup) throw new Error("Radiogroup not found");
     radiogroup.focus();
 
     // Press '8'
     fireEvent.keyDown(radiogroup, { key: "8", code: "Digit8" });
-    const score8Btn = screen.getByRole("button", {
+    const score8Btn = screen.getByRole("radio", {
       name: /criterion technical complexity score 8/i,
     });
     expect(score8Btn).toHaveAttribute("aria-checked", "true");
 
     // Press '0' for 10
     fireEvent.keyDown(radiogroup, { key: "0", code: "Digit0" });
-    const score10Btn = screen.getByRole("button", {
+    const score10Btn = screen.getByRole("radio", {
       name: /criterion technical complexity score 10/i,
     });
     expect(score10Btn).toHaveAttribute("aria-checked", "true");
@@ -165,7 +168,7 @@ describe("RubricScorecardModal Component", () => {
     );
 
     // Only score Criterion 1
-    const crit1Score8 = screen.getByRole("button", {
+    const crit1Score8 = screen.getByRole("radio", {
       name: /criterion technical complexity score 8/i,
     });
     fireEvent.click(crit1Score8);
@@ -215,7 +218,7 @@ describe("RubricScorecardModal Component", () => {
       />
     );
 
-    const crit1Score8 = screen.getByRole("button", {
+    const crit1Score8 = screen.getByRole("radio", {
       name: /criterion technical complexity score 8/i,
     });
     fireEvent.click(crit1Score8);
@@ -285,22 +288,22 @@ describe("RubricScorecardModal Component", () => {
 
     // Score all 4
     fireEvent.click(
-      screen.getByRole("button", {
+      screen.getByRole("radio", {
         name: /criterion technical complexity score 8/i,
       })
     );
     fireEvent.click(
-      screen.getByRole("button", {
+      screen.getByRole("radio", {
         name: /criterion impact & utility score 9/i,
       })
     );
     fireEvent.click(
-      screen.getByRole("button", {
+      screen.getByRole("radio", {
         name: /criterion innovation & originality score 7/i,
       })
     );
     fireEvent.click(
-      screen.getByRole("button", {
+      screen.getByRole("radio", {
         name: /criterion presentation & demo score 10/i,
       })
     );

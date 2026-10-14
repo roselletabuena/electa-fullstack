@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo, useRef, useCallback } from "react";
+import React, { useState, useMemo, useRef, useCallback } from "react";
 import { X, ExternalLink, Code2, Video, AlertCircle, Save, Send } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { submitScorecardAction } from "../actions/submit-scorecard";
@@ -54,47 +54,63 @@ export function RubricScorecardModal({
 }: Readonly<RubricScorecardModalProps>): React.JSX.Element | null {
   const localStorageKey = `electa_draft_eval_${eventId}_${project.id}`;
 
-  const [scores, setScores] = useState<Record<string, number>>({});
-  const [notes, setNotes] = useState<string>("");
-  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
-  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
-  const [serverError, setServerError] = useState<string | null>(null);
-
-  const criteriaCardRefs = useRef<Record<string, HTMLDivElement | null>>({});
-
-  // Initialize or restore draft scores
-  useEffect(() => {
-    if (!isOpen) return;
-
+  const [scores, setScores] = useState<Record<string, number>>(() => {
     if (existingEvaluation?.scores?.length) {
       const initialScores: Record<string, number> = {};
       for (const item of existingEvaluation.scores) {
         initialScores[item.criterionId] = item.score;
       }
-      setScores(initialScores);
-      setNotes(existingEvaluation.notes || "");
-      return;
+      return initialScores;
     }
 
-    // Try restoring from localStorage
-    try {
-      const saved = window.localStorage.getItem(localStorageKey);
-      if (saved) {
-        const parsed = JSON.parse(saved) as {
-          scores?: Record<string, number>;
-          notes?: string;
-        };
-        if (parsed.scores) {
-          setScores(parsed.scores);
+    if (typeof window !== "undefined") {
+      try {
+        const saved = window.localStorage.getItem(localStorageKey);
+        if (saved) {
+          const parsed = JSON.parse(saved) as {
+            scores?: Record<string, number>;
+          };
+          if (parsed.scores) {
+            return parsed.scores;
+          }
         }
-        if (typeof parsed.notes === "string") {
-          setNotes(parsed.notes);
-        }
+      } catch {
+        // Ignore localStorage error
       }
-    } catch {
-      // Ignore JSON parse errors in localStorage
     }
-  }, [isOpen, existingEvaluation, localStorageKey]);
+
+    return {};
+  });
+
+  const [notes, setNotes] = useState<string>(() => {
+    if (existingEvaluation?.notes) {
+      return existingEvaluation.notes;
+    }
+
+    if (typeof window !== "undefined") {
+      try {
+        const saved = window.localStorage.getItem(localStorageKey);
+        if (saved) {
+          const parsed = JSON.parse(saved) as {
+            notes?: string;
+          };
+          if (typeof parsed.notes === "string") {
+            return parsed.notes;
+          }
+        }
+      } catch {
+        // Ignore localStorage error
+      }
+    }
+
+    return "";
+  });
+
+  const [validationErrors, setValidationErrors] = useState<Record<string, string>>({});
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [serverError, setServerError] = useState<string | null>(null);
+
+  const criteriaCardRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
   // Persist local draft on changes
   const saveToLocalStorage = useCallback(
@@ -129,45 +145,25 @@ export function RubricScorecardModal({
   };
 
   // Live weighted score computation
-  const { compositeScore, totalWeight, criteriaBreakdown } = useMemo(() => {
+  const compositeScore = useMemo(() => {
     const totalW = criteria.reduce(
       (sum, c) => sum + (c.weight > 0 ? c.weight : 0),
       0
     );
 
-    if (totalW <= 0) {
-      return { compositeScore: 0, totalWeight: 0, criteriaBreakdown: [] };
-    }
+    if (totalW <= 0) return 0;
 
     let weightedSum = 0;
-    const breakdown = criteria.map((c) => {
+    for (const c of criteria) {
       const score = scores[c.id];
-      const hasScore = typeof score === "number";
-      const effectiveMax = c.maxScore > 0 ? c.maxScore : 10;
-      const normalizedWeight = c.weight / totalW;
-      const contribution = hasScore
-        ? (score / effectiveMax) * 10 * normalizedWeight
-        : 0;
-
-      if (hasScore) {
-        weightedSum += contribution;
+      if (typeof score === "number") {
+        const effectiveMax = c.maxScore > 0 ? c.maxScore : 10;
+        const normalizedWeight = c.weight / totalW;
+        weightedSum += (score / effectiveMax) * 10 * normalizedWeight;
       }
+    }
 
-      return {
-        id: c.id,
-        title: c.title,
-        weight: c.weight,
-        weightPercentage: Math.round(normalizedWeight * 100),
-        score,
-        contribution: Math.round(contribution * 100) / 100,
-      };
-    });
-
-    return {
-      compositeScore: Math.round(weightedSum * 100) / 100,
-      totalWeight: totalW,
-      criteriaBreakdown: breakdown,
-    };
+    return Math.round(weightedSum * 100) / 100;
   }, [criteria, scores]);
 
   // Keyboard navigation for tactile controls
@@ -484,7 +480,7 @@ export function RubricScorecardModal({
                         <button
                           key={val}
                           type="button"
-                          role="button"
+                          role="radio"
                           aria-checked={isSelected}
                           aria-label={`Criterion ${c.title} score ${val}`}
                           onClick={() => handleScoreSelect(c.id, val)}

@@ -3,10 +3,14 @@ import Link from "next/link";
 import { Code2, ExternalLink, Video, Users, Link as LinkIcon } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import type { ProjectSubmissionDto } from "../types/submission";
+import { PeoplesChoiceVoteButton } from "./peoples-choice-vote-button";
 
 export interface ProjectCardProps {
   readonly submission: ProjectSubmissionDto;
   readonly className?: string | undefined;
+  readonly isVotingOpen?: boolean | undefined;
+  readonly initialHasVoted?: boolean | undefined;
+  readonly onVoteSuccess?: ((totalVotes: number) => void) | undefined;
 }
 
 function getStatusBadgeClasses(status: ProjectSubmissionDto["status"]): string {
@@ -26,7 +30,13 @@ function getStatusBadgeClasses(status: ProjectSubmissionDto["status"]): string {
  * Renders a zero-radius brutalist project card showcasing hackathon deliverables,
  * track tags, team members, and external link chips.
  */
-export function ProjectCard({ submission, className }: Readonly<ProjectCardProps>): React.JSX.Element {
+export function ProjectCard({
+  submission,
+  className,
+  isVotingOpen = true,
+  initialHasVoted,
+  onVoteSuccess,
+}: Readonly<ProjectCardProps>): React.JSX.Element {
   const {
     title,
     tagline,
@@ -107,65 +117,78 @@ export function ProjectCard({ submission, className }: Readonly<ProjectCardProps
         )}
       </div>
 
-      {/* Footer: External Link Action Chips */}
+      {/* Footer: External Link Action Chips & People's Choice Vote */}
       <div className="mt-5 border-t border-slate-200/80 pt-4 dark:border-slate-800">
-        <div className="flex flex-wrap items-center gap-2">
-          {/* Repository Link Chip */}
-          <Link
-            href={repositoryUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`View source code repository for ${title}`}
-            className="inline-flex items-center gap-1.5 border border-slate-900 bg-slate-900 px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
-          >
-            <Code2 className="size-3.5" />
-            <span>{isGitHub ? "GitHub" : "Repository"}</span>
-          </Link>
-
-          {/* Live Demo Link Chip */}
-          {demoUrl ? (
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-wrap items-center gap-2">
+            {/* Repository Link Chip */}
             <Link
-              href={demoUrl}
+              href={repositoryUrl}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={`Open live demo for ${title}`}
-              className="inline-flex items-center gap-1.5 border border-sky-600 bg-sky-600 px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-sky-700 dark:border-sky-500 dark:bg-sky-500 dark:text-white dark:hover:bg-sky-600"
+              aria-label={`View source code repository for ${title}`}
+              className="inline-flex items-center gap-1.5 border border-slate-900 bg-slate-900 px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
-              <ExternalLink className="size-3.5" />
-              <span>Live Demo</span>
+              <Code2 className="size-3.5" />
+              <span>{isGitHub ? "GitHub" : "Repository"}</span>
             </Link>
-          ) : null}
 
-          {/* Video Pitch Link Chip */}
-          {videoUrl ? (
-            <Link
-              href={videoUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={`Watch presentation video for ${title}`}
-              className="inline-flex items-center gap-1.5 border border-slate-300 bg-white px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-slate-700 uppercase transition hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
-            >
-              <Video className="size-3.5 text-rose-500" />
-              <span>Video</span>
-            </Link>
-          ) : null}
+            {/* Live Demo Link Chip */}
+            {demoUrl ? (
+              <Link
+                href={demoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Open live demo for ${title}`}
+                className="inline-flex items-center gap-1.5 border border-sky-600 bg-sky-600 px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-white uppercase shadow-xs transition hover:bg-sky-700 dark:border-sky-500 dark:bg-sky-500 dark:text-white dark:hover:bg-sky-600"
+              >
+                <ExternalLink className="size-3.5" />
+                <span>Live Demo</span>
+              </Link>
+            ) : null}
 
-          {/* Custom Links */}
-          {links && links.length > 0
-            ? links.slice(0, 2).map((l) => (
-                <Link
-                  key={l.id || l.url}
-                  href={l.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={`Visit ${l.label} for ${title}`}
-                  className="inline-flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1.5 font-mono text-[10px] font-semibold tracking-wider text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
-                >
-                  <LinkIcon className="size-3 text-slate-400" />
-                  <span className="line-clamp-1 max-w-[100px]">{l.label}</span>
-                </Link>
-              ))
-            : null}
+            {/* Video Pitch Link Chip */}
+            {videoUrl ? (
+              <Link
+                href={videoUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label={`Watch presentation video for ${title}`}
+                className="inline-flex items-center gap-1.5 border border-slate-300 bg-white px-3 py-1.5 font-mono text-[11px] font-bold tracking-wider text-slate-700 uppercase transition hover:border-slate-400 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white"
+              >
+                <Video className="size-3.5 text-rose-500" />
+                <span>Video</span>
+              </Link>
+            ) : null}
+
+            {/* Custom Links */}
+            {links && links.length > 0
+              ? links.slice(0, 2).map((l) => (
+                  <Link
+                    key={l.id || l.url}
+                    href={l.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`Visit ${l.label} for ${title}`}
+                    className="inline-flex items-center gap-1.5 border border-slate-200 bg-slate-50 px-2.5 py-1.5 font-mono text-[10px] font-semibold tracking-wider text-slate-600 transition hover:bg-slate-100 hover:text-slate-900 dark:border-slate-800 dark:bg-slate-900/60 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                  >
+                    <LinkIcon className="size-3 text-slate-400" />
+                    <span className="line-clamp-1 max-w-[100px]">{l.label}</span>
+                  </Link>
+                ))
+              : null}
+          </div>
+
+          <PeoplesChoiceVoteButton
+            eventId={submission.eventId}
+            submissionId={submission.id}
+            projectTitle={title}
+            initialVoteCount={submission.voteCount ?? 0}
+            initialHasVoted={initialHasVoted}
+            isVotingOpen={isVotingOpen}
+            onVoteSuccess={onVoteSuccess}
+            className="w-full justify-center sm:w-auto"
+          />
         </div>
       </div>
     </article>

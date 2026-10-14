@@ -20,6 +20,10 @@ vi.mock("@/lib/db", () => ({
     contestant: {
       findMany: vi.fn(),
     },
+    voterParticipation: {
+      findUnique: vi.fn(),
+      create: vi.fn(),
+    },
     ballotSubmission: {
       findUnique: vi.fn(),
       create: vi.fn(),
@@ -44,6 +48,7 @@ vi.mock("@/features/voting/utils/turnstile", () => ({
 describe("voting-engine", () => {
   beforeEach(() => {
     vi.clearAllMocks();
+    vi.mocked(db.voterParticipation.findUnique).mockResolvedValue(null);
     vi.mocked(rateLimiter.checkIpVelocity).mockReturnValue({ allowed: true, error: null });
     vi.mocked(rateLimiter.checkDeviceAccountLimit).mockReturnValue({ allowed: true, error: null });
     vi.mocked(turnstile.verifyTurnstileToken).mockResolvedValue({ success: true, error: null });

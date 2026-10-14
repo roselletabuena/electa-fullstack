@@ -11,6 +11,8 @@ export interface BallotVoteSummaryDto {
 export interface CastBallotResultDto {
   success: true;
   ballotId: string;
+  receiptHash?: string | undefined;
+  receiptToken?: string | undefined;
   eventId: string;
   voterId: string;
   votesCount: number;
@@ -75,8 +77,18 @@ export interface PublicBallotEventDto {
 
 export interface BallotSubmissionReceiptDto {
   ballotId: string;
+  receiptHash?: string | undefined;
+  receiptToken?: string | undefined;
   eventId: string;
   votesCount: number;
   submittedAt: string;
 }
+
+export type {
+  CastSecretBallotParams,
+  SecretBallotSuccessData,
+  SecretBallotErrorCode,
+  SecretBallotErrorDto,
+  CastSecretBallotResponse,
+} from "../services/secret-ballot-service";
 

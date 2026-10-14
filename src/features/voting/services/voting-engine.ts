@@ -68,6 +68,21 @@ export async function hasVoterSubmittedBallot(
   eventId: string,
   voterId: string,
 ): Promise<boolean> {
+  if (db.voterParticipation) {
+    const participation = await db.voterParticipation.findUnique({
+      where: {
+        eventId_userId: {
+          eventId,
+          userId: voterId,
+        },
+      },
+    });
+
+    if (participation !== null) {
+      return true;
+    }
+  }
+
   const existingSubmission = await db.ballotSubmission.findUnique({
     where: {
       eventId_voterId: {

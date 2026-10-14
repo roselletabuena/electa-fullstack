@@ -175,7 +175,7 @@ export default async function BallotPage(props: Readonly<PageProps>): Promise<Re
           eventTitle={event.title}
           userEmail={session.email}
           allowedDomains={event.allowedEmailDomains}
-          reason={eligibility.reason}
+          {...(eligibility.reason ? { reason: eligibility.reason } : {})}
         />
       </main>
     );

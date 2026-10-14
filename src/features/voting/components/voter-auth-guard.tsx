@@ -8,10 +8,10 @@ import { ShieldAlert, LogIn, CheckCircle2, ArrowRight } from "lucide-react";
 export interface VoterAuthGuardProps {
   type: "unauthenticated" | "ineligible" | "already_voted";
   eventSlug: string;
-  eventTitle?: string | undefined;
-  userEmail?: string | undefined;
-  allowedDomains?: string[] | undefined;
-  reason?: string | undefined;
+  eventTitle?: string;
+  userEmail?: string;
+  allowedDomains?: string[];
+  reason?: string;
 }
 
 export function VoterAuthGuard({

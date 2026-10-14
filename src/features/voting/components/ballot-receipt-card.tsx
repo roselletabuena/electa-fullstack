@@ -8,7 +8,7 @@ import type { BallotSubmissionReceiptDto } from "../types/ballot";
 export interface BallotReceiptCardProps {
   receipt: BallotSubmissionReceiptDto;
   eventSlug: string;
-  eventTitle?: string | undefined;
+  eventTitle?: string;
 }
 
 export function BallotReceiptCard({
@@ -39,11 +39,11 @@ export function BallotReceiptCard({
   });
 
   return (
-    <div
-      role="region"
+    <section
       aria-label="Ballot submission receipt"
       className="card-style w-full border border-slate-300 bg-white p-6 shadow-xs sm:p-8 dark:border-slate-800 dark:bg-[#0d1424]"
     >
+
       {/* Header Badge */}
       <div className="flex flex-col items-center text-center sm:items-start sm:text-left">
         <div className="flex size-14 items-center justify-center border border-emerald-500/30 bg-emerald-50 text-emerald-600 dark:border-emerald-500/40 dark:bg-emerald-950/40 dark:text-emerald-400">
@@ -146,6 +146,7 @@ export function BallotReceiptCard({
           <span>View Public Standings</span>
         </Link>
       </div>
-    </div>
+    </section>
   );
 }
+

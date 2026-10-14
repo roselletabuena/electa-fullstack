@@ -15,7 +15,7 @@ export interface BallotReviewModalProps {
   onClose: () => void;
   onConfirm: () => Promise<void>;
   isSubmitting: boolean;
-  errorMessage?: string | null | undefined;
+  errorMessage?: string | null;
   groups: SelectedGroup[];
 }
 

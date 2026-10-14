@@ -68,6 +68,16 @@ export type Vote = Prisma.VoteModel
  */
 export type BallotSubmission = Prisma.BallotSubmissionModel
 /**
+ * Model VoterParticipation
+ * 
+ */
+export type VoterParticipation = Prisma.VoterParticipationModel
+/**
+ * Model BallotSelection
+ * 
+ */
+export type BallotSelection = Prisma.BallotSelectionModel
+/**
  * Model PaymentTransaction
  * 
  */

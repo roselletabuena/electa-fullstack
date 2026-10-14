@@ -335,6 +335,8 @@ export type EventWhereInput = {
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
+  voterParticipations?: Prisma.VoterParticipationListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
   studentRoster?: Prisma.StudentRosterEntryListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
@@ -370,6 +372,8 @@ export type EventOrderByWithRelationInput = {
   auditLogs?: Prisma.EventAuditLogOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
   ballotSubmissions?: Prisma.BallotSubmissionOrderByRelationAggregateInput
+  voterParticipations?: Prisma.VoterParticipationOrderByRelationAggregateInput
+  ballotSelections?: Prisma.BallotSelectionOrderByRelationAggregateInput
   studentRoster?: Prisma.StudentRosterEntryOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
   payoutRequests?: Prisma.PayoutRequestOrderByRelationAggregateInput
@@ -408,6 +412,8 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   auditLogs?: Prisma.EventAuditLogListRelationFilter
   votes?: Prisma.VoteListRelationFilter
   ballotSubmissions?: Prisma.BallotSubmissionListRelationFilter
+  voterParticipations?: Prisma.VoterParticipationListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
   studentRoster?: Prisma.StudentRosterEntryListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
   payoutRequests?: Prisma.PayoutRequestListRelationFilter
@@ -495,6 +501,8 @@ export type EventCreateInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -530,6 +538,8 @@ export type EventUncheckedCreateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -565,6 +575,8 @@ export type EventUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -600,6 +612,8 @@ export type EventUncheckedUpdateInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -908,6 +922,34 @@ export type EventUpdateOneRequiredWithoutBallotSubmissionsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutBallotSubmissionsInput, Prisma.EventUpdateWithoutBallotSubmissionsInput>, Prisma.EventUncheckedUpdateWithoutBallotSubmissionsInput>
 }
 
+export type EventCreateNestedOneWithoutVoterParticipationsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutVoterParticipationsInput, Prisma.EventUncheckedCreateWithoutVoterParticipationsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutVoterParticipationsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutVoterParticipationsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutVoterParticipationsInput, Prisma.EventUncheckedCreateWithoutVoterParticipationsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutVoterParticipationsInput
+  upsert?: Prisma.EventUpsertWithoutVoterParticipationsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutVoterParticipationsInput, Prisma.EventUpdateWithoutVoterParticipationsInput>, Prisma.EventUncheckedUpdateWithoutVoterParticipationsInput>
+}
+
+export type EventCreateNestedOneWithoutBallotSelectionsInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutBallotSelectionsInput, Prisma.EventUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutBallotSelectionsInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutBallotSelectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutBallotSelectionsInput, Prisma.EventUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutBallotSelectionsInput
+  upsert?: Prisma.EventUpsertWithoutBallotSelectionsInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutBallotSelectionsInput, Prisma.EventUpdateWithoutBallotSelectionsInput>, Prisma.EventUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
 export type EventCreateNestedOneWithoutPaymentTransactionsInput = {
   create?: Prisma.XOR<Prisma.EventCreateWithoutPaymentTransactionsInput, Prisma.EventUncheckedCreateWithoutPaymentTransactionsInput>
   connectOrCreate?: Prisma.EventCreateOrConnectWithoutPaymentTransactionsInput
@@ -1018,6 +1060,8 @@ export type EventCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1052,6 +1096,8 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1102,6 +1148,8 @@ export type EventUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1136,6 +1184,8 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1170,6 +1220,8 @@ export type EventCreateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1204,6 +1256,8 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1254,6 +1308,8 @@ export type EventUpdateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1288,6 +1344,8 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1322,6 +1380,8 @@ export type EventCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1356,6 +1416,8 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1406,6 +1468,8 @@ export type EventUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1440,6 +1504,8 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1474,6 +1540,8 @@ export type EventCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1508,6 +1576,8 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1558,6 +1628,8 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1592,6 +1664,8 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1626,6 +1700,8 @@ export type EventCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1660,6 +1736,8 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1710,6 +1788,8 @@ export type EventUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1744,6 +1824,8 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1778,6 +1860,8 @@ export type EventCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1812,6 +1896,8 @@ export type EventUncheckedCreateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -1862,6 +1948,8 @@ export type EventUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -1896,6 +1984,8 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -1930,6 +2020,8 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -1964,6 +2056,8 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -2014,6 +2108,8 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -2048,6 +2144,328 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutVoterParticipationsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutVoterParticipationsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutVoterParticipationsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutVoterParticipationsInput, Prisma.EventUncheckedCreateWithoutVoterParticipationsInput>
+}
+
+export type EventUpsertWithoutVoterParticipationsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutVoterParticipationsInput, Prisma.EventUncheckedUpdateWithoutVoterParticipationsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutVoterParticipationsInput, Prisma.EventUncheckedCreateWithoutVoterParticipationsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutVoterParticipationsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutVoterParticipationsInput, Prisma.EventUncheckedUpdateWithoutVoterParticipationsInput>
+}
+
+export type EventUpdateWithoutVoterParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutVoterParticipationsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutBallotSelectionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutBallotSelectionsInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutBallotSelectionsInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutBallotSelectionsInput, Prisma.EventUncheckedCreateWithoutBallotSelectionsInput>
+}
+
+export type EventUpsertWithoutBallotSelectionsInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutBallotSelectionsInput, Prisma.EventUncheckedUpdateWithoutBallotSelectionsInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutBallotSelectionsInput, Prisma.EventUncheckedCreateWithoutBallotSelectionsInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutBallotSelectionsInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutBallotSelectionsInput, Prisma.EventUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
+export type EventUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -2083,6 +2501,8 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -2117,6 +2537,8 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -2167,6 +2589,8 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -2201,6 +2625,8 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -2235,6 +2661,8 @@ export type EventCreateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -2269,6 +2697,8 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -2319,6 +2749,8 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -2353,6 +2785,8 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -2387,6 +2821,8 @@ export type EventCreateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -2421,6 +2857,8 @@ export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -2471,6 +2909,8 @@ export type EventUpdateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -2505,6 +2945,8 @@ export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -2539,6 +2981,8 @@ export type EventCreateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -2573,6 +3017,8 @@ export type EventUncheckedCreateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -2623,6 +3069,8 @@ export type EventUpdateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -2657,6 +3105,8 @@ export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -2691,6 +3141,8 @@ export type EventCreateWithoutStudentRosterInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
@@ -2725,6 +3177,8 @@ export type EventUncheckedCreateWithoutStudentRosterInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
@@ -2775,6 +3229,8 @@ export type EventUpdateWithoutStudentRosterInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
@@ -2809,6 +3265,8 @@ export type EventUncheckedUpdateWithoutStudentRosterInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
@@ -2843,6 +3301,8 @@ export type EventCreateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
@@ -2877,6 +3337,8 @@ export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
@@ -2927,6 +3389,8 @@ export type EventUpdateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
@@ -2961,6 +3425,8 @@ export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
   auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
   ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
   studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
@@ -2981,6 +3447,8 @@ export type EventCountOutputType = {
   auditLogs: number
   votes: number
   ballotSubmissions: number
+  voterParticipations: number
+  ballotSelections: number
   studentRoster: number
   paymentTransactions: number
   payoutRequests: number
@@ -2997,6 +3465,8 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   auditLogs?: boolean | EventCountOutputTypeCountAuditLogsArgs
   votes?: boolean | EventCountOutputTypeCountVotesArgs
   ballotSubmissions?: boolean | EventCountOutputTypeCountBallotSubmissionsArgs
+  voterParticipations?: boolean | EventCountOutputTypeCountVoterParticipationsArgs
+  ballotSelections?: boolean | EventCountOutputTypeCountBallotSelectionsArgs
   studentRoster?: boolean | EventCountOutputTypeCountStudentRosterArgs
   paymentTransactions?: boolean | EventCountOutputTypeCountPaymentTransactionsArgs
   payoutRequests?: boolean | EventCountOutputTypeCountPayoutRequestsArgs
@@ -3062,6 +3532,20 @@ export type EventCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Types.Ext
  */
 export type EventCountOutputTypeCountBallotSubmissionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.BallotSubmissionWhereInput
+}
+
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountVoterParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.VoterParticipationWhereInput
+}
+
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountBallotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BallotSelectionWhereInput
 }
 
 /**
@@ -3134,6 +3618,8 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
+  voterParticipations?: boolean | Prisma.Event$voterParticipationsArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.Event$ballotSelectionsArgs<ExtArgs>
   studentRoster?: boolean | Prisma.Event$studentRosterArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
@@ -3218,6 +3704,8 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   auditLogs?: boolean | Prisma.Event$auditLogsArgs<ExtArgs>
   votes?: boolean | Prisma.Event$votesArgs<ExtArgs>
   ballotSubmissions?: boolean | Prisma.Event$ballotSubmissionsArgs<ExtArgs>
+  voterParticipations?: boolean | Prisma.Event$voterParticipationsArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.Event$ballotSelectionsArgs<ExtArgs>
   studentRoster?: boolean | Prisma.Event$studentRosterArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Event$paymentTransactionsArgs<ExtArgs>
   payoutRequests?: boolean | Prisma.Event$payoutRequestsArgs<ExtArgs>
@@ -3239,6 +3727,8 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     auditLogs: Prisma.$EventAuditLogPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
     ballotSubmissions: Prisma.$BallotSubmissionPayload<ExtArgs>[]
+    voterParticipations: Prisma.$VoterParticipationPayload<ExtArgs>[]
+    ballotSelections: Prisma.$BallotSelectionPayload<ExtArgs>[]
     studentRoster: Prisma.$StudentRosterEntryPayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
     payoutRequests: Prisma.$PayoutRequestPayload<ExtArgs>[]
@@ -3667,6 +4157,8 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   auditLogs<T extends Prisma.Event$auditLogsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$auditLogsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$EventAuditLogPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Event$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   ballotSubmissions<T extends Prisma.Event$ballotSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$ballotSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  voterParticipations<T extends Prisma.Event$voterParticipationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$voterParticipationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VoterParticipationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ballotSelections<T extends Prisma.Event$ballotSelectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$ballotSelectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSelectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   studentRoster<T extends Prisma.Event$studentRosterArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$studentRosterArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$StudentRosterEntryPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Event$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   payoutRequests<T extends Prisma.Event$payoutRequestsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$payoutRequestsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PayoutRequestPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
@@ -4279,6 +4771,54 @@ export type Event$ballotSubmissionsArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.BallotSubmissionScalarFieldEnum | Prisma.BallotSubmissionScalarFieldEnum[]
+}
+
+/**
+ * Event.voterParticipations
+ */
+export type Event$voterParticipationsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the VoterParticipation
+   */
+  select?: Prisma.VoterParticipationSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the VoterParticipation
+   */
+  omit?: Prisma.VoterParticipationOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.VoterParticipationInclude<ExtArgs> | null
+  where?: Prisma.VoterParticipationWhereInput
+  orderBy?: Prisma.VoterParticipationOrderByWithRelationInput | Prisma.VoterParticipationOrderByWithRelationInput[]
+  cursor?: Prisma.VoterParticipationWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.VoterParticipationScalarFieldEnum | Prisma.VoterParticipationScalarFieldEnum[]
+}
+
+/**
+ * Event.ballotSelections
+ */
+export type Event$ballotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BallotSelection
+   */
+  select?: Prisma.BallotSelectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BallotSelection
+   */
+  omit?: Prisma.BallotSelectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BallotSelectionInclude<ExtArgs> | null
+  where?: Prisma.BallotSelectionWhereInput
+  orderBy?: Prisma.BallotSelectionOrderByWithRelationInput | Prisma.BallotSelectionOrderByWithRelationInput[]
+  cursor?: Prisma.BallotSelectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BallotSelectionScalarFieldEnum | Prisma.BallotSelectionScalarFieldEnum[]
 }
 
 /**

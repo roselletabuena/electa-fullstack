@@ -342,6 +342,7 @@ export type ContestantWhereInput = {
   media?: Prisma.ContestantMediaListRelationFilter
   categories?: Prisma.ContestantCategoryAssignmentListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }
 
@@ -371,6 +372,7 @@ export type ContestantOrderByWithRelationInput = {
   media?: Prisma.ContestantMediaOrderByRelationAggregateInput
   categories?: Prisma.ContestantCategoryAssignmentOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
+  ballotSelections?: Prisma.BallotSelectionOrderByRelationAggregateInput
   paymentTransactions?: Prisma.PaymentTransactionOrderByRelationAggregateInput
 }
 
@@ -404,6 +406,7 @@ export type ContestantWhereUniqueInput = Prisma.AtLeast<{
   media?: Prisma.ContestantMediaListRelationFilter
   categories?: Prisma.ContestantCategoryAssignmentListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
   paymentTransactions?: Prisma.PaymentTransactionListRelationFilter
 }, "id" | "eventId_division_contestantNumber">
 
@@ -482,6 +485,7 @@ export type ContestantCreateInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -508,6 +512,7 @@ export type ContestantUncheckedCreateInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -534,6 +539,7 @@ export type ContestantUpdateInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -560,6 +566,7 @@ export type ContestantUncheckedUpdateInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -909,6 +916,20 @@ export type ContestantUpdateOneRequiredWithoutVotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ContestantUpdateToOneWithWhereWithoutVotesInput, Prisma.ContestantUpdateWithoutVotesInput>, Prisma.ContestantUncheckedUpdateWithoutVotesInput>
 }
 
+export type ContestantCreateNestedOneWithoutBallotSelectionsInput = {
+  create?: Prisma.XOR<Prisma.ContestantCreateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.ContestantCreateOrConnectWithoutBallotSelectionsInput
+  connect?: Prisma.ContestantWhereUniqueInput
+}
+
+export type ContestantUpdateOneRequiredWithoutBallotSelectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.ContestantCreateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.ContestantCreateOrConnectWithoutBallotSelectionsInput
+  upsert?: Prisma.ContestantUpsertWithoutBallotSelectionsInput
+  connect?: Prisma.ContestantWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ContestantUpdateToOneWithWhereWithoutBallotSelectionsInput, Prisma.ContestantUpdateWithoutBallotSelectionsInput>, Prisma.ContestantUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
 export type ContestantCreateNestedOneWithoutPaymentTransactionsInput = {
   create?: Prisma.XOR<Prisma.ContestantCreateWithoutPaymentTransactionsInput, Prisma.ContestantUncheckedCreateWithoutPaymentTransactionsInput>
   connectOrCreate?: Prisma.ContestantCreateOrConnectWithoutPaymentTransactionsInput
@@ -945,6 +966,7 @@ export type ContestantCreateWithoutEventInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -970,6 +992,7 @@ export type ContestantUncheckedCreateWithoutEventInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1046,6 +1069,7 @@ export type ContestantCreateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -1071,6 +1095,7 @@ export type ContestantUncheckedCreateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1122,6 +1147,7 @@ export type ContestantCreateWithoutPositionInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -1147,6 +1173,7 @@ export type ContestantUncheckedCreateWithoutPositionInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1198,6 +1225,7 @@ export type ContestantCreateWithoutMediaInput = {
   position?: Prisma.EventPositionCreateNestedOneWithoutContestantsInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -1223,6 +1251,7 @@ export type ContestantUncheckedCreateWithoutMediaInput = {
   positionId?: string | null
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1264,6 +1293,7 @@ export type ContestantUpdateWithoutMediaInput = {
   position?: Prisma.EventPositionUpdateOneWithoutContestantsNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1289,6 +1319,7 @@ export type ContestantUncheckedUpdateWithoutMediaInput = {
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1314,6 +1345,7 @@ export type ContestantCreateWithoutCategoriesInput = {
   position?: Prisma.EventPositionCreateNestedOneWithoutContestantsInput
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -1339,6 +1371,7 @@ export type ContestantUncheckedCreateWithoutCategoriesInput = {
   positionId?: string | null
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1380,6 +1413,7 @@ export type ContestantUpdateWithoutCategoriesInput = {
   position?: Prisma.EventPositionUpdateOneWithoutContestantsNestedInput
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1405,6 +1439,7 @@ export type ContestantUncheckedUpdateWithoutCategoriesInput = {
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1430,6 +1465,7 @@ export type ContestantCreateWithoutVotesInput = {
   position?: Prisma.EventPositionCreateNestedOneWithoutContestantsInput
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
 }
 
@@ -1455,6 +1491,7 @@ export type ContestantUncheckedCreateWithoutVotesInput = {
   positionId?: string | null
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
 }
 
@@ -1496,6 +1533,7 @@ export type ContestantUpdateWithoutVotesInput = {
   position?: Prisma.EventPositionUpdateOneWithoutContestantsNestedInput
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1521,6 +1559,127 @@ export type ContestantUncheckedUpdateWithoutVotesInput = {
   positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
+}
+
+export type ContestantCreateWithoutBallotSelectionsInput = {
+  id?: string
+  contestantNumber: number
+  name: string
+  division?: $Enums.ContestantDivision
+  status?: $Enums.ContestantStatus
+  hometown?: string | null
+  heightCm?: number | null
+  bio?: string | null
+  advocacy?: string | null
+  avatarUrl: string
+  instagramUrl?: string | null
+  tiktokUrl?: string | null
+  facebookUrl?: string | null
+  voteCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  event: Prisma.EventCreateNestedOneWithoutContestantsInput
+  divisionRef?: Prisma.DivisionCreateNestedOneWithoutContestantsInput
+  position?: Prisma.EventPositionCreateNestedOneWithoutContestantsInput
+  media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
+  categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
+  votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutContestantInput
+}
+
+export type ContestantUncheckedCreateWithoutBallotSelectionsInput = {
+  id?: string
+  eventId: string
+  contestantNumber: number
+  name: string
+  division?: $Enums.ContestantDivision
+  divisionId?: string | null
+  status?: $Enums.ContestantStatus
+  hometown?: string | null
+  heightCm?: number | null
+  bio?: string | null
+  advocacy?: string | null
+  avatarUrl: string
+  instagramUrl?: string | null
+  tiktokUrl?: string | null
+  facebookUrl?: string | null
+  voteCount?: number
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  positionId?: string | null
+  media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutContestantInput
+}
+
+export type ContestantCreateOrConnectWithoutBallotSelectionsInput = {
+  where: Prisma.ContestantWhereUniqueInput
+  create: Prisma.XOR<Prisma.ContestantCreateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedCreateWithoutBallotSelectionsInput>
+}
+
+export type ContestantUpsertWithoutBallotSelectionsInput = {
+  update: Prisma.XOR<Prisma.ContestantUpdateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedUpdateWithoutBallotSelectionsInput>
+  create: Prisma.XOR<Prisma.ContestantCreateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedCreateWithoutBallotSelectionsInput>
+  where?: Prisma.ContestantWhereInput
+}
+
+export type ContestantUpdateToOneWithWhereWithoutBallotSelectionsInput = {
+  where?: Prisma.ContestantWhereInput
+  data: Prisma.XOR<Prisma.ContestantUpdateWithoutBallotSelectionsInput, Prisma.ContestantUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
+export type ContestantUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  event?: Prisma.EventUpdateOneRequiredWithoutContestantsNestedInput
+  divisionRef?: Prisma.DivisionUpdateOneWithoutContestantsNestedInput
+  position?: Prisma.EventPositionUpdateOneWithoutContestantsNestedInput
+  media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
+  categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
+}
+
+export type ContestantUncheckedUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  contestantNumber?: Prisma.IntFieldUpdateOperationsInput | number
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  division?: Prisma.EnumContestantDivisionFieldUpdateOperationsInput | $Enums.ContestantDivision
+  divisionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumContestantStatusFieldUpdateOperationsInput | $Enums.ContestantStatus
+  hometown?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  heightCm?: Prisma.NullableIntFieldUpdateOperationsInput | number | null
+  bio?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  advocacy?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  avatarUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  instagramUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  tiktokUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  facebookUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  positionId?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
+  categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1547,6 +1706,7 @@ export type ContestantCreateWithoutPaymentTransactionsInput = {
   media?: Prisma.ContestantMediaCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutCandidateInput
 }
 
 export type ContestantUncheckedCreateWithoutPaymentTransactionsInput = {
@@ -1572,6 +1732,7 @@ export type ContestantUncheckedCreateWithoutPaymentTransactionsInput = {
   media?: Prisma.ContestantMediaUncheckedCreateNestedManyWithoutContestantInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedCreateNestedManyWithoutContestantInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutContestantInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutCandidateInput
 }
 
 export type ContestantCreateOrConnectWithoutPaymentTransactionsInput = {
@@ -1613,6 +1774,7 @@ export type ContestantUpdateWithoutPaymentTransactionsInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
 }
 
 export type ContestantUncheckedUpdateWithoutPaymentTransactionsInput = {
@@ -1638,6 +1800,7 @@ export type ContestantUncheckedUpdateWithoutPaymentTransactionsInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
 }
 
 export type ContestantCreateManyEventInput = {
@@ -1683,6 +1846,7 @@ export type ContestantUpdateWithoutEventInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1708,6 +1872,7 @@ export type ContestantUncheckedUpdateWithoutEventInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1775,6 +1940,7 @@ export type ContestantUpdateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1800,6 +1966,7 @@ export type ContestantUncheckedUpdateWithoutDivisionRefInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1867,6 +2034,7 @@ export type ContestantUpdateWithoutPositionInput = {
   media?: Prisma.ContestantMediaUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutContestantNestedInput
 }
 
@@ -1892,6 +2060,7 @@ export type ContestantUncheckedUpdateWithoutPositionInput = {
   media?: Prisma.ContestantMediaUncheckedUpdateManyWithoutContestantNestedInput
   categories?: Prisma.ContestantCategoryAssignmentUncheckedUpdateManyWithoutContestantNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutContestantNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutCandidateNestedInput
   paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutContestantNestedInput
 }
 
@@ -1925,6 +2094,7 @@ export type ContestantCountOutputType = {
   media: number
   categories: number
   votes: number
+  ballotSelections: number
   paymentTransactions: number
 }
 
@@ -1932,6 +2102,7 @@ export type ContestantCountOutputTypeSelect<ExtArgs extends runtime.Types.Extens
   media?: boolean | ContestantCountOutputTypeCountMediaArgs
   categories?: boolean | ContestantCountOutputTypeCountCategoriesArgs
   votes?: boolean | ContestantCountOutputTypeCountVotesArgs
+  ballotSelections?: boolean | ContestantCountOutputTypeCountBallotSelectionsArgs
   paymentTransactions?: boolean | ContestantCountOutputTypeCountPaymentTransactionsArgs
 }
 
@@ -1969,6 +2140,13 @@ export type ContestantCountOutputTypeCountVotesArgs<ExtArgs extends runtime.Type
 /**
  * ContestantCountOutputType without action
  */
+export type ContestantCountOutputTypeCountBallotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BallotSelectionWhereInput
+}
+
+/**
+ * ContestantCountOutputType without action
+ */
 export type ContestantCountOutputTypeCountPaymentTransactionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   where?: Prisma.PaymentTransactionWhereInput
 }
@@ -2000,6 +2178,7 @@ export type ContestantSelect<ExtArgs extends runtime.Types.Extensions.InternalAr
   media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>
   categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>
   votes?: boolean | Prisma.Contestant$votesArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.Contestant$ballotSelectionsArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Contestant$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["contestant"]>
@@ -2084,6 +2263,7 @@ export type ContestantInclude<ExtArgs extends runtime.Types.Extensions.InternalA
   media?: boolean | Prisma.Contestant$mediaArgs<ExtArgs>
   categories?: boolean | Prisma.Contestant$categoriesArgs<ExtArgs>
   votes?: boolean | Prisma.Contestant$votesArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.Contestant$ballotSelectionsArgs<ExtArgs>
   paymentTransactions?: boolean | Prisma.Contestant$paymentTransactionsArgs<ExtArgs>
   _count?: boolean | Prisma.ContestantCountOutputTypeDefaultArgs<ExtArgs>
 }
@@ -2107,6 +2287,7 @@ export type $ContestantPayload<ExtArgs extends runtime.Types.Extensions.Internal
     media: Prisma.$ContestantMediaPayload<ExtArgs>[]
     categories: Prisma.$ContestantCategoryAssignmentPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
+    ballotSelections: Prisma.$BallotSelectionPayload<ExtArgs>[]
     paymentTransactions: Prisma.$PaymentTransactionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
@@ -2529,6 +2710,7 @@ export interface Prisma__ContestantClient<T, Null = never, ExtArgs extends runti
   media<T extends Prisma.Contestant$mediaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$mediaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestantMediaPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   categories<T extends Prisma.Contestant$categoriesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$categoriesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestantCategoryAssignmentPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.Contestant$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ballotSelections<T extends Prisma.Contestant$ballotSelectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$ballotSelectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSelectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   paymentTransactions<T extends Prisma.Contestant$paymentTransactionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Contestant$paymentTransactionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$PaymentTransactionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
@@ -3086,6 +3268,30 @@ export type Contestant$votesArgs<ExtArgs extends runtime.Types.Extensions.Intern
   take?: number
   skip?: number
   distinct?: Prisma.VoteScalarFieldEnum | Prisma.VoteScalarFieldEnum[]
+}
+
+/**
+ * Contestant.ballotSelections
+ */
+export type Contestant$ballotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BallotSelection
+   */
+  select?: Prisma.BallotSelectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BallotSelection
+   */
+  omit?: Prisma.BallotSelectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BallotSelectionInclude<ExtArgs> | null
+  where?: Prisma.BallotSelectionWhereInput
+  orderBy?: Prisma.BallotSelectionOrderByWithRelationInput | Prisma.BallotSelectionOrderByWithRelationInput[]
+  cursor?: Prisma.BallotSelectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BallotSelectionScalarFieldEnum | Prisma.BallotSelectionScalarFieldEnum[]
 }
 
 /**

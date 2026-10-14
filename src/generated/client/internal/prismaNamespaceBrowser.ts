@@ -61,6 +61,8 @@ export const ModelName = {
   EventAuditLog: 'EventAuditLog',
   Vote: 'Vote',
   BallotSubmission: 'BallotSubmission',
+  VoterParticipation: 'VoterParticipation',
+  BallotSelection: 'BallotSelection',
   PaymentTransaction: 'PaymentTransaction',
   PayoutRequest: 'PayoutRequest',
   ProjectSubmission: 'ProjectSubmission',
@@ -247,6 +249,28 @@ export const BallotSubmissionScalarFieldEnum = {
 } as const
 
 export type BallotSubmissionScalarFieldEnum = (typeof BallotSubmissionScalarFieldEnum)[keyof typeof BallotSubmissionScalarFieldEnum]
+
+
+export const VoterParticipationScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  userId: 'userId',
+  votedAt: 'votedAt'
+} as const
+
+export type VoterParticipationScalarFieldEnum = (typeof VoterParticipationScalarFieldEnum)[keyof typeof VoterParticipationScalarFieldEnum]
+
+
+export const BallotSelectionScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  officeId: 'officeId',
+  candidateId: 'candidateId',
+  receiptHash: 'receiptHash',
+  createdAt: 'createdAt'
+} as const
+
+export type BallotSelectionScalarFieldEnum = (typeof BallotSelectionScalarFieldEnum)[keyof typeof BallotSelectionScalarFieldEnum]
 
 
 export const PaymentTransactionScalarFieldEnum = {

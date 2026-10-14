@@ -74,6 +74,8 @@ model Event {
   auditLogs           EventAuditLog[]
   votes               Vote[]
   ballotSubmissions   BallotSubmission[]
+  voterParticipations VoterParticipation[]
+  ballotSelections    BallotSelection[]
   studentRoster       StudentRosterEntry[]
   paymentTransactions PaymentTransaction[]
   payoutRequests      PayoutRequest[]
@@ -118,6 +120,7 @@ model EventPosition {
   event                Event        @relation(fields: [eventId], references: [id], onDelete: Cascade)
   contestants          Contestant[]
   votes                Vote[]
+  ballotSelections     BallotSelection[]
 
   @@unique([eventId, name])
   @@index([eventId])
@@ -151,6 +154,7 @@ model Contestant {
   media            ContestantMedia[]
   categories       ContestantCategoryAssignment[]
   votes            Vote[]
+  ballotSelections BallotSelection[]
   paymentTransactions PaymentTransaction[]
 
   @@unique([eventId, division, contestantNumber])
@@ -270,6 +274,38 @@ model BallotSubmission {
   @@unique([eventId, voterId])
   @@index([eventId])
   @@index([voterId])
+}
+
+model VoterParticipation {
+  id        String   @id @default(uuid())
+  eventId   String
+  userId    String
+  votedAt   DateTime @default(now())
+
+  event     Event    @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, userId])
+  @@index([eventId])
+  @@index([userId])
+}
+
+model BallotSelection {
+  id          String   @id @default(uuid())
+  eventId     String
+  officeId    String
+  candidateId String
+  receiptHash String
+  createdAt   DateTime @default(now())
+
+  event       Event         @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  office      EventPosition @relation(fields: [officeId], references: [id], onDelete: Cascade)
+  candidate   Contestant    @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+
+  @@index([eventId])
+  @@index([officeId])
+  @@index([candidateId])
+  @@index([receiptHash])
+  @@index([eventId, officeId])
 }
 
 enum PaymentStatus {

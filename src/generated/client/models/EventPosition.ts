@@ -267,6 +267,7 @@ export type EventPositionWhereInput = {
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   contestants?: Prisma.ContestantListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
 }
 
 export type EventPositionOrderByWithRelationInput = {
@@ -283,6 +284,7 @@ export type EventPositionOrderByWithRelationInput = {
   event?: Prisma.EventOrderByWithRelationInput
   contestants?: Prisma.ContestantOrderByRelationAggregateInput
   votes?: Prisma.VoteOrderByRelationAggregateInput
+  ballotSelections?: Prisma.BallotSelectionOrderByRelationAggregateInput
 }
 
 export type EventPositionWhereUniqueInput = Prisma.AtLeast<{
@@ -303,6 +305,7 @@ export type EventPositionWhereUniqueInput = Prisma.AtLeast<{
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   contestants?: Prisma.ContestantListRelationFilter
   votes?: Prisma.VoteListRelationFilter
+  ballotSelections?: Prisma.BallotSelectionListRelationFilter
 }, "id" | "eventId_name">
 
 export type EventPositionOrderByWithAggregationInput = {
@@ -352,6 +355,7 @@ export type EventPositionCreateInput = {
   event: Prisma.EventCreateNestedOneWithoutPositionsInput
   contestants?: Prisma.ContestantCreateNestedManyWithoutPositionInput
   votes?: Prisma.VoteCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionUncheckedCreateInput = {
@@ -367,6 +371,7 @@ export type EventPositionUncheckedCreateInput = {
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutPositionInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionUpdateInput = {
@@ -382,6 +387,7 @@ export type EventPositionUpdateInput = {
   event?: Prisma.EventUpdateOneRequiredWithoutPositionsNestedInput
   contestants?: Prisma.ContestantUpdateManyWithoutPositionNestedInput
   votes?: Prisma.VoteUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionUncheckedUpdateInput = {
@@ -397,6 +403,7 @@ export type EventPositionUncheckedUpdateInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutPositionNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionCreateManyInput = {
@@ -508,6 +515,11 @@ export type EventPositionNullableScalarRelationFilter = {
   isNot?: Prisma.EventPositionWhereInput | null
 }
 
+export type EventPositionScalarRelationFilter = {
+  is?: Prisma.EventPositionWhereInput
+  isNot?: Prisma.EventPositionWhereInput
+}
+
 export type EventPositionCreateNestedManyWithoutEventInput = {
   create?: Prisma.XOR<Prisma.EventPositionCreateWithoutEventInput, Prisma.EventPositionUncheckedCreateWithoutEventInput> | Prisma.EventPositionCreateWithoutEventInput[] | Prisma.EventPositionUncheckedCreateWithoutEventInput[]
   connectOrCreate?: Prisma.EventPositionCreateOrConnectWithoutEventInput | Prisma.EventPositionCreateOrConnectWithoutEventInput[]
@@ -582,6 +594,20 @@ export type EventPositionUpdateOneWithoutVotesNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventPositionUpdateToOneWithWhereWithoutVotesInput, Prisma.EventPositionUpdateWithoutVotesInput>, Prisma.EventPositionUncheckedUpdateWithoutVotesInput>
 }
 
+export type EventPositionCreateNestedOneWithoutBallotSelectionsInput = {
+  create?: Prisma.XOR<Prisma.EventPositionCreateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.EventPositionCreateOrConnectWithoutBallotSelectionsInput
+  connect?: Prisma.EventPositionWhereUniqueInput
+}
+
+export type EventPositionUpdateOneRequiredWithoutBallotSelectionsNestedInput = {
+  create?: Prisma.XOR<Prisma.EventPositionCreateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedCreateWithoutBallotSelectionsInput>
+  connectOrCreate?: Prisma.EventPositionCreateOrConnectWithoutBallotSelectionsInput
+  upsert?: Prisma.EventPositionUpsertWithoutBallotSelectionsInput
+  connect?: Prisma.EventPositionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventPositionUpdateToOneWithWhereWithoutBallotSelectionsInput, Prisma.EventPositionUpdateWithoutBallotSelectionsInput>, Prisma.EventPositionUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
 export type EventPositionCreateWithoutEventInput = {
   id?: string
   name: string
@@ -594,6 +620,7 @@ export type EventPositionCreateWithoutEventInput = {
   updatedAt?: Date | string
   contestants?: Prisma.ContestantCreateNestedManyWithoutPositionInput
   votes?: Prisma.VoteCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionUncheckedCreateWithoutEventInput = {
@@ -608,6 +635,7 @@ export type EventPositionUncheckedCreateWithoutEventInput = {
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutPositionInput
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionCreateOrConnectWithoutEventInput = {
@@ -664,6 +692,7 @@ export type EventPositionCreateWithoutContestantsInput = {
   updatedAt?: Date | string
   event: Prisma.EventCreateNestedOneWithoutPositionsInput
   votes?: Prisma.VoteCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionUncheckedCreateWithoutContestantsInput = {
@@ -678,6 +707,7 @@ export type EventPositionUncheckedCreateWithoutContestantsInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   votes?: Prisma.VoteUncheckedCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionCreateOrConnectWithoutContestantsInput = {
@@ -708,6 +738,7 @@ export type EventPositionUpdateWithoutContestantsInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   event?: Prisma.EventUpdateOneRequiredWithoutPositionsNestedInput
   votes?: Prisma.VoteUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionUncheckedUpdateWithoutContestantsInput = {
@@ -722,6 +753,7 @@ export type EventPositionUncheckedUpdateWithoutContestantsInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   votes?: Prisma.VoteUncheckedUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionCreateWithoutVotesInput = {
@@ -736,6 +768,7 @@ export type EventPositionCreateWithoutVotesInput = {
   updatedAt?: Date | string
   event: Prisma.EventCreateNestedOneWithoutPositionsInput
   contestants?: Prisma.ContestantCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionUncheckedCreateWithoutVotesInput = {
@@ -750,6 +783,7 @@ export type EventPositionUncheckedCreateWithoutVotesInput = {
   createdAt?: Date | string
   updatedAt?: Date | string
   contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutPositionInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutOfficeInput
 }
 
 export type EventPositionCreateOrConnectWithoutVotesInput = {
@@ -780,6 +814,7 @@ export type EventPositionUpdateWithoutVotesInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   event?: Prisma.EventUpdateOneRequiredWithoutPositionsNestedInput
   contestants?: Prisma.ContestantUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionUncheckedUpdateWithoutVotesInput = {
@@ -794,6 +829,83 @@ export type EventPositionUncheckedUpdateWithoutVotesInput = {
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutOfficeNestedInput
+}
+
+export type EventPositionCreateWithoutBallotSelectionsInput = {
+  id?: string
+  name: string
+  description?: string | null
+  maxSelectionsPerVoter?: number
+  minSelectionsPerVoter?: number
+  displayOrder?: number
+  isVotingOpen?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  event: Prisma.EventCreateNestedOneWithoutPositionsInput
+  contestants?: Prisma.ContestantCreateNestedManyWithoutPositionInput
+  votes?: Prisma.VoteCreateNestedManyWithoutPositionInput
+}
+
+export type EventPositionUncheckedCreateWithoutBallotSelectionsInput = {
+  id?: string
+  eventId: string
+  name: string
+  description?: string | null
+  maxSelectionsPerVoter?: number
+  minSelectionsPerVoter?: number
+  displayOrder?: number
+  isVotingOpen?: boolean
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutPositionInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutPositionInput
+}
+
+export type EventPositionCreateOrConnectWithoutBallotSelectionsInput = {
+  where: Prisma.EventPositionWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventPositionCreateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedCreateWithoutBallotSelectionsInput>
+}
+
+export type EventPositionUpsertWithoutBallotSelectionsInput = {
+  update: Prisma.XOR<Prisma.EventPositionUpdateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedUpdateWithoutBallotSelectionsInput>
+  create: Prisma.XOR<Prisma.EventPositionCreateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedCreateWithoutBallotSelectionsInput>
+  where?: Prisma.EventPositionWhereInput
+}
+
+export type EventPositionUpdateToOneWithWhereWithoutBallotSelectionsInput = {
+  where?: Prisma.EventPositionWhereInput
+  data: Prisma.XOR<Prisma.EventPositionUpdateWithoutBallotSelectionsInput, Prisma.EventPositionUncheckedUpdateWithoutBallotSelectionsInput>
+}
+
+export type EventPositionUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxSelectionsPerVoter?: Prisma.IntFieldUpdateOperationsInput | number
+  minSelectionsPerVoter?: Prisma.IntFieldUpdateOperationsInput | number
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  event?: Prisma.EventUpdateOneRequiredWithoutPositionsNestedInput
+  contestants?: Prisma.ContestantUpdateManyWithoutPositionNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutPositionNestedInput
+}
+
+export type EventPositionUncheckedUpdateWithoutBallotSelectionsInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  name?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  maxSelectionsPerVoter?: Prisma.IntFieldUpdateOperationsInput | number
+  minSelectionsPerVoter?: Prisma.IntFieldUpdateOperationsInput | number
+  displayOrder?: Prisma.IntFieldUpdateOperationsInput | number
+  isVotingOpen?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutPositionNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutPositionNestedInput
 }
 
 export type EventPositionCreateManyEventInput = {
@@ -820,6 +932,7 @@ export type EventPositionUpdateWithoutEventInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUpdateManyWithoutPositionNestedInput
   votes?: Prisma.VoteUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionUncheckedUpdateWithoutEventInput = {
@@ -834,6 +947,7 @@ export type EventPositionUncheckedUpdateWithoutEventInput = {
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   contestants?: Prisma.ContestantUncheckedUpdateManyWithoutPositionNestedInput
   votes?: Prisma.VoteUncheckedUpdateManyWithoutPositionNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutOfficeNestedInput
 }
 
 export type EventPositionUncheckedUpdateManyWithoutEventInput = {
@@ -856,11 +970,13 @@ export type EventPositionUncheckedUpdateManyWithoutEventInput = {
 export type EventPositionCountOutputType = {
   contestants: number
   votes: number
+  ballotSelections: number
 }
 
 export type EventPositionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contestants?: boolean | EventPositionCountOutputTypeCountContestantsArgs
   votes?: boolean | EventPositionCountOutputTypeCountVotesArgs
+  ballotSelections?: boolean | EventPositionCountOutputTypeCountBallotSelectionsArgs
 }
 
 /**
@@ -887,6 +1003,13 @@ export type EventPositionCountOutputTypeCountVotesArgs<ExtArgs extends runtime.T
   where?: Prisma.VoteWhereInput
 }
 
+/**
+ * EventPositionCountOutputType without action
+ */
+export type EventPositionCountOutputTypeCountBallotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.BallotSelectionWhereInput
+}
+
 
 export type EventPositionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -902,6 +1025,7 @@ export type EventPositionSelect<ExtArgs extends runtime.Types.Extensions.Interna
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestants?: boolean | Prisma.EventPosition$contestantsArgs<ExtArgs>
   votes?: boolean | Prisma.EventPosition$votesArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.EventPosition$ballotSelectionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventPositionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["eventPosition"]>
 
@@ -951,6 +1075,7 @@ export type EventPositionInclude<ExtArgs extends runtime.Types.Extensions.Intern
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   contestants?: boolean | Prisma.EventPosition$contestantsArgs<ExtArgs>
   votes?: boolean | Prisma.EventPosition$votesArgs<ExtArgs>
+  ballotSelections?: boolean | Prisma.EventPosition$ballotSelectionsArgs<ExtArgs>
   _count?: boolean | Prisma.EventPositionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventPositionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -966,6 +1091,7 @@ export type $EventPositionPayload<ExtArgs extends runtime.Types.Extensions.Inter
     event: Prisma.$EventPayload<ExtArgs>
     contestants: Prisma.$ContestantPayload<ExtArgs>[]
     votes: Prisma.$VotePayload<ExtArgs>[]
+    ballotSelections: Prisma.$BallotSelectionPayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1375,6 +1501,7 @@ export interface Prisma__EventPositionClient<T, Null = never, ExtArgs extends ru
   event<T extends Prisma.EventDefaultArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventDefaultArgs<ExtArgs>>): Prisma.Prisma__EventClient<runtime.Types.Result.GetResult<Prisma.$EventPayload<ExtArgs>, T, "findUniqueOrThrow", GlobalOmitOptions> | Null, Null, ExtArgs, GlobalOmitOptions>
   contestants<T extends Prisma.EventPosition$contestantsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventPosition$contestantsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ContestantPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   votes<T extends Prisma.EventPosition$votesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventPosition$votesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$VotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  ballotSelections<T extends Prisma.EventPosition$ballotSelectionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.EventPosition$ballotSelectionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$BallotSelectionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1860,6 +1987,30 @@ export type EventPosition$votesArgs<ExtArgs extends runtime.Types.Extensions.Int
   take?: number
   skip?: number
   distinct?: Prisma.VoteScalarFieldEnum | Prisma.VoteScalarFieldEnum[]
+}
+
+/**
+ * EventPosition.ballotSelections
+ */
+export type EventPosition$ballotSelectionsArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the BallotSelection
+   */
+  select?: Prisma.BallotSelectionSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the BallotSelection
+   */
+  omit?: Prisma.BallotSelectionOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.BallotSelectionInclude<ExtArgs> | null
+  where?: Prisma.BallotSelectionWhereInput
+  orderBy?: Prisma.BallotSelectionOrderByWithRelationInput | Prisma.BallotSelectionOrderByWithRelationInput[]
+  cursor?: Prisma.BallotSelectionWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.BallotSelectionScalarFieldEnum | Prisma.BallotSelectionScalarFieldEnum[]
 }
 
 /**

@@ -14,10 +14,7 @@ import {
   Filter,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
-import type {
-  StageLeaderboardDataDto,
-  StageProjectLeaderboardEntryDto,
-} from "../types/peoples-choice";
+import type { StageLeaderboardDataDto } from "../types/peoples-choice";
 
 export interface StageLeaderboardProps {
   readonly initialData: StageLeaderboardDataDto;
@@ -110,6 +107,14 @@ export function StageLeaderboard({
     return () => clearInterval(timer);
   }, [pollIntervalMs, fetchLatestStandings]);
 
+  const toggleFullscreen = useCallback(async (): Promise<void> => {
+    try {
+      await (!document.fullscreenElement ? document.documentElement.requestFullscreen() : document.exitFullscreen());
+    } catch (err: unknown) {
+      console.warn("[StageLeaderboard] Fullscreen request rejected:", err);
+    }
+  }, []);
+
   // Track Fullscreen state & Hotkey listener ('F')
   useEffect(() => {
     const handleFullscreenChange = () => {
@@ -132,15 +137,7 @@ export function StageLeaderboard({
       document.removeEventListener("fullscreenchange", handleFullscreenChange);
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, []);
-
-  const toggleFullscreen = async (): Promise<void> => {
-    try {
-      await (!document.fullscreenElement ? document.documentElement.requestFullscreen() : document.exitFullscreen());
-    } catch (err) {
-      console.warn("[StageLeaderboard] Fullscreen request rejected:", err);
-    }
-  };
+  }, [toggleFullscreen]);
 
   // Filter projects by track locally if needed or rely on fetched data
   const displayedProjects = useMemo(() => {

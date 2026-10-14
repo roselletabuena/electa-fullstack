@@ -14,6 +14,11 @@ export * from "./utils/quota-calculator";
 export * from "./utils/turnstile";
 export * from "./actions/cast-ballot";
 export * from "./services/voting-engine";
+export * from "./components/multi-office-ballot";
+export * from "./components/ballot-review-modal";
+export * from "./components/ballot-receipt-card";
+export * from "./components/voter-auth-guard";
 export * from "./utils/rate-limiter";
 export * from "./utils/fingerprint";
 export * from "./utils/vote-intent";
+

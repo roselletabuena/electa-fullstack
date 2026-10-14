@@ -84,7 +84,7 @@ export function ElectionAuditPanel({
             Ballot Tally & Official Audit
           </span>
           <h2 className="text-xl font-black tracking-tight text-slate-900 dark:text-slate-100 font-heading">
-            Official Election Results Certification
+            Official Results Certification: {eventTitle}
           </h2>
         </div>
 

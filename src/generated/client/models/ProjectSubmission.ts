@@ -20,8 +20,18 @@ export type ProjectSubmissionModel = runtime.Types.Result.DefaultSelection<Prism
 
 export type AggregateProjectSubmission = {
   _count: ProjectSubmissionCountAggregateOutputType | null
+  _avg: ProjectSubmissionAvgAggregateOutputType | null
+  _sum: ProjectSubmissionSumAggregateOutputType | null
   _min: ProjectSubmissionMinAggregateOutputType | null
   _max: ProjectSubmissionMaxAggregateOutputType | null
+}
+
+export type ProjectSubmissionAvgAggregateOutputType = {
+  voteCount: number | null
+}
+
+export type ProjectSubmissionSumAggregateOutputType = {
+  voteCount: number | null
 }
 
 export type ProjectSubmissionMinAggregateOutputType = {
@@ -37,6 +47,7 @@ export type ProjectSubmissionMinAggregateOutputType = {
   status: $Enums.ProjectSubmissionStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  voteCount: number | null
 }
 
 export type ProjectSubmissionMaxAggregateOutputType = {
@@ -52,6 +63,7 @@ export type ProjectSubmissionMaxAggregateOutputType = {
   status: $Enums.ProjectSubmissionStatus | null
   createdAt: Date | null
   updatedAt: Date | null
+  voteCount: number | null
 }
 
 export type ProjectSubmissionCountAggregateOutputType = {
@@ -67,9 +79,18 @@ export type ProjectSubmissionCountAggregateOutputType = {
   status: number
   createdAt: number
   updatedAt: number
+  voteCount: number
   _all: number
 }
 
+
+export type ProjectSubmissionAvgAggregateInputType = {
+  voteCount?: true
+}
+
+export type ProjectSubmissionSumAggregateInputType = {
+  voteCount?: true
+}
 
 export type ProjectSubmissionMinAggregateInputType = {
   id?: true
@@ -84,6 +105,7 @@ export type ProjectSubmissionMinAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  voteCount?: true
 }
 
 export type ProjectSubmissionMaxAggregateInputType = {
@@ -99,6 +121,7 @@ export type ProjectSubmissionMaxAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  voteCount?: true
 }
 
 export type ProjectSubmissionCountAggregateInputType = {
@@ -114,6 +137,7 @@ export type ProjectSubmissionCountAggregateInputType = {
   status?: true
   createdAt?: true
   updatedAt?: true
+  voteCount?: true
   _all?: true
 }
 
@@ -155,6 +179,18 @@ export type ProjectSubmissionAggregateArgs<ExtArgs extends runtime.Types.Extensi
   /**
    * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
    * 
+   * Select which fields to average
+  **/
+  _avg?: ProjectSubmissionAvgAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
+   * Select which fields to sum
+  **/
+  _sum?: ProjectSubmissionSumAggregateInputType
+  /**
+   * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+   * 
    * Select which fields to find the minimum value
   **/
   _min?: ProjectSubmissionMinAggregateInputType
@@ -185,6 +221,8 @@ export type ProjectSubmissionGroupByArgs<ExtArgs extends runtime.Types.Extension
   take?: number
   skip?: number
   _count?: ProjectSubmissionCountAggregateInputType | true
+  _avg?: ProjectSubmissionAvgAggregateInputType
+  _sum?: ProjectSubmissionSumAggregateInputType
   _min?: ProjectSubmissionMinAggregateInputType
   _max?: ProjectSubmissionMaxAggregateInputType
 }
@@ -202,7 +240,10 @@ export type ProjectSubmissionGroupByOutputType = {
   status: $Enums.ProjectSubmissionStatus
   createdAt: Date
   updatedAt: Date
+  voteCount: number
   _count: ProjectSubmissionCountAggregateOutputType | null
+  _avg: ProjectSubmissionAvgAggregateOutputType | null
+  _sum: ProjectSubmissionSumAggregateOutputType | null
   _min: ProjectSubmissionMinAggregateOutputType | null
   _max: ProjectSubmissionMaxAggregateOutputType | null
 }
@@ -238,10 +279,12 @@ export type ProjectSubmissionWhereInput = {
   status?: Prisma.EnumProjectSubmissionStatusFilter<"ProjectSubmission"> | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
+  voteCount?: Prisma.IntFilter<"ProjectSubmission"> | number
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   members?: Prisma.ProjectMemberListRelationFilter
   trackTags?: Prisma.ProjectTrackTagListRelationFilter
   links?: Prisma.ProjectSubmissionLinkListRelationFilter
+  projectVotes?: Prisma.ProjectVoteListRelationFilter
 }
 
 export type ProjectSubmissionOrderByWithRelationInput = {
@@ -257,10 +300,12 @@ export type ProjectSubmissionOrderByWithRelationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  voteCount?: Prisma.SortOrder
   event?: Prisma.EventOrderByWithRelationInput
   members?: Prisma.ProjectMemberOrderByRelationAggregateInput
   trackTags?: Prisma.ProjectTrackTagOrderByRelationAggregateInput
   links?: Prisma.ProjectSubmissionLinkOrderByRelationAggregateInput
+  projectVotes?: Prisma.ProjectVoteOrderByRelationAggregateInput
 }
 
 export type ProjectSubmissionWhereUniqueInput = Prisma.AtLeast<{
@@ -280,10 +325,12 @@ export type ProjectSubmissionWhereUniqueInput = Prisma.AtLeast<{
   status?: Prisma.EnumProjectSubmissionStatusFilter<"ProjectSubmission"> | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
+  voteCount?: Prisma.IntFilter<"ProjectSubmission"> | number
   event?: Prisma.XOR<Prisma.EventScalarRelationFilter, Prisma.EventWhereInput>
   members?: Prisma.ProjectMemberListRelationFilter
   trackTags?: Prisma.ProjectTrackTagListRelationFilter
   links?: Prisma.ProjectSubmissionLinkListRelationFilter
+  projectVotes?: Prisma.ProjectVoteListRelationFilter
 }, "id" | "eventId_teamLeadId_title">
 
 export type ProjectSubmissionOrderByWithAggregationInput = {
@@ -299,9 +346,12 @@ export type ProjectSubmissionOrderByWithAggregationInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  voteCount?: Prisma.SortOrder
   _count?: Prisma.ProjectSubmissionCountOrderByAggregateInput
+  _avg?: Prisma.ProjectSubmissionAvgOrderByAggregateInput
   _max?: Prisma.ProjectSubmissionMaxOrderByAggregateInput
   _min?: Prisma.ProjectSubmissionMinOrderByAggregateInput
+  _sum?: Prisma.ProjectSubmissionSumOrderByAggregateInput
 }
 
 export type ProjectSubmissionScalarWhereWithAggregatesInput = {
@@ -320,6 +370,7 @@ export type ProjectSubmissionScalarWhereWithAggregatesInput = {
   status?: Prisma.EnumProjectSubmissionStatusWithAggregatesFilter<"ProjectSubmission"> | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectSubmission"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"ProjectSubmission"> | Date | string
+  voteCount?: Prisma.IntWithAggregatesFilter<"ProjectSubmission"> | number
 }
 
 export type ProjectSubmissionCreateInput = {
@@ -334,10 +385,12 @@ export type ProjectSubmissionCreateInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   event: Prisma.EventCreateNestedOneWithoutProjectSubmissionsInput
   members?: Prisma.ProjectMemberCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUncheckedCreateInput = {
@@ -353,9 +406,11 @@ export type ProjectSubmissionUncheckedCreateInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagUncheckedCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkUncheckedCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUpdateInput = {
@@ -370,10 +425,12 @@ export type ProjectSubmissionUpdateInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   event?: Prisma.EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput
   members?: Prisma.ProjectMemberUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateInput = {
@@ -389,9 +446,11 @@ export type ProjectSubmissionUncheckedUpdateInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUncheckedUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUncheckedUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionCreateManyInput = {
@@ -407,6 +466,7 @@ export type ProjectSubmissionCreateManyInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
 }
 
 export type ProjectSubmissionUpdateManyMutationInput = {
@@ -421,6 +481,7 @@ export type ProjectSubmissionUpdateManyMutationInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProjectSubmissionUncheckedUpdateManyInput = {
@@ -436,6 +497,7 @@ export type ProjectSubmissionUncheckedUpdateManyInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 export type ProjectSubmissionListRelationFilter = {
@@ -467,6 +529,11 @@ export type ProjectSubmissionCountOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  voteCount?: Prisma.SortOrder
+}
+
+export type ProjectSubmissionAvgOrderByAggregateInput = {
+  voteCount?: Prisma.SortOrder
 }
 
 export type ProjectSubmissionMaxOrderByAggregateInput = {
@@ -482,6 +549,7 @@ export type ProjectSubmissionMaxOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  voteCount?: Prisma.SortOrder
 }
 
 export type ProjectSubmissionMinOrderByAggregateInput = {
@@ -497,6 +565,11 @@ export type ProjectSubmissionMinOrderByAggregateInput = {
   status?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
+  voteCount?: Prisma.SortOrder
+}
+
+export type ProjectSubmissionSumOrderByAggregateInput = {
+  voteCount?: Prisma.SortOrder
 }
 
 export type ProjectSubmissionScalarRelationFilter = {
@@ -592,6 +665,20 @@ export type ProjectSubmissionUpdateOneRequiredWithoutLinksNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectSubmissionUpdateToOneWithWhereWithoutLinksInput, Prisma.ProjectSubmissionUpdateWithoutLinksInput>, Prisma.ProjectSubmissionUncheckedUpdateWithoutLinksInput>
 }
 
+export type ProjectSubmissionCreateNestedOneWithoutProjectVotesInput = {
+  create?: Prisma.XOR<Prisma.ProjectSubmissionCreateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedCreateWithoutProjectVotesInput>
+  connectOrCreate?: Prisma.ProjectSubmissionCreateOrConnectWithoutProjectVotesInput
+  connect?: Prisma.ProjectSubmissionWhereUniqueInput
+}
+
+export type ProjectSubmissionUpdateOneRequiredWithoutProjectVotesNestedInput = {
+  create?: Prisma.XOR<Prisma.ProjectSubmissionCreateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedCreateWithoutProjectVotesInput>
+  connectOrCreate?: Prisma.ProjectSubmissionCreateOrConnectWithoutProjectVotesInput
+  upsert?: Prisma.ProjectSubmissionUpsertWithoutProjectVotesInput
+  connect?: Prisma.ProjectSubmissionWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.ProjectSubmissionUpdateToOneWithWhereWithoutProjectVotesInput, Prisma.ProjectSubmissionUpdateWithoutProjectVotesInput>, Prisma.ProjectSubmissionUncheckedUpdateWithoutProjectVotesInput>
+}
+
 export type ProjectSubmissionCreateWithoutEventInput = {
   id?: string
   teamLeadId: string
@@ -604,9 +691,11 @@ export type ProjectSubmissionCreateWithoutEventInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   members?: Prisma.ProjectMemberCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUncheckedCreateWithoutEventInput = {
@@ -621,9 +710,11 @@ export type ProjectSubmissionUncheckedCreateWithoutEventInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagUncheckedCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkUncheckedCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionCreateOrConnectWithoutEventInput = {
@@ -668,6 +759,7 @@ export type ProjectSubmissionScalarWhereInput = {
   status?: Prisma.EnumProjectSubmissionStatusFilter<"ProjectSubmission"> | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"ProjectSubmission"> | Date | string
+  voteCount?: Prisma.IntFilter<"ProjectSubmission"> | number
 }
 
 export type ProjectSubmissionCreateWithoutMembersInput = {
@@ -682,9 +774,11 @@ export type ProjectSubmissionCreateWithoutMembersInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   event: Prisma.EventCreateNestedOneWithoutProjectSubmissionsInput
   trackTags?: Prisma.ProjectTrackTagCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUncheckedCreateWithoutMembersInput = {
@@ -700,8 +794,10 @@ export type ProjectSubmissionUncheckedCreateWithoutMembersInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   trackTags?: Prisma.ProjectTrackTagUncheckedCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkUncheckedCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionCreateOrConnectWithoutMembersInput = {
@@ -732,9 +828,11 @@ export type ProjectSubmissionUpdateWithoutMembersInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   event?: Prisma.EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput
   trackTags?: Prisma.ProjectTrackTagUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateWithoutMembersInput = {
@@ -750,8 +848,10 @@ export type ProjectSubmissionUncheckedUpdateWithoutMembersInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   trackTags?: Prisma.ProjectTrackTagUncheckedUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUncheckedUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionCreateWithoutTrackTagsInput = {
@@ -766,9 +866,11 @@ export type ProjectSubmissionCreateWithoutTrackTagsInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   event: Prisma.EventCreateNestedOneWithoutProjectSubmissionsInput
   members?: Prisma.ProjectMemberCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUncheckedCreateWithoutTrackTagsInput = {
@@ -784,8 +886,10 @@ export type ProjectSubmissionUncheckedCreateWithoutTrackTagsInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutSubmissionInput
   links?: Prisma.ProjectSubmissionLinkUncheckedCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionCreateOrConnectWithoutTrackTagsInput = {
@@ -816,9 +920,11 @@ export type ProjectSubmissionUpdateWithoutTrackTagsInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   event?: Prisma.EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput
   members?: Prisma.ProjectMemberUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateWithoutTrackTagsInput = {
@@ -834,8 +940,10 @@ export type ProjectSubmissionUncheckedUpdateWithoutTrackTagsInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUncheckedUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionCreateWithoutLinksInput = {
@@ -850,9 +958,11 @@ export type ProjectSubmissionCreateWithoutLinksInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   event: Prisma.EventCreateNestedOneWithoutProjectSubmissionsInput
   members?: Prisma.ProjectMemberCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionUncheckedCreateWithoutLinksInput = {
@@ -868,8 +978,10 @@ export type ProjectSubmissionUncheckedCreateWithoutLinksInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
   members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutSubmissionInput
   trackTags?: Prisma.ProjectTrackTagUncheckedCreateNestedManyWithoutSubmissionInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutSubmissionInput
 }
 
 export type ProjectSubmissionCreateOrConnectWithoutLinksInput = {
@@ -900,9 +1012,11 @@ export type ProjectSubmissionUpdateWithoutLinksInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   event?: Prisma.EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput
   members?: Prisma.ProjectMemberUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateWithoutLinksInput = {
@@ -918,8 +1032,102 @@ export type ProjectSubmissionUncheckedUpdateWithoutLinksInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUncheckedUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutSubmissionNestedInput
+}
+
+export type ProjectSubmissionCreateWithoutProjectVotesInput = {
+  id?: string
+  teamLeadId: string
+  title: string
+  tagline?: string | null
+  description: string
+  repositoryUrl: string
+  demoUrl?: string | null
+  videoUrl?: string | null
+  status?: $Enums.ProjectSubmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  voteCount?: number
+  event: Prisma.EventCreateNestedOneWithoutProjectSubmissionsInput
+  members?: Prisma.ProjectMemberCreateNestedManyWithoutSubmissionInput
+  trackTags?: Prisma.ProjectTrackTagCreateNestedManyWithoutSubmissionInput
+  links?: Prisma.ProjectSubmissionLinkCreateNestedManyWithoutSubmissionInput
+}
+
+export type ProjectSubmissionUncheckedCreateWithoutProjectVotesInput = {
+  id?: string
+  eventId: string
+  teamLeadId: string
+  title: string
+  tagline?: string | null
+  description: string
+  repositoryUrl: string
+  demoUrl?: string | null
+  videoUrl?: string | null
+  status?: $Enums.ProjectSubmissionStatus
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  voteCount?: number
+  members?: Prisma.ProjectMemberUncheckedCreateNestedManyWithoutSubmissionInput
+  trackTags?: Prisma.ProjectTrackTagUncheckedCreateNestedManyWithoutSubmissionInput
+  links?: Prisma.ProjectSubmissionLinkUncheckedCreateNestedManyWithoutSubmissionInput
+}
+
+export type ProjectSubmissionCreateOrConnectWithoutProjectVotesInput = {
+  where: Prisma.ProjectSubmissionWhereUniqueInput
+  create: Prisma.XOR<Prisma.ProjectSubmissionCreateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedCreateWithoutProjectVotesInput>
+}
+
+export type ProjectSubmissionUpsertWithoutProjectVotesInput = {
+  update: Prisma.XOR<Prisma.ProjectSubmissionUpdateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedUpdateWithoutProjectVotesInput>
+  create: Prisma.XOR<Prisma.ProjectSubmissionCreateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedCreateWithoutProjectVotesInput>
+  where?: Prisma.ProjectSubmissionWhereInput
+}
+
+export type ProjectSubmissionUpdateToOneWithWhereWithoutProjectVotesInput = {
+  where?: Prisma.ProjectSubmissionWhereInput
+  data: Prisma.XOR<Prisma.ProjectSubmissionUpdateWithoutProjectVotesInput, Prisma.ProjectSubmissionUncheckedUpdateWithoutProjectVotesInput>
+}
+
+export type ProjectSubmissionUpdateWithoutProjectVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  teamLeadId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  repositoryUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  event?: Prisma.EventUpdateOneRequiredWithoutProjectSubmissionsNestedInput
+  members?: Prisma.ProjectMemberUpdateManyWithoutSubmissionNestedInput
+  trackTags?: Prisma.ProjectTrackTagUpdateManyWithoutSubmissionNestedInput
+  links?: Prisma.ProjectSubmissionLinkUpdateManyWithoutSubmissionNestedInput
+}
+
+export type ProjectSubmissionUncheckedUpdateWithoutProjectVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  eventId?: Prisma.StringFieldUpdateOperationsInput | string
+  teamLeadId?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  tagline?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  repositoryUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  demoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  videoUrl?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
+  members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutSubmissionNestedInput
+  trackTags?: Prisma.ProjectTrackTagUncheckedUpdateManyWithoutSubmissionNestedInput
+  links?: Prisma.ProjectSubmissionLinkUncheckedUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionCreateManyEventInput = {
@@ -934,6 +1142,7 @@ export type ProjectSubmissionCreateManyEventInput = {
   status?: $Enums.ProjectSubmissionStatus
   createdAt?: Date | string
   updatedAt?: Date | string
+  voteCount?: number
 }
 
 export type ProjectSubmissionUpdateWithoutEventInput = {
@@ -948,9 +1157,11 @@ export type ProjectSubmissionUpdateWithoutEventInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   members?: Prisma.ProjectMemberUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateWithoutEventInput = {
@@ -965,9 +1176,11 @@ export type ProjectSubmissionUncheckedUpdateWithoutEventInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
   members?: Prisma.ProjectMemberUncheckedUpdateManyWithoutSubmissionNestedInput
   trackTags?: Prisma.ProjectTrackTagUncheckedUpdateManyWithoutSubmissionNestedInput
   links?: Prisma.ProjectSubmissionLinkUncheckedUpdateManyWithoutSubmissionNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutSubmissionNestedInput
 }
 
 export type ProjectSubmissionUncheckedUpdateManyWithoutEventInput = {
@@ -982,6 +1195,7 @@ export type ProjectSubmissionUncheckedUpdateManyWithoutEventInput = {
   status?: Prisma.EnumProjectSubmissionStatusFieldUpdateOperationsInput | $Enums.ProjectSubmissionStatus
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  voteCount?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
 
@@ -993,12 +1207,14 @@ export type ProjectSubmissionCountOutputType = {
   members: number
   trackTags: number
   links: number
+  projectVotes: number
 }
 
 export type ProjectSubmissionCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   members?: boolean | ProjectSubmissionCountOutputTypeCountMembersArgs
   trackTags?: boolean | ProjectSubmissionCountOutputTypeCountTrackTagsArgs
   links?: boolean | ProjectSubmissionCountOutputTypeCountLinksArgs
+  projectVotes?: boolean | ProjectSubmissionCountOutputTypeCountProjectVotesArgs
 }
 
 /**
@@ -1032,6 +1248,13 @@ export type ProjectSubmissionCountOutputTypeCountLinksArgs<ExtArgs extends runti
   where?: Prisma.ProjectSubmissionLinkWhereInput
 }
 
+/**
+ * ProjectSubmissionCountOutputType without action
+ */
+export type ProjectSubmissionCountOutputTypeCountProjectVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectVoteWhereInput
+}
+
 
 export type ProjectSubmissionSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -1046,10 +1269,12 @@ export type ProjectSubmissionSelect<ExtArgs extends runtime.Types.Extensions.Int
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  voteCount?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   members?: boolean | Prisma.ProjectSubmission$membersArgs<ExtArgs>
   trackTags?: boolean | Prisma.ProjectSubmission$trackTagsArgs<ExtArgs>
   links?: boolean | Prisma.ProjectSubmission$linksArgs<ExtArgs>
+  projectVotes?: boolean | Prisma.ProjectSubmission$projectVotesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectSubmissionCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["projectSubmission"]>
 
@@ -1066,6 +1291,7 @@ export type ProjectSubmissionSelectCreateManyAndReturn<ExtArgs extends runtime.T
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  voteCount?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["projectSubmission"]>
 
@@ -1082,6 +1308,7 @@ export type ProjectSubmissionSelectUpdateManyAndReturn<ExtArgs extends runtime.T
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  voteCount?: boolean
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["projectSubmission"]>
 
@@ -1098,14 +1325,16 @@ export type ProjectSubmissionSelectScalar = {
   status?: boolean
   createdAt?: boolean
   updatedAt?: boolean
+  voteCount?: boolean
 }
 
-export type ProjectSubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "teamLeadId" | "title" | "tagline" | "description" | "repositoryUrl" | "demoUrl" | "videoUrl" | "status" | "createdAt" | "updatedAt", ExtArgs["result"]["projectSubmission"]>
+export type ProjectSubmissionOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "eventId" | "teamLeadId" | "title" | "tagline" | "description" | "repositoryUrl" | "demoUrl" | "videoUrl" | "status" | "createdAt" | "updatedAt" | "voteCount", ExtArgs["result"]["projectSubmission"]>
 export type ProjectSubmissionInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   event?: boolean | Prisma.EventDefaultArgs<ExtArgs>
   members?: boolean | Prisma.ProjectSubmission$membersArgs<ExtArgs>
   trackTags?: boolean | Prisma.ProjectSubmission$trackTagsArgs<ExtArgs>
   links?: boolean | Prisma.ProjectSubmission$linksArgs<ExtArgs>
+  projectVotes?: boolean | Prisma.ProjectSubmission$projectVotesArgs<ExtArgs>
   _count?: boolean | Prisma.ProjectSubmissionCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type ProjectSubmissionIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -1122,6 +1351,7 @@ export type $ProjectSubmissionPayload<ExtArgs extends runtime.Types.Extensions.I
     members: Prisma.$ProjectMemberPayload<ExtArgs>[]
     trackTags: Prisma.$ProjectTrackTagPayload<ExtArgs>[]
     links: Prisma.$ProjectSubmissionLinkPayload<ExtArgs>[]
+    projectVotes: Prisma.$ProjectVotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -1136,6 +1366,7 @@ export type $ProjectSubmissionPayload<ExtArgs extends runtime.Types.Extensions.I
     status: $Enums.ProjectSubmissionStatus
     createdAt: Date
     updatedAt: Date
+    voteCount: number
   }, ExtArgs["result"]["projectSubmission"]>
   composites: {}
 }
@@ -1534,6 +1765,7 @@ export interface Prisma__ProjectSubmissionClient<T, Null = never, ExtArgs extend
   members<T extends Prisma.ProjectSubmission$membersArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectSubmission$membersArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectMemberPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   trackTags<T extends Prisma.ProjectSubmission$trackTagsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectSubmission$trackTagsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectTrackTagPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   links<T extends Prisma.ProjectSubmission$linksArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectSubmission$linksArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectSubmissionLinkPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  projectVotes<T extends Prisma.ProjectSubmission$projectVotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.ProjectSubmission$projectVotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -1575,6 +1807,7 @@ export interface ProjectSubmissionFieldRefs {
   readonly status: Prisma.FieldRef<"ProjectSubmission", 'ProjectSubmissionStatus'>
   readonly createdAt: Prisma.FieldRef<"ProjectSubmission", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"ProjectSubmission", 'DateTime'>
+  readonly voteCount: Prisma.FieldRef<"ProjectSubmission", 'Int'>
 }
     
 
@@ -2045,6 +2278,30 @@ export type ProjectSubmission$linksArgs<ExtArgs extends runtime.Types.Extensions
   take?: number
   skip?: number
   distinct?: Prisma.ProjectSubmissionLinkScalarFieldEnum | Prisma.ProjectSubmissionLinkScalarFieldEnum[]
+}
+
+/**
+ * ProjectSubmission.projectVotes
+ */
+export type ProjectSubmission$projectVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectVote
+   */
+  select?: Prisma.ProjectVoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProjectVote
+   */
+  omit?: Prisma.ProjectVoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectVoteInclude<ExtArgs> | null
+  where?: Prisma.ProjectVoteWhereInput
+  orderBy?: Prisma.ProjectVoteOrderByWithRelationInput | Prisma.ProjectVoteOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectVoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectVoteScalarFieldEnum | Prisma.ProjectVoteScalarFieldEnum[]
 }
 
 /**

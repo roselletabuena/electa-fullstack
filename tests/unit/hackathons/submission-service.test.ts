@@ -62,6 +62,7 @@ describe("submission-service", () => {
     demoUrl: "https://quantum-vote.vercel.app",
     videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
     status: "SUBMITTED" as const,
+    voteCount: 0,
     createdAt: new Date("2026-10-15T12:01:00Z"),
     updatedAt: new Date("2026-10-15T12:01:00Z"),
     members: [

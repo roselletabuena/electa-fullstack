@@ -115,6 +115,7 @@ function createMockProjectSubmission(
     demoUrl: null,
     videoUrl: null,
     status: "SUBMITTED",
+    voteCount: 0,
     createdAt: new Date(),
     updatedAt: new Date(),
     trackTags: [

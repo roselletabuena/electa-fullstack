@@ -343,6 +343,7 @@ export type EventWhereInput = {
   projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
   rubricCriteria?: Prisma.RubricCriterionListRelationFilter
   judgeEvaluations?: Prisma.JudgeEvaluationListRelationFilter
+  projectVotes?: Prisma.ProjectVoteListRelationFilter
 }
 
 export type EventOrderByWithRelationInput = {
@@ -380,6 +381,7 @@ export type EventOrderByWithRelationInput = {
   projectSubmissions?: Prisma.ProjectSubmissionOrderByRelationAggregateInput
   rubricCriteria?: Prisma.RubricCriterionOrderByRelationAggregateInput
   judgeEvaluations?: Prisma.JudgeEvaluationOrderByRelationAggregateInput
+  projectVotes?: Prisma.ProjectVoteOrderByRelationAggregateInput
 }
 
 export type EventWhereUniqueInput = Prisma.AtLeast<{
@@ -420,6 +422,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   projectSubmissions?: Prisma.ProjectSubmissionListRelationFilter
   rubricCriteria?: Prisma.RubricCriterionListRelationFilter
   judgeEvaluations?: Prisma.JudgeEvaluationListRelationFilter
+  projectVotes?: Prisma.ProjectVoteListRelationFilter
 }, "id" | "slug">
 
 export type EventOrderByWithAggregationInput = {
@@ -509,6 +512,7 @@ export type EventCreateInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateInput = {
@@ -546,6 +550,7 @@ export type EventUncheckedCreateInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventUpdateInput = {
@@ -583,6 +588,7 @@ export type EventUpdateInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateInput = {
@@ -620,6 +626,7 @@ export type EventUncheckedUpdateInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateManyInput = {
@@ -1034,6 +1041,20 @@ export type EventUpdateOneRequiredWithoutJudgeEvaluationsNestedInput = {
   update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutJudgeEvaluationsInput, Prisma.EventUpdateWithoutJudgeEvaluationsInput>, Prisma.EventUncheckedUpdateWithoutJudgeEvaluationsInput>
 }
 
+export type EventCreateNestedOneWithoutProjectVotesInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutProjectVotesInput, Prisma.EventUncheckedCreateWithoutProjectVotesInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutProjectVotesInput
+  connect?: Prisma.EventWhereUniqueInput
+}
+
+export type EventUpdateOneRequiredWithoutProjectVotesNestedInput = {
+  create?: Prisma.XOR<Prisma.EventCreateWithoutProjectVotesInput, Prisma.EventUncheckedCreateWithoutProjectVotesInput>
+  connectOrCreate?: Prisma.EventCreateOrConnectWithoutProjectVotesInput
+  upsert?: Prisma.EventUpsertWithoutProjectVotesInput
+  connect?: Prisma.EventWhereUniqueInput
+  update?: Prisma.XOR<Prisma.XOR<Prisma.EventUpdateToOneWithWhereWithoutProjectVotesInput, Prisma.EventUpdateWithoutProjectVotesInput>, Prisma.EventUncheckedUpdateWithoutProjectVotesInput>
+}
+
 export type EventCreateWithoutDivisionsInput = {
   id?: string
   slug: string
@@ -1068,6 +1089,7 @@ export type EventCreateWithoutDivisionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutDivisionsInput = {
@@ -1104,6 +1126,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutDivisionsInput = {
@@ -1156,6 +1179,7 @@ export type EventUpdateWithoutDivisionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutDivisionsInput = {
@@ -1192,6 +1216,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPositionsInput = {
@@ -1228,6 +1253,7 @@ export type EventCreateWithoutPositionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPositionsInput = {
@@ -1264,6 +1290,7 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPositionsInput = {
@@ -1316,6 +1343,7 @@ export type EventUpdateWithoutPositionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPositionsInput = {
@@ -1352,6 +1380,7 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutContestantsInput = {
@@ -1388,6 +1417,7 @@ export type EventCreateWithoutContestantsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutContestantsInput = {
@@ -1424,6 +1454,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutContestantsInput = {
@@ -1476,6 +1507,7 @@ export type EventUpdateWithoutContestantsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutContestantsInput = {
@@ -1512,6 +1544,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAwardCategoriesInput = {
@@ -1548,6 +1581,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAwardCategoriesInput = {
@@ -1584,6 +1618,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAwardCategoriesInput = {
@@ -1636,6 +1671,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
@@ -1672,6 +1708,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutAuditLogsInput = {
@@ -1708,6 +1745,7 @@ export type EventCreateWithoutAuditLogsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutAuditLogsInput = {
@@ -1744,6 +1782,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutAuditLogsInput = {
@@ -1796,6 +1835,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutAuditLogsInput = {
@@ -1832,6 +1872,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutVotesInput = {
@@ -1868,6 +1909,7 @@ export type EventCreateWithoutVotesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutVotesInput = {
@@ -1904,6 +1946,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutVotesInput = {
@@ -1956,6 +1999,7 @@ export type EventUpdateWithoutVotesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutVotesInput = {
@@ -1992,6 +2036,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutBallotSubmissionsInput = {
@@ -2028,6 +2073,7 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
@@ -2064,6 +2110,7 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutBallotSubmissionsInput = {
@@ -2116,6 +2163,7 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
@@ -2152,6 +2200,7 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutVoterParticipationsInput = {
@@ -2188,6 +2237,7 @@ export type EventCreateWithoutVoterParticipationsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutVoterParticipationsInput = {
@@ -2224,6 +2274,7 @@ export type EventUncheckedCreateWithoutVoterParticipationsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutVoterParticipationsInput = {
@@ -2276,6 +2327,7 @@ export type EventUpdateWithoutVoterParticipationsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutVoterParticipationsInput = {
@@ -2312,6 +2364,7 @@ export type EventUncheckedUpdateWithoutVoterParticipationsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutBallotSelectionsInput = {
@@ -2348,6 +2401,7 @@ export type EventCreateWithoutBallotSelectionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutBallotSelectionsInput = {
@@ -2384,6 +2438,7 @@ export type EventUncheckedCreateWithoutBallotSelectionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutBallotSelectionsInput = {
@@ -2436,6 +2491,7 @@ export type EventUpdateWithoutBallotSelectionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutBallotSelectionsInput = {
@@ -2472,6 +2528,7 @@ export type EventUncheckedUpdateWithoutBallotSelectionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPaymentTransactionsInput = {
@@ -2508,6 +2565,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
@@ -2544,6 +2602,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPaymentTransactionsInput = {
@@ -2596,6 +2655,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
@@ -2632,6 +2692,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutPayoutRequestsInput = {
@@ -2668,6 +2729,7 @@ export type EventCreateWithoutPayoutRequestsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutPayoutRequestsInput = {
@@ -2704,6 +2766,7 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutPayoutRequestsInput = {
@@ -2756,6 +2819,7 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
@@ -2792,6 +2856,7 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutProjectSubmissionsInput = {
@@ -2828,6 +2893,7 @@ export type EventCreateWithoutProjectSubmissionsInput = {
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
@@ -2864,6 +2930,7 @@ export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutProjectSubmissionsInput = {
@@ -2916,6 +2983,7 @@ export type EventUpdateWithoutProjectSubmissionsInput = {
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
@@ -2952,6 +3020,7 @@ export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutRubricCriteriaInput = {
@@ -2988,6 +3057,7 @@ export type EventCreateWithoutRubricCriteriaInput = {
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutRubricCriteriaInput = {
@@ -3024,6 +3094,7 @@ export type EventUncheckedCreateWithoutRubricCriteriaInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutRubricCriteriaInput = {
@@ -3076,6 +3147,7 @@ export type EventUpdateWithoutRubricCriteriaInput = {
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
@@ -3112,6 +3184,7 @@ export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutStudentRosterInput = {
@@ -3148,6 +3221,7 @@ export type EventCreateWithoutStudentRosterInput = {
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutStudentRosterInput = {
@@ -3184,6 +3258,7 @@ export type EventUncheckedCreateWithoutStudentRosterInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutStudentRosterInput = {
@@ -3236,6 +3311,7 @@ export type EventUpdateWithoutStudentRosterInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutStudentRosterInput = {
@@ -3272,6 +3348,7 @@ export type EventUncheckedUpdateWithoutStudentRosterInput = {
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
   judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
 }
 
 export type EventCreateWithoutJudgeEvaluationsInput = {
@@ -3308,6 +3385,7 @@ export type EventCreateWithoutJudgeEvaluationsInput = {
   payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteCreateNestedManyWithoutEventInput
 }
 
 export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
@@ -3344,6 +3422,7 @@ export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
+  projectVotes?: Prisma.ProjectVoteUncheckedCreateNestedManyWithoutEventInput
 }
 
 export type EventCreateOrConnectWithoutJudgeEvaluationsInput = {
@@ -3396,6 +3475,7 @@ export type EventUpdateWithoutJudgeEvaluationsInput = {
   payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUpdateManyWithoutEventNestedInput
 }
 
 export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
@@ -3432,6 +3512,171 @@ export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
   payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
   projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
   rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
+  projectVotes?: Prisma.ProjectVoteUncheckedUpdateManyWithoutEventNestedInput
+}
+
+export type EventCreateWithoutProjectVotesInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationCreateNestedManyWithoutEventInput
+}
+
+export type EventUncheckedCreateWithoutProjectVotesInput = {
+  id?: string
+  slug: string
+  title: string
+  description: string
+  bannerUrl: string
+  startsAt: Date | string
+  endsAt: Date | string
+  publicationStatus?: $Enums.EventPublicationStatus
+  draftPassphraseHash?: string | null
+  showResultsOnClose?: boolean
+  isFreeVotingEnabled?: boolean
+  isFreeVotingOnly?: boolean
+  dailyFreeVoteLimit?: number
+  takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId: string
+  archetype?: $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
+  createdAt?: Date | string
+  updatedAt?: Date | string
+  contestants?: Prisma.ContestantUncheckedCreateNestedManyWithoutEventInput
+  divisions?: Prisma.DivisionUncheckedCreateNestedManyWithoutEventInput
+  positions?: Prisma.EventPositionUncheckedCreateNestedManyWithoutEventInput
+  awardCategories?: Prisma.AwardCategoryUncheckedCreateNestedManyWithoutEventInput
+  auditLogs?: Prisma.EventAuditLogUncheckedCreateNestedManyWithoutEventInput
+  votes?: Prisma.VoteUncheckedCreateNestedManyWithoutEventInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedCreateNestedManyWithoutEventInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedCreateNestedManyWithoutEventInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedCreateNestedManyWithoutEventInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedCreateNestedManyWithoutEventInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedCreateNestedManyWithoutEventInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedCreateNestedManyWithoutEventInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedCreateNestedManyWithoutEventInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedCreateNestedManyWithoutEventInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedCreateNestedManyWithoutEventInput
+}
+
+export type EventCreateOrConnectWithoutProjectVotesInput = {
+  where: Prisma.EventWhereUniqueInput
+  create: Prisma.XOR<Prisma.EventCreateWithoutProjectVotesInput, Prisma.EventUncheckedCreateWithoutProjectVotesInput>
+}
+
+export type EventUpsertWithoutProjectVotesInput = {
+  update: Prisma.XOR<Prisma.EventUpdateWithoutProjectVotesInput, Prisma.EventUncheckedUpdateWithoutProjectVotesInput>
+  create: Prisma.XOR<Prisma.EventCreateWithoutProjectVotesInput, Prisma.EventUncheckedCreateWithoutProjectVotesInput>
+  where?: Prisma.EventWhereInput
+}
+
+export type EventUpdateToOneWithWhereWithoutProjectVotesInput = {
+  where?: Prisma.EventWhereInput
+  data: Prisma.XOR<Prisma.EventUpdateWithoutProjectVotesInput, Prisma.EventUncheckedUpdateWithoutProjectVotesInput>
+}
+
+export type EventUpdateWithoutProjectVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUpdateManyWithoutEventNestedInput
+}
+
+export type EventUncheckedUpdateWithoutProjectVotesInput = {
+  id?: Prisma.StringFieldUpdateOperationsInput | string
+  slug?: Prisma.StringFieldUpdateOperationsInput | string
+  title?: Prisma.StringFieldUpdateOperationsInput | string
+  description?: Prisma.StringFieldUpdateOperationsInput | string
+  bannerUrl?: Prisma.StringFieldUpdateOperationsInput | string
+  startsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  endsAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  publicationStatus?: Prisma.EnumEventPublicationStatusFieldUpdateOperationsInput | $Enums.EventPublicationStatus
+  draftPassphraseHash?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  showResultsOnClose?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingEnabled?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  isFreeVotingOnly?: Prisma.BoolFieldUpdateOperationsInput | boolean
+  dailyFreeVoteLimit?: Prisma.IntFieldUpdateOperationsInput | number
+  takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
+  organizerId?: Prisma.StringFieldUpdateOperationsInput | string
+  archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
+  createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
+  contestants?: Prisma.ContestantUncheckedUpdateManyWithoutEventNestedInput
+  divisions?: Prisma.DivisionUncheckedUpdateManyWithoutEventNestedInput
+  positions?: Prisma.EventPositionUncheckedUpdateManyWithoutEventNestedInput
+  awardCategories?: Prisma.AwardCategoryUncheckedUpdateManyWithoutEventNestedInput
+  auditLogs?: Prisma.EventAuditLogUncheckedUpdateManyWithoutEventNestedInput
+  votes?: Prisma.VoteUncheckedUpdateManyWithoutEventNestedInput
+  ballotSubmissions?: Prisma.BallotSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  voterParticipations?: Prisma.VoterParticipationUncheckedUpdateManyWithoutEventNestedInput
+  ballotSelections?: Prisma.BallotSelectionUncheckedUpdateManyWithoutEventNestedInput
+  studentRoster?: Prisma.StudentRosterEntryUncheckedUpdateManyWithoutEventNestedInput
+  paymentTransactions?: Prisma.PaymentTransactionUncheckedUpdateManyWithoutEventNestedInput
+  payoutRequests?: Prisma.PayoutRequestUncheckedUpdateManyWithoutEventNestedInput
+  projectSubmissions?: Prisma.ProjectSubmissionUncheckedUpdateManyWithoutEventNestedInput
+  rubricCriteria?: Prisma.RubricCriterionUncheckedUpdateManyWithoutEventNestedInput
+  judgeEvaluations?: Prisma.JudgeEvaluationUncheckedUpdateManyWithoutEventNestedInput
 }
 
 
@@ -3455,6 +3700,7 @@ export type EventCountOutputType = {
   projectSubmissions: number
   rubricCriteria: number
   judgeEvaluations: number
+  projectVotes: number
 }
 
 export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
@@ -3473,6 +3719,7 @@ export type EventCountOutputTypeSelect<ExtArgs extends runtime.Types.Extensions.
   projectSubmissions?: boolean | EventCountOutputTypeCountProjectSubmissionsArgs
   rubricCriteria?: boolean | EventCountOutputTypeCountRubricCriteriaArgs
   judgeEvaluations?: boolean | EventCountOutputTypeCountJudgeEvaluationsArgs
+  projectVotes?: boolean | EventCountOutputTypeCountProjectVotesArgs
 }
 
 /**
@@ -3590,6 +3837,13 @@ export type EventCountOutputTypeCountJudgeEvaluationsArgs<ExtArgs extends runtim
   where?: Prisma.JudgeEvaluationWhereInput
 }
 
+/**
+ * EventCountOutputType without action
+ */
+export type EventCountOutputTypeCountProjectVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  where?: Prisma.ProjectVoteWhereInput
+}
+
 
 export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetSelect<{
   id?: boolean
@@ -3626,6 +3880,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
   rubricCriteria?: boolean | Prisma.Event$rubricCriteriaArgs<ExtArgs>
   judgeEvaluations?: boolean | Prisma.Event$judgeEvaluationsArgs<ExtArgs>
+  projectVotes?: boolean | Prisma.Event$projectVotesArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["event"]>
 
@@ -3712,6 +3967,7 @@ export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs =
   projectSubmissions?: boolean | Prisma.Event$projectSubmissionsArgs<ExtArgs>
   rubricCriteria?: boolean | Prisma.Event$rubricCriteriaArgs<ExtArgs>
   judgeEvaluations?: boolean | Prisma.Event$judgeEvaluationsArgs<ExtArgs>
+  projectVotes?: boolean | Prisma.Event$projectVotesArgs<ExtArgs>
   _count?: boolean | Prisma.EventCountOutputTypeDefaultArgs<ExtArgs>
 }
 export type EventIncludeCreateManyAndReturn<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {}
@@ -3735,6 +3991,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     projectSubmissions: Prisma.$ProjectSubmissionPayload<ExtArgs>[]
     rubricCriteria: Prisma.$RubricCriterionPayload<ExtArgs>[]
     judgeEvaluations: Prisma.$JudgeEvaluationPayload<ExtArgs>[]
+    projectVotes: Prisma.$ProjectVotePayload<ExtArgs>[]
   }
   scalars: runtime.Types.Extensions.GetPayloadResult<{
     id: string
@@ -4165,6 +4422,7 @@ export interface Prisma__EventClient<T, Null = never, ExtArgs extends runtime.Ty
   projectSubmissions<T extends Prisma.Event$projectSubmissionsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$projectSubmissionsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectSubmissionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   rubricCriteria<T extends Prisma.Event$rubricCriteriaArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$rubricCriteriaArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$RubricCriterionPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   judgeEvaluations<T extends Prisma.Event$judgeEvaluationsArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$judgeEvaluationsArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$JudgeEvaluationPayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
+  projectVotes<T extends Prisma.Event$projectVotesArgs<ExtArgs> = {}>(args?: Prisma.Subset<T, Prisma.Event$projectVotesArgs<ExtArgs>>): Prisma.PrismaPromise<runtime.Types.Result.GetResult<Prisma.$ProjectVotePayload<ExtArgs>, T, "findMany", GlobalOmitOptions> | Null>
   /**
    * Attaches callbacks for the resolution and/or rejection of the Promise.
    * @param onfulfilled The callback to execute when the Promise is resolved.
@@ -4963,6 +5221,30 @@ export type Event$judgeEvaluationsArgs<ExtArgs extends runtime.Types.Extensions.
   take?: number
   skip?: number
   distinct?: Prisma.JudgeEvaluationScalarFieldEnum | Prisma.JudgeEvaluationScalarFieldEnum[]
+}
+
+/**
+ * Event.projectVotes
+ */
+export type Event$projectVotesArgs<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
+  /**
+   * Select specific fields to fetch from the ProjectVote
+   */
+  select?: Prisma.ProjectVoteSelect<ExtArgs> | null
+  /**
+   * Omit specific fields from the ProjectVote
+   */
+  omit?: Prisma.ProjectVoteOmit<ExtArgs> | null
+  /**
+   * Choose, which related nodes to fetch as well
+   */
+  include?: Prisma.ProjectVoteInclude<ExtArgs> | null
+  where?: Prisma.ProjectVoteWhereInput
+  orderBy?: Prisma.ProjectVoteOrderByWithRelationInput | Prisma.ProjectVoteOrderByWithRelationInput[]
+  cursor?: Prisma.ProjectVoteWhereUniqueInput
+  take?: number
+  skip?: number
+  distinct?: Prisma.ProjectVoteScalarFieldEnum | Prisma.ProjectVoteScalarFieldEnum[]
 }
 
 /**

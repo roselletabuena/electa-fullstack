@@ -27,6 +27,7 @@ function serializeSubmission(sub: {
   demoUrl: string | null;
   videoUrl: string | null;
   status: ProjectSubmissionDto["status"];
+  voteCount?: number | undefined;
   createdAt: Date;
   updatedAt: Date;
   members: Array<{
@@ -62,6 +63,7 @@ function serializeSubmission(sub: {
     demoUrl: sub.demoUrl,
     videoUrl: sub.videoUrl,
     status: sub.status,
+    voteCount: sub.voteCount ?? 0,
     createdAt: sub.createdAt.toISOString(),
     updatedAt: sub.updatedAt.toISOString(),
     members: sub.members.map(

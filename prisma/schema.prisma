@@ -82,6 +82,7 @@ model Event {
   projectSubmissions  ProjectSubmission[]
   rubricCriteria      RubricCriterion[]
   judgeEvaluations    JudgeEvaluation[]
+  projectVotes        ProjectVote[]
 
   @@index([slug])
   @@index([organizerId])
@@ -439,6 +440,8 @@ model ProjectSubmission {
   members       ProjectMember[]
   trackTags     ProjectTrackTag[]
   links         ProjectSubmissionLink[]
+  voteCount     Int                     @default(0)
+  projectVotes  ProjectVote[]
 
   @@unique([eventId, teamLeadId, title])
   @@index([eventId])
@@ -555,4 +558,20 @@ model JudgeScore {
   @@unique([evaluationId, criterionId])
   @@index([evaluationId])
   @@index([criterionId])
+}
+
+model ProjectVote {
+  id           String            @id @default(uuid())
+  eventId      String
+  submissionId String
+  voterId      String
+  createdAt    DateTime          @default(now())
+
+  event        Event             @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  submission   ProjectSubmission @relation(fields: [submissionId], references: [id], onDelete: Cascade)
+
+  @@unique([eventId, voterId])
+  @@index([eventId])
+  @@index([submissionId])
+  @@index([voterId])
 }

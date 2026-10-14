@@ -418,7 +418,8 @@ export const ModelName = {
   RubricCriterion: 'RubricCriterion',
   StudentRosterEntry: 'StudentRosterEntry',
   JudgeEvaluation: 'JudgeEvaluation',
-  JudgeScore: 'JudgeScore'
+  JudgeScore: 'JudgeScore',
+  ProjectVote: 'ProjectVote'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -434,7 +435,7 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
     omit: GlobalOmitOptions
   }
   meta: {
-    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "voterParticipation" | "ballotSelection" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "studentRosterEntry" | "judgeEvaluation" | "judgeScore"
+    modelProps: "event" | "division" | "eventPosition" | "contestant" | "contestantMedia" | "awardCategory" | "contestantCategoryAssignment" | "eventAuditLog" | "vote" | "ballotSubmission" | "voterParticipation" | "ballotSelection" | "paymentTransaction" | "payoutRequest" | "projectSubmission" | "projectMember" | "projectTrackTag" | "projectSubmissionLink" | "rubricCriterion" | "studentRosterEntry" | "judgeEvaluation" | "judgeScore" | "projectVote"
     txIsolationLevel: TransactionIsolationLevel
   }
   model: {
@@ -2066,6 +2067,80 @@ export type TypeMap<ExtArgs extends runtime.Types.Extensions.InternalArgs = runt
         }
       }
     }
+    ProjectVote: {
+      payload: Prisma.$ProjectVotePayload<ExtArgs>
+      fields: Prisma.ProjectVoteFieldRefs
+      operations: {
+        findUnique: {
+          args: Prisma.ProjectVoteFindUniqueArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload> | null
+        }
+        findUniqueOrThrow: {
+          args: Prisma.ProjectVoteFindUniqueOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        findFirst: {
+          args: Prisma.ProjectVoteFindFirstArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload> | null
+        }
+        findFirstOrThrow: {
+          args: Prisma.ProjectVoteFindFirstOrThrowArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        findMany: {
+          args: Prisma.ProjectVoteFindManyArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>[]
+        }
+        create: {
+          args: Prisma.ProjectVoteCreateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        createMany: {
+          args: Prisma.ProjectVoteCreateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        createManyAndReturn: {
+          args: Prisma.ProjectVoteCreateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>[]
+        }
+        delete: {
+          args: Prisma.ProjectVoteDeleteArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        update: {
+          args: Prisma.ProjectVoteUpdateArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        deleteMany: {
+          args: Prisma.ProjectVoteDeleteManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateMany: {
+          args: Prisma.ProjectVoteUpdateManyArgs<ExtArgs>
+          result: BatchPayload
+        }
+        updateManyAndReturn: {
+          args: Prisma.ProjectVoteUpdateManyAndReturnArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>[]
+        }
+        upsert: {
+          args: Prisma.ProjectVoteUpsertArgs<ExtArgs>
+          result: runtime.Types.Utils.PayloadToResult<Prisma.$ProjectVotePayload>
+        }
+        aggregate: {
+          args: Prisma.ProjectVoteAggregateArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.AggregateProjectVote>
+        }
+        groupBy: {
+          args: Prisma.ProjectVoteGroupByArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectVoteGroupByOutputType>[]
+        }
+        count: {
+          args: Prisma.ProjectVoteCountArgs<ExtArgs>
+          result: runtime.Types.Utils.Optional<Prisma.ProjectVoteCountAggregateOutputType> | number
+        }
+      }
+    }
   }
 } & {
   other: {
@@ -2354,7 +2429,8 @@ export const ProjectSubmissionScalarFieldEnum = {
   videoUrl: 'videoUrl',
   status: 'status',
   createdAt: 'createdAt',
-  updatedAt: 'updatedAt'
+  updatedAt: 'updatedAt',
+  voteCount: 'voteCount'
 } as const
 
 export type ProjectSubmissionScalarFieldEnum = (typeof ProjectSubmissionScalarFieldEnum)[keyof typeof ProjectSubmissionScalarFieldEnum]
@@ -2445,6 +2521,17 @@ export const JudgeScoreScalarFieldEnum = {
 } as const
 
 export type JudgeScoreScalarFieldEnum = (typeof JudgeScoreScalarFieldEnum)[keyof typeof JudgeScoreScalarFieldEnum]
+
+
+export const ProjectVoteScalarFieldEnum = {
+  id: 'id',
+  eventId: 'eventId',
+  submissionId: 'submissionId',
+  voterId: 'voterId',
+  createdAt: 'createdAt'
+} as const
+
+export type ProjectVoteScalarFieldEnum = (typeof ProjectVoteScalarFieldEnum)[keyof typeof ProjectVoteScalarFieldEnum]
 
 
 export const SortOrder = {
@@ -2946,6 +3033,7 @@ export type GlobalOmitConfig = {
   studentRosterEntry?: Prisma.StudentRosterEntryOmit
   judgeEvaluation?: Prisma.JudgeEvaluationOmit
   judgeScore?: Prisma.JudgeScoreOmit
+  projectVote?: Prisma.ProjectVoteOmit
 }
 
 /* Types for Logging */

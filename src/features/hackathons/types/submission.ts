@@ -35,6 +35,7 @@ export interface ProjectSubmissionDto {
   demoUrl: string | null;
   videoUrl: string | null;
   status: ProjectSubmissionStatus;
+  voteCount?: number | undefined;
   createdAt: string;
   updatedAt: string;
   members: ProjectMemberDto[];

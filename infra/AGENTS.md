@@ -21,7 +21,7 @@ Scalable, modular Infrastructure-as-Code (IaC) powered by **Terraform** on **AWS
 ## 2. Directory Layout
 
 ```text
-electa-infra/
+infra/
 ├── .gitignore
 ├── README.md
 ├── AGENTS.md                        # This agent guide
@@ -102,15 +102,15 @@ electa-infra/
 
 ---
 
-## 4. Connecting Infrastructure to `electa-fullstack`
+## 4. Connecting Infrastructure to Web Application
 
-When creating or modifying infrastructure resources needed by the fullstack web application:
+When creating or modifying infrastructure resources needed by the web application:
 
 1. **Expose values in `environments/<env>/outputs.tf`**:
    - Output structured resource identifiers (e.g. `s3_media_bucket_name`, `s3_media_bucket_region`, `cognito_user_pool_id`, `cognito_client_id`).
-   - Maintain the `env_snippet` output in `environments/dev/outputs.tf` so developers can copy values directly into `electa-fullstack/.env.local`.
+   - Maintain the `env_snippet` output in `environments/dev/outputs.tf` so developers can copy values directly into `.env.local` at the repository root.
 2. **Notify fullstack schema**:
-   - Ensure corresponding environment variables are defined in `electa-fullstack/src/env.ts` and `electa-fullstack/.env.example`.
+   - Ensure corresponding environment variables are defined in `src/env.ts` and `.env.example`.
 
 ---
 
@@ -131,8 +131,9 @@ terraform plan
 
 ---
 
-## 6. Git Version Control
+## 6. Monorepo Integration & CI Gates
 
-- `electa-infra` is an independent Git repository.
-- Commits must follow **Conventional Commits** (`feat(storage): ...`, `fix(cognito): ...`, `chore(bootstrap): ...`).
+- `infra/` is a first-class directory within the Electa Single-Service Monorepo.
+- Path-filtered CI (`.github/workflows/infra-ci.yml`) automatically runs Terraform format checks and validation across all environments whenever files under `infra/**` are modified.
+- Commits must follow **Conventional Commits** (e.g. `feat(infra/storage): ...`, `fix(infra/cognito): ...`, `chore(infra/bootstrap): ...`).
 - Never commit `.terraform/`, `*.tfstate`, `*.tfstate.backup`, or `*.tfvars` files.

@@ -7,3 +7,7 @@ public
 prisma/migrations
 src/generated
 .agents
+infra
+**/.terraform
+*.tf
+*.hcl

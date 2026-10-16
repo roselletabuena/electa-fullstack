@@ -1,0 +1,16 @@
+aws_region            = "ap-southeast-1"
+environment           = "dev"
+app_name              = "electa"
+cognito_domain_prefix = "electa-auth-dev"
+
+# Google OAuth 2.0 Credentials (obtain from Google Cloud Console)
+google_client_id     = "YOUR_GOOGLE_CLIENT_ID.apps.googleusercontent.com"
+google_client_secret = "YOUR_GOOGLE_CLIENT_SECRET"
+
+callback_urls = [
+  "http://localhost:3000/api/auth/callback/cognito"
+]
+
+logout_urls = [
+  "http://localhost:3000/login"
+]

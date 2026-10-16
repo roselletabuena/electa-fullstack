@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import {
   Calendar,
   Sparkles,
@@ -29,10 +30,7 @@ import { SlugAvailabilityBadge } from "./SlugAvailabilityBadge";
 import { BannerAspectPreview } from "./dashboard/BannerAspectPreview";
 import { ArchetypeSelector } from "./archetype-selector";
 import { TaxonomyEditor } from "./taxonomy-editor";
-import {
-  EVENT_ARCHETYPE_CONFIGS,
-  type EventArchetype,
-} from "../types/archetype";
+import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype } from "../types/archetype";
 import {
   TIMELINE_PRESETS,
   calculateEndsAtFromDuration,
@@ -42,9 +40,8 @@ import {
 } from "../utils/timeline-presets";
 import {
   saveDraftToSession,
-  loadDraftFromSession,
   clearDraftFromSession,
-  hasDraftContent,
+  useSessionDraft,
 } from "../utils/event-draft-storage";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +76,7 @@ function getDefaultDates(): { startsAt: string; endsAt: string } {
 
 const WIZARD_STEPS = [
   { id: 1, title: "Event Details", icon: Calendar },
-  { id: 2, title: "Archetype & Taxonomy", icon: Layers },
+  { id: 2, title: "Event Format & Categories", icon: Layers },
   { id: 3, title: "Review & Launch", icon: FileCheck2 },
 ] as const;
 
@@ -111,16 +108,17 @@ export function EventCreationWizard({
   const router = useRouter();
   const defaultDates = getDefaultDates();
 
-  const [currentStep, setCurrentStep] = useState(1);
-  const [initialDraft] = useState(() => {
-    const draft = loadDraftFromSession();
-    return draft && hasDraftContent(draft) ? draft : null;
-  });
+  const sessionDraft = useSessionDraft();
+  const hasRestoredRef = useRef(false);
+  const isMounted = useIsMounted();
 
-  const [isCustomSlug, setIsCustomSlug] = useState(() => Boolean(initialDraft?.isCustomSlug));
+  const [currentStep, setCurrentStep] = useState(1);
+  const [userCustomSlug, setUserCustomSlug] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
   const [stepError, setStepError] = useState<string | null>(null);
-  const [isDraftRestored, setIsDraftRestored] = useState(() => Boolean(initialDraft));
+
+  const isCustomSlug = userCustomSlug || Boolean(sessionDraft?.isCustomSlug);
+  const isDraftRestored = Boolean(sessionDraft);
 
   // In-memory taxonomy items for Step 2
   const [positions, setPositions] = useState<WizardPositionDraftInput[]>([]);
@@ -136,16 +134,32 @@ export function EventCreationWizard({
     formState: { isSubmitting },
   } = useForm<FormRawValues>({
     defaultValues: {
-      title: initialDraft?.title ?? "",
-      slug: initialDraft?.slug ?? "",
-      description: initialDraft?.description ?? "",
-      bannerUrl: initialDraft?.bannerUrl ?? "",
-      startsAt: initialDraft?.startsAt || defaultDates.startsAt,
-      endsAt: initialDraft?.endsAt || defaultDates.endsAt,
-      archetype: (initialDraft?.archetype as EventArchetype) || "PAGEANT",
+      title: "",
+      slug: "",
+      description: "",
+      bannerUrl: "",
+      startsAt: defaultDates.startsAt,
+      endsAt: defaultDates.endsAt,
+      archetype: "PAGEANT",
     },
     mode: "onChange",
   });
+
+  // Restore draft from sessionStorage after initial mount to prevent SSR hydration mismatch
+  useEffect(() => {
+    if (sessionDraft && !hasRestoredRef.current) {
+      hasRestoredRef.current = true;
+      reset({
+        title: sessionDraft.title || "",
+        slug: sessionDraft.slug || "",
+        description: sessionDraft.description || "",
+        bannerUrl: sessionDraft.bannerUrl || "",
+        startsAt: sessionDraft.startsAt || defaultDates.startsAt,
+        endsAt: sessionDraft.endsAt || defaultDates.endsAt,
+        archetype: (sessionDraft.archetype as EventArchetype) || "PAGEANT",
+      });
+    }
+  }, [sessionDraft, reset, defaultDates.startsAt, defaultDates.endsAt]);
 
   const watchedTitle = useWatch({ control, name: "title" }) ?? "";
   const watchedSlug = useWatch({ control, name: "slug" }) ?? "";
@@ -157,8 +171,9 @@ export function EventCreationWizard({
 
   const slugCheck = useDebouncedSlugCheck(watchedSlug);
 
-  // Persist form state to sessionStorage on change
+  // Persist form state to sessionStorage on change (only after initial mount)
   useEffect(() => {
+    if (!isMounted) return;
     if (
       watchedTitle.trim() ||
       watchedSlug.trim() ||
@@ -177,6 +192,7 @@ export function EventCreationWizard({
       });
     }
   }, [
+    isMounted,
     watchedTitle,
     watchedSlug,
     watchedDescription,
@@ -202,6 +218,8 @@ export function EventCreationWizard({
   const handleClearDraft = () => {
     clearDraftFromSession();
     const freshDates = getDefaultDates();
+    hasRestoredRef.current = false;
+    setUserCustomSlug(false);
     reset({
       title: "",
       slug: "",
@@ -214,8 +232,6 @@ export function EventCreationWizard({
     setPositions([]);
     setDivisions([]);
     setAwardCategories([]);
-    setIsCustomSlug(false);
-    setIsDraftRestored(false);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -229,7 +245,7 @@ export function EventCreationWizard({
   };
 
   const handleResetSlugToTitle = () => {
-    setIsCustomSlug(false);
+    setUserCustomSlug(false);
     const generatedSlug = sanitizeSlug(watchedTitle || "");
     setValue("slug", generatedSlug, { shouldValidate: true });
   };
@@ -245,8 +261,14 @@ export function EventCreationWizard({
       setStepError("Slug must be at least 3 characters.");
       return;
     }
-    if (slugCheck.status === "unavailable" || slugCheck.status === "reserved" || slugCheck.status === "invalid") {
-      setStepError(slugCheck.message || "This URL slug is not available. Please choose another one.");
+    if (
+      slugCheck.status === "unavailable" ||
+      slugCheck.status === "reserved" ||
+      slugCheck.status === "invalid"
+    ) {
+      setStepError(
+        slugCheck.message || "This URL slug is not available. Please choose another one.",
+      );
       return;
     }
     if (!watchedBannerUrl.trim()) {
@@ -334,9 +356,7 @@ export function EventCreationWizard({
         router.push(`/events/${res.data.slug}`);
       }
     } catch (err: unknown) {
-      setServerError(
-        err instanceof Error ? err.message : "An unexpected network error occurred."
-      );
+      setServerError(err instanceof Error ? err.message : "An unexpected network error occurred.");
     }
   };
 
@@ -348,7 +368,7 @@ export function EventCreationWizard({
       return divisions.map((d, i) => (
         <span
           key={i}
-          className="border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 rounded-none"
+          className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
         >
           {d.name}
         </span>
@@ -362,7 +382,7 @@ export function EventCreationWizard({
     return positions.map((p, i) => (
       <span
         key={i}
-        className="border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 rounded-none"
+        className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
       >
         {p.name} ({p.maxSelectionsPerVoter > 1 ? `${p.maxSelectionsPerVoter} seats` : "1 seat"})
       </span>
@@ -375,7 +395,7 @@ export function EventCreationWizard({
       {isDraftRestored && (
         <aside
           aria-label="Draft recovery notification"
-          className="flex flex-col items-start justify-between gap-3 border border-sky-300 bg-sky-50 p-4 sm:flex-row sm:items-center rounded-none dark:border-sky-500/30 dark:bg-sky-500/10"
+          className="flex flex-col items-start justify-between gap-3 rounded-none border border-sky-300 bg-sky-50 p-4 sm:flex-row sm:items-center dark:border-sky-500/30 dark:bg-sky-500/10"
         >
           <div className="flex items-center gap-2.5">
             <CheckCircle2 className="size-4 shrink-0 text-sky-600 dark:text-sky-400" />
@@ -386,7 +406,7 @@ export function EventCreationWizard({
           <button
             type="button"
             onClick={handleClearDraft}
-            className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 rounded-none dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+            className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold tracking-wider text-sky-950 uppercase transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
           >
             <RotateCcw className="size-3" />
             <span>Clear Draft</span>
@@ -395,14 +415,17 @@ export function EventCreationWizard({
       )}
 
       {/* Stepper Navigation */}
-      <nav aria-label="Wizard Steps" className="border border-slate-300 bg-white p-3 rounded-none dark:border-slate-800 dark:bg-[#0d1424]">
-        <ol className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
+      <nav
+        aria-label="Wizard Steps"
+        className="rounded-none border border-slate-300 bg-white p-3 dark:border-slate-800 dark:bg-[#0d1424]"
+      >
+        <ol className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           {WIZARD_STEPS.map((step) => {
             const isActive = currentStep === step.id;
             const isCompleted = currentStep > step.id;
 
             return (
-              <li key={step.id} className="flex items-center gap-2 flex-1">
+              <li key={step.id} className="flex flex-1 items-center gap-2">
                 <button
                   type="button"
                   onClick={() => {
@@ -410,19 +433,19 @@ export function EventCreationWizard({
                   }}
                   disabled={step.id > currentStep}
                   className={cn(
-                    "flex min-h-11 w-full items-center gap-2.5 px-3 py-2 text-xs font-bold transition rounded-none text-left",
-                    getStepButtonClass(isActive, isCompleted)
+                    "flex min-h-11 w-full items-center gap-2.5 rounded-none px-3 py-2 text-left text-xs font-bold transition",
+                    getStepButtonClass(isActive, isCompleted),
                   )}
                 >
                   <span
                     className={cn(
-                      "flex size-6 shrink-0 items-center justify-center text-[11px] font-black border rounded-none",
-                      getStepBadgeClass(isActive, isCompleted)
+                      "flex size-6 shrink-0 items-center justify-center rounded-none border text-[11px] font-black",
+                      getStepBadgeClass(isActive, isCompleted),
                     )}
                   >
                     {isCompleted ? "✓" : step.id}
                   </span>
-                  <span className="font-heading uppercase tracking-wider">{step.title}</span>
+                  <span className="font-heading tracking-wider uppercase">{step.title}</span>
                 </button>
               </li>
             );
@@ -434,7 +457,7 @@ export function EventCreationWizard({
       {(stepError || serverError) && (
         <div
           role="alert"
-          className="flex items-center gap-2 border border-red-300 bg-red-50 p-4 text-xs font-semibold text-red-900 rounded-none dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
+          className="flex items-center gap-2 rounded-none border border-red-300 bg-red-50 p-4 text-xs font-semibold text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
         >
           <AlertCircle className="size-4 shrink-0 text-red-600 dark:text-red-400" />
           <span>{stepError || serverError}</span>
@@ -445,7 +468,7 @@ export function EventCreationWizard({
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
         {/* STEP 1: General Information & Schedule */}
         {currentStep === 1 && (
-          <div className="space-y-6 border border-slate-300 bg-white p-6 shadow-xs rounded-none dark:border-slate-800 dark:bg-[#0d1424]">
+          <div className="space-y-6 rounded-none border border-slate-300 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
             <div className="border-b border-slate-200 pb-3 dark:border-slate-800">
               <h2 className="font-heading text-base font-black tracking-tight text-slate-900 dark:text-slate-100">
                 1. Event Details & Operational Schedule
@@ -460,7 +483,7 @@ export function EventCreationWizard({
               <div>
                 <label
                   htmlFor="event-title"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                  className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                 >
                   Event Title <span className="text-red-500">*</span>
                 </label>
@@ -470,7 +493,7 @@ export function EventCreationWizard({
                   {...register("title")}
                   onChange={handleTitleChange}
                   placeholder="e.g. University Student Council General Election 2026"
-                  className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                  className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                 />
               </div>
 
@@ -478,7 +501,7 @@ export function EventCreationWizard({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="event-slug"
-                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                    className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Custom URL Slug <span className="text-red-500">*</span>
                   </label>
@@ -486,14 +509,14 @@ export function EventCreationWizard({
                     <button
                       type="button"
                       onClick={handleResetSlugToTitle}
-                      className="text-[11px] font-bold text-sky-600 hover:underline dark:text-sky-400 cursor-pointer"
+                      className="cursor-pointer text-[11px] font-bold text-sky-600 hover:underline dark:text-sky-400"
                     >
                       Reset to match title
                     </button>
                   )}
                 </div>
                 <div className="relative mt-1 flex items-center">
-                  <span className="inline-flex min-h-11 items-center border border-r-0 border-slate-300 bg-slate-50 px-3 text-xs font-mono text-slate-500 rounded-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
+                  <span className="inline-flex min-h-11 items-center rounded-none border border-r-0 border-slate-300 bg-slate-50 px-3 font-mono text-xs text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400">
                     electa.com/events/
                   </span>
                   <input
@@ -501,18 +524,15 @@ export function EventCreationWizard({
                     type="text"
                     {...register("slug")}
                     onChange={(e) => {
-                      setIsCustomSlug(true);
+                      setUserCustomSlug(true);
                       setValue("slug", sanitizeSlug(e.target.value), { shouldValidate: true });
                     }}
                     placeholder="my-event-slug"
-                    className="block w-full border border-slate-300 bg-white px-3 py-2.5 text-xs font-mono text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="block w-full rounded-none border border-slate-300 bg-white px-3 py-2.5 font-mono text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                   />
                 </div>
                 <div className="mt-1.5 flex items-center justify-between">
-                  <SlugAvailabilityBadge
-                    status={slugCheck.status}
-                    message={slugCheck.message}
-                  />
+                  <SlugAvailabilityBadge status={slugCheck.status} message={slugCheck.message} />
                 </div>
               </div>
             </div>
@@ -521,7 +541,7 @@ export function EventCreationWizard({
             <div className="space-y-2">
               <label
                 htmlFor="banner-url"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
               >
                 Banner Image URL <span className="text-red-500">*</span>
               </label>
@@ -530,15 +550,18 @@ export function EventCreationWizard({
                 type="url"
                 {...register("bannerUrl")}
                 placeholder="https://example.com/banner.jpg"
-                className="block w-full border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="block w-full rounded-none border border-slate-300 bg-white px-3 py-2.5 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
-              <BannerAspectPreview imageUrl={watchedBannerUrl} title={watchedTitle || "Event Banner Preview"} />
+              <BannerAspectPreview
+                imageUrl={watchedBannerUrl}
+                title={watchedTitle || "Event Banner Preview"}
+              />
             </div>
 
             {/* Schedule & Duration Presets */}
             <div className="space-y-4 pt-2">
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2">
-                <span className="text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+                <span className="text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                   Voting Window Timeline
                 </span>
                 {/* Duration Presets */}
@@ -550,10 +573,10 @@ export function EventCreationWizard({
                       type="button"
                       onClick={() => handleApplyPreset(preset.days)}
                       className={cn(
-                        "inline-flex min-h-11 cursor-pointer items-center justify-center px-2.5 text-xs font-bold uppercase tracking-wider rounded-none transition",
+                        "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-none px-2.5 text-xs font-bold tracking-wider uppercase transition",
                         activePreset === preset.id
-                          ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
-                          : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 dark:bg-white/5 dark:text-slate-300 dark:border-white/10"
+                          ? "border border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
+                          : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300",
                       )}
                     >
                       {preset.label}
@@ -566,7 +589,7 @@ export function EventCreationWizard({
                 <div>
                   <label
                     htmlFor="starts-at"
-                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                    className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Starts At <span className="text-red-500">*</span>
                   </label>
@@ -574,14 +597,14 @@ export function EventCreationWizard({
                     id="starts-at"
                     type="datetime-local"
                     {...register("startsAt")}
-                    className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-mono text-slate-900 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                    className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 font-mono text-xs text-slate-900 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                   />
                 </div>
 
                 <div>
                   <label
                     htmlFor="ends-at"
-                    className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                    className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Ends At <span className="text-red-500">*</span>
                   </label>
@@ -590,10 +613,10 @@ export function EventCreationWizard({
                     type="datetime-local"
                     {...register("endsAt")}
                     className={cn(
-                      "mt-1 block w-full border bg-white px-3 py-2 text-xs font-mono focus:outline-hidden rounded-none dark:bg-slate-900",
+                      "mt-1 block w-full rounded-none border bg-white px-3 py-2 font-mono text-xs focus:outline-hidden dark:bg-slate-900",
                       isTemporalInvalid
                         ? "border-red-500 text-red-900 dark:border-red-500 dark:text-red-300"
-                        : "border-slate-300 text-slate-900 dark:border-slate-700 dark:text-slate-100 focus:border-sky-600"
+                        : "border-slate-300 text-slate-900 focus:border-sky-600 dark:border-slate-700 dark:text-slate-100",
                     )}
                   />
                 </div>
@@ -604,7 +627,7 @@ export function EventCreationWizard({
             <div>
               <label
                 htmlFor="event-description"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
               >
                 Event Description <span className="text-red-500">*</span>
               </label>
@@ -613,7 +636,7 @@ export function EventCreationWizard({
                 rows={4}
                 {...register("description")}
                 placeholder="Describe your competition or election rules, eligibility, and voter guidelines..."
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
             </div>
 
@@ -623,7 +646,7 @@ export function EventCreationWizard({
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="inline-flex min-h-[44px] cursor-pointer items-center border border-slate-300 bg-white px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-slate-700 hover:bg-slate-50 rounded-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                  className="inline-flex min-h-[44px] cursor-pointer items-center rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-extrabold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                 >
                   Cancel
                 </button>
@@ -634,24 +657,25 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={handleProceedToStep2}
-                className="inline-flex min-h-11 cursor-pointer items-center gap-2 border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
-                <span>Continue to Archetype & Taxonomy</span>
+                <span>Continue to Format & Categories</span>
                 <ArrowRight className="size-4" />
               </button>
             </div>
           </div>
         )}
 
-        {/* STEP 2: Archetype Selection & Dynamic Taxonomy */}
+        {/* STEP 2: Event Format & Categories (Archetype & Taxonomy) */}
         {currentStep === 2 && (
-          <div className="space-y-6 border border-slate-300 bg-white p-6 shadow-xs rounded-none dark:border-slate-800 dark:bg-[#0d1424]">
+          <div className="space-y-6 rounded-none border border-slate-300 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
             <div className="border-b border-slate-200 pb-3 dark:border-slate-800">
               <h2 className="font-heading text-base font-black tracking-tight text-slate-900 dark:text-slate-100">
-                2. Select Archetype & Configure Taxonomy
+                2. Select Event Format & Categories
               </h2>
               <p className="mt-1 text-xs text-slate-600 dark:text-slate-400">
-                Tailor the voting engine format to your event. Toggling archetypes dynamically updates ballot grouping and terminology without resetting your event details.
+                Tailor the voting engine format to your event. Toggling formats dynamically updates
+                ballot grouping and terminology without resetting your event details.
               </p>
             </div>
 
@@ -666,23 +690,26 @@ export function EventCreationWizard({
 
             {/* Dynamic Monetization Notice / Fields */}
             {watchedArchetype === "PAGEANT" ? (
-              <div className="border border-amber-300 bg-amber-50/60 p-4 rounded-none dark:border-amber-900/60 dark:bg-amber-950/20">
-                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-amber-900 dark:text-amber-300">
+              <div className="rounded-none border border-amber-300 bg-amber-50/60 p-4 dark:border-amber-900/60 dark:bg-amber-950/20">
+                <div className="flex items-center gap-2 text-xs font-extrabold tracking-widest text-amber-900 uppercase dark:text-amber-300">
                   <Sparkles className="size-3.5" />
                   <span>Pageant Monetization & Voting Packs</span>
                 </div>
                 <p className="mt-1 text-xs text-amber-800 dark:text-amber-400">
-                  Standard pageant monetization is enabled. Voters can purchase paid vote packages or cast free daily votes.
+                  Standard pageant monetization is enabled. Voters can purchase paid vote packages
+                  or cast free daily votes.
                 </p>
               </div>
             ) : (
-              <div className="border border-sky-300 bg-sky-50/60 p-4 rounded-none dark:border-sky-900/60 dark:bg-sky-950/20">
-                <div className="flex items-center gap-2 text-xs font-extrabold uppercase tracking-widest text-sky-950 dark:text-sky-300">
+              <div className="rounded-none border border-sky-300 bg-sky-50/60 p-4 dark:border-sky-900/60 dark:bg-sky-950/20">
+                <div className="flex items-center gap-2 text-xs font-extrabold tracking-widest text-sky-950 uppercase dark:text-sky-300">
                   <CheckCircle2 className="size-3.5 text-sky-600 dark:text-sky-400" />
                   <span>Institutional Free Ballot Mode</span>
                 </div>
                 <p className="mt-1 text-xs text-sky-900 dark:text-sky-300">
-                  Monetized vote packages and take rates are disabled. Every verified voter receives equal ballot weight for this {EVENT_ARCHETYPE_CONFIGS[watchedArchetype].label.toLowerCase()}.
+                  Monetized vote packages and take rates are disabled. Every verified voter receives
+                  equal ballot weight for this{" "}
+                  {EVENT_ARCHETYPE_CONFIGS[watchedArchetype].label.toLowerCase()}.
                 </p>
               </div>
             )}
@@ -703,7 +730,7 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 border border-slate-300 bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50 rounded-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
                 <ArrowLeft className="size-4" />
                 <span>Back to Details</span>
@@ -712,7 +739,7 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={handleProceedToStep3}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 <span>Review & Finalize</span>
                 <ArrowRight className="size-4" />
@@ -723,7 +750,7 @@ export function EventCreationWizard({
 
         {/* STEP 3: Review & Finalize */}
         {currentStep === 3 && (
-          <div className="space-y-6 border border-slate-300 bg-white p-6 shadow-xs rounded-none dark:border-slate-800 dark:bg-[#0d1424]">
+          <div className="space-y-6 rounded-none border border-slate-300 bg-white p-6 shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
             <div className="border-b border-slate-200 pb-3 dark:border-slate-800">
               <h2 className="font-heading text-base font-black tracking-tight text-slate-900 dark:text-slate-100">
                 3. Review Event Configuration
@@ -735,11 +762,11 @@ export function EventCreationWizard({
 
             {/* Review Cards Grid */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              <div className="border border-slate-200 p-4 rounded-none dark:border-slate-800">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+              <div className="rounded-none border border-slate-200 p-4 dark:border-slate-800">
+                <span className="text-[11px] font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
                   Event Profile
                 </span>
-                <div className="mt-2 font-heading text-base font-black text-slate-900 dark:text-slate-100">
+                <div className="font-heading mt-2 text-base font-black text-slate-900 dark:text-slate-100">
                   {watchedTitle}
                 </div>
                 <div className="mt-1 font-mono text-xs text-sky-600 dark:text-sky-400">
@@ -747,12 +774,12 @@ export function EventCreationWizard({
                 </div>
               </div>
 
-              <div className="border border-slate-200 p-4 rounded-none dark:border-slate-800">
-                <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
-                  Archetype & Taxonomy
+              <div className="rounded-none border border-slate-200 p-4 dark:border-slate-800">
+                <span className="text-[11px] font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
+                  Event Format & Categories
                 </span>
                 <div className="mt-2 flex items-center gap-2">
-                  <span className="border border-sky-600 bg-sky-50 px-2 py-0.5 text-xs font-black uppercase tracking-wider text-sky-900 dark:border-sky-500 dark:bg-sky-500/10 dark:text-sky-300 rounded-none">
+                  <span className="rounded-none border border-sky-600 bg-sky-50 px-2 py-0.5 text-xs font-black tracking-wider text-sky-900 uppercase dark:border-sky-500 dark:bg-sky-500/10 dark:text-sky-300">
                     {EVENT_ARCHETYPE_CONFIGS[watchedArchetype].label}
                   </span>
                 </div>
@@ -765,13 +792,11 @@ export function EventCreationWizard({
             </div>
 
             {/* List of Configured Items Summary */}
-            <div className="border border-slate-200 p-4 rounded-none dark:border-slate-800">
-              <span className="text-[11px] font-bold uppercase tracking-widest text-slate-500 dark:text-slate-400">
+            <div className="rounded-none border border-slate-200 p-4 dark:border-slate-800">
+              <span className="text-[11px] font-bold tracking-widest text-slate-500 uppercase dark:text-slate-400">
                 {EVENT_ARCHETYPE_CONFIGS[watchedArchetype].groupingTerm} Roster Summary
               </span>
-              <div className="mt-2 flex flex-wrap gap-2">
-                {renderRosterSummary()}
-              </div>
+              <div className="mt-2 flex flex-wrap gap-2">{renderRosterSummary()}</div>
             </div>
 
             {/* Submit / Back Actions */}
@@ -780,16 +805,16 @@ export function EventCreationWizard({
                 type="button"
                 onClick={() => setCurrentStep(2)}
                 disabled={isSubmitting}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 border border-slate-300 bg-white px-4 py-2 text-xs font-bold uppercase tracking-wider text-slate-700 hover:bg-slate-50 rounded-none dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
                 <ArrowLeft className="size-4" />
-                <span>Back to Taxonomy</span>
+                <span>Back to Format & Categories</span>
               </button>
 
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 border border-sky-600 bg-sky-600 px-6 py-2 text-xs font-black uppercase tracking-wider text-white shadow-sm transition hover:bg-sky-500 rounded-none dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400 disabled:opacity-50"
+                className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-none border border-sky-600 bg-sky-600 px-6 py-2 text-xs font-black tracking-wider text-white uppercase shadow-sm transition hover:bg-sky-500 disabled:opacity-50 dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
               >
                 {isSubmitting ? (
                   <>

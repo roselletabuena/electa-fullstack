@@ -54,5 +54,6 @@ Electa combines a Next.js 16 App Router web application with modular AWS Infrast
 
 ## CI & Quality Verification
 
+- **Agent Quality Verification**: `npm run agent:verify` (unified sequential runner: env -> typecheck -> lint -> tests), `npm run test:changed` (incremental Vitest runner covering touched files in < 3s), `npm run env:check` (Constitution §IV scanner).
 - **Application CI** ([.github/workflows/app-ci.yml](.github/workflows/app-ci.yml)): Path-filtered workflow running ESLint, TypeScript typecheck, and Vitest unit tests on changes to `src/**`, `prisma/**`, `public/**`, or `tests/**`.
 - **Infrastructure CI** ([.github/workflows/infra-ci.yml](.github/workflows/infra-ci.yml)): Path-filtered workflow running Terraform formatting checks (`terraform fmt -check`) and validation across `infra/` modules and environments.

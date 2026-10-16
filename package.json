@@ -15,7 +15,11 @@
     "typecheck": "tsc --noEmit",
     "test": "vitest",
     "test:unit": "vitest run",
+    "test:changed": "vitest related --run",
     "test:ui": "vitest --ui",
+    "env:check": "node .agents/scripts/check-env-usage.mjs --scan",
+    "agent:verify": "node .agents/scripts/agent-verify.mjs",
+    "agent:verify:fast": "node .agents/scripts/agent-verify.mjs --fast",
     "db:seed": "tsx prisma/seed.ts",
     "prepare": "husky"
   },

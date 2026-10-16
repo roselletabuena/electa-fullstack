@@ -1,9 +1,10 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, useWatch } from "react-hook-form";
 import Link from "next/link";
+import { useIsMounted } from "@/hooks/use-is-mounted";
 import {
   Calendar,
   Clock,
@@ -30,9 +31,8 @@ import {
 } from "../utils/timeline-presets";
 import {
   saveDraftToSession,
-  loadDraftFromSession,
   clearDraftFromSession,
-  hasDraftContent,
+  useSessionDraft,
 } from "../utils/event-draft-storage";
 import { cn } from "@/lib/utils";
 
@@ -79,7 +79,7 @@ function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
       <button
         type="button"
         onClick={onClear}
-        className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold uppercase tracking-wider text-sky-950 transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+        className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold tracking-wider text-sky-950 uppercase transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
       >
         <RotateCcw className="size-3" />
         <span>Clear Draft</span>
@@ -109,10 +109,10 @@ function TimelinePresetsPicker({
             aria-pressed={isActive}
             onClick={() => onApplyPreset(preset.days)}
             className={cn(
-              "inline-flex min-h-[44px] cursor-pointer items-center justify-center px-3 py-1.5 text-xs font-bold uppercase tracking-wider transition-colors rounded-none",
+              "inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-none px-3 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors",
               isActive
-                ? "bg-sky-600 text-white border border-sky-600 dark:bg-sky-500 dark:text-slate-950 dark:border-sky-500"
-                : "bg-white text-slate-700 border border-slate-300 hover:bg-slate-50 hover:text-slate-950 dark:bg-white/5 dark:text-slate-300 dark:border-white/10 dark:hover:bg-white/10 dark:hover:text-white",
+                ? "border border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
+                : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
             )}
           >
             {preset.label}
@@ -131,14 +131,15 @@ export function CreateEventForm({
   const router = useRouter();
   const defaultDates = getDefaultDates();
 
-  const [initialDraft] = useState(() => {
-    const draft = loadDraftFromSession();
-    return draft && hasDraftContent(draft) ? draft : null;
-  });
+  const sessionDraft = useSessionDraft();
+  const hasRestoredRef = useRef(false);
+  const isMounted = useIsMounted();
 
-  const [isCustomSlug, setIsCustomSlug] = useState(() => Boolean(initialDraft?.isCustomSlug));
+  const [userCustomSlug, setUserCustomSlug] = useState(false);
   const [serverError, setServerError] = useState<string | null>(null);
-  const [isDraftRestored, setIsDraftRestored] = useState(() => Boolean(initialDraft));
+
+  const isCustomSlug = userCustomSlug || Boolean(sessionDraft?.isCustomSlug);
+  const isDraftRestored = Boolean(sessionDraft);
 
   const {
     register,
@@ -149,15 +150,30 @@ export function CreateEventForm({
     formState: { errors, isSubmitting },
   } = useForm<FormRawValues>({
     defaultValues: {
-      title: initialDraft?.title ?? "",
-      slug: initialDraft?.slug ?? "",
-      description: initialDraft?.description ?? "",
-      bannerUrl: initialDraft?.bannerUrl ?? "",
-      startsAt: initialDraft?.startsAt || defaultDates.startsAt,
-      endsAt: initialDraft?.endsAt || defaultDates.endsAt,
+      title: "",
+      slug: "",
+      description: "",
+      bannerUrl: "",
+      startsAt: defaultDates.startsAt,
+      endsAt: defaultDates.endsAt,
     },
     mode: "onChange",
   });
+
+  // Restore draft from sessionStorage after initial mount to prevent SSR hydration mismatch
+  useEffect(() => {
+    if (sessionDraft && !hasRestoredRef.current) {
+      hasRestoredRef.current = true;
+      reset({
+        title: sessionDraft.title || "",
+        slug: sessionDraft.slug || "",
+        description: sessionDraft.description || "",
+        bannerUrl: sessionDraft.bannerUrl || "",
+        startsAt: sessionDraft.startsAt || defaultDates.startsAt,
+        endsAt: sessionDraft.endsAt || defaultDates.endsAt,
+      });
+    }
+  }, [sessionDraft, reset, defaultDates.startsAt, defaultDates.endsAt]);
 
   const watchedTitle = useWatch({ control, name: "title" }) ?? "";
   const watchedSlug = useWatch({ control, name: "slug" }) ?? "";
@@ -168,8 +184,9 @@ export function CreateEventForm({
 
   const slugCheck = useDebouncedSlugCheck(watchedSlug);
 
-  // Persist form state to sessionStorage on changes
+  // Persist form state to sessionStorage on changes (only after initial mount)
   useEffect(() => {
+    if (!isMounted) return;
     if (
       watchedTitle.trim() ||
       watchedSlug.trim() ||
@@ -187,6 +204,7 @@ export function CreateEventForm({
       });
     }
   }, [
+    isMounted,
     watchedTitle,
     watchedSlug,
     watchedDescription,
@@ -214,6 +232,8 @@ export function CreateEventForm({
   const handleClearDraft = () => {
     clearDraftFromSession();
     const freshDates = getDefaultDates();
+    hasRestoredRef.current = false;
+    setUserCustomSlug(false);
     reset({
       title: "",
       slug: "",
@@ -222,8 +242,6 @@ export function CreateEventForm({
       startsAt: freshDates.startsAt,
       endsAt: freshDates.endsAt,
     });
-    setIsCustomSlug(false);
-    setIsDraftRestored(false);
   };
 
   const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -237,7 +255,7 @@ export function CreateEventForm({
   };
 
   const handleResetSlugToTitle = () => {
-    setIsCustomSlug(false);
+    setUserCustomSlug(false);
     const generatedSlug = sanitizeSlug(watchedTitle || "");
     setValue("slug", generatedSlug, { shouldValidate: true });
   };
@@ -325,7 +343,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-title"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
             >
               Event Title <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -357,7 +375,7 @@ export function CreateEventForm({
             <div className="flex items-center justify-between">
               <label
                 htmlFor="event-slug"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
               >
                 Public URL Slug <span className="text-rose-500 dark:text-rose-400">*</span>
               </label>
@@ -365,7 +383,7 @@ export function CreateEventForm({
                 <button
                   type="button"
                   onClick={handleResetSlugToTitle}
-                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 px-2 py-1 text-xs font-bold text-sky-700 hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-200 transition-colors"
+                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 px-2 py-1 text-xs font-bold text-sky-700 transition-colors hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-200"
                 >
                   <RefreshCw className="size-3" />
                   <span>Reset to Title</span>
@@ -386,7 +404,7 @@ export function CreateEventForm({
                   required: "Slug is required",
                 })}
                 onChange={(e) => {
-                  setIsCustomSlug(true);
+                  setUserCustomSlug(true);
                   setValue("slug", e.target.value.toLowerCase().trim(), {
                     shouldValidate: true,
                   });
@@ -409,7 +427,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-description"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
             >
               Description <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -449,7 +467,7 @@ export function CreateEventForm({
           <div>
             <label
               htmlFor="event-banner"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+              className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
             >
               Banner Image URL <span className="text-rose-500 dark:text-rose-400">*</span>
             </label>
@@ -511,7 +529,7 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-starts-at"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
                   <Calendar className="size-4 text-sky-600 dark:text-sky-400" />
@@ -533,7 +551,7 @@ export function CreateEventForm({
             <div>
               <label
                 htmlFor="event-ends-at"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-900 dark:text-slate-200"
+                className="block text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-200"
               >
                 <span className="flex items-center gap-1.5">
                   <Clock className="size-4 text-sky-600 dark:text-sky-400" />
@@ -570,14 +588,14 @@ export function CreateEventForm({
             <button
               type="button"
               onClick={onCancel}
-              className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </button>
           ) : (
             <Link
               href="/dashboard"
-              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold uppercase tracking-wider text-slate-700 transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </Link>
@@ -586,7 +604,7 @@ export function CreateEventForm({
           <button
             type="submit"
             disabled={isSubmitDisabled}
-            className="btn-primary inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-2.5 text-xs font-extrabold uppercase tracking-widest text-white shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="btn-primary inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-2.5 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isSubmitting ? (
               <>

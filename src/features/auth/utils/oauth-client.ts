@@ -1,4 +1,5 @@
 import crypto from "node:crypto";
+import { env } from "@/env";
 import type { OAuthStatePayload } from "../types";
 import { generateLocalCognitoToken } from "./token-adapter";
 
@@ -29,14 +30,15 @@ export function buildCognitoAuthorizeUrl(options?: {
   prompt?: string;
 }): string {
   const domain =
-    process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
+    env.NEXT_PUBLIC_COGNITO_DOMAIN ||
     "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
-  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
+  const clientId = env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
   const defaultCallback = "http://localhost:3000/api/auth/callback/cognito";
   const redirectUri =
-    options?.redirectUri || process.env.NEXT_PUBLIC_APP_URL
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/cognito`
-      : defaultCallback;
+    options?.redirectUri ||
+    (env.NEXT_PUBLIC_APP_URL
+      ? `${env.NEXT_PUBLIC_APP_URL}/api/auth/callback/cognito`
+      : defaultCallback);
 
   const url = new URL(`${domain.replace(/\/$/, "")}/oauth2/authorize`);
   url.searchParams.set("response_type", "code");
@@ -68,7 +70,7 @@ export async function exchangeCognitoCodeForTokens(params: {
   code: string;
   redirectUri?: string;
 }): Promise<CognitoTokenResponse | null> {
-  const authProvider = process.env.AUTH_PROVIDER || "local";
+  const authProvider = env.AUTH_PROVIDER || "local";
 
   // In local mode or mock test, generate a deterministic mocked Google-federated Cognito ID token
   if (authProvider === "local" || params.code.startsWith("mock_")) {
@@ -102,14 +104,15 @@ export async function exchangeCognitoCodeForTokens(params: {
   }
 
   const domain =
-    process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
+    env.NEXT_PUBLIC_COGNITO_DOMAIN ||
     "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
-  const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
+  const clientId = env.NEXT_PUBLIC_COGNITO_CLIENT_ID || "electa_local_client_id";
   const defaultCallback = "http://localhost:3000/api/auth/callback/cognito";
   const redirectUri =
-    params.redirectUri || process.env.NEXT_PUBLIC_APP_URL
-      ? `${process.env.NEXT_PUBLIC_APP_URL}/api/auth/callback/cognito`
-      : defaultCallback;
+    params.redirectUri ||
+    (env.NEXT_PUBLIC_APP_URL
+      ? `${env.NEXT_PUBLIC_APP_URL}/api/auth/callback/cognito`
+      : defaultCallback);
 
   const tokenUrl = `${domain.replace(/\/$/, "")}/oauth2/token`;
 

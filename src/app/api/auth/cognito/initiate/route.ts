@@ -1,4 +1,5 @@
 import { type NextRequest, NextResponse } from "next/server";
+import { env } from "@/env";
 import {
   generateOAuthState,
   buildCognitoAuthorizeUrl,
@@ -26,7 +27,7 @@ export async function GET(request: NextRequest) {
     name: OAUTH_STATE_COOKIE_NAME,
     value: JSON.stringify(payload),
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 10,

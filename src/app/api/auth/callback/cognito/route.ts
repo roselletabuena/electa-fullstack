@@ -12,6 +12,7 @@ import {
   verifyLocalCognitoToken,
   generateLocalCognitoToken,
 } from "@/features/auth/utils/token-adapter";
+import { env } from "@/env";
 
 export const dynamic = "force-dynamic";
 
@@ -59,7 +60,7 @@ async function fetchAvatarFromUserInfo(accessToken?: string): Promise<string | u
 
   try {
     const domain =
-      process.env.NEXT_PUBLIC_COGNITO_DOMAIN ||
+      env.NEXT_PUBLIC_COGNITO_DOMAIN ||
       "https://electa-auth-dev.auth.ap-southeast-1.amazoncognito.com";
     const userInfoRes = await fetch(`${domain.replace(/\/$/, "")}/oauth2/userInfo`, {
       headers: {
@@ -150,7 +151,7 @@ export async function GET(request: NextRequest) {
     name: "electa_auth_session",
     value: sessionToken,
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 60 * 60 * 24 * 7, // 7 days
@@ -161,7 +162,7 @@ export async function GET(request: NextRequest) {
     name: OAUTH_STATE_COOKIE_NAME,
     value: "",
     httpOnly: true,
-    secure: process.env.NODE_ENV === "production",
+    secure: env.NODE_ENV === "production",
     sameSite: "lax",
     path: "/",
     maxAge: 0,

@@ -292,10 +292,16 @@ const form = useForm({ resolver: zodResolver(schema) });
 
 ### Code Quality Gates
 
-Before every commit, `lint-staged` will automatically run:
-
-- `eslint --fix` on staged `.ts` / `.tsx` files
-- `prettier --write` on all staged files
+- **Unified Agent Verification (`npm run agent:verify`)**: Single-command runner executing all four constitutional quality gates sequentially:
+  1. Environment check (`node .agents/scripts/check-env-usage.mjs --scan` — §IV)
+  2. TypeScript strict typecheck (`tsc --noEmit` — §I)
+  3. ESLint static analysis (`eslint src` — §I, §V)
+  4. Vitest test suites (`vitest run` — §VI)
+- **Targeted Incremental Testing (`npm run test:changed`)**: Executes Vitest only for tests covering the touched source files (`vitest related --run`), providing sub-3-second feedback.
+- **Fast Quality Gate (`npm run agent:verify:fast`)**: Executes gates 1–3 plus incremental changed tests for rapid agent iteration.
+- **Pre-Commit Hook**: Before every commit, `lint-staged` automatically runs:
+  - `eslint --fix` on staged `.ts` / `.tsx` files
+  - `prettier --write` on all staged files
 
 **The commit will be blocked if lint errors remain after auto-fix.** Fix them before committing.
 

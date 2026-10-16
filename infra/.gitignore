@@ -1,0 +1,54 @@
+# ==========================================
+# HashiCorp Terraform & OpenTofu Ignore Rules
+# ==========================================
+
+# 1. Local execution & plugin cache
+**/.terraform/
+.terraform/
+*.tfplan
+*.tfplan.*
+
+# 2. Local State Files (CRITICAL: Contains plaintext secrets & state)
+*.tfstate
+*.tfstate.*
+*.tfstate.backup
+**/*.tfstate
+**/*.tfstate.*
+**/*.tfstate.backup
+
+# 3. Crash logs
+crash.log
+crash.*.log
+
+# 4. Variable definition files with REAL values (CRITICAL: Contains secrets)
+*.tfvars
+*.tfvars.json
+*.auto.tfvars
+*.auto.tfvars.json
+**/*.tfvars
+**/*.tfvars.json
+**/*.auto.tfvars
+**/*.auto.tfvars.json
+
+# 5. Overrides
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# 6. CLI Configurations & credentials
+.terraformrc
+terraform.rc
+
+# 7. Environment & secret files
+.env
+.env.*
+*.secret
+*.pem
+*.key
+
+# ==========================================
+# EXCEPTIONS: Explicitly allow documentation & templates
+# ==========================================
+!*.tfvars.example
+!.terraform.lock.hcl

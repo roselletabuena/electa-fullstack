@@ -1,23 +1,16 @@
 /**
  * check-env-usage.mjs
  *
- * PostToolUse hook — scans the just-written file for raw process.env usage
- * that bypasses src/env.ts. Enforces Electa Constitution §IV.
+ * Dual-mode Environment Variable Validator:
+ * 1. CLI / CI runner: Scans source files for raw process.env usage that bypasses src/env.ts.
+ * 2. PostToolUse hook: Reads JSON hook payload from stdin and checks the TargetFile.
  *
- * Reads the hook payload from stdin (same contract as autofix-lint.mjs).
- * Writes a JSON object to stdout as required by the PostToolUse contract.
- * Any violations are printed to stderr so the agent sees them as warnings.
+ * Enforces Electa Constitution §IV:
+ * "Environment secrets MUST NEVER be accessed via raw process.env.* directly; access MUST go through src/env.ts."
  */
 
-import { readFileSync, existsSync } from "node:fs";
-import { extname, isAbsolute, resolve, relative } from "node:path";
-
-let input = "";
-process.stdin.setEncoding("utf-8");
-
-process.stdin.on("data", (chunk) => {
-  input += chunk;
-});
+import { readFileSync, existsSync, readdirSync } from "node:fs";
+import { extname, isAbsolute, resolve, relative, join } from "node:path";
 
 function shouldCheckFile(targetFile, workspaceRoot) {
   if (!targetFile) return false;
@@ -81,7 +74,7 @@ function loadRegisteredEnvKeys(workspaceRoot) {
 function formatViolationItem(v, isRegistered) {
   const lines = [];
   if (isRegistered) {
-    lines.push(`   ⚠️  Wrong access (registered but via process.env directly)`);
+    lines.push(`   ⚠️  Wrong access (registered in src/env.ts but accessed via raw process.env)`);
   } else {
     lines.push(`   🔴 UNREGISTERED: process.env.${v.varName}`);
   }
@@ -119,6 +112,61 @@ function formatViolationReport(relPath, violations, registeredKeys) {
   return linesOutput.join("\n") + "\n";
 }
 
+function getAllSourceFiles(dir, workspaceRoot) {
+  const results = [];
+  if (!existsSync(dir)) return results;
+  const entries = readdirSync(dir, { withFileTypes: true });
+  for (const entry of entries) {
+    const fullPath = join(dir, entry.name);
+    if (entry.isDirectory()) {
+      const rel = relative(workspaceRoot, fullPath).replace(/\\/g, "/");
+      if (
+        !rel.startsWith("node_modules") &&
+        !rel.startsWith(".next") &&
+        !rel.startsWith("src/generated") &&
+        !rel.startsWith(".specify") &&
+        !rel.startsWith(".agents")
+      ) {
+        results.push(...getAllSourceFiles(fullPath, workspaceRoot));
+      }
+    } else if (entry.isFile() && shouldCheckFile(fullPath, workspaceRoot)) {
+      results.push(fullPath);
+    }
+  }
+  return results;
+}
+
+export function runFullScan(workspaceRoot = process.cwd()) {
+  const srcDir = resolve(workspaceRoot, "src");
+  const files = getAllSourceFiles(srcDir, workspaceRoot);
+  const registeredKeys = loadRegisteredEnvKeys(workspaceRoot);
+  const allViolations = [];
+
+  for (const file of files) {
+    const content = readFileSync(file, "utf-8");
+    const violations = findRawEnvViolations(content);
+    if (violations.length > 0) {
+      const relPath = relative(workspaceRoot, file).replace(/\\/g, "/");
+      allViolations.push({ relPath, violations });
+    }
+  }
+
+  if (allViolations.length === 0) {
+    process.stdout.write(
+      `✅ Environment check passed (Constitution §IV): 0 raw process.env bypasses across ${files.length} source files.\n`,
+    );
+    return true;
+  }
+
+  process.stderr.write(
+    `❌ Environment check failed (Constitution §IV): Found ${allViolations.length} file(s) with raw process.env usage.\n`,
+  );
+  for (const item of allViolations) {
+    process.stderr.write(formatViolationReport(item.relPath, item.violations, registeredKeys));
+  }
+  return false;
+}
+
 function handleStdinEnd(rawInput) {
   try {
     const data = rawInput.trim() ? JSON.parse(rawInput) : {};
@@ -142,6 +190,27 @@ function handleStdinEnd(rawInput) {
   }
 }
 
-process.stdin.on("end", () => {
-  handleStdinEnd(input);
-});
+// Entrypoint determination: CLI scan vs. Hook stdin mode
+const args = process.argv.slice(2);
+const isHookMode = args.includes("--hook");
+const isScanMode =
+  args.includes("--scan") ||
+  args.includes("--all") ||
+  (!isHookMode && process.stdin.isTTY) ||
+  (!isHookMode && args.length === 0);
+
+if (isScanMode) {
+  const success = runFullScan(process.cwd());
+  process.exit(success ? 0 : 1);
+} else {
+  let input = "";
+  process.stdin.setEncoding("utf-8");
+
+  process.stdin.on("data", (chunk) => {
+    input += chunk;
+  });
+
+  process.stdin.on("end", () => {
+    handleStdinEnd(input);
+  });
+}

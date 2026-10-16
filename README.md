@@ -94,17 +94,20 @@ See [`infra/README.md`](infra/README.md) for full bootstrap and deployment instr
 
 ## 🧪 Quality Gates & Scripts
 
-| Command                | Description                                                     |
-| :--------------------- | :-------------------------------------------------------------- |
-| `npm run dev`          | Starts Next.js development server                               |
-| `npm run build`        | Builds production Next.js bundle                                |
-| `npm run typecheck`    | Validates TypeScript in strict mode (`tsc --noEmit`)            |
-| `npm run lint`         | Runs ESLint across `src/`                                       |
-| `npm run test:unit`    | Executes full Vitest unit test suite                            |
-| `npm run test:changed` | Runs Vitest tests related to touched source files               |
-| `npm run env:check`    | Validates zero raw process.env bypasses (§IV)                   |
-| `npm run agent:verify` | Unified quality gate: env, constitution, typecheck, lint, tests |
-| `npm run format:check` | Checks formatting with Prettier                                 |
+| Command                    | Description                                                             |
+| :------------------------- | :---------------------------------------------------------------------- |
+| `npm run dev`              | Starts Next.js development server                                       |
+| `npm run build`            | Builds production Next.js bundle                                        |
+| `npm run typecheck`        | Validates TypeScript in strict mode (`tsc --noEmit`)                    |
+| `npm run lint`             | Runs ESLint across `src/`                                               |
+| `npm run test:unit`        | Executes full Vitest unit test suite                                    |
+| `npm run test:changed`     | Runs Vitest tests related to touched source files                       |
+| `npm run env:check`        | Validates zero raw process.env bypasses (§IV)                           |
+| `npm run schema:summary`   | Exports compact `< 500` token Prisma Markdown summary & ERD             |
+| `npm run schema:check`     | Verifies schema summary is in sync with `prisma/schema.prisma`          |
+| `npm run contracts:export` | Exports machine-readable JSON Schemas to `docs/api-contracts.json`      |
+| `npm run agent:verify`     | Unified quality gate: env, constitution, schema, typecheck, lint, tests |
+| `npm run format:check`     | Checks formatting with Prettier                                         |
 
 ---
 

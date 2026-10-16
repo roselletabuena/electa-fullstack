@@ -2,13 +2,14 @@
 
 **Feature**: `041-archetype-tailored-event-wizard`  
 **Ticket**: [VS-84](https://the-three-devsketeers.atlassian.net/browse/VS-84)  
-**Date**: 2026-10-13  
+**Date**: 2026-10-13
 
 ---
 
 ## 1. Domain Entities & State Models
 
 ### Wizard Form State Structure
+
 ```typescript
 export interface EventWizardFormState {
   // Step 1: General Information
@@ -17,12 +18,12 @@ export interface EventWizardFormState {
   description: string;
   bannerUrl: string;
   startsAt: string; // ISO datetime
-  endsAt: string;   // ISO datetime
+  endsAt: string; // ISO datetime
   isCustomSlug: boolean;
 
-  // Step 2: Archetype & Taxonomy
+  // Step 2: Event Format & Categories
   archetype: EventArchetype; // 'PAGEANT' | 'STUDENT_COUNCIL' | 'HACKATHON' | 'CUSTOM'
-  
+
   // Archetype-tailored taxonomy drafts:
   positions: Array<{
     name: string;
@@ -31,7 +32,7 @@ export interface EventWizardFormState {
     minSelectionsPerVoter: number;
     displayOrder: number;
   }>;
-  
+
   divisions: Array<{
     name: string;
     description?: string;

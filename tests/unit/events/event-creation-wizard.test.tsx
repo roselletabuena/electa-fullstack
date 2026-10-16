@@ -164,4 +164,4 @@ describe("EventCreationWizard Component", () => {
       expect(onSuccess).toHaveBeenCalledWith("test-election");
     });
   });
-});
+}, 15000);

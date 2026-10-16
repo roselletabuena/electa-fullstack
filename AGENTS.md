@@ -3,14 +3,18 @@
 ## Workspace Context & Repository Boundaries
 
 > [!IMPORTANT]
-> **Electa is structured as two independent sibling repositories within the parent workspace (`electa-workspace/`):**
-> 1. **`electa-fullstack/`** (this repository): Next.js 16 App Router web application, Prisma ORM, UI components, feature slices, client-side AWS Amplify & AWS SDK integrations.
-> 2. **`electa-infra/`** (`../electa-infra/` outside this directory): AWS Infrastructure as Code (IaC) powered by Terraform (AWS S3 storage buckets, Cognito User Pools, RDS PostgreSQL, IAM policies, and CORS configuration).
+> **Electa is a Single-Service Monorepo containing both the web application and cloud infrastructure-as-code:**
 >
-> **Rules of Engagement:**
-> - **No Cloud Provisioning in Fullstack**: Never write Terraform files or provision cloud resources inside `electa-fullstack/`. All AWS infrastructure belongs in `../electa-infra/`.
-> - **Configuration Handoff**: Cloud resource identifiers (S3 bucket names, regions, Cognito User Pool IDs, Client IDs) are defined in `electa-infra`, exported via `environments/<env>/outputs.tf`, and consumed here as environment variables validated through `src/env.ts`.
-> - **Independent Git Repositories**: `electa-fullstack` and `electa-infra` are distinct git repositories with separate remotes and commit histories. Never execute git commands or commits across both repositories simultaneously.
+> 1. **`src/` & `prisma/`** (Application Layer): Next.js 16 App Router web application, Prisma ORM (Supabase PostgreSQL), UI design system, feature slices, client-side AWS Amplify & AWS SDK integrations.
+> 2. **`infra/`** (Cloud Infrastructure Layer): AWS Infrastructure as Code (IaC) powered by modular Terraform (AWS S3 storage buckets, Cognito User Pools, RDS PostgreSQL, IAM policies, and CORS configuration).
+> 3. **`.agents/`** (Autonomous Agent & Tooling Layer): Skills, rules, workflows, and hook scripts enabling autonomous development and quality gates.
+> 4. **`.github/workflows/`** (Path-Filtered CI): Independent workflows (`app-ci.yml` and `infra-ci.yml`) isolating validation gates by touched paths.
+>
+> **Rules of Engagement & Domain Boundaries:**
+>
+> - **Strict Cloud Provisioning Boundary**: All AWS infrastructure and Terraform configurations belong strictly inside `infra/`. Never write `.tf` files or provision cloud resources inside `src/` or at the repository root.
+> - **Configuration Handoff**: Cloud resource identifiers (S3 bucket names, regions, Cognito User Pool IDs, Client IDs, RDS connection parameters) are exported from `infra/environments/<env>/outputs.tf` (`terraform output env_snippet`) and consumed by the web application as environment variables validated through `src/env.ts`.
+> - **Single Git Repository & Path-Filtered CI**: Electa is a single unified git repository. CI workflows are strictly path-filtered: changes touching `src/**`, `public/**`, `prisma/**`, or `tests/**` trigger `app-ci.yml`, while changes touching `infra/**` trigger `infra-ci.yml`. Never cross domain boundaries unnecessarily.
 
 ---
 
@@ -30,6 +34,7 @@
 | Icons          | Lucide React                         |
 | Database       | PostgreSQL via Supabase (Prisma ORM) |
 | Auth           | AWS Cognito (AWS Amplify v6)         |
+| Cloud IaC      | Terraform (AWS S3, Cognito, RDS)     |
 | Env Validation | @t3-oss/env-nextjs                   |
 | Testing        | Vitest (unit)                        |
 
@@ -38,46 +43,57 @@
 ## Folder Structure
 
 ```text
-electa-workspace/
-├── electa-infra/                      # SIBLING REPO (outside fullstack): AWS Terraform IaC
-│   ├── bootstrap/                     # S3 remote state & DynamoDB lock table
-│   ├── modules/                       # Reusable modules (cognito, storage/s3, database/rds)
-│   └── environments/                  # dev / prod environments and outputs
+electa/
+├── .agents/                          # Agent skills, rules, workflows, and hook scripts
+│   ├── hooks.json                    # PostToolUse lint and env-validator automated hooks
+│   ├── rules/                        # Behavioral rules (accessibility, branding, constitution)
+│   ├── scripts/                      # Automated hook runner scripts
+│   ├── skills/                       # 40+ specialized agent skills (db-migrate, pr-creator, etc.)
+│   └── workflows/                    # Orchestrated slash workflows (/graphify, /speckit)
 │
-└── electa-fullstack/                  # THIS REPOSITORY: Next.js 16 Web App
-    ├── prisma/                        # Prisma schema and migrations
-    │   ├── schema.prisma              # Database schema — single source of truth
-    │   └── migrations/                # Auto-generated migration files (do not edit)
+├── .github/
+│   └── workflows/
+│       ├── app-ci.yml                # Next.js typecheck, lint, and Vitest unit tests (path-filtered)
+│       └── infra-ci.yml              # Terraform format & validate matrix (path-filtered)
 │
-├── public/                        # Static assets (images, fonts, icons)
+├── infra/                            # AWS Terraform Infrastructure as Code (IaC)
+│   ├── bootstrap/                    # S3 remote state bucket & DynamoDB lock table
+│   ├── modules/                      # Reusable modules (cognito, storage/s3, database)
+│   └── environments/                 # Isolated deployment tiers (dev, prod)
 │
-├── src/
-│   ├── app/                       # Next.js App Router — pages and layouts ONLY
-│   │   ├── (auth)/                # Route group: unauthenticated pages
+├── prisma/                           # Prisma schema and migrations (Supabase PostgreSQL)
+│   ├── schema.prisma                 # Database schema — single source of truth
+│   └── migrations/                   # Auto-generated migration files (do not edit)
+│
+├── public/                           # Static public assets (images, fonts, icons)
+│
+├── src/                              # Next.js 16 App Router application
+│   ├── app/                          # Next.js App Router — pages and layouts ONLY
+│   │   ├── (auth)/                   # Route group: unauthenticated pages
 │   │   │   ├── login/
 │   │   │   │   └── page.tsx
 │   │   │   └── register/
 │   │   │       └── page.tsx
-│   │   ├── (dashboard)/           # Route group: authenticated pages
+│   │   ├── (dashboard)/              # Route group: authenticated pages
 │   │   │   └── page.tsx
-│   │   ├── api/                   # Route Handlers (internal REST API)
+│   │   ├── api/                      # Route Handlers (internal REST API)
 │   │   │   ├── polls/
 │   │   │   │   └── route.ts
 │   │   │   └── votes/
 │   │   │       └── route.ts
-│   │   ├── layout.tsx             # Root layout
-│   │   ├── page.tsx               # Home page
-│   │   └── globals.css            # Global styles and CSS custom properties
+│   │   ├── layout.tsx                # Root layout
+│   │   ├── page.tsx                  # Home page
+│   │   └── globals.css               # Global styles and CSS custom properties
 │   │
 │   ├── components/
-│   │   ├── ui/                    # Shadcn UI primitives (auto-generated, do not edit)
-│   │   └── shared/                # Reusable cross-feature components
+│   │   ├── ui/                       # Shadcn UI primitives (auto-generated, do not edit)
+│   │   └── shared/                   # Reusable cross-feature components
 │   │
-│   ├── features/                  # Feature slices — colocate everything per feature
+│   ├── features/                     # Feature slices — colocate everything per feature
 │   │   ├── polls/
-│   │   │   ├── components/        # Poll-specific React components
-│   │   │   ├── hooks/             # Poll-specific custom hooks (use-*)
-│   │   │   └── types/             # Poll-specific TypeScript interfaces
+│   │   │   ├── components/           # Poll-specific React components
+│   │   │   ├── hooks/                # Poll-specific custom hooks (use-*)
+│   │   │   └── types/                # Poll-specific TypeScript interfaces
 │   │   ├── voting/
 │   │   │   ├── components/
 │   │   │   ├── hooks/
@@ -86,43 +102,81 @@ electa-workspace/
 │   │       ├── components/
 │   │       └── hooks/
 │   │
-│   ├── hooks/                     # Shared custom hooks used across features
+│   ├── hooks/                        # Shared custom hooks used across features
 │   │
-│   ├── lib/                       # Utility modules and third-party client setup
+│   ├── lib/                          # Utility modules and third-party client setup
 │   │   ├── supabase/
-│   │   │   ├── client.ts          # Browser Supabase client (createBrowserClient)
-│   │   │   └── server.ts          # Server Supabase client (createServerClient)
+│   │   │   ├── client.ts             # Browser Supabase client (createBrowserClient)
+│   │   │   └── server.ts             # Server Supabase client (createServerClient)
 │   │   ├── auth/
-│   │   │   ├── amplify-config.ts  # Amplify.configure() call — run once in layout
-│   │   │   └── get-session.ts     # Server-side Cognito session helper
+│   │   │   ├── amplify-config.ts     # Amplify.configure() call — run once in layout
+│   │   │   └── get-session.ts        # Server-side Cognito session helper
 │   │   ├── query/
-│   │   │   └── query-provider.tsx # TanStack Query provider wrapper
+│   │   │   └── query-provider.tsx    # TanStack Query provider wrapper
 │   │   ├── api/
-│   │   │   └── response.ts        # ApiResponse<T>, apiSuccess(), apiError() helpers
-│   │   ├── validations/           # Shared Zod schemas
-│   │   └── db.ts                  # Prisma singleton client
+│   │   │   └── response.ts           # ApiResponse<T>, apiSuccess(), apiError() helpers
+│   │   ├── validations/              # Shared Zod schemas
+│   │   └── db.ts                     # Prisma singleton client
 │   │
-│   ├── stores/                    # Zustand stores (client global state ONLY)
-│   │   └── auth-store.ts          # Authenticated user — populated after Cognito sign-in
+│   ├── stores/                       # Zustand stores (client global state ONLY)
+│   │   └── auth-store.ts             # Authenticated user — populated after Cognito sign-in
 │   │
-│   ├── types/                     # Global TypeScript interfaces shared across features
+│   ├── types/                        # Global TypeScript interfaces shared across features
 │   │   └── index.ts
 │   │
-│   ├── styles/                    # Additional CSS files if needed
+│   ├── styles/                       # Additional CSS files if needed
 │   │
-│   └── env.ts                     # @t3-oss/env-nextjs schema — ALL env vars defined here
+│   └── env.ts                        # @t3-oss/env-nextjs schema — ALL env vars defined here
 │
 ├── tests/
-│   ├── unit/                      # Vitest unit tests
-│   └── e2e/                       # Playwright end-to-end tests (future)
+│   ├── unit/                         # Vitest unit tests
+│   └── e2e/                          # Playwright end-to-end tests (future)
 │
-├── .env.example                   # Env var template — copy to .env.local
-├── .env.local                     # Local secrets — NEVER commit this file
-├── .prettierrc                    # Prettier config
-├── eslint.config.mjs              # ESLint flat config
-├── tsconfig.json                  # TypeScript config (strict mode)
-└── vitest.config.ts               # Vitest config
+├── .env.example                      # Env var template — copy to .env.local
+├── .env.local                        # Local secrets — NEVER commit this file
+├── .prettierrc                       # Prettier config
+├── eslint.config.mjs                 # ESLint flat config
+├── tsconfig.json                     # TypeScript config (strict mode)
+└── vitest.config.ts                  # Vitest config
 ```
+
+---
+
+## Agent Customizations & Skill Discovery (`.agents/`)
+
+Autonomous coding agents operating in this repository leverage the customization ecosystem under `.agents/`:
+
+### 1. Skills (`.agents/skills/`)
+
+Specialized on-demand workflows, tools, and quality gates:
+
+- **Quality & Workflow**: `atomic-commit`, `pr-creator`, `constitution-check`, `code-review-and-quality`, `tdd`, `branch-cleanup`
+- **SpecKit Lifecycle**: `speckit-workflow`, `speckit-specify`, `speckit-clarify`, `speckit-checklist`, `speckit-plan`, `speckit-tasks`, `speckit-implement`, `speckit-converge`
+- **Frontend & Design System**: `accessibility-colors`, `accessibility`, `anti-ui-slop`, `frontend-design`, `frontend-ui-engineering`, `vercel-react-best-practices`
+- **Backend & Database**: `db-migrate`, `supabase`, `supabase-postgres-best-practices`, `env-validator`
+- **Architecture & Knowledge**: `graphify`, `graphify-auto-sync`
+
+### 2. Behavioral Rules (`.agents/rules/`)
+
+Precedence rules enforced on every interaction:
+
+- `constitution.md`: The 6 core principles (§I–§VI)
+- `branding-and-design-system.md`: Opal light mode default, strict zero-radius geometry, Outfit/Sora/JetBrains Mono typography
+- `accessibility-colors.md`: WCAG 2.1 AA dual-theme color contrast requirements and scrim overlays
+- `atomic-commit.md`: Conventional Commits and bisectable single-purpose commits
+- `tailwind-v4.md`: Tailwind CSS v4 syntax (`bg-linear-to-*`, fraction aspect ratios)
+
+### 3. Workflows (`.agents/workflows/`)
+
+Multi-step slash command orchestrations:
+
+- `/speckit`: End-to-end spec-driven development in an isolated worktree with quality gates and automated PR creation
+- `/graphify`: Codebase knowledge graph extraction and navigation
+
+### 4. Automated Hooks (`.agents/hooks.json` & `.agents/scripts/`)
+
+- `autofix-lint`: Runs `node .agents/scripts/autofix-lint.mjs` post-tool write on modified files
+- `env-validator`: Runs `node .agents/scripts/check-env-usage.mjs` post-tool write to prevent raw `process.env` bypasses
 
 ---
 
@@ -229,12 +283,12 @@ const form = useForm({ resolver: zodResolver(schema) });
 - Client-side: use `aws-amplify` Auth APIs. Store the user in the Zustand `auth-store` after sign-in.
 - **Protect routes** via `src/middleware.ts` — do not rely solely on client-side guards.
 
-### AWS Cloud Infrastructure Integration (`electa-infra`)
+### AWS Cloud Infrastructure Integration (`infra/`)
 
-- **Storage / S3**: Media storage buckets and CORS policies are provisioned via Terraform in `../electa-infra/modules/storage/`. Application-level presigned URL generation, upload handoffs, and S3 client calls live here in `electa-fullstack/` using `@aws-sdk/client-s3`.
-- **Auth / Cognito**: Cognito User Pools, Clients, and OAuth Identity Providers are provisioned in `../electa-infra/modules/cognito/`. Web client configuration and session management live here in `src/lib/auth/`.
-- **Database / RDS**: Postgres instances are provisioned in `../electa-infra/modules/database/`. Database schemas and migrations are managed here in `prisma/schema.prisma`.
-- **Environment Handoff**: Cloud outputs from `electa-infra` are documented in `environments/<env>/outputs.tf`. Run `terraform output env_snippet` in `../electa-infra/environments/dev` to populate your local `electa-fullstack/.env.local`.
+- **Storage / S3**: Media storage buckets and CORS policies are provisioned via Terraform in `infra/modules/storage/`. Application-level presigned URL generation, upload handoffs, and S3 client calls live in `src/` using `@aws-sdk/client-s3`.
+- **Auth / Cognito**: Cognito User Pools, Clients, and OAuth Identity Providers are provisioned in `infra/modules/cognito/`. Web client configuration and session management live in `src/lib/auth/`.
+- **Database / RDS**: Postgres instances are provisioned in `infra/modules/database/`. Database schemas and migrations are managed in `prisma/schema.prisma`.
+- **Environment Handoff**: Cloud outputs from `infra/` are documented in `infra/environments/<env>/outputs.tf`. Run `terraform output env_snippet` in `infra/environments/dev` to populate your local `.env.local`.
 
 ### Code Quality Gates
 

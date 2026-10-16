@@ -1,36 +1,113 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Electa
 
-## Getting Started
+> Scalable, secure voting, hackathon evaluations, and event governance platform.
 
-First, run the development server:
+---
+
+## 🏛️ Monorepo Architecture
+
+Electa uses a **Single-Service Monorepo** standard where the full-stack web application and cloud infrastructure-as-code reside side-by-side:
+
+```text
+electa/
+├── .github/
+│   └── workflows/
+│       ├── app-ci.yml            # Next.js typecheck, lint, and Vitest unit tests
+│       └── infra-ci.yml          # Terraform format & validate matrix
+├── infra/                        # Infrastructure as Code (Terraform on AWS)
+│   ├── bootstrap/                # S3 remote state bucket + DynamoDB distributed locks
+│   ├── modules/                  # Reusable cloud modules (Cognito, RDS Postgres, S3 Storage)
+│   └── environments/             # Environment configurations (dev, prod)
+├── prisma/                       # Database schema, migrations, and seed scripts
+├── public/                       # Static public assets
+├── src/                          # Next.js 16 App Router application
+│   ├── app/                      # Route handlers and RSC page layouts
+│   ├── components/               # UI design system primitives & shared components
+│   ├── features/                 # Colocated vertical feature slices
+│   └── lib/                      # Core utilities, auth, and database client
+├── tests/                        # Vitest unit & integration test suites
+├── .env.example                  # Environment variables template
+└── package.json                  # Application dependencies and scripts
+```
+
+---
+
+## 🚀 Getting Started
+
+### 1. Prerequisites
+
+- **Node.js**: `v20.x` or higher
+- **npm**: `v10.x` or higher
+- **PostgreSQL** or **Supabase** database
+- **Terraform**: `>= 1.5.0` (for infrastructure workflows)
+- **AWS CLI**: configured with appropriate IAM credentials
+
+### 2. Environment Setup
+
+Copy the sample environment variables:
+
+```bash
+cp .env.example .env.local
+```
+
+Configure your database connection and secrets in `.env.local`.
+
+### 3. Install Dependencies & Generate Database Client
+
+```bash
+npm install
+npx prisma generate
+```
+
+### 4. Run Development Server
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Visit [http://localhost:3000](http://localhost:3000) to view the application.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## ☁️ Cloud Infrastructure (`infra/`)
 
-## Learn More
+The infrastructure is provisioned with modular Terraform on AWS.
 
-To learn more about Next.js, take a look at the following resources:
+- **Cognito**: User Pool, Hosted UI, and federated Google OAuth.
+- **RDS PostgreSQL**: Managed relational database with Aurora options.
+- **S3 Storage**: Media storage for contestant assets, avatars, and event media.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Quickstart for Dev Deployment
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+cd infra/environments/dev
+cp terraform.tfvars.example terraform.tfvars
+# Update credentials in terraform.tfvars
+terraform init
+terraform plan
+terraform apply
+```
 
-## Deploy on Vercel
+See [`infra/README.md`](infra/README.md) for full bootstrap and deployment instructions.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## 🧪 Quality Gates & Scripts
+
+| Command                | Description                                          |
+| :--------------------- | :--------------------------------------------------- |
+| `npm run dev`          | Starts Next.js development server                    |
+| `npm run build`        | Builds production Next.js bundle                     |
+| `npm run typecheck`    | Validates TypeScript in strict mode (`tsc --noEmit`) |
+| `npm run lint`         | Runs ESLint across `src/`                            |
+| `npm run test:unit`    | Executes full Vitest unit test suite                 |
+| `npm run format:check` | Checks formatting with Prettier                      |
+
+---
+
+## 🤖 CI/CD Workflows
+
+CI pipelines are path-filtered to prevent redundant runs:
+
+- **App CI (`app-ci.yml`)**: Triggers on changes to `src/**`, `prisma/**`, `tests/**`, or build configs. Runs linting, strict typechecking, and the Vitest test suite.
+- **Infra CI (`infra-ci.yml`)**: Triggers on changes to `infra/**`. Runs Terraform format checks and headless validation across all environments.

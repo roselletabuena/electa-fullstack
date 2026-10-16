@@ -35,6 +35,13 @@ const GATES = [
     description: "Verifies zero raw process.env bypasses outside src/env.ts",
   },
   {
+    id: "constitution",
+    name: "Constitution & Next.js 16 Boundary Validation (Constitution §I, §II)",
+    command: "node",
+    args: [".agents/scripts/check-constitution.mjs", "--scan"],
+    description: "Verifies zero forbidden any, non-null assertions, and Next.js 16 async request API awaiting",
+  },
+  {
     id: "typecheck",
     name: "TypeScript Strict Typecheck (Constitution §I)",
     command: "npx",

@@ -208,6 +208,14 @@ export function generateSchemaSummaryMarkdown({ enums, models }) {
   return lines.join("\n");
 }
 
+function normalizeForComparison(str) {
+  return str
+    .split("\n")
+    .map((line) => line.replace(/\s+/g, " ").trim())
+    .join("\n")
+    .trim();
+}
+
 export function runGenerator({ check = false, maxTokens = 500 } = {}) {
   if (!fs.existsSync(schemaPath)) {
     console.error(`❌ Schema not found at: ${schemaPath}`);
@@ -225,18 +233,20 @@ export function runGenerator({ check = false, maxTokens = 500 } = {}) {
       process.exit(1);
     }
     const existing = fs.readFileSync(outputPath, "utf8");
-    if (existing.trim() !== markdown.trim()) {
+    const normalizedExisting = existing.replace(/\r\n/g, "\n");
+    const existingTokens = estimateTokenCount(normalizedExisting);
+    if (normalizeForComparison(existing) !== normalizeForComparison(markdown)) {
       console.error(`❌ Schema summary is out of sync with prisma/schema.prisma.`);
       process.exit(1);
     }
-    if (tokenEstimate >= maxTokens) {
+    if (existingTokens >= maxTokens) {
       console.error(
-        `❌ Schema summary exceeds token budget: ${tokenEstimate} tokens >= ${maxTokens}`,
+        `❌ Schema summary exceeds token budget: ${existingTokens} tokens >= ${maxTokens}`,
       );
       process.exit(1);
     }
     console.log(
-      `✅ Schema summary up to date and verified: ~${tokenEstimate} tokens (< ${maxTokens})`,
+      `✅ Schema summary up to date and verified: ~${existingTokens} tokens (< ${maxTokens})`,
     );
     return;
   }

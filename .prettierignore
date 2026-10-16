@@ -11,3 +11,4 @@ infra
 **/.terraform
 *.tf
 *.hcl
+docs/schema-summary.md

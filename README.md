@@ -36,7 +36,7 @@ electa/
 
 ### 1. Prerequisites
 
-- **Node.js**: `v20.x` or higher
+- **Node.js**: `v22.x` or higher
 - **npm**: `v10.x` or higher
 - **PostgreSQL** or **Supabase** database
 - **Terraform**: `>= 1.5.0` (for infrastructure workflows)

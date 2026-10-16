@@ -78,7 +78,7 @@ const eslintConfig = defineConfig([
 
   // ─── Scripts & Seed (allow console logging for CLI output) ───────────────────
   {
-    files: ["prisma/**/*.ts", "scripts/**/*.ts"],
+    files: ["prisma/**/*.ts", "scripts/**/*.{ts,js,mjs}"],
     rules: {
       "no-console": "off",
     },

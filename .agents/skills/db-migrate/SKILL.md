@@ -202,6 +202,18 @@ If `data-model.md` doesn't exist yet, skip this step silently.
 
 ---
 
+### Step 8 — Update schema summary (`docs/schema-summary.md`)
+
+Execute:
+
+```bash
+node scripts/generate-schema-summary.mjs
+```
+
+Confirm: `✅ docs/schema-summary.md updated and verified under 500 tokens.`
+
+---
+
 ## Completion Report
 
 ```
@@ -239,4 +251,5 @@ If `data-model.md` doesn't exist yet, skip this step silently.
 - [ ] `npx prisma generate` ran successfully
 - [ ] `npx tsc --noEmit` ran and results reported
 - [ ] `data-model.md` updated if active feature exists
+- [ ] `docs/schema-summary.md` updated and verified (< 500 tokens)
 - [ ] Completion report printed with next-step commit guidance

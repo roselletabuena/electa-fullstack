@@ -20,8 +20,12 @@
     "env:check": "node .agents/scripts/check-env-usage.mjs --scan",
     "agent:verify": "node .agents/scripts/agent-verify.mjs",
     "agent:verify:fast": "node .agents/scripts/agent-verify.mjs --fast",
+    "db:migrate": "prisma migrate dev && node scripts/generate-schema-summary.mjs",
     "db:seed": "tsx prisma/seed.ts",
     "db:seed:agent": "tsx prisma/seed-agent.ts",
+    "schema:summary": "node scripts/generate-schema-summary.mjs",
+    "schema:check": "node scripts/generate-schema-summary.mjs --check",
+    "contracts:export": "tsx scripts/export-api-contracts.ts",
     "prepare": "husky"
   },
   "prisma": {

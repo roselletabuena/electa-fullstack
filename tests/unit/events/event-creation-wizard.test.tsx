@@ -55,7 +55,7 @@ describe("EventCreationWizard Component", () => {
     fillStep1();
 
     // Proceed to Step 2
-    const continueBtn = screen.getByRole("button", { name: /Continue to Archetype & Taxonomy/i });
+    const continueBtn = screen.getByRole("button", { name: /Continue to Format & Categories/i });
     fireEvent.click(continueBtn);
 
     // Default is PAGEANT -> Pageant monetization notice is visible
@@ -80,7 +80,7 @@ describe("EventCreationWizard Component", () => {
     fillStep1();
 
     // Proceed to Step 2
-    fireEvent.click(screen.getByRole("button", { name: /Continue to Archetype & Taxonomy/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
 
     // Switch archetype to HACKATHON
     const hackathonRadio = screen.getByRole("radio", { name: /Hackathon \/ Competition/i });
@@ -92,7 +92,7 @@ describe("EventCreationWizard Component", () => {
 
     // Expect inline error: "At least one challenge track or category is required for hackathons."
     expect(
-      screen.getByText("At least one challenge track or category is required for hackathons.")
+      screen.getByText("At least one challenge track or category is required for hackathons."),
     ).toBeDefined();
 
     // Now load presets or add a track
@@ -110,7 +110,7 @@ describe("EventCreationWizard Component", () => {
     fillStep1();
 
     // Step into Step 2
-    fireEvent.click(screen.getByRole("button", { name: /Continue to Archetype & Taxonomy/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
 
     // Toggle between archetypes multiple times
     fireEvent.click(screen.getByRole("radio", { name: /Student Council Election/i }));
@@ -121,15 +121,15 @@ describe("EventCreationWizard Component", () => {
     fireEvent.click(screen.getByRole("button", { name: /Back to Details/i }));
 
     // Verify all common fields remain preserved
-    expect(
-      (screen.getByLabelText(/Event Title/i) as HTMLInputElement).value
-    ).toBe("Supreme Student Council Election 2026");
-    expect(
-      (screen.getByLabelText(/Banner Image URL/i) as HTMLInputElement).value
-    ).toBe("https://images.unsplash.com/photo-1540910419892-4a36d2c3266c");
-    expect(
-      (screen.getByLabelText(/Event Description/i) as HTMLTextAreaElement).value
-    ).toBe("Campus-wide official voting for executive student leaders.");
+    expect((screen.getByLabelText(/Event Title/i) as HTMLInputElement).value).toBe(
+      "Supreme Student Council Election 2026",
+    );
+    expect((screen.getByLabelText(/Banner Image URL/i) as HTMLInputElement).value).toBe(
+      "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c",
+    );
+    expect((screen.getByLabelText(/Event Description/i) as HTMLTextAreaElement).value).toBe(
+      "Campus-wide official voting for executive student leaders.",
+    );
   });
 
   it("completes full submission flow with onSuccess callback", async () => {
@@ -138,7 +138,7 @@ describe("EventCreationWizard Component", () => {
 
     fillStep1();
 
-    fireEvent.click(screen.getByRole("button", { name: /Continue to Archetype & Taxonomy/i }));
+    fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
     fireEvent.click(screen.getByRole("radio", { name: /Student Council Election/i }));
 
     // Load student council positions presets
@@ -159,7 +159,7 @@ describe("EventCreationWizard Component", () => {
           positions: expect.arrayContaining([
             expect.objectContaining({ name: "President", maxSelectionsPerVoter: 1 }),
           ]),
-        })
+        }),
       );
       expect(onSuccess).toHaveBeenCalledWith("test-election");
     });

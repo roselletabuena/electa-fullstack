@@ -26,5 +26,33 @@
         ]
       }
     ]
+  },
+  "contrast-guard": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/check-accessibility-contrast.mjs",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
+  },
+  "constitution-guard": {
+    "PostToolUse": [
+      {
+        "matcher": "write_to_file|replace_file_content|multi_replace_file_content",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node scripts/check-constitution.mjs",
+            "timeout": 15
+          }
+        ]
+      }
+    ]
   }
 }

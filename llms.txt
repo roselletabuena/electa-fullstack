@@ -1,0 +1,58 @@
+# Electa
+
+> Scalable, secure voting, hackathon evaluations, and event governance platform built as an AI-native Single-Service Monorepo.
+
+Electa combines a Next.js 16 App Router web application with modular AWS Infrastructure as Code (Terraform), Supabase PostgreSQL (Prisma ORM), and AWS Cognito authentication. The repository enforces strict TypeScript 5 type safety, zero-radius Opal design system styling, and autonomous agent conventions.
+
+## Architecture & Monorepo Topology
+
+- [src/](src/): Next.js 16 (React 19) App Router web application, feature slices, design system, and internal REST API route handlers.
+- [infra/](infra/): AWS Infrastructure as Code powered by modular Terraform (AWS S3 Storage, Cognito User Pools, RDS PostgreSQL, IAM policies).
+- [prisma/](prisma/): Database schema (`prisma/schema.prisma`), migrations, and seed scripts for Supabase PostgreSQL.
+- [.github/workflows/](.github/workflows/): Path-filtered CI workflows separating application checks (`app-ci.yml`) and cloud infrastructure checks (`infra-ci.yml`).
+- [.agents/](.agents/): AI agent customizations, 40+ skills, behavioral rules, automated hooks, and orchestrated workflows.
+
+## Technology Stack
+
+- **Framework**: Next.js 16 App Router (React 19, Server Components by default)
+- **Language**: TypeScript 5 in strict mode (no `any`, no non-null assertions `!`)
+- **Styling**: Tailwind CSS 4 with Opal Light Mode default, strict zero-radius (`--radius: 0px`, `rounded-none`), and brand typography
+- **UI Components**: Shadcn UI + Radix UI primitives
+- **Client State**: Zustand (authenticated session user only)
+- **Server State**: TanStack Query (React Query)
+- **URL State**: nuqs (search parameters, tabs, pagination, and filters)
+- **Forms**: React Hook Form + Zod schema validation
+- **Database & ORM**: PostgreSQL via Supabase with Prisma ORM singleton (`src/lib/db.ts`)
+- **Authentication**: AWS Cognito via AWS Amplify v6 with session helper (`src/lib/auth/get-session.ts`)
+- **Cloud Infrastructure**: AWS provisioned via Terraform `>= 1.5.0` (`infra/`)
+- **Testing**: Vitest for unit and integration test suites
+
+## Key Application Entrypoints & Routing
+
+- [src/app/](src/app/): Next.js App Router root layouts, public pages, auth routes, and route handlers.
+- [src/app/(auth)/](src/app/(auth)/): Unauthenticated routes (`/login`, `/register`).
+- [src/app/(dashboard)/](src/app/(dashboard)/): Authenticated organizer and voter dashboards.
+- [src/app/api/](src/app/api/): Internal REST route handlers returning standard typed `ApiResponse<T>` envelopes.
+- [src/features/](src/features/): Vertical feature slices colocating components, hooks, types, and server actions per domain (`polls`, `voting`, `events`, `hackathons`).
+- [src/env.ts](src/env.ts): Strongly typed environment variable schema via `@t3-oss/env-nextjs` (single source of truth for runtime config).
+
+## Design System & Branding Tokens
+
+- **Default Theme**: Opal Light Mode (`#F8FAFC` background, `#0F172A` text, `#0284C7` sky-blue accent). Dark mode is strictly scoped under `dark:` classes.
+- **Strict Zero-Radius**: Sharp 0px corners across all components (`--radius: 0px`, `rounded-none`). No rounded corners except circular avatar photos.
+- **Typography**: Outfit (`font-heading`) for headings, Sora (`font-sans`) for body UI, JetBrains Mono (`font-mono`) for numbers and code.
+- **CSS Tokens**: Canonical design tokens and utility classes (`.btn-primary`, `.card-style`) defined in [src/app/globals.css](src/app/globals.css).
+
+## Canonical Documentation & Guides
+
+- [README.md](README.md): Project overview, developer quickstart, local environment setup, and verification scripts.
+- [AGENTS.md](AGENTS.md): Full agent conventions, monorepo boundaries, coding standards, and skill catalog.
+- [infra/README.md](infra/README.md): Cloud infrastructure bootstrap, module architecture, and environment deployment guide.
+- [infra/AGENTS.md](infra/AGENTS.md): Terraform authoring conventions, resource tagging, and validation workflow.
+- [.specify/memory/constitution.md](.specify/memory/constitution.md): Electa Constitution detailing the 6 non-negotiable core principles (§I–§VI).
+- [prisma/schema.prisma](prisma/schema.prisma): Single source of truth for database models, relationships, and indices.
+
+## CI & Quality Verification
+
+- **Application CI** ([.github/workflows/app-ci.yml](.github/workflows/app-ci.yml)): Path-filtered workflow running ESLint, TypeScript typecheck, and Vitest unit tests on changes to `src/**`, `prisma/**`, `public/**`, or `tests/**`.
+- **Infrastructure CI** ([.github/workflows/infra-ci.yml](.github/workflows/infra-ci.yml)): Path-filtered workflow running Terraform formatting checks (`terraform fmt -check`) and validation across `infra/` modules and environments.

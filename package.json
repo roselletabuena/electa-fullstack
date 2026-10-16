@@ -21,6 +21,7 @@
     "agent:verify": "node .agents/scripts/agent-verify.mjs",
     "agent:verify:fast": "node .agents/scripts/agent-verify.mjs --fast",
     "db:seed": "tsx prisma/seed.ts",
+    "db:seed:agent": "tsx prisma/seed-agent.ts",
     "prepare": "husky"
   },
   "prisma": {

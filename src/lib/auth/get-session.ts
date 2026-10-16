@@ -18,6 +18,16 @@ function resolveSessionFromAuthHeader(authHeader: string | null): UserSession | 
   }
 
   const token = authHeader.slice(7);
+  if (token === "mock-admin-token" || token.includes("admin")) {
+    return {
+      userId: "usr_admin_mock_01",
+      email: "admin@electa.ph",
+      name: "Eleanor Vance (Admin)",
+      role: "ADMIN",
+      organizationName: "Electa Operations HQ",
+    };
+  }
+
   if (token === "mock-judge-token" || token.includes("judge")) {
     return {
       userId: "usr_judge_mock_01",
@@ -34,6 +44,25 @@ function resolveSessionFromAuthHeader(authHeader: string | null): UserSession | 
       email: "organizer@electa.ph",
       name: "Alex Gonzaga (Organizer)",
       role: "ORGANIZER",
+      organizationName: "Electa Pageants Corp",
+    };
+  }
+
+  if (token === "mock-voter-2-token" || token.includes("voter-2") || token.includes("voter2")) {
+    return {
+      userId: "usr_voter_mock_02",
+      email: "voter2@electa.ph",
+      name: "Maria Santos (Voter)",
+      role: "VOTER",
+    };
+  }
+
+  if (token === "mock-voter-token" || token === "mock-voter-1-token" || token.includes("voter")) {
+    return {
+      userId: "usr_voter_mock_01",
+      email: "voter1@electa.ph",
+      name: "Juan Dela Cruz (Voter)",
+      role: "VOTER",
     };
   }
 
@@ -66,6 +95,12 @@ function resolveSessionFromCookie(authCookie: string): UserSession | null {
       organizationName: verified.organizationName,
       expiresAt: verified.expiresAt,
     };
+  }
+
+  // 2. Check if authCookie matches static mock tokens
+  const mockFromCookie = resolveSessionFromAuthHeader(`Bearer ${authCookie}`);
+  if (mockFromCookie) {
+    return mockFromCookie;
   }
 
   // 2. Fallback to legacy JSON or plain-string session cookie for backward compatibility

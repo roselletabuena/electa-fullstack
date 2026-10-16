@@ -1,0 +1,882 @@
+{
+  "version": "1.0.0",
+  "generatedAt": "2026-10-16T14:49:48.680Z",
+  "totalContracts": 14,
+  "contracts": [
+    {
+      "path": "/api/events",
+      "method": "POST",
+      "summary": "Create a new election, pageant, or hackathon event",
+      "tags": ["Events"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 120
+          },
+          "slug": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          },
+          "description": {
+            "type": "string",
+            "minLength": 10,
+            "maxLength": 5000
+          },
+          "bannerUrl": {
+            "type": "string",
+            "format": "uri"
+          },
+          "startsAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "endsAt": {
+            "type": "string",
+            "format": "date-time",
+            "pattern": "^(?:(?:\\d\\d[2468][048]|\\d\\d[13579][26]|\\d\\d0[48]|[02468][048]00|[13579][26]00)-02-29|\\d{4}-(?:(?:0[13578]|1[02])-(?:0[1-9]|[12]\\d|3[01])|(?:0[469]|11)-(?:0[1-9]|[12]\\d|30)|(?:02)-(?:0[1-9]|1\\d|2[0-8])))T(?:(?:[01]\\d|2[0-3]):[0-5]\\d(?::[0-5]\\d(?:\\.\\d+)?)?(?:Z))$"
+          },
+          "archetype": {
+            "default": "PAGEANT",
+            "type": "string",
+            "enum": ["PAGEANT", "STUDENT_COUNCIL", "HACKATHON", "CUSTOM"]
+          },
+          "positions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "maxSelectionsPerVoter": {
+                  "default": 1,
+                  "type": "integer",
+                  "minimum": 1,
+                  "maximum": 50
+                },
+                "minSelectionsPerVoter": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 50
+                },
+                "displayOrder": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": [
+                "name",
+                "maxSelectionsPerVoter",
+                "minSelectionsPerVoter",
+                "displayOrder"
+              ],
+              "additionalProperties": false
+            }
+          },
+          "divisions": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "displayOrder": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["name", "displayOrder"],
+              "additionalProperties": false
+            }
+          },
+          "awardCategories": {
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "name": {
+                  "type": "string",
+                  "minLength": 1,
+                  "maxLength": 100
+                },
+                "description": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "maxLength": 500
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "isVotingOpen": {
+                  "default": true,
+                  "type": "boolean"
+                },
+                "displayOrder": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": -9007199254740991,
+                  "maximum": 9007199254740991
+                }
+              },
+              "required": ["name", "isVotingOpen", "displayOrder"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "title",
+          "slug",
+          "description",
+          "bannerUrl",
+          "startsAt",
+          "endsAt"
+        ],
+        "additionalProperties": false
+      },
+      "responseDescription": "Created event object with initial status"
+    },
+    {
+      "path": "/api/events/check-slug",
+      "method": "GET",
+      "summary": "Check availability of an event URL slug",
+      "tags": ["Events"],
+      "authenticated": false,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "slug": {
+            "type": "string",
+            "minLength": 3,
+            "maxLength": 60,
+            "pattern": "^[a-z0-9]+(?:-[a-z0-9]+)*$"
+          }
+        },
+        "required": ["slug"],
+        "additionalProperties": false
+      },
+      "requestJsonSchema": null,
+      "responseDescription": "Slug availability result"
+    },
+    {
+      "path": "/api/events/[slug]/preview-auth",
+      "method": "POST",
+      "summary": "Authenticate organizer or judge preview passphrase for draft event",
+      "tags": ["Events", "Auth"],
+      "authenticated": false,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "passphrase": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["passphrase"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Preview cookie session grant"
+    },
+    {
+      "path": "/api/events/[slug]/vote",
+      "method": "POST",
+      "summary": "Cast a vote for a candidate in an event (free or boost)",
+      "tags": ["Voting"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "contestantId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "awardCategoryId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "voteType": {
+            "default": "FREE",
+            "type": "string",
+            "enum": ["FREE", "BOOST"]
+          },
+          "voteWeight": {
+            "default": 1,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "turnstileToken": {
+            "type": "string"
+          },
+          "deviceFingerprint": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": ["eventId", "contestantId", "voteType", "voteWeight"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Vote confirmation with updated vote counts"
+    },
+    {
+      "path": "/api/voting",
+      "method": "POST",
+      "summary": "Direct voting engine endpoint for candidate voting",
+      "tags": ["Voting"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "contestantId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "awardCategoryId": {
+            "anyOf": [
+              {
+                "type": "string",
+                "format": "uuid",
+                "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "voteType": {
+            "default": "FREE",
+            "type": "string",
+            "enum": ["FREE", "BOOST"]
+          },
+          "voteWeight": {
+            "default": 1,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 1000
+          },
+          "turnstileToken": {
+            "type": "string"
+          },
+          "deviceFingerprint": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": ["eventId", "contestantId", "voteType", "voteWeight"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Vote transaction result and quota state"
+    },
+    {
+      "path": "/api/events/[slug]/contestants",
+      "method": "POST",
+      "summary": "Register or add a contestant to an event",
+      "tags": ["Contestants"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "contestantNumber": {
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 9007199254740991
+          },
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "division": {
+            "default": "FEMALE",
+            "type": "string",
+            "minLength": 1
+          },
+          "divisionId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "hometown": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 120
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "heightCm": {
+            "anyOf": [
+              {
+                "type": "integer",
+                "minimum": 50,
+                "maximum": 250
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "bio": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "advocacy": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 1000
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "avatarUrl": {
+            "type": "string",
+            "minLength": 1
+          },
+          "instagramUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "tiktokUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "facebookUrl": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "string",
+                "const": ""
+              }
+            ]
+          },
+          "categoryIds": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          },
+          "media": {
+            "maxItems": 10,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "mediaType": {
+                  "default": "PHOTO",
+                  "type": "string",
+                  "enum": ["PHOTO", "VIDEO_EMBED"]
+                },
+                "url": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "embedPlatform": {
+                  "default": "NONE",
+                  "type": "string",
+                  "enum": ["YOUTUBE", "TIKTOK", "INSTAGRAM", "FACEBOOK", "NONE"]
+                },
+                "embedId": {
+                  "anyOf": [
+                    {
+                      "type": "string"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "displayOrder": {
+                  "default": 0,
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 9007199254740991
+                },
+                "aspectRatio": {
+                  "default": "4:5",
+                  "type": "string"
+                },
+                "isCover": {
+                  "default": false,
+                  "type": "boolean"
+                }
+              },
+              "required": [
+                "mediaType",
+                "url",
+                "embedPlatform",
+                "displayOrder",
+                "aspectRatio",
+                "isCover"
+              ],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": ["contestantNumber", "name", "division", "avatarUrl"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Created contestant profile"
+    },
+    {
+      "path": "/api/events/[slug]/contestants/[contestantId]/status",
+      "method": "PATCH",
+      "summary": "Update contestant participation status (ACTIVE, HIDDEN, WITHDRAWN)",
+      "tags": ["Contestants"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "status": {
+            "type": "string",
+            "enum": ["ACTIVE", "HIDDEN", "WITHDRAWN"]
+          }
+        },
+        "required": ["status"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Updated contestant status"
+    },
+    {
+      "path": "/api/events/[slug]/divisions",
+      "method": "POST",
+      "summary": "Create a competition division (e.g., Male, Female, Teens)",
+      "tags": ["Divisions"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "displayOrder": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": ["name", "displayOrder"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Created division object"
+    },
+    {
+      "path": "/api/events/[slug]/award-categories",
+      "method": "POST",
+      "summary": "Create special award category",
+      "tags": ["Awards"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "description": {
+            "anyOf": [
+              {
+                "type": "string",
+                "maxLength": 500
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "isVotingOpen": {
+            "default": true,
+            "type": "boolean"
+          },
+          "displayOrder": {
+            "default": 0,
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 9007199254740991
+          }
+        },
+        "required": ["name", "isVotingOpen", "displayOrder"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Created award category"
+    },
+    {
+      "path": "/api/payments/intent",
+      "method": "POST",
+      "summary": "Create payment intent for boost voting via PayMongo / QR Ph",
+      "tags": ["Payments"],
+      "authenticated": false,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "contestantId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "awardCategoryId": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ]
+          },
+          "voterIdentifier": {
+            "type": "string",
+            "minLength": 1
+          },
+          "tierId": {
+            "type": "string"
+          },
+          "customVotes": {
+            "type": "integer",
+            "exclusiveMinimum": 0,
+            "maximum": 10000
+          },
+          "paymentChannel": {
+            "default": "QR_PH",
+            "type": "string",
+            "enum": [
+              "QR_PH",
+              "GCASH",
+              "MAYA",
+              "CARD",
+              "GRAB_PAY",
+              "ONLINE_BANKING"
+            ]
+          }
+        },
+        "required": [
+          "eventId",
+          "contestantId",
+          "voterIdentifier",
+          "paymentChannel"
+        ],
+        "additionalProperties": false
+      },
+      "responseDescription": "Payment intent containing QR Ph payload and checkout URL"
+    },
+    {
+      "path": "/api/payments/verify",
+      "method": "POST",
+      "summary": "Verify payment transaction status by reference number",
+      "tags": ["Payments"],
+      "authenticated": false,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "referenceNumber": {
+            "type": "string",
+            "minLength": 1
+          }
+        },
+        "required": ["referenceNumber"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Payment status, receipts, and awarded votes"
+    },
+    {
+      "path": "/api/search",
+      "method": "GET",
+      "summary": "Global search across events, contestants, and categories",
+      "tags": ["Search"],
+      "authenticated": false,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "q": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 100
+          },
+          "limit": {
+            "default": 5,
+            "type": "integer",
+            "minimum": 1,
+            "maximum": 20
+          }
+        },
+        "required": ["q", "limit"],
+        "additionalProperties": false
+      },
+      "requestJsonSchema": null,
+      "responseDescription": "Search match results across entities"
+    },
+    {
+      "path": "/api/events/[slug]/ballot",
+      "method": "POST",
+      "summary": "Submit institutional student council multi-office ballot",
+      "tags": ["Ballots"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          },
+          "selections": {
+            "minItems": 1,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "positionId": {
+                  "anyOf": [
+                    {
+                      "type": "string",
+                      "format": "uuid",
+                      "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                    },
+                    {
+                      "type": "null"
+                    }
+                  ]
+                },
+                "contestantIds": {
+                  "minItems": 1,
+                  "type": "array",
+                  "items": {
+                    "type": "string",
+                    "format": "uuid",
+                    "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+                  }
+                }
+              },
+              "required": ["contestantIds"],
+              "additionalProperties": false
+            }
+          },
+          "turnstileToken": {
+            "type": "string"
+          },
+          "deviceFingerprint": {
+            "type": "string"
+          },
+          "idempotencyKey": {
+            "type": "string",
+            "format": "uuid",
+            "pattern": "^([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[1-8][0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}|00000000-0000-0000-0000-000000000000|ffffffff-ffff-ffff-ffff-ffffffffffff)$"
+          }
+        },
+        "required": ["eventId", "selections"],
+        "additionalProperties": false
+      },
+      "responseDescription": "Cryptographic ballot receipt and selection records"
+    },
+    {
+      "path": "/api/events/[slug]/payout",
+      "method": "POST",
+      "summary": "Request organizer revenue payout via bank or e-wallet",
+      "tags": ["Payouts"],
+      "authenticated": true,
+      "paramsJsonSchema": null,
+      "queryJsonSchema": null,
+      "requestJsonSchema": {
+        "$schema": "https://json-schema.org/draft/2020-12/schema",
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "minLength": 1
+          },
+          "amountInPhp": {
+            "type": "number",
+            "minimum": 100
+          },
+          "payoutMethod": {
+            "type": "string",
+            "enum": ["BANK_TRANSFER", "GCASH", "MAYA"]
+          },
+          "accountName": {
+            "type": "string",
+            "minLength": 2,
+            "maxLength": 100
+          },
+          "accountNumber": {
+            "type": "string",
+            "minLength": 6,
+            "maxLength": 50
+          },
+          "bankOrProviderName": {
+            "type": "string",
+            "maxLength": 100
+          }
+        },
+        "required": [
+          "eventId",
+          "amountInPhp",
+          "payoutMethod",
+          "accountName",
+          "accountNumber"
+        ],
+        "additionalProperties": false
+      },
+      "responseDescription": "Created payout request with reference number"
+    }
+  ]
+}

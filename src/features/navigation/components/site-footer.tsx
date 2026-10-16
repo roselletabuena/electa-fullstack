@@ -33,6 +33,7 @@ export function SiteFooter({
               alt="Electa Logo"
               width={24}
               height={30}
+              style={{ width: "auto", height: "auto" }}
               className="transition-transform group-hover:scale-105"
               priority={false}
             />
@@ -83,6 +84,7 @@ export function SiteFooter({
                 alt="Electa Logo"
                 width={28}
                 height={34}
+                style={{ width: "auto", height: "auto" }}
                 className="transition-transform group-hover:scale-105"
                 priority={false}
               />

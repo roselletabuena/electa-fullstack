@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState, useMemo } from "react";
 import {
   Search,
@@ -25,15 +27,17 @@ export interface JudgePortalProjectItem {
   readonly status: "DRAFT" | "SUBMITTED" | "UNDER_REVIEW" | "ACCEPTED" | "REJECTED";
   readonly trackTags: readonly string[];
   readonly evaluationStatus: "PENDING" | "DRAFT" | "COMPLETED";
-  readonly existingEvaluation?: {
-    readonly compositeScore: number;
-    readonly notes?: string | null | undefined;
-    readonly isDraft: boolean;
-    readonly scores: ReadonlyArray<{
-      readonly criterionId: string;
-      readonly score: number;
-    }>;
-  } | undefined;
+  readonly existingEvaluation?:
+    | {
+        readonly compositeScore: number;
+        readonly notes?: string | null | undefined;
+        readonly isDraft: boolean;
+        readonly scores: ReadonlyArray<{
+          readonly criterionId: string;
+          readonly score: number;
+        }>;
+      }
+    | undefined;
 }
 
 export interface JudgePortalProps {
@@ -59,18 +63,16 @@ function ProjectStatusBadge({
 }): React.JSX.Element {
   if (project.evaluationStatus === "COMPLETED") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-none border border-emerald-300 bg-emerald-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-emerald-800 dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
+      <span className="inline-flex items-center gap-1 rounded-none border border-emerald-300 bg-emerald-50 px-2 py-0.5 font-mono text-[10px] font-black tracking-wider text-emerald-800 uppercase dark:border-emerald-700 dark:bg-emerald-950/60 dark:text-emerald-300">
         <CheckCircle2 className="h-3 w-3" />
-        <span>
-          Evaluated ({project.existingEvaluation?.compositeScore.toFixed(2)})
-        </span>
+        <span>Evaluated ({project.existingEvaluation?.compositeScore.toFixed(2)})</span>
       </span>
     );
   }
 
   if (project.evaluationStatus === "DRAFT") {
     return (
-      <span className="inline-flex items-center gap-1 rounded-none border border-amber-300 bg-amber-50 px-2 py-0.5 font-mono text-[10px] font-black uppercase tracking-wider text-amber-800 dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
+      <span className="inline-flex items-center gap-1 rounded-none border border-amber-300 bg-amber-50 px-2 py-0.5 font-mono text-[10px] font-black tracking-wider text-amber-800 uppercase dark:border-amber-700 dark:bg-amber-950/60 dark:text-amber-300">
         <Clock className="h-3 w-3" />
         <span>Draft In Progress</span>
       </span>
@@ -78,7 +80,7 @@ function ProjectStatusBadge({
   }
 
   return (
-    <span className="rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 font-mono text-[10px] font-bold uppercase tracking-wider text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+    <span className="rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-slate-700 uppercase dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
       Pending Review
     </span>
   );
@@ -92,12 +94,10 @@ export function JudgePortal({
   projects: initialProjects,
   currentJudgeId: _currentJudgeId,
 }: Readonly<JudgePortalProps>): React.JSX.Element {
-  const [projects, setProjects] =
-    useState<ReadonlyArray<JudgePortalProjectItem>>(initialProjects);
+  const [projects, setProjects] = useState<ReadonlyArray<JudgePortalProjectItem>>(initialProjects);
   const [activeFilter, setActiveFilter] = useState<JudgingFilterMode>("ALL");
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [selectedProject, setSelectedProject] =
-    useState<JudgePortalProjectItem | null>(null);
+  const [selectedProject, setSelectedProject] = useState<JudgePortalProjectItem | null>(null);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
   // Compute evaluated count based on active local state
@@ -121,9 +121,7 @@ export function JudgePortal({
         const query = searchQuery.toLowerCase().trim();
         const matchesTitle = project.title.toLowerCase().includes(query);
         const matchesTagline = project.tagline?.toLowerCase().includes(query);
-        const matchesTrack = project.trackTags.some((tag) =>
-          tag.toLowerCase().includes(query)
-        );
+        const matchesTrack = project.trackTags.some((tag) => tag.toLowerCase().includes(query));
         if (!matchesTitle && !matchesTagline && !matchesTrack) {
           return false;
         }
@@ -153,7 +151,7 @@ export function JudgePortal({
             notes: result.notes,
           },
         };
-      })
+      }),
     );
 
     if (!result.isDraft) {
@@ -164,7 +162,7 @@ export function JudgePortal({
     setToastMessage(
       result.isDraft
         ? `Draft evaluation saved for "${project?.title || "project"}".`
-        : `Final scorecard submitted for "${project?.title || "project"}" (Score: ${result.compositeScore.toFixed(2)}).`
+        : `Final scorecard submitted for "${project?.title || "project"}" (Score: ${result.compositeScore.toFixed(2)}).`,
     );
 
     // Auto-dismiss toast
@@ -179,7 +177,7 @@ export function JudgePortal({
       {toastMessage && (
         <div
           role="status"
-          className="fixed bottom-5 right-5 z-50 flex items-center gap-2 rounded-none border border-emerald-300 bg-white p-3.5 shadow-lg dark:border-emerald-700 dark:bg-slate-900"
+          className="fixed right-5 bottom-5 z-50 flex items-center gap-2 rounded-none border border-emerald-300 bg-white p-3.5 shadow-lg dark:border-emerald-700 dark:bg-slate-900"
         >
           <CheckCircle2 className="h-4 w-4 text-emerald-600 dark:text-emerald-400" />
           <span className="font-mono text-xs font-bold text-slate-800 dark:text-slate-200">
@@ -199,7 +197,7 @@ export function JudgePortal({
         {/* Header */}
         <div className="mb-6 space-y-2 border-b border-slate-200 pb-6 dark:border-slate-800">
           <div className="flex flex-wrap items-center gap-2">
-            <span className="rounded-none bg-slate-900 px-2 py-0.5 font-mono text-[10px] font-extrabold uppercase tracking-widest text-white dark:bg-slate-100 dark:text-slate-900">
+            <span className="rounded-none bg-slate-900 px-2 py-0.5 font-mono text-[10px] font-extrabold tracking-widest text-white uppercase dark:bg-slate-100 dark:text-slate-900">
               Judge Console
             </span>
             <span className="font-mono text-xs text-slate-500 dark:text-slate-400">
@@ -207,12 +205,12 @@ export function JudgePortal({
             </span>
           </div>
 
-          <h1 className="font-heading text-2xl font-black uppercase tracking-tight text-slate-900 dark:text-slate-100 sm:text-3xl">
+          <h1 className="font-heading text-2xl font-black tracking-tight text-slate-900 uppercase sm:text-3xl dark:text-slate-100">
             {eventTitle}
           </h1>
-          <p className="font-sans text-xs text-slate-600 dark:text-slate-400 sm:text-sm">
-            Review assigned hackathon demo pitches, assign multi-criteria weighted
-            rubric scores, and submit evaluations before deliberation.
+          <p className="font-sans text-xs text-slate-600 sm:text-sm dark:text-slate-400">
+            Review assigned hackathon demo pitches, assign multi-criteria weighted rubric scores,
+            and submit evaluations before deliberation.
           </p>
         </div>
 
@@ -229,19 +227,19 @@ export function JudgePortal({
         {/* Search and Quick Filter Toolbar */}
         <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="relative w-full max-w-md">
-            <Search className="absolute left-3 top-2.5 h-4 w-4 text-slate-400" />
+            <Search className="absolute top-2.5 left-3 h-4 w-4 text-slate-400" />
             <input
               type="text"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search projects by title or track..."
-              className="w-full rounded-none border border-slate-300 bg-white py-2 pl-9 pr-8 font-sans text-xs text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-slate-100"
+              className="w-full rounded-none border border-slate-300 bg-white py-2 pr-8 pl-9 font-sans text-xs text-slate-900 placeholder:text-slate-400 focus:border-slate-900 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:focus:border-slate-100"
             />
             {searchQuery && (
               <button
                 type="button"
                 onClick={() => setSearchQuery("")}
-                className="absolute right-2.5 top-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                className="absolute top-2.5 right-2.5 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
               >
                 <X className="h-4 w-4" />
               </button>
@@ -260,7 +258,7 @@ export function JudgePortal({
         {filteredProjects.length === 0 ? (
           <div className="rounded-none border border-dashed border-slate-300 bg-white p-12 text-center dark:border-slate-800 dark:bg-slate-900">
             <Sparkles className="mx-auto h-8 w-8 text-slate-400" />
-            <h3 className="mt-3 font-heading text-base font-bold text-slate-900 dark:text-slate-100">
+            <h3 className="font-heading mt-3 text-base font-bold text-slate-900 dark:text-slate-100">
               No matching projects found
             </h3>
             <p className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
@@ -275,7 +273,7 @@ export function JudgePortal({
                   setSearchQuery("");
                   setActiveFilter("ALL");
                 }}
-                className="mt-4 rounded-none border border-slate-900 bg-slate-900 px-3.5 py-1.5 font-mono text-xs font-bold uppercase tracking-wider text-white hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                className="mt-4 rounded-none border border-slate-900 bg-slate-900 px-3.5 py-1.5 font-mono text-xs font-bold tracking-wider text-white uppercase hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 Reset Filters
               </button>
@@ -293,14 +291,12 @@ export function JudgePortal({
               let buttonLabel = "Evaluate Project";
 
               if (isCompleted) {
-                cardBorderClass =
-                  "border-emerald-300/80 dark:border-emerald-900/60";
+                cardBorderClass = "border-emerald-300/80 dark:border-emerald-900/60";
                 buttonClass =
                   "border border-slate-300 bg-white text-slate-800 hover:bg-slate-100 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:bg-slate-700";
                 buttonLabel = "Review / Edit Scorecard";
               } else if (isDraft) {
-                cardBorderClass =
-                  "border-amber-300/80 dark:border-amber-900/60";
+                cardBorderClass = "border-amber-300/80 dark:border-amber-900/60";
                 buttonClass =
                   "border border-amber-600 bg-amber-600 text-white hover:bg-amber-700 dark:border-amber-500 dark:bg-amber-500 dark:text-slate-950";
                 buttonLabel = "Resume Evaluation";
@@ -311,7 +307,7 @@ export function JudgePortal({
                   key={project.id}
                   className={cn(
                     "flex flex-col justify-between rounded-none border bg-white p-5 shadow-xs transition-all hover:border-slate-400 hover:shadow-md dark:bg-slate-900",
-                    cardBorderClass
+                    cardBorderClass,
                   )}
                 >
                   <div className="space-y-3">
@@ -346,7 +342,7 @@ export function JudgePortal({
                         {project.trackTags.map((tag) => (
                           <span
                             key={tag}
-                            className="rounded-none border border-slate-200 bg-slate-50 px-1.5 py-0.2 font-mono text-[10px] font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-300"
+                            className="py-0.2 rounded-none border border-slate-200 bg-slate-50 px-1.5 font-mono text-[10px] font-bold text-slate-600 dark:border-slate-800 dark:bg-slate-800/80 dark:text-slate-300"
                           >
                             {tag}
                           </span>
@@ -398,8 +394,8 @@ export function JudgePortal({
                       type="button"
                       onClick={() => setSelectedProject(project)}
                       className={cn(
-                        "w-full rounded-none px-4 py-2 font-mono text-xs font-black uppercase tracking-wider transition-all",
-                        buttonClass
+                        "w-full rounded-none px-4 py-2 font-mono text-xs font-black tracking-wider uppercase transition-all",
+                        buttonClass,
                       )}
                     >
                       {buttonLabel}

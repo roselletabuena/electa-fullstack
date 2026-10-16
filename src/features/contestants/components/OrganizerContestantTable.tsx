@@ -122,14 +122,6 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
               <p className="mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
                 Start by adding your first candidate profile and photos.
               </p>
-              <Button
-                type="button"
-                onClick={handleOpenAdd}
-                className="btn-primary mt-4 gap-1.5 px-4 py-2 text-xs"
-              >
-                <Plus className="size-3.5" />
-                <span>Add First Contestant</span>
-              </Button>
             </div>
           ) : (
             <div className="overflow-x-auto">

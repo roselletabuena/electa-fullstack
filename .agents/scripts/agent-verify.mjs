@@ -42,6 +42,13 @@ const GATES = [
     description: "Verifies zero forbidden any, non-null assertions, and Next.js 16 async request API awaiting",
   },
   {
+    id: "schema",
+    name: "Prisma Schema Summary & Token Limit Check (Pillar 3)",
+    command: "node",
+    args: ["scripts/generate-schema-summary.mjs", "--check"],
+    description: "Verifies docs/schema-summary.md is in sync with prisma/schema.prisma and < 500 tokens",
+  },
+  {
     id: "typecheck",
     name: "TypeScript Strict Typecheck (Constitution §I)",
     command: "npx",

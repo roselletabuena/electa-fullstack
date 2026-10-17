@@ -1,6 +1,7 @@
 import { getSession } from "@/lib/auth/get-session";
 import { db } from "@/lib/db";
 import { createEventSchema, type CreateEventInput } from "@/lib/validations/event";
+import { isArchetypeAvailable } from "../types/archetype";
 import type { CreateEventResult } from "../types";
 
 /**
@@ -45,6 +46,18 @@ export async function createEvent(input: CreateEventInput): Promise<CreateEventR
     divisions,
     awardCategories,
   } = validation.data;
+
+  // 2.5 Archetype availability boundary guard
+  if (!isArchetypeAvailable(archetype)) {
+    return {
+      success: false,
+      error: "This event archetype is coming soon and currently disabled.",
+      fieldErrors: {
+        archetype: ["This event archetype is coming soon and currently disabled."],
+      },
+    };
+  }
+
   const normalizedSlug = slug.toLowerCase().trim();
 
   // 3. Check for existing slug collision

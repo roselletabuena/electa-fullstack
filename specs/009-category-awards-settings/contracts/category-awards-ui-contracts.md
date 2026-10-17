@@ -185,17 +185,7 @@ export interface CategoryAwardsSettingsFormProps {
 }
 ```
 
-### 2.2 `TaxonomyPresetsCard`
-
-```typescript
-export interface TaxonomyPresetsCardProps {
-  onApplyPreset: (preset: TaxonomyPreset) => Promise<void>;
-  isApplying: boolean;
-  disabled?: boolean;
-}
-```
-
-### 2.3 `DivisionsSection`
+### 2.2 `DivisionsSection`
 
 ```typescript
 export interface DivisionsSectionProps {
@@ -205,6 +195,7 @@ export interface DivisionsSectionProps {
   onAddDivision: (input: CreateDivisionInput) => Promise<void>;
   onUpdateDivision: (divisionId: string, input: UpdateDivisionInput) => Promise<void>;
   onDeleteRequest: (division: DivisionDto) => void;
+  disabled?: boolean;
 }
 ```
 

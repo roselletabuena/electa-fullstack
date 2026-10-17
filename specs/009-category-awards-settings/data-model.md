@@ -55,46 +55,44 @@ export interface EventTaxonomyDto {
 
 ---
 
-## 2. Client-Side Preset Data Model
+## 2. In-Place Edit State & Mutation Models
 
-### 2.1 Taxonomy Preset Definition (`TaxonomyPreset`)
+### 2.1 Update Division Input (`UpdateDivisionInput`)
 
-Curated competition templates that organizers can select to prepopulate divisions and award tracks.
+Payload sent via `PATCH /api/events/[slug]/divisions/[divisionId]`.
 
 ```typescript
-export interface TaxonomyPreset {
-  id: string;
-  title: string;
-  description: string;
-  iconName: "crown" | "music" | "sparkles" | "trophy";
-  divisions: Array<{
-    name: string;
-    description?: string;
-    displayOrder: number;
-  }>;
-  awardCategories: Array<{
-    name: string;
-    description?: string;
-    isVotingOpen: boolean;
-    displayOrder: number;
-  }>;
+export interface UpdateDivisionInput {
+  name?: string;
+  description?: string | null;
+  displayOrder?: number;
 }
 ```
 
-### 2.2 Standard Presets Catalog
+### 2.2 Update Award Category Input (`UpdateAwardCategoryInput`)
 
-1. **Beauty Pageant**:
-   - Divisions: `Female Category`, `Male Category`, `LGBTQ+ Category`, `Teen Category`
-   - Award Categories: `People's Choice Award` (Voting Open), `Best in Evening Gown` (Voting Closed), `Best in Swimsuit` (Voting Closed), `Miss Congeniality` (Voting Closed), `Photogenic Award` (Voting Open)
-2. **Singing / Talent Contest**:
-   - Divisions: `Solo Vocalist`, `Duet / Acoustic Group`, `Band / Choir`
-   - Award Categories: `Audience Favorite Award` (Voting Open), `Best Vocal Performance` (Voting Closed), `Best Stage Presence` (Voting Closed)
-3. **Dance Championship**:
-   - Divisions: `Junior Division`, `Varsity Division`, `Open Mega Crew`
-   - Award Categories: `People's Choice Crew` (Voting Open), `Best Choreography` (Voting Closed), `Crowd Impact Award` (Voting Open)
-4. **Academic / Hackathon**:
-   - Divisions: `Track A - Web & Cloud`, `Track B - AI & Data`, `Track C - Social Impact`
-   - Award Categories: `Community Choice Project` (Voting Open), `Best Innovation` (Voting Closed), `Best Technical Execution` (Voting Closed)
+Payload sent via `PATCH /api/events/[slug]/award-categories/[categoryId]`.
+
+```typescript
+export interface UpdateAwardCategoryInput {
+  name?: string;
+  description?: string | null;
+  isVotingOpen?: boolean;
+  displayOrder?: number;
+}
+```
+
+### 2.3 Component Inline Edit State
+
+```typescript
+// Active editing state managed within sections:
+export type ActiveEditState = {
+  editingId: string | null;
+  isSaving: boolean;
+};
+```
+
+_(Note: The client-side `TaxonomyPreset` catalog is retired from this dashboard since taxonomy setup is configured during event creation)._
 
 ---
 

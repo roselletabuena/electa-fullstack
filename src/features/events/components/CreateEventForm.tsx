@@ -64,7 +64,7 @@ function getDefaultDates(): { startsAt: string; endsAt: string } {
   };
 }
 
-function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
+function DraftRestoredBanner({ onClear }: Readonly<{ onClear: () => void }>) {
   return (
     <aside
       aria-label="Draft recovery notification"
@@ -79,7 +79,7 @@ function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
       <button
         type="button"
         onClick={onClear}
-        className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold tracking-wider text-sky-950 uppercase transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
+        className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-none border border-sky-400 bg-white px-3 py-1 text-xs font-extrabold tracking-wider text-sky-950 uppercase transition hover:bg-sky-100 dark:border-sky-500/50 dark:bg-slate-900 dark:text-sky-200 dark:hover:bg-slate-800"
       >
         <RotateCcw className="size-3" />
         <span>Clear Draft</span>
@@ -91,10 +91,10 @@ function DraftRestoredBanner({ onClear }: { onClear: () => void }) {
 function TimelinePresetsPicker({
   activePreset,
   onApplyPreset,
-}: {
+}: Readonly<{
   activePreset: "7d" | "14d" | "30d" | null;
   onApplyPreset: (days: number) => void;
-}) {
+}>) {
   return (
     <div className="flex flex-wrap items-center gap-1.5 pt-1 sm:pt-0">
       <span className="text-xs font-semibold text-slate-600 dark:text-slate-400">
@@ -109,7 +109,7 @@ function TimelinePresetsPicker({
             aria-pressed={isActive}
             onClick={() => onApplyPreset(preset.days)}
             className={cn(
-              "inline-flex min-h-[44px] cursor-pointer items-center justify-center rounded-none px-3 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors",
+              "inline-flex min-h-11 cursor-pointer items-center justify-center rounded-none px-3 py-1.5 text-xs font-bold tracking-wider uppercase transition-colors",
               isActive
                 ? "border border-sky-600 bg-sky-600 text-white dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
                 : "border border-slate-300 bg-white text-slate-700 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10 dark:hover:text-white",
@@ -383,7 +383,7 @@ export function CreateEventForm({
                 <button
                   type="button"
                   onClick={handleResetSlugToTitle}
-                  className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 px-2 py-1 text-xs font-bold text-sky-700 transition-colors hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-200"
+                  className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 px-2 py-1 text-xs font-bold text-sky-700 transition-colors hover:text-sky-900 dark:text-sky-400 dark:hover:text-sky-200"
                 >
                   <RefreshCw className="size-3" />
                   <span>Reset to Title</span>
@@ -588,14 +588,14 @@ export function CreateEventForm({
             <button
               type="button"
               onClick={onCancel}
-              className="inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-11 w-full cursor-pointer items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </button>
           ) : (
             <Link
               href="/dashboard"
-              className="inline-flex min-h-[44px] w-full items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+              className="inline-flex min-h-11 w-full items-center justify-center rounded-none border border-slate-300 bg-slate-100 px-5 py-2.5 text-center text-xs font-bold tracking-wider text-slate-700 uppercase transition hover:bg-slate-200 hover:text-slate-900 sm:w-auto dark:border-slate-700 dark:bg-slate-800/60 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
             >
               Cancel
             </Link>
@@ -604,7 +604,7 @@ export function CreateEventForm({
           <button
             type="submit"
             disabled={isSubmitDisabled}
-            className="btn-primary inline-flex min-h-[44px] w-full cursor-pointer items-center justify-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-2.5 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+            className="btn-primary inline-flex min-h-11 w-full cursor-pointer items-center justify-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-2.5 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition hover:bg-slate-800 focus:ring-2 focus:ring-sky-500 focus:outline-hidden disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isSubmitting ? (
               <>

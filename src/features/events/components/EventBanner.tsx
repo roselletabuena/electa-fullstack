@@ -39,7 +39,7 @@ export function EventBanner({ event, totalVotes }: Readonly<EventBannerProps>): 
   });
 
   return (
-    <header className="relative w-full overflow-hidden rounded-2xl border border-slate-200/80 bg-slate-950 shadow-md transition-all dark:border-slate-800">
+    <header className="relative w-full overflow-hidden rounded-none border border-slate-300 bg-slate-950 shadow-md transition-all dark:border-slate-800">
       {/* Compact Banner Backdrop Image */}
       <div className="relative h-60 w-full overflow-hidden sm:h-72 md:h-80">
         <Image
@@ -59,11 +59,11 @@ export function EventBanner({ event, totalVotes }: Readonly<EventBannerProps>): 
         {/* Badges */}
         <div className="flex flex-wrap items-center gap-2.5">
           <EventStateBadge state={event.operationalState} />
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-white/15 bg-black/40 px-3 py-1 font-mono text-xs text-slate-200 backdrop-blur-md">
+          <span className="inline-flex items-center gap-1.5 rounded-none border border-white/20 bg-black/50 px-2.5 py-1 font-mono text-[10px] font-bold tracking-wider text-slate-200 uppercase backdrop-blur-md">
             <Globe2 className="size-3 text-slate-400" />
             <span>electa.ph/events/{event.slug}</span>
           </span>
-          <span className="inline-flex items-center gap-1.5 rounded-full border border-sky-400/20 bg-sky-500/10 px-3 py-1 text-xs font-semibold text-sky-300 backdrop-blur-md">
+          <span className="inline-flex items-center gap-1.5 rounded-none border border-sky-400/30 bg-sky-500/20 px-2.5 py-1 font-mono text-[10px] font-bold tracking-wider text-sky-300 uppercase backdrop-blur-md">
             <Sparkles className="size-3 text-sky-400" />
             <span>Official Contest</span>
           </span>

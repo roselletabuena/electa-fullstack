@@ -13,7 +13,7 @@ export const metadata = {
 export default async function NewEventPage(): Promise<React.JSX.Element> {
   const session = await getSession();
 
-  if (!session || !session.userId) {
+  if (!session?.userId) {
     redirect("/login?returnTo=%2Fevents%2Fnew");
   }
 
@@ -24,7 +24,7 @@ export default async function NewEventPage(): Promise<React.JSX.Element> {
         <div>
           <Link
             href="/dashboard"
-            className="inline-flex min-h-[44px] items-center gap-2 text-xs font-bold tracking-wider text-slate-600 uppercase transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
+            className="inline-flex min-h-11 items-center gap-2 text-xs font-bold tracking-wider text-slate-600 uppercase transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-200"
           >
             <ArrowLeft className="size-4" />
             <span>Back to Dashboard</span>
@@ -40,9 +40,9 @@ export default async function NewEventPage(): Promise<React.JSX.Element> {
           <h1 className="font-heading mt-3 text-2xl font-black tracking-tight text-slate-900 sm:text-3xl dark:text-white">
             Create New Event
           </h1>
-          <p className="font-sans mt-2 text-sm text-slate-600 dark:text-slate-400">
-            Configure your event profile, URL slug, timeline schedule, and archetype-tailored taxonomy
-            (offices for student elections, tracks for hackathons, divisions for pageants).
+          <p className="mt-2 font-sans text-sm text-slate-600 dark:text-slate-400">
+            Configure your event profile, URL slug, timeline schedule, and archetype-tailored
+            taxonomy (offices for student elections, tracks for hackathons, divisions for pageants).
           </p>
         </div>
 

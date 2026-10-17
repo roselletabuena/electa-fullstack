@@ -379,9 +379,9 @@ export function EventCreationWizard({
       if (divisions.length === 0) {
         return <span className="text-xs text-slate-400">No divisions added</span>;
       }
-      return divisions.map((d, i) => (
+      return divisions.map((d) => (
         <span
-          key={i}
+          key={d.name}
           className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
         >
           {d.name}
@@ -393,9 +393,9 @@ export function EventCreationWizard({
       return <span className="text-xs text-slate-400">No positions added</span>;
     }
 
-    return positions.map((p, i) => (
+    return positions.map((p) => (
       <span
-        key={i}
+        key={p.name}
         className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200"
       >
         {p.name} ({p.maxSelectionsPerVoter > 1 ? `${p.maxSelectionsPerVoter} seats` : "1 seat"})
@@ -660,7 +660,7 @@ export function EventCreationWizard({
                 <button
                   type="button"
                   onClick={onCancel}
-                  className="inline-flex min-h-[44px] cursor-pointer items-center rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-extrabold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                  className="inline-flex min-h-11 cursor-pointer items-center rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-extrabold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                 >
                   Cancel
                 </button>
@@ -744,7 +744,7 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={() => setCurrentStep(1)}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
                 <ArrowLeft className="size-4" />
                 <span>Back to Details</span>
@@ -753,7 +753,7 @@ export function EventCreationWizard({
               <button
                 type="button"
                 onClick={handleProceedToStep3}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-5 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 <span>Review & Finalize</span>
                 <ArrowRight className="size-4" />

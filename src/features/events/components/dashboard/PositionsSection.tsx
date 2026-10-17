@@ -3,7 +3,11 @@
 import React, { useState } from "react";
 import { Plus, Trash2, Layers, AlertCircle, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
-import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype, type EventPositionDto } from "../../types/archetype";
+import {
+  EVENT_ARCHETYPE_CONFIGS,
+  type EventArchetype,
+  type EventPositionDto,
+} from "../../types/archetype";
 import type { CreateEventPositionInput } from "@/lib/validations/archetypes";
 import { cn } from "@/lib/utils";
 
@@ -72,7 +76,9 @@ export function PositionsSection({
   };
 
   return (
-    <Card className={cn("border-slate-200 dark:border-slate-800 rounded-none shadow-xs", className)}>
+    <Card
+      className={cn("rounded-none border-slate-200 shadow-xs dark:border-slate-800", className)}
+    >
       <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
         <div className="flex items-center gap-2">
           <Layers className="size-5 text-sky-600 dark:text-sky-400" />
@@ -81,15 +87,16 @@ export function PositionsSection({
           </CardTitle>
         </div>
         <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
-          Manage {config.groupingTerm.toLowerCase()}s for this {config.label.toLowerCase()}. Each voter is constrained by maximum seat limits.
+          Manage {config.groupingTerm.toLowerCase()}s for this {config.label.toLowerCase()}. Each
+          voter is constrained by maximum seat limits.
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="p-6 space-y-6">
+      <CardContent className="space-y-6 p-6">
         {error && (
           <div
             role="alert"
-            className="flex items-center gap-2 border border-red-300 bg-red-50 p-3 text-xs font-semibold text-red-900 rounded-none dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
+            className="flex items-center gap-2 rounded-none border border-red-300 bg-red-50 p-3 text-xs font-semibold text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
           >
             <AlertCircle className="size-4 shrink-0 text-red-600 dark:text-red-400" />
             <span>{error}</span>
@@ -97,14 +104,20 @@ export function PositionsSection({
         )}
 
         {/* Add Item Form */}
-        <form onSubmit={handleAdd} className="border border-slate-200 bg-slate-50/50 p-4 space-y-4 rounded-none dark:border-slate-800 dark:bg-slate-900/50">
-          <div className="text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-slate-100">
+        <form
+          onSubmit={handleAdd}
+          className="space-y-4 rounded-none border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/50"
+        >
+          <div className="text-xs font-extrabold tracking-widest text-slate-900 uppercase dark:text-slate-100">
             Add New {config.groupingTerm}
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="pos-name" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <label
+                htmlFor="pos-name"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+              >
                 {config.groupingTerm} Name <span className="text-red-500">*</span>
               </label>
               <input
@@ -112,14 +125,19 @@ export function PositionsSection({
                 type="text"
                 value={name}
                 onChange={(e) => setName(e.target.value)}
-                placeholder={archetype === "HACKATHON" ? "e.g. AI Innovation Track" : "e.g. President, Senator"}
+                placeholder={
+                  archetype === "HACKATHON" ? "e.g. AI Innovation Track" : "e.g. President, Senator"
+                }
                 disabled={isSubmitting || isLoading}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
             </div>
 
             <div>
-              <label htmlFor="pos-desc" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <label
+                htmlFor="pos-desc"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+              >
                 Description (Optional)
               </label>
               <input
@@ -129,14 +147,17 @@ export function PositionsSection({
                 onChange={(e) => setDescription(e.target.value)}
                 placeholder="Brief description or requirements"
                 disabled={isSubmitting || isLoading}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
             <div>
-              <label htmlFor="pos-max" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <label
+                htmlFor="pos-max"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+              >
                 Max Seats / Selections per Voter
               </label>
               <input
@@ -147,12 +168,15 @@ export function PositionsSection({
                 value={maxSelections}
                 onChange={(e) => setMaxSelections(Number.parseInt(e.target.value, 10) || 1)}
                 disabled={isSubmitting || isLoading}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
             </div>
 
             <div>
-              <label htmlFor="pos-min" className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300">
+              <label
+                htmlFor="pos-min"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+              >
                 Min Selections
               </label>
               <input
@@ -163,7 +187,7 @@ export function PositionsSection({
                 value={minSelections}
                 onChange={(e) => setMinSelections(Number.parseInt(e.target.value, 10) || 0)}
                 disabled={isSubmitting || isLoading}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
             </div>
           </div>
@@ -171,7 +195,7 @@ export function PositionsSection({
           <button
             type="submit"
             disabled={isSubmitting || isLoading}
-            className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-1.5 border border-slate-900 bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200 disabled:opacity-50"
+            className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-none border border-slate-900 bg-slate-900 px-4 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 disabled:opacity-50 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             {isSubmitting ? (
               <Loader2 className="size-3.5 animate-spin" />
@@ -184,25 +208,24 @@ export function PositionsSection({
 
         {/* Existing Positions List */}
         <div className="space-y-3">
-          <div className="text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-slate-100">
+          <div className="text-xs font-extrabold tracking-widest text-slate-900 uppercase dark:text-slate-100">
             Configured {config.groupingTerm}s ({positions.length})
           </div>
 
           {positions.length === 0 ? (
-            <div className="border border-dashed border-slate-300 p-8 text-center text-xs text-slate-500 rounded-none dark:border-slate-800 dark:text-slate-400">
-              No {config.groupingTerm.toLowerCase()}s configured yet. Add your first {config.groupingTerm.toLowerCase()} above.
+            <div className="rounded-none border border-dashed border-slate-300 p-8 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+              No {config.groupingTerm.toLowerCase()}s configured yet. Add your first{" "}
+              {config.groupingTerm.toLowerCase()} above.
             </div>
           ) : (
             <div className="space-y-2">
               {positions.map((pos, idx) => (
                 <div
                   key={pos.id}
-                  className="flex items-center justify-between border border-slate-200 bg-white p-3.5 rounded-none shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
+                  className="flex items-center justify-between rounded-none border border-slate-200 bg-white p-3.5 shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
                 >
                   <div className="flex items-center gap-3">
-                    <span className="font-mono text-xs font-bold text-slate-400">
-                      #{idx + 1}
-                    </span>
+                    <span className="font-mono text-xs font-bold text-slate-400">#{idx + 1}</span>
                     <div>
                       <div className="font-heading text-xs font-bold text-slate-900 dark:text-slate-100">
                         {pos.name}
@@ -216,7 +239,7 @@ export function PositionsSection({
                   </div>
 
                   <div className="flex items-center gap-3">
-                    <span className="border border-sky-200 bg-sky-50 px-2 py-0.5 text-[11px] font-bold text-sky-800 rounded-none dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
+                    <span className="rounded-none border border-sky-200 bg-sky-50 px-2 py-0.5 text-[11px] font-bold text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
                       {pos.maxSelectionsPerVoter > 1
                         ? `Up to ${pos.maxSelectionsPerVoter} Seats`
                         : "Single Seat (1)"}
@@ -227,7 +250,7 @@ export function PositionsSection({
                       onClick={() => onDeletePosition(pos.id)}
                       disabled={isLoading}
                       aria-label={`Delete ${pos.name}`}
-                      className="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center text-slate-400 hover:text-red-600 transition dark:text-slate-500 dark:hover:text-red-400"
+                      className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 transition hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
                     >
                       <Trash2 className="size-4" />
                     </button>

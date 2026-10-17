@@ -1,6 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import userEvent from "@testing-library/user-event";
 import { Prisma } from "@/generated/client/client";
 import { CreateEventForm } from "@/features/events/components/CreateEventForm";
 import { createEventAction } from "@/features/events/actions/create-event";
@@ -84,22 +83,22 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
 
     expect(chip7).toBeInTheDocument();
     expect(chip7.className).toContain("rounded-none");
-    expect(chip7.className).toContain("min-h-[44px]");
+    expect(chip7.className).toMatch(/min-h-(11|\[44px\])/);
 
     expect(chip14).toBeInTheDocument();
     expect(chip14.className).toContain("rounded-none");
-    expect(chip14.className).toContain("min-h-[44px]");
+    expect(chip14.className).toMatch(/min-h-(11|\[44px\])/);
 
     expect(chip30).toBeInTheDocument();
     expect(chip30.className).toContain("rounded-none");
-    expect(chip30.className).toContain("min-h-[44px]");
+    expect(chip30.className).toMatch(/min-h-(11|\[44px\])/);
 
     // Primary action button
     const submitBtn = screen.getByRole("button", { name: /Create Event/i });
     expect(submitBtn).toBeInTheDocument();
     expect(submitBtn.className).toContain("btn-primary");
     expect(submitBtn.className).toContain("rounded-none");
-    expect(submitBtn.className).toContain("min-h-[44px]");
+    expect(submitBtn.className).toMatch(/min-h-(11|\[44px\])/);
     expect(submitBtn.className).toContain("uppercase");
     expect(submitBtn.className).toContain("font-extrabold");
 
@@ -107,7 +106,7 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
     const cancelLink = screen.getByRole("link", { name: /Cancel/i });
     expect(cancelLink).toBeInTheDocument();
     expect(cancelLink.className).toContain("rounded-none");
-    expect(cancelLink.className).toContain("min-h-[44px]");
+    expect(cancelLink.className).toMatch(/min-h-(11|\[44px\])/);
   });
 
   it("auto-populates slug when title is entered and allows reset with touch target compliance", async () => {
@@ -126,7 +125,7 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
     // Reset button should appear and satisfy touch target
     const resetButton = screen.getByRole("button", { name: /Reset to Title/i });
     expect(resetButton).toBeInTheDocument();
-    expect(resetButton.className).toContain("min-h-[44px]");
+    expect(resetButton.className).toMatch(/min-h-(11|\[44px\])/);
 
     fireEvent.click(resetButton);
     expect(slugInput).toHaveValue("gala-night-2026");
@@ -215,7 +214,7 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
 
     const clearDraftBtn = screen.getByRole("button", { name: /Clear Draft/i });
     expect(clearDraftBtn.className).toContain("rounded-none");
-    expect(clearDraftBtn.className).toContain("min-h-[44px]");
+    expect(clearDraftBtn.className).toMatch(/min-h-(11|\[44px\])/);
 
     // Click "Clear Draft"
     fireEvent.click(clearDraftBtn);
@@ -233,7 +232,7 @@ describe("CreateEventForm (Brutalist Reskin & Design System)", () => {
 
     const cancelBtn = screen.getByRole("button", { name: /Cancel/i });
     expect(cancelBtn.className).toContain("rounded-none");
-    expect(cancelBtn.className).toContain("min-h-[44px]");
+    expect(cancelBtn.className).toMatch(/min-h-(11|\[44px\])/);
     fireEvent.click(cancelBtn);
 
     expect(handleCancel).toHaveBeenCalledTimes(1);

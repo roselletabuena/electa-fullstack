@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { EVENT_ARCHETYPES } from "@/features/events/types/archetype";
+import { EVENT_ARCHETYPES, isArchetypeAvailable } from "@/features/events/types/archetype";
 import {
   wizardPositionDraftSchema,
   wizardDivisionDraftSchema,
@@ -31,7 +31,13 @@ export const createEventSchema = z
     bannerUrl: z.string().url("Banner URL must be a valid URL"),
     startsAt: z.string().datetime({ message: "startsAt must be a valid ISO-8601 datetime string" }),
     endsAt: z.string().datetime({ message: "endsAt must be a valid ISO-8601 datetime string" }),
-    archetype: z.enum(EVENT_ARCHETYPES).default("PAGEANT").optional(),
+    archetype: z
+      .enum(EVENT_ARCHETYPES)
+      .default("PAGEANT")
+      .refine((val) => !val || isArchetypeAvailable(val), {
+        message: "This event archetype is coming soon and currently disabled.",
+      })
+      .optional(),
     positions: z.array(wizardPositionDraftSchema).optional(),
     divisions: z.array(wizardDivisionDraftSchema).optional(),
     awardCategories: z.array(wizardAwardDraftSchema).optional(),

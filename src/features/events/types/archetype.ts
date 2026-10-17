@@ -9,6 +9,24 @@ export const EVENT_ARCHETYPES = [
 
 export type EventArchetype = (typeof EVENT_ARCHETYPES)[number];
 
+export const ACTIVE_ARCHETYPES = ["PAGEANT"] as const;
+export type ActiveEventArchetype = (typeof ACTIVE_ARCHETYPES)[number];
+
+export const COMING_SOON_ARCHETYPES = [
+  "STUDENT_COUNCIL",
+  "HACKATHON",
+  "CUSTOM",
+] as const;
+export type ComingSoonEventArchetype = (typeof COMING_SOON_ARCHETYPES)[number];
+
+export function isArchetypeAvailable(archetype: EventArchetype): boolean {
+  return archetype === "PAGEANT";
+}
+
+export function isArchetypeComingSoon(archetype: EventArchetype): boolean {
+  return archetype !== "PAGEANT";
+}
+
 export interface ArchetypeConfig {
   id: EventArchetype;
   label: string;
@@ -17,6 +35,7 @@ export interface ArchetypeConfig {
   candidateTerm: string;
   allowMultipleSelections: boolean;
   defaultMaxSelections: number;
+  isComingSoon?: boolean;
 }
 
 export const EVENT_ARCHETYPE_CONFIGS: Record<EventArchetype, ArchetypeConfig> = {
@@ -28,6 +47,7 @@ export const EVENT_ARCHETYPE_CONFIGS: Record<EventArchetype, ArchetypeConfig> = 
     candidateTerm: "Contestant",
     allowMultipleSelections: false,
     defaultMaxSelections: 1,
+    isComingSoon: false,
   },
   STUDENT_COUNCIL: {
     id: "STUDENT_COUNCIL",
@@ -37,6 +57,7 @@ export const EVENT_ARCHETYPE_CONFIGS: Record<EventArchetype, ArchetypeConfig> = 
     candidateTerm: "Candidate",
     allowMultipleSelections: true,
     defaultMaxSelections: 1,
+    isComingSoon: true,
   },
   HACKATHON: {
     id: "HACKATHON",
@@ -46,6 +67,7 @@ export const EVENT_ARCHETYPE_CONFIGS: Record<EventArchetype, ArchetypeConfig> = 
     candidateTerm: "Team / Project",
     allowMultipleSelections: false,
     defaultMaxSelections: 1,
+    isComingSoon: true,
   },
   CUSTOM: {
     id: "CUSTOM",
@@ -55,6 +77,7 @@ export const EVENT_ARCHETYPE_CONFIGS: Record<EventArchetype, ArchetypeConfig> = 
     candidateTerm: "Nominee",
     allowMultipleSelections: true,
     defaultMaxSelections: 1,
+    isComingSoon: true,
   },
 };
 

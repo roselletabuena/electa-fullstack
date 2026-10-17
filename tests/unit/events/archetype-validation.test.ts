@@ -179,4 +179,30 @@ describe("Archetype & Position Validations", () => {
       expect(res.success).toBe(true);
     });
   });
+
+  describe("Archetype Availability Helpers & Configuration (VS-117)", () => {
+    it("marks only PAGEANT as available and all other archetypes as coming soon", async () => {
+      const {
+        isArchetypeAvailable,
+        isArchetypeComingSoon,
+        ACTIVE_ARCHETYPES,
+        COMING_SOON_ARCHETYPES,
+        EVENT_ARCHETYPE_CONFIGS,
+      } = await import("@/features/events/types/archetype");
+
+      expect(ACTIVE_ARCHETYPES).toEqual(["PAGEANT"]);
+      expect(COMING_SOON_ARCHETYPES).toEqual(["STUDENT_COUNCIL", "HACKATHON", "CUSTOM"]);
+
+      expect(isArchetypeAvailable("PAGEANT")).toBe(true);
+      expect(isArchetypeComingSoon("PAGEANT")).toBe(false);
+      expect(EVENT_ARCHETYPE_CONFIGS.PAGEANT.isComingSoon).toBe(false);
+
+      const comingSoonList = ["STUDENT_COUNCIL", "HACKATHON", "CUSTOM"] as const;
+      for (const arch of comingSoonList) {
+        expect(isArchetypeAvailable(arch)).toBe(false);
+        expect(isArchetypeComingSoon(arch)).toBe(true);
+        expect(EVENT_ARCHETYPE_CONFIGS[arch].isComingSoon).toBe(true);
+      }
+    });
+  });
 });

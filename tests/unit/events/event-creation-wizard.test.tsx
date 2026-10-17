@@ -27,7 +27,7 @@ vi.mock("@/features/events/hooks/useDebouncedSlugCheck", () => ({
   }),
 }));
 
-describe("EventCreationWizard Component", () => {
+describe("EventCreationWizard Component (VS-117 Non-Pageant Archetypes Disabled)", () => {
   beforeEach(() => {
     vi.clearAllMocks();
     sessionStorage.clear();
@@ -39,17 +39,17 @@ describe("EventCreationWizard Component", () => {
 
   const fillStep1 = () => {
     fireEvent.change(screen.getByLabelText(/Event Title/i), {
-      target: { value: "Supreme Student Council Election 2026" },
+      target: { value: "Miss Universe Campus 2026" },
     });
     fireEvent.change(screen.getByLabelText(/Banner Image URL/i), {
       target: { value: "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c" },
     });
     fireEvent.change(screen.getByLabelText(/Event Description/i), {
-      target: { value: "Campus-wide official voting for executive student leaders." },
+      target: { value: "Campus-wide official voting for pageant candidates." },
     });
   };
 
-  it("Scenario 1: Happy Path - Dynamic Form Adaptation when toggling to STUDENT_COUNCIL", async () => {
+  it("Scenario 1: Happy Path - Pageant Selection active with monetization notice and divisions/awards taxonomy", async () => {
     render(<EventCreationWizard />);
 
     fillStep1();
@@ -61,20 +61,16 @@ describe("EventCreationWizard Component", () => {
     // Default is PAGEANT -> Pageant monetization notice is visible
     expect(screen.getByText(/Pageant Monetization & Voting Packs/i)).toBeDefined();
 
-    // Switch archetype to STUDENT_COUNCIL
-    const studentCouncilRadio = screen.getByRole("radio", { name: /Student Council Election/i });
-    fireEvent.click(studentCouncilRadio);
+    // Beauty Pageant is active with Selected indicator
+    const pageantRadio = screen.getByRole("radio", { name: /Beauty Pageant/i });
+    expect(pageantRadio.getAttribute("aria-checked")).toBe("true");
 
-    // Pageant monetization disappears, Institutional Free Ballot Mode appears
-    expect(screen.queryByText(/Pageant Monetization & Voting Packs/i)).toBeNull();
-    expect(screen.getByText(/Institutional Free Ballot Mode/i)).toBeDefined();
-
-    // Taxonomy panel shifts to configure Positions / Offices with seat limits
-    expect(screen.getByText(/Office \/ Position Configuration/i)).toBeDefined();
-    expect(screen.getByText(/Max Seats \/ Selections per Voter/i)).toBeDefined();
+    // All three non-pageant cards have COMING SOON badges
+    const comingSoonBadges = screen.getAllByTestId("coming-soon-badge");
+    expect(comingSoonBadges.length).toBe(3);
   });
 
-  it("Scenario 2: Validation & Error Handling - Incomplete Archetype Taxonomy for HACKATHON", async () => {
+  it("Scenario 2: Disabled Archetypes with COMING SOON state cannot be toggled", async () => {
     render(<EventCreationWizard />);
 
     fillStep1();
@@ -82,29 +78,24 @@ describe("EventCreationWizard Component", () => {
     // Proceed to Step 2
     fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
 
-    // Switch archetype to HACKATHON
+    // Try clicking disabled archetypes
+    const studentCouncilRadio = screen.getByRole("radio", { name: /Student Council Election/i });
     const hackathonRadio = screen.getByRole("radio", { name: /Hackathon \/ Competition/i });
+    const customRadio = screen.getByRole("radio", { name: /Custom Contest/i });
+
+    fireEvent.click(studentCouncilRadio);
     fireEvent.click(hackathonRadio);
+    fireEvent.click(customRadio);
 
-    // Try to proceed to Step 3 without any tracks defined
-    const reviewBtn = screen.getByRole("button", { name: /Review & Finalize/i });
-    fireEvent.click(reviewBtn);
+    // Archetype remains PAGEANT, Institutional Free Ballot Mode is never shown
+    expect(screen.queryByText(/Institutional Free Ballot Mode/i)).toBeNull();
+    expect(screen.getByText(/Pageant Monetization & Voting Packs/i)).toBeDefined();
 
-    // Expect inline error: "At least one challenge track or category is required for hackathons."
-    expect(
-      screen.getByText("At least one challenge track or category is required for hackathons."),
-    ).toBeDefined();
-
-    // Now load presets or add a track
-    const loadPresetsBtn = screen.getByRole("button", { name: /Load Presets/i });
-    fireEvent.click(loadPresetsBtn);
-
-    // Click Review again -> Should proceed to Step 3
-    fireEvent.click(reviewBtn);
-    expect(screen.getByText(/3\. Review Event Configuration/i)).toBeDefined();
+    const pageantRadio = screen.getByRole("radio", { name: /Beauty Pageant/i });
+    expect(pageantRadio.getAttribute("aria-checked")).toBe("true");
   });
 
-  it("Scenario 3: Edge Case / Form Persistence when toggling between archetypes", async () => {
+  it("Scenario 3: Edge Case / Form Persistence when navigating back to Step 1", async () => {
     render(<EventCreationWizard />);
 
     fillStep1();
@@ -112,37 +103,28 @@ describe("EventCreationWizard Component", () => {
     // Step into Step 2
     fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
 
-    // Toggle between archetypes multiple times
-    fireEvent.click(screen.getByRole("radio", { name: /Student Council Election/i }));
-    fireEvent.click(screen.getByRole("radio", { name: /Hackathon \/ Competition/i }));
-    fireEvent.click(screen.getByRole("radio", { name: /Beauty Pageant/i }));
-
     // Go back to Step 1
     fireEvent.click(screen.getByRole("button", { name: /Back to Details/i }));
 
     // Verify all common fields remain preserved
     expect((screen.getByLabelText(/Event Title/i) as HTMLInputElement).value).toBe(
-      "Supreme Student Council Election 2026",
+      "Miss Universe Campus 2026",
     );
     expect((screen.getByLabelText(/Banner Image URL/i) as HTMLInputElement).value).toBe(
       "https://images.unsplash.com/photo-1540910419892-4a36d2c3266c",
     );
     expect((screen.getByLabelText(/Event Description/i) as HTMLTextAreaElement).value).toBe(
-      "Campus-wide official voting for executive student leaders.",
+      "Campus-wide official voting for pageant candidates.",
     );
   });
 
-  it("completes full submission flow with onSuccess callback", async () => {
+  it("completes full submission flow with PAGEANT archetype and onSuccess callback", async () => {
     const onSuccess = vi.fn();
     render(<EventCreationWizard onSuccess={onSuccess} />);
 
     fillStep1();
 
     fireEvent.click(screen.getByRole("button", { name: /Continue to Format & Categories/i }));
-    fireEvent.click(screen.getByRole("radio", { name: /Student Council Election/i }));
-
-    // Load student council positions presets
-    fireEvent.click(screen.getByRole("button", { name: /Load Presets/i }));
 
     // Proceed to Step 3
     fireEvent.click(screen.getByRole("button", { name: /Review & Finalize/i }));
@@ -154,11 +136,8 @@ describe("EventCreationWizard Component", () => {
     await waitFor(() => {
       expect(mockCreateEventAction).toHaveBeenCalledWith(
         expect.objectContaining({
-          title: "Supreme Student Council Election 2026",
-          archetype: "STUDENT_COUNCIL",
-          positions: expect.arrayContaining([
-            expect.objectContaining({ name: "President", maxSelectionsPerVoter: 1 }),
-          ]),
+          title: "Miss Universe Campus 2026",
+          archetype: "PAGEANT",
         }),
       );
       expect(onSuccess).toHaveBeenCalledWith("test-election");

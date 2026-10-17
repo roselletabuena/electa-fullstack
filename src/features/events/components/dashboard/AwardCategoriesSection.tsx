@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Award, Plus, Trash2, Users, Loader2, AlertCircle, Hash, Vote } from "lucide-react";
+import { Award, Plus, Trash2, Users, Loader2, AlertCircle, Hash, Vote, Pencil } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -11,6 +11,7 @@ import {
   createAwardCategorySchema,
   type CreateAwardCategoryInput,
   type CreateAwardCategoryFormInput,
+  type UpdateAwardCategoryInput,
 } from "@/lib/validations/category-awards";
 import type { AwardCategoryDto } from "../../types";
 import { cn } from "@/lib/utils";
@@ -20,22 +21,33 @@ export interface AwardCategoriesSectionProps {
   awardCategories: AwardCategoryDto[];
   isLoading: boolean;
   onAddCategory: (input: CreateAwardCategoryInput) => Promise<void>;
+  onUpdateCategory?: (categoryId: string, input: UpdateAwardCategoryInput) => Promise<void>;
   onToggleVoting: (categoryId: string, isVotingOpen: boolean) => Promise<void>;
   onDeleteRequest: (category: AwardCategoryDto) => void;
   disabled?: boolean;
+  onEditingChange?: (isEditing: boolean) => void;
 }
 
 export function AwardCategoriesSection({
   awardCategories,
   isLoading,
   onAddCategory,
+  onUpdateCategory,
   onToggleVoting,
   onDeleteRequest,
   disabled = false,
+  onEditingChange,
 }: Readonly<AwardCategoriesSectionProps>): React.JSX.Element {
   const [isAdding, setIsAdding] = useState(false);
   const [submitError, setSubmitError] = useState<string | null>(null);
   const [togglingId, setTogglingId] = useState<string | null>(null);
+  const [editingCategoryId, setEditingCategoryId] = useState<string | null>(null);
+  const [editName, setEditName] = useState("");
+  const [editDescription, setEditDescription] = useState("");
+  const [editDisplayOrder, setEditDisplayOrder] = useState(0);
+  const [editIsVotingOpen, setEditIsVotingOpen] = useState(true);
+  const [editError, setEditError] = useState<string | null>(null);
+  const [isSavingEdit, setIsSavingEdit] = useState(false);
 
   const {
     register,
@@ -60,6 +72,18 @@ export function AwardCategoriesSection({
     defaultValue: true,
   });
 
+  const handleStartAdding = () => {
+    if (isBusy || editingCategoryId !== null) return;
+    setIsAdding(true);
+    onEditingChange?.(true);
+  };
+
+  const handleCancelAdding = () => {
+    setIsAdding(false);
+    reset();
+    onEditingChange?.(false);
+  };
+
   const onSubmit = async (data: CreateAwardCategoryInput) => {
     setSubmitError(null);
     try {
@@ -76,8 +100,51 @@ export function AwardCategoriesSection({
         displayOrder: awardCategories.length + 1,
       });
       setIsAdding(false);
+      onEditingChange?.(false);
     } catch (err: unknown) {
       setSubmitError(err instanceof Error ? err.message : "Failed to add award category");
+    }
+  };
+
+  const handleStartEdit = (category: AwardCategoryDto) => {
+    if (isBusy || editingCategoryId !== null || isAdding) return;
+    setEditingCategoryId(category.id);
+    setEditName(category.name);
+    setEditDescription(category.description ?? "");
+    setEditDisplayOrder(category.displayOrder);
+    setEditIsVotingOpen(category.isVotingOpen);
+    setEditError(null);
+    onEditingChange?.(true);
+  };
+
+  const handleCancelEdit = () => {
+    setEditingCategoryId(null);
+    setEditError(null);
+    onEditingChange?.(false);
+  };
+
+  const handleSaveEdit = async (categoryId: string) => {
+    if (!editName.trim()) {
+      setEditError("Category name is required");
+      return;
+    }
+    setEditError(null);
+    setIsSavingEdit(true);
+    try {
+      if (onUpdateCategory) {
+        await onUpdateCategory(categoryId, {
+          name: editName.trim(),
+          description: editDescription.trim() || null,
+          displayOrder: Number(editDisplayOrder) || 0,
+          isVotingOpen: editIsVotingOpen,
+        });
+      }
+      setEditingCategoryId(null);
+      onEditingChange?.(false);
+    } catch (err: unknown) {
+      setEditError(err instanceof Error ? err.message : "Failed to update award category");
+    } finally {
+      setIsSavingEdit(false);
     }
   };
 
@@ -92,6 +159,7 @@ export function AwardCategoriesSection({
   };
 
   const isBusy = isLoading || isSubmitting || disabled;
+  const isAnyActionBlocked = isBusy || editingCategoryId !== null || isAdding;
 
   return (
     <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
@@ -122,8 +190,8 @@ export function AwardCategoriesSection({
                 type="button"
                 size="sm"
                 variant="outline"
-                disabled={isBusy}
-                onClick={() => setIsAdding(true)}
+                disabled={isAnyActionBlocked}
+                onClick={handleStartAdding}
                 className="gap-1.5 text-xs font-semibold"
               >
                 <Plus className="size-3.5" />
@@ -227,10 +295,7 @@ export function AwardCategoriesSection({
                 type="button"
                 variant="ghost"
                 size="sm"
-                onClick={() => {
-                  setIsAdding(false);
-                  reset();
-                }}
+                onClick={handleCancelAdding}
                 className="text-xs"
               >
                 Cancel
@@ -267,15 +332,14 @@ export function AwardCategoriesSection({
               No Award Tracks Configured
             </h4>
             <p className="mt-1 max-w-sm text-[11px] text-slate-500 dark:text-slate-400">
-              Add specialized award categories or apply a preset template above to configure voting
-              tracks.
+              Define custom award categories to configure voting tracks.
             </p>
             <Button
               type="button"
               size="sm"
               variant="outline"
-              disabled={isBusy}
-              onClick={() => setIsAdding(true)}
+              disabled={isAnyActionBlocked}
+              onClick={handleStartAdding}
               className="mt-4 gap-1.5 text-xs font-semibold"
             >
               <Plus className="size-3.5" />
@@ -285,7 +349,152 @@ export function AwardCategoriesSection({
         ) : (
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
             {awardCategories.map((category) => {
+              const isEditing = editingCategoryId === category.id;
               const isToggling = togglingId === category.id;
+
+              if (isEditing) {
+                return (
+                  <div
+                    key={category.id}
+                    className="relative flex flex-col justify-between rounded-xl border border-indigo-300 bg-indigo-50/30 p-3.5 shadow-xs transition-all dark:border-indigo-800 dark:bg-indigo-950/30"
+                  >
+                    <div className="space-y-2.5">
+                      <div className="flex items-center justify-between">
+                        <span className="text-xs font-bold text-indigo-950 dark:text-indigo-200">
+                          Edit Award Category
+                        </span>
+                        <span className="text-[10px] text-slate-400">
+                          {category.contestantCount ?? 0} contestants
+                        </span>
+                      </div>
+
+                      {editError && (
+                        <div className="flex items-center gap-1.5 rounded-md border border-red-200 bg-red-50 p-2 text-[11px] text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+                          <AlertCircle className="size-3 shrink-0" />
+                          <span>{editError}</span>
+                        </div>
+                      )}
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
+                          Category Name <span className="text-red-500">*</span>
+                        </label>
+                        <input
+                          type="text"
+                          aria-label="Category Name"
+                          value={editName}
+                          onChange={(e) => setEditName(e.target.value)}
+                          disabled={isSavingEdit}
+                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          autoFocus
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
+                          Description <span className="font-normal text-slate-400">(optional)</span>
+                        </label>
+                        <input
+                          type="text"
+                          aria-label="Description"
+                          value={editDescription}
+                          onChange={(e) => setEditDescription(e.target.value)}
+                          disabled={isSavingEdit}
+                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                        />
+                      </div>
+
+                      <div className="space-y-1">
+                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
+                          Order
+                        </label>
+                        <input
+                          type="number"
+                          min={0}
+                          aria-label="Display Order"
+                          value={editDisplayOrder}
+                          onChange={(e) => setEditDisplayOrder(Number(e.target.value))}
+                          disabled={isSavingEdit}
+                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                        />
+                      </div>
+
+                      {/* Voting Toggle Row inside Edit Mode */}
+                      <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-900">
+                        <div className="flex items-center gap-1.5 text-[11px]">
+                          <Vote className="size-3 text-slate-400" />
+                          <span className="font-medium text-slate-700 dark:text-slate-300">
+                            Voting Status:
+                          </span>
+                        </div>
+                        <div className="flex items-center gap-2">
+                          <Badge
+                            variant="outline"
+                            className={cn(
+                              "px-1.5 py-0 text-[10px] font-semibold transition-colors",
+                              editIsVotingOpen
+                                ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+                                : "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400",
+                            )}
+                          >
+                            {editIsVotingOpen ? "Open" : "Closed"}
+                          </Badge>
+                          <button
+                            type="button"
+                            role="switch"
+                            aria-checked={editIsVotingOpen}
+                            disabled={isSavingEdit}
+                            onClick={() => setEditIsVotingOpen(!editIsVotingOpen)}
+                            className={cn(
+                              "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                              editIsVotingOpen
+                                ? "bg-emerald-600"
+                                : "bg-slate-300 dark:bg-slate-700",
+                            )}
+                          >
+                            <span className="sr-only">Toggle voting for {category.name}</span>
+                            <span
+                              className={cn(
+                                "pointer-events-none inline-block size-3 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out",
+                                editIsVotingOpen ? "translate-x-3" : "translate-x-0",
+                              )}
+                            />
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-3 flex items-center justify-end gap-2 border-t border-slate-200/70 pt-2.5 dark:border-slate-800">
+                      <Button
+                        type="button"
+                        variant="ghost"
+                        size="sm"
+                        disabled={isSavingEdit}
+                        onClick={handleCancelEdit}
+                        className="h-7 text-xs"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="button"
+                        size="sm"
+                        disabled={isSavingEdit || !editName.trim()}
+                        onClick={() => handleSaveEdit(category.id)}
+                        className="h-7 gap-1 bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                      >
+                        {isSavingEdit ? (
+                          <>
+                            <Loader2 className="size-3 animate-spin" />
+                            Saving...
+                          </>
+                        ) : (
+                          "Save Changes"
+                        )}
+                      </Button>
+                    </div>
+                  </div>
+                );
+              }
 
               return (
                 <div
@@ -307,18 +516,33 @@ export function AwardCategoriesSection({
                         )}
                       </div>
 
-                      <Button
-                        type="button"
-                        variant="ghost"
-                        size="icon"
-                        disabled={isBusy}
-                        onClick={() => onDeleteRequest(category)}
-                        className="size-7 text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
-                        title="Delete award category"
-                      >
-                        <Trash2 className="size-3.5" />
-                        <span className="sr-only">Delete award {category.name}</span>
-                      </Button>
+                      <div className="flex items-center gap-1">
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          aria-label={`Edit ${category.name}`}
+                          disabled={isAnyActionBlocked}
+                          onClick={() => handleStartEdit(category)}
+                          className="size-7 text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                          title="Edit award category"
+                        >
+                          <Pencil className="size-3.5" />
+                          <span className="sr-only">Edit award {category.name}</span>
+                        </Button>
+                        <Button
+                          type="button"
+                          variant="ghost"
+                          size="icon"
+                          disabled={isAnyActionBlocked}
+                          onClick={() => onDeleteRequest(category)}
+                          className="size-7 text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
+                          title="Delete award category"
+                        >
+                          <Trash2 className="size-3.5" />
+                          <span className="sr-only">Delete award {category.name}</span>
+                        </Button>
+                      </div>
                     </div>
 
                     {/* Voting Toggle Row */}
@@ -347,7 +571,7 @@ export function AwardCategoriesSection({
                           type="button"
                           role="switch"
                           aria-checked={category.isVotingOpen}
-                          disabled={isBusy || isToggling}
+                          disabled={isAnyActionBlocked || isToggling}
                           onClick={() => handleToggle(category)}
                           className={cn(
                             "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",

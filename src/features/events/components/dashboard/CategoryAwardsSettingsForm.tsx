@@ -8,22 +8,22 @@ import { Badge } from "@/components/ui/badge";
 import {
   useEventTaxonomy,
   useCreateDivision,
+  useUpdateDivision,
   useDeleteDivision,
   useCreateAwardCategory,
   useUpdateAwardCategory,
   useDeleteAwardCategory,
-  useApplyTaxonomyPreset,
   useCreateEventPosition,
   useDeleteEventPosition,
 } from "../../hooks/useEventTaxonomy";
-import { TaxonomyPresetsCard } from "./TaxonomyPresetsCard";
 import { DivisionsSection } from "./DivisionsSection";
 import { AwardCategoriesSection } from "./AwardCategoriesSection";
 import { PositionsSection } from "./PositionsSection";
 import { TaxonomyDeleteDialog, type DeletionTarget } from "./TaxonomyDeleteDialog";
 import type { DivisionDto, AwardCategoryDto } from "../../types";
 import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype } from "../../types/archetype";
-import type { TaxonomyPreset } from "../../constants/taxonomy-presets";
+import type { UpdateDivisionInput } from "@/lib/validations/division";
+import type { UpdateAwardCategoryInput } from "@/lib/validations/category-awards";
 import type { Event } from "@/generated/client/client";
 import { cn } from "@/lib/utils";
 
@@ -39,13 +39,12 @@ export function CategoryAwardsSettingsForm({
   const { data: taxonomy, isLoading, isError, error, refetch } = useEventTaxonomy(event.slug);
 
   const createDivisionMutation = useCreateDivision(event.slug);
+  const updateDivisionMutation = useUpdateDivision(event.slug);
   const deleteDivisionMutation = useDeleteDivision(event.slug);
 
   const createAwardCategoryMutation = useCreateAwardCategory(event.slug);
   const updateAwardCategoryMutation = useUpdateAwardCategory(event.slug);
   const deleteAwardCategoryMutation = useDeleteAwardCategory(event.slug);
-
-  const applyPresetMutation = useApplyTaxonomyPreset(event.slug);
 
   const createPositionMutation = useCreateEventPosition(event.slug);
   const deletePositionMutation = useDeleteEventPosition(event.slug);
@@ -53,13 +52,18 @@ export function CategoryAwardsSettingsForm({
   // Deletion guard modal state
   const [deleteTarget, setDeleteTarget] = useState<DeletionTarget | null>(null);
   const [isDeleting, setIsDeleting] = useState(false);
+  const [isEditingDivision, setIsEditingDivision] = useState(false);
+  const [isEditingCategory, setIsEditingCategory] = useState(false);
   const [notification, setNotification] = useState<{
     type: "success" | "error";
     message: string;
   } | null>(null);
 
-  const archetype: EventArchetype = (event.archetype ?? taxonomy?.archetype ?? "PAGEANT") as EventArchetype;
-  const isPositionBased = archetype === "STUDENT_COUNCIL" || archetype === "HACKATHON" || archetype === "CUSTOM";
+  const archetype: EventArchetype = (event.archetype ??
+    taxonomy?.archetype ??
+    "PAGEANT") as EventArchetype;
+  const isPositionBased =
+    archetype === "STUDENT_COUNCIL" || archetype === "HACKATHON" || archetype === "CUSTOM";
   const config = EVENT_ARCHETYPE_CONFIGS[archetype];
 
   const positions = taxonomy?.positions ?? [];
@@ -67,19 +71,43 @@ export function CategoryAwardsSettingsForm({
   const awardCategories = taxonomy?.awardCategories ?? [];
   const openVotingAwardsCount = awardCategories.filter((a) => a.isVotingOpen).length;
 
-  const handleApplyPreset = async (preset: TaxonomyPreset) => {
+  const handleUpdateDivision = async (id: string, data: UpdateDivisionInput) => {
     setNotification(null);
     try {
-      const result = await applyPresetMutation.mutateAsync(preset);
+      await updateDivisionMutation.mutateAsync({
+        divisionId: id,
+        data,
+      });
       setNotification({
         type: "success",
-        message: `Applied "${preset.title}" preset: Created ${result.divisionsCreated} divisions and ${result.awardsCreated} award tracks!`,
+        message: `Division "${data.name ?? "item"}" updated successfully!`,
       });
     } catch (err: unknown) {
       setNotification({
         type: "error",
-        message: err instanceof Error ? err.message : "Failed to apply preset",
+        message: err instanceof Error ? err.message : "Failed to update division.",
       });
+      throw err;
+    }
+  };
+
+  const handleUpdateAwardCategory = async (id: string, data: UpdateAwardCategoryInput) => {
+    setNotification(null);
+    try {
+      await updateAwardCategoryMutation.mutateAsync({
+        categoryId: id,
+        data,
+      });
+      setNotification({
+        type: "success",
+        message: `Award category "${data.name ?? "item"}" updated successfully!`,
+      });
+    } catch (err: unknown) {
+      setNotification({
+        type: "error",
+        message: err instanceof Error ? err.message : "Failed to update award category.",
+      });
+      throw err;
     }
   };
 
@@ -221,7 +249,7 @@ export function CategoryAwardsSettingsForm({
                   </Badge>
                   <Badge
                     variant="outline"
-                    className="border-sky-200 bg-sky-50 text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300 gap-1.5 px-2.5 py-1 text-xs font-medium"
+                    className="gap-1.5 border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300"
                   >
                     {config.label}
                   </Badge>
@@ -309,17 +337,16 @@ export function CategoryAwardsSettingsForm({
         />
       ) : (
         <>
-          {/* 1-Click Presets Selection */}
-          <TaxonomyPresetsCard
-            onApplyPreset={handleApplyPreset}
-            isApplying={applyPresetMutation.isPending}
-          />
-
           {/* Divisions Configuration Section */}
           <DivisionsSection
             slug={event.slug}
             divisions={divisions}
-            isLoading={createDivisionMutation.isPending || deleteDivisionMutation.isPending}
+            isLoading={
+              createDivisionMutation.isPending ||
+              updateDivisionMutation.isPending ||
+              deleteDivisionMutation.isPending
+            }
+            disabled={isEditingCategory}
             onAddDivision={async (data) => {
               await createDivisionMutation.mutateAsync(data);
               setNotification({
@@ -327,6 +354,8 @@ export function CategoryAwardsSettingsForm({
                 message: `Division "${data.name}" added successfully!`,
               });
             }}
+            onUpdateDivision={handleUpdateDivision}
+            onEditingChange={setIsEditingDivision}
             onDeleteRequest={handleOpenDeleteDivision}
           />
 
@@ -339,6 +368,7 @@ export function CategoryAwardsSettingsForm({
               updateAwardCategoryMutation.isPending ||
               deleteAwardCategoryMutation.isPending
             }
+            disabled={isEditingDivision}
             onAddCategory={async (data) => {
               await createAwardCategoryMutation.mutateAsync(data);
               setNotification({
@@ -346,6 +376,8 @@ export function CategoryAwardsSettingsForm({
                 message: `Award category "${data.name}" added successfully!`,
               });
             }}
+            onUpdateCategory={handleUpdateAwardCategory}
+            onEditingChange={setIsEditingCategory}
             onToggleVoting={handleToggleAwardVoting}
             onDeleteRequest={handleOpenDeleteAwardCategory}
           />

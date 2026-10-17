@@ -16,37 +16,42 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
   initialData,
 }) => {
   const isMounted = useIsMounted();
+  const hasDivisions = Boolean(divisions && divisions.length > 0);
+
   const resolveInitialDivision = (): { name: string; id: string | undefined } => {
     if (divisions && divisions.length > 0) {
       const match =
-        (initialData?.divisionId && divisions.find((d) => d.id === initialData.divisionId)) ||
-        (initialData?.divisionName &&
-          divisions.find(
-            (d) => d.name.toLowerCase() === initialData.divisionName?.toLowerCase(),
-          )) ||
-        (initialData?.divisionRef?.name &&
-          divisions.find(
-            (d) => d.name.toLowerCase() === initialData.divisionRef?.name.toLowerCase(),
-          )) ||
-        (initialData?.division &&
-          divisions.find(
-            (d) =>
-              d.name.toLowerCase() === String(initialData.division).toLowerCase() ||
-              (d.id && d.id === initialData.division),
-          )) ||
-        (initialData?.division &&
-          divisions.find((d) =>
-            d.name.toLowerCase().includes(String(initialData.division).toLowerCase().slice(0, 4)),
-          )) ||
-        divisions[0];
+        (initialData?.divisionId
+          ? divisions.find((d) => d.id === initialData.divisionId)
+          : undefined) ||
+        (initialData?.divisionName
+          ? divisions.find((d) => d.name.toLowerCase() === initialData.divisionName?.toLowerCase())
+          : undefined) ||
+        (initialData?.divisionRef?.name
+          ? divisions.find(
+              (d) => d.name.toLowerCase() === initialData.divisionRef?.name.toLowerCase(),
+            )
+          : undefined) ||
+        (initialData?.division
+          ? divisions.find(
+              (d) =>
+                d.name.toLowerCase() === String(initialData.division).toLowerCase() ||
+                (d.id && d.id === initialData.division),
+            )
+          : undefined);
       return {
-        name: match?.name ?? divisions[0]?.name ?? "FEMALE",
-        id: match?.id ?? divisions[0]?.id ?? undefined,
+        name: match?.name ?? "",
+        id: match?.id ?? undefined,
       };
     }
     return {
-      name: (initialData?.division as string) ?? "FEMALE",
-      id: undefined,
+      name:
+        initialData?.divisionRef?.name ??
+        initialData?.divisionName ??
+        (initialData?.division && initialData.division !== "FEMALE"
+          ? String(initialData.division)
+          : ""),
+      id: initialData?.divisionId ?? undefined,
     };
   };
 
@@ -244,75 +249,99 @@ const ContestantFormModalContent: React.FC<Omit<ContestantFormModalProps, "isOpe
             </div>
           </div>
 
-          <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
-            <div>
-              <label
-                htmlFor="division-select"
-                className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
-              >
-                Division *
-              </label>
-              <select
-                id="division-select"
-                value={division}
-                onChange={(e) => {
-                  const val = e.target.value;
-                  if (divisions && divisions.length > 0) {
-                    const matched = divisions.find((d) => d.name === val || d.id === val);
+          {hasDivisions ? (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-3">
+              <div>
+                <label
+                  htmlFor="division-select"
+                  className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                >
+                  Division (Optional)
+                </label>
+                <select
+                  id="division-select"
+                  value={division}
+                  onChange={(e) => {
+                    const val = e.target.value;
+                    if (!val) {
+                      setDivision("");
+                      setDivisionId(undefined);
+                      return;
+                    }
+                    const matched = divisions?.find((d) => d.name === val || d.id === val);
                     setDivision(matched ? matched.name : val);
                     setDivisionId(matched?.id);
-                  } else {
-                    setDivision(val);
-                    setDivisionId(undefined);
-                  }
-                }}
-                className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              >
-                {divisions && divisions.length > 0 ? (
-                  divisions.map((d) => (
+                  }}
+                  className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                >
+                  <option value="">No Division (Optional)</option>
+                  {divisions?.map((d) => (
                     <option key={d.id ?? d.name} value={d.name}>
                       {d.name}
                     </option>
-                  ))
-                ) : (
-                  <>
-                    <option value="FEMALE">Female</option>
-                    <option value="MALE">Male</option>
-                    <option value="LGBTQ">LGBTQ+</option>
-                    <option value="TEEN">Teen</option>
-                  </>
-                )}
-              </select>
-            </div>
+                  ))}
+                </select>
+              </div>
 
-            <div>
-              <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
-                Hometown / Province
-              </label>
-              <input
-                type="text"
-                placeholder="e.g. Vigan, Ilocos Sur"
-                value={hometown}
-                onChange={(e) => setHometown(e.target.value)}
-                className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              />
-            </div>
+              <div>
+                <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  Hometown / Province
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Vigan, Ilocos Sur"
+                  value={hometown}
+                  onChange={(e) => setHometown(e.target.value)}
+                  className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
 
-            <div>
-              <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
-                Height (cm)
-              </label>
-              <input
-                type="number"
-                min={50}
-                max={250}
-                placeholder="e.g. 175"
-                value={heightCm ?? ""}
-                onChange={(e) => setHeightCm(e.target.value ? Number(e.target.value) : undefined)}
-                className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
-              />
+              <div>
+                <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  Height (cm)
+                </label>
+                <input
+                  type="number"
+                  min={50}
+                  max={250}
+                  placeholder="e.g. 175"
+                  value={heightCm ?? ""}
+                  onChange={(e) => setHeightCm(e.target.value ? Number(e.target.value) : undefined)}
+                  className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
+              <div>
+                <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  Hometown / Province
+                </label>
+                <input
+                  type="text"
+                  placeholder="e.g. Vigan, Ilocos Sur"
+                  value={hometown}
+                  onChange={(e) => setHometown(e.target.value)}
+                  className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
+
+              <div>
+                <label className="mb-1 block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  Height (cm)
+                </label>
+                <input
+                  type="number"
+                  min={50}
+                  max={250}
+                  placeholder="e.g. 175"
+                  value={heightCm ?? ""}
+                  onChange={(e) => setHeightCm(e.target.value ? Number(e.target.value) : undefined)}
+                  className="w-full rounded-none border border-slate-300 bg-white px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:ring-1 focus:ring-sky-600 focus:outline-none dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100"
+                />
+              </div>
+            </div>
+          )}
 
           {/* Photo Gallery & Cropper */}
           <div className="space-y-3 border-t border-slate-200 pt-5 dark:border-slate-800">

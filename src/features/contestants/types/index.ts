@@ -74,7 +74,7 @@ export interface ContestantFilters {
 export interface CreateContestantInput {
   contestantNumber: number;
   name: string;
-  division: string;
+  division?: string | undefined;
   divisionId?: string | null | undefined;
   hometown?: string | undefined;
   heightCm?: number | undefined;

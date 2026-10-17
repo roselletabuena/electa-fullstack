@@ -148,7 +148,35 @@ describe("createEvent Service", () => {
     }
   });
 
-  it("creates event with STUDENT_COUNCIL archetype and initial positions atomically", async () => {
+  it("Scenario 3: rejects event creation with non-pageant archetypes as coming soon and disabled", async () => {
+    const mockSession = {
+      userId: "org_user_123",
+      email: "organizer@example.com",
+    };
+    vi.mocked(getSession).mockResolvedValue(mockSession);
+    vi.mocked(db.event.findFirst).mockResolvedValue(null);
+
+    const disabledArchetypes = ["STUDENT_COUNCIL", "HACKATHON", "CUSTOM"] as const;
+
+    for (const archetype of disabledArchetypes) {
+      const result = await createEvent({
+        ...validPayload,
+        title: `${archetype} Competition`,
+        slug: `${archetype.toLowerCase()}-2026`,
+        archetype,
+      });
+
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        expect(result.error).toContain("This event archetype is coming soon and currently disabled.");
+        expect(result.fieldErrors?.archetype).toContain(
+          "This event archetype is coming soon and currently disabled."
+        );
+      }
+    }
+  });
+
+  it("creates event with PAGEANT archetype and initial divisions/awards atomically", async () => {
     const mockSession = {
       userId: "org_user_123",
       email: "organizer@example.com",
@@ -157,10 +185,10 @@ describe("createEvent Service", () => {
     vi.mocked(db.event.findFirst).mockResolvedValue(null);
 
     const mockCreatedEvent: Event = {
-      id: "evt_sc_123",
-      slug: "ssc-2026",
-      title: "Student Council Election",
-      description: "Annual university council voting.",
+      id: "evt_pageant_123",
+      slug: "pageant-2026",
+      title: "Miss Universe Campus 2026",
+      description: "Annual campus pageant competition.",
       bannerUrl: "https://example.com/banner.jpg",
       startsAt: new Date("2026-10-01T00:00:00.000Z"),
       endsAt: new Date("2026-10-31T23:59:59.000Z"),
@@ -173,12 +201,13 @@ describe("createEvent Service", () => {
       dailyFreeVoteLimit: 1,
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_user_123",
-      archetype: "STUDENT_COUNCIL",
+      archetype: "PAGEANT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
 
-    const mockEventPositionCreate = vi.fn().mockResolvedValue({});
+    const mockDivisionCreate = vi.fn().mockResolvedValue({});
+    const mockAwardCreate = vi.fn().mockResolvedValue({});
 
     vi.mocked(db.$transaction).mockImplementation(async (callback) => {
       const tx = {
@@ -186,13 +215,13 @@ describe("createEvent Service", () => {
           create: vi.fn().mockResolvedValue(mockCreatedEvent),
         },
         eventPosition: {
-          create: mockEventPositionCreate,
+          create: vi.fn().mockResolvedValue({}),
         },
         division: {
-          create: vi.fn().mockResolvedValue({}),
+          create: mockDivisionCreate,
         },
         awardCategory: {
-          create: vi.fn().mockResolvedValue({}),
+          create: mockAwardCreate,
         },
         eventAuditLog: {
           create: vi.fn().mockResolvedValue({}),
@@ -203,38 +232,29 @@ describe("createEvent Service", () => {
 
     const result = await createEvent({
       ...validPayload,
-      title: "Student Council Election",
-      slug: "ssc-2026",
-      archetype: "STUDENT_COUNCIL",
-      positions: [
+      title: "Miss Universe Campus 2026",
+      slug: "pageant-2026",
+      archetype: "PAGEANT",
+      divisions: [
         {
-          name: "President",
-          maxSelectionsPerVoter: 1,
-          minSelectionsPerVoter: 0,
+          name: "College Division",
           displayOrder: 1,
         },
+      ],
+      awardCategories: [
         {
-          name: "Senators",
-          maxSelectionsPerVoter: 5,
-          minSelectionsPerVoter: 1,
-          displayOrder: 2,
+          name: "Best in Evening Gown",
+          isVotingOpen: true,
+          displayOrder: 1,
         },
       ],
     });
 
     expect(result.success).toBe(true);
     if (result.success) {
-      expect(result.data?.archetype).toBe("STUDENT_COUNCIL");
+      expect(result.data?.archetype).toBe("PAGEANT");
     }
-    expect(mockEventPositionCreate).toHaveBeenCalledTimes(2);
-    expect(mockEventPositionCreate).toHaveBeenCalledWith(
-      expect.objectContaining({
-        data: expect.objectContaining({
-          eventId: "evt_sc_123",
-          name: "President",
-          maxSelectionsPerVoter: 1,
-        }),
-      })
-    );
+    expect(mockDivisionCreate).toHaveBeenCalledTimes(1);
+    expect(mockAwardCreate).toHaveBeenCalledTimes(1);
   });
 });

@@ -14,7 +14,7 @@ describe("ArchetypeSelector Component (VS-117 Non-Pageant Archetypes Disabled)",
     expect(screen.getByText("Custom Contest")).toBeDefined();
 
     const radioButtons = screen.getAllByRole("radio");
-    expect(radioButtons.length).toBe(4);
+    expect(radioButtons).toHaveLength(4);
 
     // Selected state on Pageant
     expect(radioButtons[0]?.getAttribute("aria-checked")).toBe("true");
@@ -52,7 +52,7 @@ describe("ArchetypeSelector Component (VS-117 Non-Pageant Archetypes Disabled)",
 
     // 3 badges for the 3 coming soon archetypes
     const badges = screen.getAllByTestId("coming-soon-badge");
-    expect(badges.length).toBe(3);
+    expect(badges).toHaveLength(3);
     for (const badge of badges) {
       expect(badge.textContent).toBe("COMING SOON");
       expect(badge.className).toContain("border-amber-300");

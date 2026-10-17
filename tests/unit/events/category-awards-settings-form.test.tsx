@@ -53,7 +53,7 @@ describe("CategoryAwardsSettingsForm", () => {
     expect(screen.getByText(/Loading competition categories/i)).toBeDefined();
   });
 
-  it("renders preset selector and sections when taxonomy loads", async () => {
+  it("renders sections without preset selector when taxonomy loads", async () => {
     global.fetch = vi.fn().mockResolvedValue({
       ok: true,
       json: async () => ({
@@ -98,7 +98,249 @@ describe("CategoryAwardsSettingsForm", () => {
       expect(screen.getByText("Categories & Award Tracks")).toBeDefined();
       expect(screen.getByText("Female Category")).toBeDefined();
       expect(screen.getByText("People's Choice Award")).toBeDefined();
-      expect(screen.getByText("1-Click Competition Taxonomy Presets")).toBeDefined();
+      // Preset card should be completely removed
+      expect(screen.queryByText("1-Click Competition Taxonomy Presets")).toBeNull();
+    });
+  });
+
+  it("supports in-place inline editing for divisions", async () => {
+    const fetchMock = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (init?.method === "PATCH") {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            success: true,
+            data: {
+              id: "div_1",
+              eventId: "evt_123",
+              name: "Women's Division",
+              description: "Updated description",
+              displayOrder: 0,
+              contestantCount: 5,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+          }),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          success: true,
+          data: {
+            divisions: [
+              {
+                id: "div_1",
+                eventId: "evt_123",
+                name: "Female Category",
+                description: "Standard bracket",
+                displayOrder: 0,
+                contestantCount: 5,
+                createdAt: "2026-09-27T00:00:00Z",
+                updatedAt: "2026-09-27T00:00:00Z",
+              },
+            ],
+            awardCategories: [],
+          },
+        }),
+      });
+    });
+    global.fetch = fetchMock;
+
+    const { fireEvent } = await import("@testing-library/react");
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <CategoryAwardsSettingsForm event={mockEvent} />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Female Category")).toBeDefined();
+    });
+
+    // Click edit button for division
+    const editBtn = screen.getByLabelText("Edit Female Category");
+    fireEvent.click(editBtn);
+
+    // Verify inline edit inputs appear
+    const nameInput = screen.getByDisplayValue("Female Category");
+    expect(nameInput).toBeDefined();
+
+    fireEvent.change(nameInput, { target: { value: "Women's Division" } });
+
+    const saveBtn = screen.getByRole("button", { name: /Save Changes/i });
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining("/api/events/miss-universe-2026/divisions/div_1"),
+        expect.objectContaining({
+          method: "PATCH",
+          body: JSON.stringify({
+            name: "Women's Division",
+            description: "Standard bracket",
+            displayOrder: 0,
+          }),
+        }),
+      );
+    });
+  });
+
+  it("supports in-place inline editing for award categories", async () => {
+    const fetchMock = vi.fn().mockImplementation((url: string, init?: RequestInit) => {
+      if (init?.method === "PATCH") {
+        return Promise.resolve({
+          ok: true,
+          json: async () => ({
+            success: true,
+            data: {
+              id: "cat_1",
+              eventId: "evt_123",
+              name: "Fan Favorite Award",
+              description: "Updated award description",
+              isVotingOpen: true,
+              displayOrder: 2,
+              contestantCount: 5,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+          }),
+        });
+      }
+      return Promise.resolve({
+        ok: true,
+        json: async () => ({
+          success: true,
+          data: {
+            divisions: [],
+            awardCategories: [
+              {
+                id: "cat_1",
+                eventId: "evt_123",
+                name: "People's Choice Award",
+                description: "Public voting track",
+                isVotingOpen: true,
+                displayOrder: 1,
+                contestantCount: 5,
+                createdAt: "2026-09-27T00:00:00Z",
+                updatedAt: "2026-09-27T00:00:00Z",
+              },
+            ],
+          },
+        }),
+      });
+    });
+    global.fetch = fetchMock;
+
+    const { fireEvent } = await import("@testing-library/react");
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <CategoryAwardsSettingsForm event={mockEvent} />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("People's Choice Award")).toBeDefined();
+    });
+
+    // Click edit button for award category
+    const editBtn = screen.getByLabelText("Edit People's Choice Award");
+    fireEvent.click(editBtn);
+
+    // Verify inline edit inputs appear
+    const nameInput = screen.getByDisplayValue("People's Choice Award");
+    expect(nameInput).toBeDefined();
+
+    fireEvent.change(nameInput, { target: { value: "Fan Favorite Award" } });
+
+    const saveBtn = screen.getByRole("button", { name: /Save Changes/i });
+    fireEvent.click(saveBtn);
+
+    await waitFor(() => {
+      expect(fetchMock).toHaveBeenCalledWith(
+        expect.stringContaining("/api/events/miss-universe-2026/award-categories/cat_1"),
+        expect.objectContaining({
+          method: "PATCH",
+          body: JSON.stringify({
+            name: "Fan Favorite Award",
+            description: "Public voting track",
+            displayOrder: 1,
+            isVotingOpen: true,
+          }),
+        }),
+      );
+    });
+  });
+
+  it("enforces concurrent edit guard by disabling other section actions when an item is being edited", async () => {
+    global.fetch = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        success: true,
+        data: {
+          divisions: [
+            {
+              id: "div_1",
+              eventId: "evt_123",
+              name: "Female Category",
+              description: "Standard bracket",
+              displayOrder: 0,
+              contestantCount: 5,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+          ],
+          awardCategories: [
+            {
+              id: "cat_1",
+              eventId: "evt_123",
+              name: "People's Choice Award",
+              description: "Public voting track",
+              isVotingOpen: true,
+              displayOrder: 1,
+              contestantCount: 5,
+              createdAt: "2026-09-27T00:00:00Z",
+              updatedAt: "2026-09-27T00:00:00Z",
+            },
+          ],
+        },
+      }),
+    });
+
+    const { fireEvent } = await import("@testing-library/react");
+
+    render(
+      <QueryClientProvider client={queryClient}>
+        <CategoryAwardsSettingsForm event={mockEvent} />
+      </QueryClientProvider>,
+    );
+
+    await waitFor(() => {
+      expect(screen.getByText("Female Category")).toBeDefined();
+      expect(screen.getByText("People's Choice Award")).toBeDefined();
+    });
+
+    const divisionEditBtn = screen.getByLabelText("Edit Female Category");
+    const categoryEditBtn = screen.getByLabelText("Edit People's Choice Award");
+    expect((categoryEditBtn as HTMLButtonElement).disabled).toBe(false);
+
+    // Start editing division
+    fireEvent.click(divisionEditBtn);
+
+    // Award category edit button should now be disabled to prevent competing form states
+    await waitFor(() => {
+      expect((categoryEditBtn as HTMLButtonElement).disabled).toBe(true);
+    });
+
+    // Cancel editing division
+    const cancelBtn = screen.getByRole("button", { name: /^Cancel$/i });
+    fireEvent.click(cancelBtn);
+
+    // Award category edit button should be re-enabled
+    await waitFor(() => {
+      expect((categoryEditBtn as HTMLButtonElement).disabled).toBe(false);
     });
   });
 
@@ -156,7 +398,7 @@ describe("CategoryAwardsSettingsForm", () => {
 
     await waitFor(() => {
       expect(
-        screen.getByText("Student Council Election Taxonomy & Ballot Structure")
+        screen.getByText("Student Council Election Taxonomy & Ballot Structure"),
       ).toBeDefined();
       expect(screen.getByText("President")).toBeDefined();
       expect(screen.getByText("Senators")).toBeDefined();

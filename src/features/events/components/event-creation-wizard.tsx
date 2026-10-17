@@ -30,7 +30,11 @@ import { SlugAvailabilityBadge } from "./SlugAvailabilityBadge";
 import { BannerAspectPreview } from "./dashboard/BannerAspectPreview";
 import { ArchetypeSelector } from "./archetype-selector";
 import { TaxonomyEditor } from "./taxonomy-editor";
-import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype } from "../types/archetype";
+import {
+  EVENT_ARCHETYPE_CONFIGS,
+  isArchetypeAvailable,
+  type EventArchetype,
+} from "../types/archetype";
 import {
   TIMELINE_PRESETS,
   calculateEndsAtFromDuration,
@@ -290,6 +294,10 @@ export function EventCreationWizard({
   // Step 2 Validation before advancing to Review
   const handleProceedToStep3 = () => {
     setStepError(null);
+    if (!isArchetypeAvailable(watchedArchetype)) {
+      setStepError("This event archetype is coming soon and currently disabled.");
+      return;
+    }
     // Scenario 2: Validation & Error Handling - Incomplete Archetype Taxonomy
     if (watchedArchetype === "HACKATHON" && positions.length === 0) {
       setStepError("At least one challenge track or category is required for hackathons.");
@@ -302,6 +310,12 @@ export function EventCreationWizard({
   const onSubmit = async (values: FormRawValues) => {
     setServerError(null);
     setStepError(null);
+
+    if (!isArchetypeAvailable(values.archetype)) {
+      setStepError("This event archetype is coming soon and currently disabled.");
+      setCurrentStep(2);
+      return;
+    }
 
     // Final check for hackathon track requirement
     if (values.archetype === "HACKATHON" && positions.length === 0) {

@@ -18,6 +18,7 @@ const InstagramIcon: React.FC<{ className?: string }> = ({ className = "w-3.5 h-
     strokeWidth="2"
     strokeLinecap="round"
     strokeLinejoin="round"
+    aria-hidden="true"
   >
     <rect width="20" height="20" x="2" y="2" rx="5" ry="5" />
     <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
@@ -77,6 +78,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
           <button
             type="button"
             onClick={onClose}
+            aria-label="Close contestant profile"
             className="rounded-none p-1.5 text-slate-500 transition-colors hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             <X className="size-5" />

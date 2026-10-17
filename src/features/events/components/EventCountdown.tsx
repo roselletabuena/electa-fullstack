@@ -53,7 +53,7 @@ export function EventCountdown({
     <section
       aria-label="Contest Operational Window Countdown"
       className={cn(
-        "border-primary/20 from-card/90 via-card/50 to-primary/5 relative overflow-hidden rounded-2xl border bg-linear-to-br p-4 shadow-xl backdrop-blur-xl sm:p-6",
+        "relative overflow-hidden rounded-none border border-slate-300 bg-white p-4 shadow-xs backdrop-blur-xl sm:p-6 dark:border-slate-800 dark:bg-[#0d1424]",
         className,
       )}
     >
@@ -72,7 +72,7 @@ export function EventCountdown({
               </>
             )}
           </div>
-          <h3 className="text-foreground text-lg font-bold tracking-tight sm:text-xl md:text-2xl">
+          <h3 className="heading-font text-lg font-bold tracking-tight text-slate-900 sm:text-xl md:text-2xl dark:text-slate-100">
             {isScheduled ? "Voting Opens In" : "Voting Closes In"}
           </h3>
           <p className="text-muted-foreground text-xs">
@@ -116,8 +116,8 @@ function CountdownUnit({ value, label, isLive }: Readonly<CountdownUnitProps>): 
     <div className="flex flex-col items-center">
       <div
         className={cn(
-          "border-border/80 bg-background/80 relative flex h-13 w-13 items-center justify-center rounded-xl border font-mono text-xl font-extrabold shadow-inner backdrop-blur-md sm:h-16 sm:w-16 sm:text-2xl md:h-20 md:w-20 md:text-3xl",
-          isLive && "border-primary/40 text-primary shadow-primary/10",
+          "relative flex h-13 w-13 items-center justify-center rounded-none border border-slate-300 bg-slate-50 font-mono text-xl font-extrabold shadow-inner sm:h-16 sm:w-16 sm:text-2xl md:h-20 md:w-20 md:text-3xl dark:border-slate-800 dark:bg-slate-900",
+          isLive && "border-sky-500/50 text-sky-600 dark:text-sky-400",
         )}
       >
         <span>{padded}</span>

@@ -1,17 +1,8 @@
 "use client";
 
 import React, { useState } from "react";
-import {
-  Plus,
-  Trash2,
-  Sparkles,
-  Award,
-  AlertCircle
-} from "lucide-react";
-import {
-  EVENT_ARCHETYPE_CONFIGS,
-  type EventArchetype,
-} from "../types/archetype";
+import { Plus, Trash2, Sparkles, Award, AlertCircle } from "lucide-react";
+import { EVENT_ARCHETYPE_CONFIGS, type EventArchetype } from "../types/archetype";
 import type {
   WizardPositionDraftInput,
   WizardDivisionDraftInput,
@@ -32,17 +23,65 @@ export interface TaxonomyEditorProps {
 }
 
 const PRESET_STUDENT_COUNCIL_POSITIONS: WizardPositionDraftInput[] = [
-  { name: "President", description: "Executive leader", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 1 },
-  { name: "Vice President", description: "Executive vice leader", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 2 },
-  { name: "Secretary", description: "Records & communications", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 3 },
-  { name: "Treasurer", description: "Finance and budgeting", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 4 },
-  { name: "Councilors", description: "Legislative representatives (multi-seat)", maxSelectionsPerVoter: 5, minSelectionsPerVoter: 1, displayOrder: 5 },
+  {
+    name: "President",
+    description: "Executive leader",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 1,
+  },
+  {
+    name: "Vice President",
+    description: "Executive vice leader",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 2,
+  },
+  {
+    name: "Secretary",
+    description: "Records & communications",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 3,
+  },
+  {
+    name: "Treasurer",
+    description: "Finance and budgeting",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 4,
+  },
+  {
+    name: "Councilors",
+    description: "Legislative representatives (multi-seat)",
+    maxSelectionsPerVoter: 5,
+    minSelectionsPerVoter: 1,
+    displayOrder: 5,
+  },
 ];
 
 const PRESET_HACKATHON_TRACKS: WizardPositionDraftInput[] = [
-  { name: "Track A - Web & Cloud", description: "Full-stack apps, cloud infrastructure, developer tooling", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 1 },
-  { name: "Track B - AI & Intelligent Agents", description: "Machine learning, LLMs, autonomous workflows", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 2 },
-  { name: "Track C - Social & Climate Impact", description: "Civic tech, sustainability, public goods", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 3 },
+  {
+    name: "Track A - Web & Cloud",
+    description: "Full-stack apps, cloud infrastructure, developer tooling",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 1,
+  },
+  {
+    name: "Track B - AI & Intelligent Agents",
+    description: "Machine learning, LLMs, autonomous workflows",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 2,
+  },
+  {
+    name: "Track C - Social & Climate Impact",
+    description: "Civic tech, sustainability, public goods",
+    maxSelectionsPerVoter: 1,
+    minSelectionsPerVoter: 0,
+    displayOrder: 3,
+  },
 ];
 
 const PRESET_PAGEANT_DIVISIONS: WizardDivisionDraftInput[] = [
@@ -53,9 +92,24 @@ const PRESET_PAGEANT_DIVISIONS: WizardDivisionDraftInput[] = [
 ];
 
 const PRESET_PAGEANT_AWARDS: WizardAwardDraftInput[] = [
-  { name: "People's Choice Award", description: "Public popular vote", isVotingOpen: true, displayOrder: 1 },
-  { name: "Miss Photogenic", description: "Media and audience choice", isVotingOpen: true, displayOrder: 2 },
-  { name: "Best in Formal Wear", description: "Judged gala segment", isVotingOpen: false, displayOrder: 3 },
+  {
+    name: "People's Choice Award",
+    description: "Public popular vote",
+    isVotingOpen: true,
+    displayOrder: 1,
+  },
+  {
+    name: "Miss Photogenic",
+    description: "Media and audience choice",
+    isVotingOpen: true,
+    displayOrder: 2,
+  },
+  {
+    name: "Best in Formal Wear",
+    description: "Judged gala segment",
+    isVotingOpen: false,
+    displayOrder: 3,
+  },
 ];
 
 function getItemPlaceholder(archetype: EventArchetype): string {
@@ -81,7 +135,8 @@ export function TaxonomyEditor({
   disabled = false,
 }: Readonly<TaxonomyEditorProps>): React.JSX.Element {
   const config = EVENT_ARCHETYPE_CONFIGS[archetype];
-  const isPositionBased = archetype === "STUDENT_COUNCIL" || archetype === "HACKATHON" || archetype === "CUSTOM";
+  const isPositionBased =
+    archetype === "STUDENT_COUNCIL" || archetype === "HACKATHON" || archetype === "CUSTOM";
   const isPageant = archetype === "PAGEANT";
 
   // Local form state for new item entry
@@ -103,7 +158,9 @@ export function TaxonomyEditor({
 
     if (isPositionBased) {
       if (positions.some((p) => p.name.toLowerCase() === trimmedName.toLowerCase())) {
-        setFormError(`A ${config.groupingTerm.toLowerCase()} named "${trimmedName}" already exists.`);
+        setFormError(
+          `A ${config.groupingTerm.toLowerCase()} named "${trimmedName}" already exists.`,
+        );
         return;
       }
 
@@ -167,8 +224,18 @@ export function TaxonomyEditor({
       onAwardCategoriesChange(PRESET_PAGEANT_AWARDS);
     } else {
       onPositionsChange([
-        { name: "General Category A", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 1 },
-        { name: "General Category B", maxSelectionsPerVoter: 1, minSelectionsPerVoter: 0, displayOrder: 2 },
+        {
+          name: "General Category A",
+          maxSelectionsPerVoter: 1,
+          minSelectionsPerVoter: 0,
+          displayOrder: 1,
+        },
+        {
+          name: "General Category B",
+          maxSelectionsPerVoter: 1,
+          minSelectionsPerVoter: 0,
+          displayOrder: 2,
+        },
       ]);
     }
   };
@@ -177,8 +244,9 @@ export function TaxonomyEditor({
     if (isPositionBased) {
       if (positions.length === 0) {
         return (
-          <div className="border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 rounded-none">
-            No {config.groupingTerm.toLowerCase()}s configured yet. Click &quot;Load Presets&quot; or add one above.
+          <div className="rounded-none border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
+            No {config.groupingTerm.toLowerCase()}s configured yet. Click &quot;Load Presets&quot;
+            or add one above.
           </div>
         );
       }
@@ -188,12 +256,10 @@ export function TaxonomyEditor({
           {positions.map((pos, idx) => (
             <div
               key={`${pos.name}-${idx}`}
-              className="flex items-center justify-between border border-slate-200 bg-white p-3 rounded-none shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
+              className="flex items-center justify-between rounded-none border border-slate-200 bg-white p-3 shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
             >
               <div className="flex items-center gap-3">
-                <span className="font-mono text-xs font-bold text-slate-400">
-                  #{idx + 1}
-                </span>
+                <span className="font-mono text-xs font-bold text-slate-400">#{idx + 1}</span>
                 <div>
                   <div className="font-heading text-xs font-bold text-slate-900 dark:text-slate-100">
                     {pos.name}
@@ -207,7 +273,7 @@ export function TaxonomyEditor({
               </div>
 
               <div className="flex items-center gap-3">
-                <span className="border border-sky-200 bg-sky-50 px-2 py-0.5 text-[11px] font-bold text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300 rounded-none">
+                <span className="rounded-none border border-sky-200 bg-sky-50 px-2 py-0.5 text-[11px] font-bold text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
                   {pos.maxSelectionsPerVoter > 1
                     ? `Up to ${pos.maxSelectionsPerVoter} Seats`
                     : "Single Seat (1)"}
@@ -218,7 +284,7 @@ export function TaxonomyEditor({
                   onClick={() => handleRemovePosition(idx)}
                   disabled={disabled}
                   aria-label={`Remove ${pos.name}`}
-                  className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400 transition"
+                  className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 transition hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
                 >
                   <Trash2 className="size-4" />
                 </button>
@@ -231,7 +297,7 @@ export function TaxonomyEditor({
 
     if (divisions.length === 0) {
       return (
-        <div className="border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400 rounded-none">
+        <div className="rounded-none border border-dashed border-slate-300 p-6 text-center text-xs text-slate-500 dark:border-slate-800 dark:text-slate-400">
           No divisions configured yet. Click &quot;Load Presets&quot; or add one above.
         </div>
       );
@@ -242,12 +308,10 @@ export function TaxonomyEditor({
         {divisions.map((div, idx) => (
           <div
             key={`${div.name}-${idx}`}
-            className="flex items-center justify-between border border-slate-200 bg-white p-3 rounded-none shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
+            className="flex items-center justify-between rounded-none border border-slate-200 bg-white p-3 shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
           >
             <div className="flex items-center gap-3">
-              <span className="font-mono text-xs font-bold text-slate-400">
-                #{idx + 1}
-              </span>
+              <span className="font-mono text-xs font-bold text-slate-400">#{idx + 1}</span>
               <div>
                 <div className="font-heading text-xs font-bold text-slate-900 dark:text-slate-100">
                   {div.name}
@@ -265,7 +329,7 @@ export function TaxonomyEditor({
               onClick={() => handleRemoveDivision(idx)}
               disabled={disabled}
               aria-label={`Remove ${div.name}`}
-              className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400 transition"
+              className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 transition hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
             >
               <Trash2 className="size-4" />
             </button>
@@ -278,7 +342,7 @@ export function TaxonomyEditor({
   return (
     <div className={cn("space-y-6", className)}>
       {/* Header and Preset Loader */}
-      <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between border-b border-slate-200 pb-4 dark:border-slate-800">
+      <div className="flex flex-col gap-3 border-b border-slate-200 pb-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800">
         <div>
           <h3 className="font-heading text-sm font-black tracking-tight text-slate-900 dark:text-slate-100">
             {config.groupingTerm} Configuration
@@ -294,7 +358,7 @@ export function TaxonomyEditor({
           type="button"
           onClick={handleLoadPresets}
           disabled={disabled}
-          className="inline-flex min-h-[44px] cursor-pointer items-center gap-1.5 border border-sky-600 bg-sky-50 px-3 py-1.5 text-xs font-bold uppercase tracking-wider text-sky-800 transition-colors hover:bg-sky-100 rounded-none dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-300 dark:hover:bg-sky-500/20"
+          className="inline-flex min-h-11 cursor-pointer items-center gap-1.5 rounded-none border border-sky-600 bg-sky-50 px-3 py-1.5 text-xs font-bold tracking-wider text-sky-800 uppercase transition-colors hover:bg-sky-100 dark:border-sky-500/40 dark:bg-sky-500/10 dark:text-sky-300 dark:hover:bg-sky-500/20"
         >
           <Sparkles className="size-3.5 text-sky-600 dark:text-sky-400" />
           <span>Load Presets</span>
@@ -302,15 +366,15 @@ export function TaxonomyEditor({
       </div>
 
       {/* Add Item Section */}
-      <div className="border border-slate-300 bg-white p-4 space-y-4 rounded-none dark:border-slate-800 dark:bg-[#0d1424]">
-        <div className="text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-slate-100">
+      <div className="space-y-4 rounded-none border border-slate-300 bg-white p-4 dark:border-slate-800 dark:bg-[#0d1424]">
+        <div className="text-xs font-extrabold tracking-widest text-slate-900 uppercase dark:text-slate-100">
           Add New {config.groupingTerm}
         </div>
 
         {formError && (
           <div
             role="alert"
-            className="flex items-center gap-2 border border-red-300 bg-red-50 p-2.5 text-xs font-semibold text-red-900 rounded-none dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
+            className="flex items-center gap-2 rounded-none border border-red-300 bg-red-50 p-2.5 text-xs font-semibold text-red-900 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300"
           >
             <AlertCircle className="size-4 shrink-0 text-red-600 dark:text-red-400" />
             <span>{formError}</span>
@@ -321,7 +385,7 @@ export function TaxonomyEditor({
           <div>
             <label
               htmlFor="taxonomy-item-name"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+              className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
             >
               {config.groupingTerm} Name <span className="text-red-500">*</span>
             </label>
@@ -338,14 +402,14 @@ export function TaxonomyEditor({
               }}
               placeholder={getItemPlaceholder(archetype)}
               disabled={disabled}
-              className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+              className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
             />
           </div>
 
           <div>
             <label
               htmlFor="taxonomy-item-desc"
-              className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+              className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
             >
               Description (Optional)
             </label>
@@ -362,7 +426,7 @@ export function TaxonomyEditor({
               }}
               placeholder="Brief description or requirements"
               disabled={disabled}
-              className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
+              className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 placeholder:text-slate-400 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100 dark:placeholder:text-slate-500"
             />
           </div>
         </div>
@@ -372,7 +436,7 @@ export function TaxonomyEditor({
             <div>
               <label
                 htmlFor="taxonomy-max-selections"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
               >
                 Max Seats / Selections per Voter
               </label>
@@ -384,7 +448,7 @@ export function TaxonomyEditor({
                 value={maxSelections}
                 onChange={(e) => setMaxSelections(Number.parseInt(e.target.value, 10) || 1)}
                 disabled={disabled}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
               <span className="mt-1 block text-[11px] text-slate-500 dark:text-slate-400">
                 For single-winner offices enter 1. For multi-seat bodies (e.g. 5 senators) enter 5.
@@ -394,7 +458,7 @@ export function TaxonomyEditor({
             <div>
               <label
                 htmlFor="taxonomy-min-selections"
-                className="block text-xs font-bold uppercase tracking-wider text-slate-700 dark:text-slate-300"
+                className="block text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300"
               >
                 Min Selections (Optional)
               </label>
@@ -406,7 +470,7 @@ export function TaxonomyEditor({
                 value={minSelections}
                 onChange={(e) => setMinSelections(Number.parseInt(e.target.value, 10) || 0)}
                 disabled={disabled}
-                className="mt-1 block w-full border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden rounded-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                className="mt-1 block w-full rounded-none border border-slate-300 bg-white px-3 py-2 text-xs font-medium text-slate-900 focus:border-sky-600 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
               />
               <span className="mt-1 block text-[11px] text-slate-500 dark:text-slate-400">
                 Minimum choices required before ballot submission (default 0).
@@ -419,7 +483,7 @@ export function TaxonomyEditor({
           type="button"
           onClick={handleAddItem}
           disabled={disabled}
-          className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-1.5 border border-slate-900 bg-slate-900 px-4 py-2 text-xs font-black uppercase tracking-wider text-white transition hover:bg-slate-800 rounded-none dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
+          className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-1.5 rounded-none border border-slate-900 bg-slate-900 px-4 py-2 text-xs font-black tracking-wider text-white uppercase transition hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
         >
           <Plus className="size-3.5" />
           <span>Add {config.groupingTerm}</span>
@@ -428,9 +492,9 @@ export function TaxonomyEditor({
 
       {/* Render Current List of Items */}
       <div className="space-y-3">
-        <div className="text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-slate-100">
-          Configured {config.groupingTerm}s (
-          {isPositionBased ? positions.length : divisions.length})
+        <div className="text-xs font-extrabold tracking-widest text-slate-900 uppercase dark:text-slate-100">
+          Configured {config.groupingTerm}s ({isPositionBased ? positions.length : divisions.length}
+          )
         </div>
 
         {renderConfiguredItems()}
@@ -438,15 +502,15 @@ export function TaxonomyEditor({
 
       {/* For Pageants: Show Award Categories */}
       {isPageant && awardCategories.length > 0 && (
-        <div className="space-y-3 pt-4 border-t border-slate-200 dark:border-slate-800">
-          <div className="text-xs font-extrabold uppercase tracking-widest text-slate-900 dark:text-slate-100">
+        <div className="space-y-3 border-t border-slate-200 pt-4 dark:border-slate-800">
+          <div className="text-xs font-extrabold tracking-widest text-slate-900 uppercase dark:text-slate-100">
             Award Categories ({awardCategories.length})
           </div>
           <div className="space-y-2">
             {awardCategories.map((award, idx) => (
               <div
                 key={`${award.name}-${idx}`}
-                className="flex items-center justify-between border border-slate-200 bg-white p-3 rounded-none shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
+                className="flex items-center justify-between rounded-none border border-slate-200 bg-white p-3 shadow-2xs dark:border-slate-800 dark:bg-[#0d1424]"
               >
                 <div className="flex items-center gap-2.5">
                   <Award className="size-4 text-amber-500" />
@@ -465,10 +529,10 @@ export function TaxonomyEditor({
                 <div className="flex items-center gap-3">
                   <span
                     className={cn(
-                      "px-2 py-0.5 text-[10px] font-bold uppercase tracking-wider rounded-none",
+                      "rounded-none px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase",
                       award.isVotingOpen
                         ? "border border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
-                        : "border border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                        : "border border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400",
                     )}
                   >
                     {award.isVotingOpen ? "Voting Open" : "Judged Only"}
@@ -478,7 +542,7 @@ export function TaxonomyEditor({
                     onClick={() => handleRemoveAward(idx)}
                     disabled={disabled}
                     aria-label={`Remove ${award.name}`}
-                    className="inline-flex min-h-[44px] min-w-[44px] cursor-pointer items-center justify-center text-slate-400 hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400 transition"
+                    className="inline-flex min-h-11 min-w-11 cursor-pointer items-center justify-center text-slate-400 transition hover:text-red-600 dark:text-slate-500 dark:hover:text-red-400"
                   >
                     <Trash2 className="size-4" />
                   </button>

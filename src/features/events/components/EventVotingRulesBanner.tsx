@@ -19,25 +19,25 @@ export function EventVotingRulesBanner({
     return (
       <div
         className={cn(
-          "relative overflow-hidden rounded-2xl border border-amber-300/80 bg-linear-to-r from-amber-500/10 via-amber-400/5 to-transparent p-4 sm:p-5 dark:border-amber-700/50 dark:from-amber-950/40 dark:via-amber-900/20",
+          "relative overflow-hidden rounded-none border border-amber-300 bg-amber-50/70 p-4 shadow-xs backdrop-blur-md sm:p-5 dark:border-amber-700/60 dark:bg-amber-950/20",
           className,
         )}
       >
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-start gap-3">
-            <div className="rounded-xl bg-amber-500/15 p-2 text-amber-600 dark:bg-amber-400/10 dark:text-amber-400">
+            <div className="rounded-none border border-amber-300 bg-amber-100 p-2 text-amber-800 dark:border-amber-700/60 dark:bg-amber-900/30 dark:text-amber-400">
               <Trophy className="size-5 shrink-0" />
             </div>
             <div>
               <div className="flex items-center gap-2">
-                <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+                <h3 className="heading-font text-sm font-bold text-slate-900 dark:text-slate-100">
                   Coronation Phase: Paid Boost Voting Active
                 </h3>
-                <span className="rounded-full bg-amber-500/20 px-2 py-0.5 text-[10px] font-bold text-amber-800 uppercase dark:text-amber-300">
+                <span className="rounded-none border border-amber-300 bg-amber-100/90 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-amber-900 uppercase dark:border-amber-700/60 dark:bg-amber-900/40 dark:text-amber-300">
                   Grand Finals Mode
                 </span>
               </div>
-              <p className="mt-0.5 text-xs text-slate-600 dark:text-slate-300">
+              <p className="mt-0.5 text-xs text-slate-700 dark:text-slate-300">
                 Daily free voting is currently closed for this round. Power your favorite candidates
                 to the crown using official Paid Boost Packages.
               </p>
@@ -51,26 +51,26 @@ export function EventVotingRulesBanner({
   return (
     <div
       className={cn(
-        "relative overflow-hidden rounded-2xl border border-indigo-200/80 bg-linear-to-r from-indigo-500/10 via-indigo-400/5 to-transparent p-4 sm:p-5 dark:border-indigo-800/60 dark:from-indigo-950/40 dark:via-indigo-900/20",
+        "relative overflow-hidden rounded-none border border-sky-300/80 bg-sky-50/60 p-4 shadow-xs backdrop-blur-md sm:p-5 dark:border-sky-800/60 dark:bg-sky-950/20",
         className,
       )}
     >
       <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-start gap-3">
-          <div className="rounded-xl bg-indigo-500/15 p-2 text-indigo-600 dark:bg-indigo-400/10 dark:text-indigo-400">
+          <div className="rounded-none border border-sky-300 bg-sky-100 p-2 text-sky-700 dark:border-sky-800 dark:bg-sky-900/30 dark:text-sky-400">
             <Zap className="size-5 shrink-0" />
           </div>
           <div>
             <div className="flex items-center gap-2">
-              <h3 className="text-sm font-bold text-slate-900 dark:text-slate-100">
+              <h3 className="heading-font text-sm font-bold text-slate-900 dark:text-slate-100">
                 Daily Free Voting Active
               </h3>
-              <span className="rounded-full bg-indigo-500/20 px-2 py-0.5 text-[10px] font-bold text-indigo-800 uppercase dark:text-indigo-300">
+              <span className="rounded-none border border-sky-300 bg-sky-100/90 px-2 py-0.5 font-mono text-[10px] font-bold tracking-wider text-sky-800 uppercase dark:border-sky-800 dark:bg-sky-900/40 dark:text-sky-300">
                 {dailyFreeVoteLimit}{" "}
                 {dailyFreeVoteLimit === 1 ? "Free Vote / 24h" : "Free Votes / 24h"}
               </span>
             </div>
-            <p className="mt-0.5 text-xs text-slate-600 dark:text-slate-300">
+            <p className="mt-0.5 text-xs text-slate-700 dark:text-slate-300">
               Cast up to {dailyFreeVoteLimit} free vote{dailyFreeVoteLimit > 1 ? "s" : ""} every 24
               hours. Want to give your candidate an extra edge? Paid boost packages are also
               available.

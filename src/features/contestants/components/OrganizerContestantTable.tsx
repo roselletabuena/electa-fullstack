@@ -54,6 +54,11 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
   const { createContestant, updateContestant, updateStatus, deleteContestant } =
     useContestantMutations(slug);
 
+  const showDivisionColumn = Boolean(
+    (divisions && divisions.length > 0) ||
+    contestants.some((c) => Boolean(c.divisionRef?.name || c.divisionName)),
+  );
+
   const handleOpenAdd = () => {
     setEditingContestant(null);
     setModalOpen(true);
@@ -130,7 +135,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                   <tr>
                     <th className="px-5 py-3.5">No.</th>
                     <th className="px-5 py-3.5">Candidate</th>
-                    <th className="px-5 py-3.5">Division</th>
+                    {showDivisionColumn && <th className="px-5 py-3.5">Division</th>}
                     <th className="px-5 py-3.5">Nominations</th>
                     <th className="px-5 py-3.5">Status</th>
                     <th className="px-5 py-3.5 text-right">Votes</th>
@@ -171,9 +176,11 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                           </div>
                         </div>
                       </td>
-                      <td className="px-5 py-3.5 font-medium text-slate-700 capitalize dark:text-slate-300">
-                        {c.divisionRef?.name || c.divisionName || c.division.toLowerCase()}
-                      </td>
+                      {showDivisionColumn && (
+                        <td className="px-5 py-3.5 font-medium text-slate-700 capitalize dark:text-slate-300">
+                          {c.divisionRef?.name || c.divisionName || "—"}
+                        </td>
+                      )}
                       <td className="px-5 py-3.5">
                         <div className="flex max-w-56 flex-wrap gap-1">
                           {c.categories.length > 0 ? (

@@ -52,7 +52,9 @@ export async function GET(request: NextRequest, context: RouteParams) {
         divisionParam.toUpperCase(),
       );
       whereClause.OR = [
-        ...(isEnumDivision ? [{ division: divisionParam.toUpperCase() as ContestantDivision }] : []),
+        ...(isEnumDivision
+          ? [{ division: divisionParam.toUpperCase() as ContestantDivision }]
+          : []),
         { divisionId: divisionParam },
         { divisionRef: { name: { equals: divisionParam, mode: "insensitive" } } },
       ];
@@ -170,15 +172,14 @@ export async function POST(request: NextRequest, context: RouteParams) {
       where: {
         eventId: event.id,
         contestantNumber: data.contestantNumber,
-        ...(data.divisionId
-          ? { divisionId: data.divisionId }
-          : { division: resolvedDivisionEnum }),
+        ...(data.divisionId ? { divisionId: data.divisionId } : { division: resolvedDivisionEnum }),
       },
     });
 
     if (existing) {
+      const divisionLabel = data.divisionId ? ` in this division` : "";
       return apiError(
-        `Candidate number #${data.contestantNumber} already exists in the ${data.division} division`,
+        `Candidate number #${data.contestantNumber} already exists${divisionLabel}`,
         409,
       );
     }

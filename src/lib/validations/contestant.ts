@@ -18,7 +18,7 @@ export const contestantMediaSchema = z.object({
 export const createContestantSchema = z.object({
   contestantNumber: z.coerce.number().int().min(1, "Candidate number must be at least 1"),
   name: z.string().min(1, "Name is required").max(100, "Name must be at most 100 characters"),
-  division: z.string().min(1).default("FEMALE"),
+  division: z.string().optional().default("FEMALE"),
   divisionId: z.string().optional().nullable(),
   hometown: z
     .string()

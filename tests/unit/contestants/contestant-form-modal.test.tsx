@@ -2,7 +2,11 @@ import { describe, it, expect, vi } from "vitest";
 import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { ContestantFormModal } from "@/features/contestants/components/ContestantFormModal";
-import type { AwardCategoryDto, ContestantDto, DynamicDivisionItem } from "@/features/contestants/types";
+import type {
+  AwardCategoryDto,
+  ContestantDto,
+  DynamicDivisionItem,
+} from "@/features/contestants/types";
 
 describe("ContestantFormModal - Dynamic Category & Division Integration (VS-38)", () => {
   const mockCategories: AwardCategoryDto[] = [
@@ -69,7 +73,8 @@ describe("ContestantFormModal - Dynamic Category & Division Integration (VS-38)"
     const select = screen.getByRole("combobox") as HTMLSelectElement;
     expect(select).toBeDefined();
 
-    // Check that custom division options are rendered
+    // Check that optional placeholder and custom division options are rendered
+    expect(screen.getByRole("option", { name: "No Division (Optional)" })).toBeDefined();
     expect(screen.getByRole("option", { name: "Kids" })).toBeDefined();
     expect(screen.getByRole("option", { name: "Teens" })).toBeDefined();
     expect(screen.getByRole("option", { name: "Adults" })).toBeDefined();
@@ -79,20 +84,24 @@ describe("ContestantFormModal - Dynamic Category & Division Integration (VS-38)"
     expect(screen.queryByRole("option", { name: "LGBTQ+" })).toBeNull();
   });
 
-  it("gracefully falls back to standard divisions when divisions prop is empty or undefined", () => {
+  it("does not render division dropdown when divisions prop is empty or undefined", () => {
     render(
       <ContestantFormModal
         isOpen={true}
         onClose={vi.fn()}
         onSubmit={vi.fn()}
         categories={mockCategories}
+        divisions={[]}
       />,
     );
 
-    expect(screen.getByRole("option", { name: "Female" })).toBeDefined();
-    expect(screen.getByRole("option", { name: "Male" })).toBeDefined();
-    expect(screen.getByRole("option", { name: "LGBTQ+" })).toBeDefined();
-    expect(screen.getByRole("option", { name: "Teen" })).toBeDefined();
+    // Division select should not be rendered when event has no configured divisions
+    expect(screen.queryByRole("combobox")).toBeNull();
+    expect(screen.queryByLabelText(/division/i)).toBeNull();
+    expect(screen.queryByRole("option", { name: "Female" })).toBeNull();
+    expect(screen.queryByRole("option", { name: "Male" })).toBeNull();
+    expect(screen.queryByRole("option", { name: "LGBTQ+" })).toBeNull();
+    expect(screen.queryByRole("option", { name: "Teen" })).toBeNull();
   });
 
   it("renders award category checkboxes for active event awards", () => {
@@ -141,6 +150,33 @@ describe("ContestantFormModal - Dynamic Category & Division Integration (VS-38)"
         name: "Maria Santos",
         division: "Adults",
         divisionId: "div-adults",
+      }),
+    );
+  });
+
+  it("submits undefined divisionId when No Division (Optional) is chosen", async () => {
+    const handleSubmit = vi.fn().mockResolvedValue(undefined);
+
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={handleSubmit}
+        categories={mockCategories}
+        divisions={mockCustomDivisions}
+        initialData={mockInitialData}
+      />,
+    );
+
+    const select = screen.getByRole("combobox") as HTMLSelectElement;
+    fireEvent.change(select, { target: { value: "" } });
+
+    const submitBtn = screen.getByRole("button", { name: /Update Profile/i });
+    fireEvent.click(submitBtn);
+
+    expect(handleSubmit).toHaveBeenCalledWith(
+      expect.objectContaining({
+        divisionId: undefined,
       }),
     );
   });

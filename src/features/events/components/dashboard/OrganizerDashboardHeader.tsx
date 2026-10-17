@@ -69,7 +69,7 @@ export function OrganizerDashboardHeader({
                 Slug: {event.slug}
               </span>
               <span>•</span>
-              <span>ID: {event.id}</span>
+              <span className="break-all">ID: {event.id}</span>
             </p>
           </div>
 
@@ -88,11 +88,15 @@ export function OrganizerDashboardHeader({
         </div>
 
         {/* Section Navigation */}
-        <nav className="mt-6 flex items-center gap-1 border-t border-slate-100 pt-3 dark:border-slate-800/80">
+        <nav
+          aria-label="Event dashboard sections"
+          className="-mx-4 mt-6 flex scrollbar-none items-center gap-1.5 overflow-x-auto border-t border-slate-100 px-4 pt-3 sm:mx-0 sm:px-0 dark:border-slate-800/80"
+        >
           <Link
             href={`/events/${event.slug}/settings`}
+            aria-current={activeSection === "settings" ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider uppercase transition-all",
+              "inline-flex shrink-0 items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-all",
               activeSection === "settings"
                 ? "border border-sky-300 bg-sky-50 text-sky-800 shadow-xs dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",
@@ -103,8 +107,9 @@ export function OrganizerDashboardHeader({
           </Link>
           <Link
             href={`/events/${event.slug}/contestants`}
+            aria-current={activeSection === "contestants" ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider uppercase transition-all",
+              "inline-flex shrink-0 items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-all",
               activeSection === "contestants"
                 ? "border border-sky-300 bg-sky-50 text-sky-800 shadow-xs dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",
@@ -115,8 +120,9 @@ export function OrganizerDashboardHeader({
           </Link>
           <Link
             href={`/events/${event.slug}/revenue`}
+            aria-current={activeSection === "revenue" ? "page" : undefined}
             className={cn(
-              "inline-flex items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider uppercase transition-all",
+              "inline-flex shrink-0 items-center gap-2 rounded-none px-3.5 py-2 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-all",
               activeSection === "revenue"
                 ? "border border-sky-300 bg-sky-50 text-sky-800 shadow-xs dark:border-sky-800 dark:bg-sky-950/60 dark:text-sky-300"
                 : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-slate-200",

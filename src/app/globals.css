@@ -230,3 +230,13 @@ html.dark body {
 .dark .scrollbar-themed::-webkit-scrollbar-thumb:hover {
   background: #38bdf8;
 }
+
+/* Scrollbar-none utility for clean horizontal swipe navigation */
+.scrollbar-none {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+.scrollbar-none::-webkit-scrollbar {
+  display: none;
+}

@@ -131,4 +131,39 @@ describe("createEventSchema", () => {
     const result = createEventSchema.safeParse(exactOneHour);
     expect(result.success).toBe(true);
   });
+
+  it("Scenario 1: accepts PAGEANT archetype explicitly and by default", () => {
+    const withPageant = {
+      ...validPayload,
+      archetype: "PAGEANT" as const,
+    };
+    const result = createEventSchema.safeParse(withPageant);
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data.archetype).toBe("PAGEANT");
+    }
+
+    const defaultResult = createEventSchema.safeParse(validPayload);
+    expect(defaultResult.success).toBe(true);
+    if (defaultResult.success) {
+      expect(defaultResult.data.archetype).toBe("PAGEANT");
+    }
+  });
+
+  it("Scenario 3: rejects non-pageant archetypes (STUDENT_COUNCIL, HACKATHON, CUSTOM) with coming soon message", () => {
+    const nonPageantArchetypes = ["STUDENT_COUNCIL", "HACKATHON", "CUSTOM"] as const;
+
+    for (const archetype of nonPageantArchetypes) {
+      const payload = {
+        ...validPayload,
+        archetype,
+      };
+      const result = createEventSchema.safeParse(payload);
+      expect(result.success).toBe(false);
+      if (!result.success) {
+        const issue = result.error.issues.find((i) => i.path.includes("archetype"));
+        expect(issue?.message).toBe("This event archetype is coming soon and currently disabled.");
+      }
+    }
+  });
 });

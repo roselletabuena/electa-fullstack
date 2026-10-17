@@ -819,7 +819,7 @@ export function EventCreationWizard({
                 type="button"
                 onClick={() => setCurrentStep(2)}
                 disabled={isSubmitting}
-                className="inline-flex min-h-[44px] cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                className="inline-flex min-h-11 cursor-pointer items-center gap-2 rounded-none border border-slate-300 bg-white px-4 py-2 text-xs font-bold tracking-wider text-slate-700 uppercase hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
               >
                 <ArrowLeft className="size-4" />
                 <span>Back to Format & Categories</span>
@@ -828,7 +828,7 @@ export function EventCreationWizard({
               <button
                 type="submit"
                 disabled={isSubmitting}
-                className="inline-flex min-h-[44px] cursor-pointer items-center justify-center gap-2 rounded-none border border-sky-600 bg-sky-600 px-6 py-2 text-xs font-black tracking-wider text-white uppercase shadow-sm transition hover:bg-sky-500 disabled:opacity-50 dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
+                className="inline-flex min-h-11 cursor-pointer items-center justify-center gap-2 rounded-none border border-sky-600 bg-sky-600 px-6 py-2 text-xs font-black tracking-wider text-white uppercase shadow-sm transition hover:bg-sky-500 disabled:opacity-50 dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950 dark:hover:bg-sky-400"
               >
                 {isSubmitting ? (
                   <>

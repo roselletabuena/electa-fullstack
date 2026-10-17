@@ -20,14 +20,18 @@
 
 ---
 
-### Decision 2: 1-Click Taxonomy Presets Architecture
+### Decision 2: In-Place Inline Card Editing & Concurrency Guard Architecture
 
-- **Decision**: Define curated, client-side taxonomy preset templates (Beauty Pageant, Talent / Singing Contest, Dance Championship, Academic / Hackathon) in `src/features/events/constants/taxonomy-presets.ts`.
+- **Decision**: Provide in-place inline editing directly within `DivisionsSection` and `AwardCategoriesSection`. Clicking the "Edit" action button transforms the specific card into an editable form pre-populated with current values (`name`, `description`, `displayOrder`, plus `isVotingOpen` for award categories). While an item is in active edit mode, other Edit and Add action buttons are disabled (Concurrent Edit Guard) until the active edit is saved or cancelled.
 - **Rationale**:
-  - Organizers setting up competitions can instantly auto-populate standard divisions and award tracks with 1 click.
-  - Applying a preset executes sequential/batch POSTs with progress indication, immediately populating the live taxonomy list.
+  - Initial taxonomy setup is already established during event creation in the Event Creation Wizard, making preset templates redundant in the settings dashboard.
+  - Inline card editing keeps spatial context intact without modal backdrops or layout shifts.
+  - Disabling other action buttons during active editing prevents competing form states and dirty data loss.
+  - Foreign key relations remain intact upon rename, immediately updating all contestant displays without extra confirmation modals.
 - **Alternatives Considered**:
-  - _Database-stored presets_: Over-engineering for 4 standard templates; introduces unnecessary table schemas and migration complexity.
+  - _Presets in settings tab_: Redundant since organizers already select/configure archetypes and taxonomy in the wizard.
+  - _Modal dialogs for editing_: Unnecessary overlay layers and focus traps for editing simple 2-to-3 field records.
+  - _Multi-item concurrent editing_: High risk of conflicting form states, uncoordinated network requests, and complex dirty-checking.
 
 ---
 

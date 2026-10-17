@@ -25,18 +25,24 @@
 3. Click the **"Categories & Awards"** tab in the top navigation bar.
 4. **Expected**:
    - The URL updates to `/events/[your-event-slug]/settings?tab=categories`.
-   - The `CategoryAwardsSettingsForm` renders with division tags, award category cards, and preset options.
+   - The `CategoryAwardsSettingsForm` renders with division cards, award category cards, and add controls (clean layout without presets).
 
 ---
 
-### Scenario 2: Apply 1-Click Taxonomy Preset
+### Scenario 2: Inline Edit Division & Award Category
 
-1. On an event with no divisions or categories, view the **1-Click Presets** section.
-2. Click the **"Beauty Pageant"** preset card.
-3. **Expected**:
-   - The divisions list immediately populates with _Female Category_, _Male Category_, _LGBTQ+ Category_, and _Teen Category_.
-   - The award categories list populates with _People's Choice_, _Best in Evening Gown_, _Best in Swimsuit_, etc.
-   - Success toast confirmation is displayed.
+1. Click the **"Edit"** action button (pencil icon) on an existing division card.
+2. **Expected**:
+   - The card transforms into an in-place edit form with current values pre-filled in the Name, Description, and Order fields.
+   - Other Edit and Add action buttons become disabled (Concurrent Edit Guard).
+3. Change the name to `"Women's Division"`, update display order, and click **"Save Changes"**.
+4. **Expected**:
+   - The card updates optimistically with the new name.
+   - A success toast notification appears: `"Division updated successfully"`.
+   - Any contestants assigned to this division retain their linkage.
+5. Click **"Edit"** on an award category card, change its title to `"People's Choice Award"`, and click **"Save Changes"**.
+6. **Expected**:
+   - The award category card updates immediately and persists via `PATCH /api/events/[slug]/award-categories/[categoryId]`.
 
 ---
 

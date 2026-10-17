@@ -1,15 +1,15 @@
 # Tasks: Organizer Dashboard "Categories & Awards" Settings Management UI
 
-**Feature Branch**: `009-category-awards-settings` | **Spec**: [specs/009-category-awards-settings/spec.md](file:///c:/Users/Roselle%20Tabuena/workspace/vote-sphere-workspace/vote-sphere/specs/009-category-awards-settings/spec.md) | **Plan**: [specs/009-category-awards-settings/plan.md](file:///c:/Users/Roselle%20Tabuena/workspace/vote-sphere-workspace/vote-sphere/specs/009-category-awards-settings/plan.md)
+**Feature Branch**: `009-category-awards-settings` | **Spec**: [specs/009-category-awards-settings/spec.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/electa-fullstack/specs/009-category-awards-settings/spec.md) | **Plan**: [specs/009-category-awards-settings/plan.md](file:///c:/Users/Roselle%20Tabuena/workspace/electa-workspace/electa-fullstack/specs/009-category-awards-settings/plan.md)
 
 ---
 
-## Phase 1: Setup (Types & Presets Catalog)
+## Phase 1: Setup (Types & Architecture Cleanup)
 
-**Purpose**: Establish core constants, types, and preset templates.
+**Purpose**: Establish core constants, types, and remove presets dependency.
 
 - [x] T001 Update `SETTINGS_TABS` to include `"categories"` in `src/features/events/types/index.ts` and `src/lib/validations/event-settings.ts`
-- [x] T002 [P] Define curated taxonomy presets catalog in `src/features/events/constants/taxonomy-presets.ts`
+- [x] T002 Remove `TaxonomyPresetsCard` invocation from `CategoryAwardsSettingsForm.tsx` and deprecate preset imports in `src/features/events/components/dashboard/CategoryAwardsSettingsForm.tsx`
 
 ---
 
@@ -17,9 +17,8 @@
 
 **Purpose**: Data fetching hooks and settings tab navigation integration.
 
-- [x] T003 [P] Implement TanStack Query hooks for unified taxonomy operations in `src/features/events/hooks/useEventTaxonomy.ts`
-- [x] T004 Update `SettingsTabNav.tsx` to include `"categories"` tab with `Layers` icon in `src/features/events/components/dashboard/SettingsTabNav.tsx`
-- [x] T005 Update `SettingsTabsContainer.tsx` to conditionally mount `CategoryAwardsSettingsForm` in `src/features/events/components/dashboard/SettingsTabsContainer.tsx`
+- [x] T003 Verify `useUpdateDivision` and `useUpdateAwardCategory` mutation hooks in `src/features/events/hooks/useEventTaxonomy.ts`
+- [x] T004 Mount `CategoryAwardsSettingsForm` in `src/features/events/components/dashboard/SettingsTabsContainer.tsx`
 
 ---
 
@@ -29,89 +28,97 @@
 
 **Independent Test**: Navigate to `/events/[slug]/settings?tab=categories`, type a division name and award track name, click Add, and verify they appear immediately as interactive cards.
 
-### Tests for User Story 1
-
-- [x] T006 [P] [US1] Unit test for taxonomy settings rendering and inline creation in `tests/unit/events/category-awards-settings-form.test.tsx`
-
 ### Implementation for User Story 1
 
-- [x] T007 [P] [US1] Implement `DivisionsSection.tsx` for displaying division badges, inline addition input, and contestant count badges in `src/features/events/components/dashboard/DivisionsSection.tsx`
-- [x] T008 [P] [US1] Implement `AwardCategoriesSection.tsx` for displaying award cards, descriptions, and creation input in `src/features/events/components/dashboard/AwardCategoriesSection.tsx`
-- [x] T009 [US1] Implement main `CategoryAwardsSettingsForm.tsx` integrating divisions and award tracks sections in `src/features/events/components/dashboard/CategoryAwardsSettingsForm.tsx`
+- [x] T005 [P] [US1] Display division cards and inline addition input in `src/features/events/components/dashboard/DivisionsSection.tsx`
+- [x] T006 [P] [US1] Display award cards, voting status, and creation input in `src/features/events/components/dashboard/AwardCategoriesSection.tsx`
+- [x] T007 [US1] Mount divisions and award tracks sections in `src/features/events/components/dashboard/CategoryAwardsSettingsForm.tsx`
 
 ---
 
-## Phase 4: User Story 2 - Apply 1-Click Competition Taxonomy Presets (Priority: P2)
+## Phase 4: User Story 2 - In-Place Inline Editing of Divisions and Award Categories (Priority: P1)
 
-**Goal**: Provide 1-click preset templates (Beauty Pageant, Talent Contest, Dance Championship, Academic/Hackathon) to batch populate divisions and awards.
+**Goal**: Enable organizers to edit names, descriptions, and display orders for existing divisions and award categories in-place without modal overlays, while preserving contestant linkages.
 
-**Independent Test**: Click the "Beauty Pageant" preset card and verify that standard divisions (Female, Male, LGBTQ+, Teen) and awards (People's Choice, Best Gown, etc.) are batch created.
+**Independent Test**: Click "Edit" on a division card, modify its name from "Female Category" to "Women's Division", click "Save Changes", and verify the card updates optimistically and persists on page reload.
 
 ### Tests for User Story 2
 
-- [x] T010 [P] [US2] Unit test for preset template loading and batch application in `tests/unit/events/taxonomy-presets.test.tsx`
+- [x] T008 [P] [US2] Unit tests for division and award category inline editing (edit mode trigger, field prepopulation, cancel revert, PATCH mutation, duplicate name error) in `tests/unit/events/category-awards-settings-form.test.tsx`
 
 ### Implementation for User Story 2
 
-- [x] T011 [US2] Implement `TaxonomyPresetsCard.tsx` with preset buttons and batch application logic in `src/features/events/components/dashboard/TaxonomyPresetsCard.tsx`
-- [x] T012 [US2] Integrate `TaxonomyPresetsCard` into `CategoryAwardsSettingsForm.tsx` with empty state guidance in `src/features/events/components/dashboard/CategoryAwardsSettingsForm.tsx`
+- [x] T009 [P] [US2] Implement inline card editing mode, Pencil action button, Save/Cancel controls, and `UpdateDivisionInput` handling in `src/features/events/components/dashboard/DivisionsSection.tsx`
+- [x] T010 [P] [US2] Implement inline card editing mode, Pencil action button, Save/Cancel controls, and `UpdateAwardCategoryInput` handling in `src/features/events/components/dashboard/AwardCategoriesSection.tsx`
+- [x] T011 [US2] Wire `useUpdateDivision` and `useUpdateAwardCategory` mutations in `CategoryAwardsSettingsForm.tsx` and implement Concurrent Edit Guard (disabling other edit/add triggers while an edit is active) in `src/features/events/components/dashboard/CategoryAwardsSettingsForm.tsx`
 
 ---
 
 ## Phase 5: User Story 3 - Granular Voting Toggle & Display Ordering (Priority: P3)
 
-**Goal**: Allow organizers to toggle public voting availability per award category and reorder display priorities.
+**Goal**: Allow organizers to independently toggle public voting availability per award category with immediate visual badge feedback.
 
-**Independent Test**: Flip the voting toggle switch on an award category and verify the status updates to "Voting Closed" (grey badge) with persistent PATCH mutation.
-
-### Tests for User Story 3
-
-- [x] T013 [P] [US3] Unit test for voting availability toggle mutations and status badges in `tests/unit/events/award-category-voting-toggle.test.tsx`
+**Independent Test**: Flip the voting switch on an award category to Closed and verify `isVotingOpen: false` persists.
 
 ### Implementation for User Story 3
 
-- [x] T014 [US3] Implement optimistic voting toggle switch (`isVotingOpen`) and display order controls in `src/features/events/components/dashboard/AwardCategoriesSection.tsx`
+- [x] T012 [P] [US3] Voting status toggle switch and optimistic status badge in `src/features/events/components/dashboard/AwardCategoriesSection.tsx`
 
 ---
 
 ## Phase 6: User Story 4 - Referential Integrity & Safe Deletion Dialog (Priority: P4)
 
-**Goal**: Prevent accidental deletion of divisions or award categories that have assigned contestants via a blocker modal dialog.
+**Goal**: Safeguard candidate assignments and voting integrity with deletion blocker dialogs.
 
-**Independent Test**: Attempt to delete a division with `contestantCount > 0` and confirm a blocker dialog appears preventing deletion.
-
-### Tests for User Story 4
-
-- [x] T015 [P] [US4] Unit test for deletion safety blocker and confirmation dialog in `tests/unit/events/taxonomy-delete-dialog.test.tsx`
+**Independent Test**: Attempt to delete a division with assigned contestants and verify hard deletion is blocked with a warning dialog.
 
 ### Implementation for User Story 4
 
-- [x] T016 [US4] Implement `TaxonomyDeleteDialog.tsx` with Radix AlertDialog supporting blocker state (`contestantCount > 0`) and destructive delete confirmation (`contestantCount === 0`) in `src/features/events/components/dashboard/TaxonomyDeleteDialog.tsx`
-- [x] T017 [US4] Integrate `TaxonomyDeleteDialog` into `CategoryAwardsSettingsForm.tsx`, `DivisionsSection.tsx`, and `AwardCategoriesSection.tsx`
+- [x] T013 [P] [US4] Implement referential integrity blocker and confirmation dialog in `src/features/events/components/dashboard/TaxonomyDeleteDialog.tsx`
 
 ---
 
 ## Phase 7: User Story 5 - Dynamic Public Roster Division Filtering (Priority: P2)
 
-**Goal**: Connect public candidate roster to dynamic event divisions so only configured divisions are rendered.
+**Goal**: Ensure public roster division filter dynamically mirrors the active divisions configured in Settings.
 
-**Independent Test**: Remove "LGBTQ+" and "Teen" divisions in settings, visit public page, and verify the division filter only displays "All Candidates", "Female", and "Male".
+**Independent Test**: Add a custom division and verify it appears in the public candidate roster filter bar.
 
-### Tests for User Story 5
+### Implementation for User Story 7
 
-- [x] T018 [P] [US5] Unit test for dynamic division filter bar rendering and tab selection in `tests/unit/contestants/category-filter.test.ts`
-
-### Implementation for User Story 5
-
-- [x] T019 [US5] Update `CategoryFilterBar.tsx` and `ContestantRoster.tsx` to accept and render dynamic `divisions` array with fallback in `src/features/contestants/components/CategoryFilterBar.tsx` and `src/features/contestants/components/ContestantRoster.tsx`
-- [x] T020 [US5] Update `EventPageClient.tsx` to pass dynamic taxonomy divisions to `ContestantRoster` in `src/features/events/components/EventPageClient.tsx`
+- [x] T014 [US5] Dynamic division filter pills rendering in `src/features/events/components/CategoryFilterBar.tsx`
 
 ---
 
-## Phase 8: Polish & Quality Gates
+## Phase 8: Polish & Cross-Cutting Concerns
 
-**Purpose**: Comprehensive testing, static analysis, typecheck, and Jira tracking.
+**Purpose**: Quality verification and regression testing.
 
-- [x] T021 [P] Run full test suite (`npm run test`) verifying 100% pass across all unit tests
-- [x] T022 [P] Run static analysis and linting (`npm run typecheck` and `npm run lint`)
-- [x] T023 Sync Jira ticket VS-37 status and comment changelog
+- [x] T015 [P] Remove obsolete preset tests and run full unit test suite via `npm run test:unit`
+- [x] T016 Run typecheck and lint verification via `npm run typecheck` and `npm run lint`
+
+---
+
+## Dependencies & Execution Order
+
+### Phase Dependencies
+
+- **Setup & Foundational (Phases 1 & 2)**: Core types & hooks ready.
+- **User Story 1 (Phase 3)**: Complete.
+- **User Story 2 (Phase 4)**: Currently actionable! Can execute T008 (test), T009 (DivisionsSection), T010 (AwardCategoriesSection), and T011 (CategoryAwardsSettingsForm).
+- **Polish (Phase 8)**: Executes after User Story 2 implementation to verify gates.
+
+### Parallel Opportunities
+
+- `T009` (`DivisionsSection.tsx`) and `T010` (`AwardCategoriesSection.tsx`) can be implemented in parallel.
+- `T008` unit tests can be authored concurrently with component updates.
+
+---
+
+## Implementation Strategy (User Story 2)
+
+1. **Step 1**: Write unit tests for inline editing in `tests/unit/events/category-awards-settings-form.test.tsx` (`T008`).
+2. **Step 2**: Add edit mode and form controls to `DivisionsSection.tsx` (`T009`).
+3. **Step 3**: Add edit mode and form controls to `AwardCategoriesSection.tsx` (`T010`).
+4. **Step 4**: Remove presets and connect update handlers with concurrent edit lock in `CategoryAwardsSettingsForm.tsx` (`T002`, `T011`).
+5. **Step 5**: Run tests and linting (`T015`, `T016`).

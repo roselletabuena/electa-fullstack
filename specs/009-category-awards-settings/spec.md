@@ -8,6 +8,14 @@
 
 **Input**: User description: "https://the-three-devsketeers.atlassian.net/browse/VS-37 - Organizer Dashboard 'Categories & Awards' Settings Management UI. Provide authenticated event organizers with an intuitive 'Categories & Awards' settings tab at /events/[slug]/settings?tab=categories featuring 1-click taxonomy presets, inline tag badge management, and voting availability toggles to customize competition divisions and award tracks effortlessly."
 
+## Clarifications
+
+### Session 2026-10-17
+
+- Q: How should the edit interface for existing Divisions and Award Categories be presented to organizers? → A: Inline Card Editing — Clicking Edit transforms the item's card directly into an in-place form with Save and Cancel buttons, maintaining immediate layout context without modal overlays.
+- Q: When renaming a division or award category that already has assigned contestants, how should the system proceed? → A: Save immediately with toast notification — No extra confirmation modal; contestant foreign key relationships remain intact and update seamlessly.
+- Q: How should the interface handle other actions if an item is already being edited inline? → A: Disallow other Edit/Add actions — Disable other edit/add buttons while an item is in edit mode, requiring explicit Save or Cancel.
+
 ## User Scenarios & Testing _(mandatory)_
 
 ### User Story 1 - Add & Configure Custom Divisions and Award Tracks (Priority: P1) 🎯 MVP
@@ -26,18 +34,22 @@ An authenticated event organizer navigates to the "Categories & Awards" settings
 
 ---
 
-### User Story 2 - Apply 1-Click Competition Taxonomy Presets (Priority: P2)
+### User Story 2 - Edit & Update Competition Divisions and Award Categories (Priority: P1)
 
-An organizer setting up a new competition selects from a curated list of 1-click presets (e.g., "Beauty Pageant", "Singing Competition", "Dance Championship", "Hackathon / Academic") to auto-populate standard divisions and award tracks with a single click, saving setup time.
+An authenticated event organizer navigates to the "Categories & Awards" settings tab at `/events/[slug]/settings?tab=categories` and edits the details (name, description, and display order) of existing competition divisions and award categories without deleting and recreating them. Taxonomy presets are removed from this dashboard since initial taxonomy setup is established during the Event Creation Wizard.
 
-**Why this priority**: Eliminates repetitive manual entry for common competition formats and provides standard templates.
+**Why this priority**: Organizers frequently need to fix typos, rename brackets (e.g. changing "Miss" to "Female Division"), update descriptions, or reorder categories after initial event creation without breaking contestant associations or losing existing votes.
 
-**Independent Test**: On an event with empty taxonomy, select the "Beauty Pageant" preset button, and verify that standard divisions (Female, Male, LGBTQ+, Teen) and awards (People's Choice, Best Evening Gown, Best Swimsuit) populate into the manager.
+**Independent Test**: Click the "Edit" action button on an existing division card, modify its name from "Female Category" to "Women's Division" and update its display order, click "Save Changes", and verify that the card updates immediately in the UI and persists on page reload while retaining all assigned contestants.
 
 **Acceptance Scenarios**:
 
-1. **Given** an event with zero divisions or awards, **When** the organizer clicks the "Beauty Pageant" preset card, **Then** the standard divisions and award tracks are pre-populated into the builder.
-2. **Given** pre-populated preset items, **When** the organizer modifies or deletes individual items before confirming, **Then** the changes are respected and persisted cleanly.
+1. **Given** an existing division card in the Divisions list, **When** the organizer clicks the "Edit" button, **Then** an edit form or dialog opens pre-populated with the division's current name, description, and display order.
+2. **Given** an organizer submitting valid updated division details, **When** they click "Save", **Then** a `PATCH /api/events/[slug]/divisions/[divisionId]` request is sent, the UI updates optimistically with a success toast notification, and assigned contestants remain intact.
+3. **Given** an organizer attempting to rename a division to an existing division name on the same event, **When** they submit, **Then** an inline conflict error message is displayed ("A division with this name already exists for this event") and submission is prevented.
+4. **Given** an existing award category card in the Award Categories list, **When** the organizer clicks "Edit", **Then** the editor opens with current name, description, display order, and voting status toggle.
+5. **Given** an organizer updating an award category's name or description, **When** they submit, **Then** a `PATCH /api/events/[slug]/award-categories/[categoryId]` request updates the category and all existing votes and contestant associations are preserved.
+6. **Given** an organizer opening an edit form and deciding not to make changes, **When** they click "Cancel", **Then** the card reverts to its read-only view with no network request or state corruption.
 
 ---
 
@@ -90,8 +102,9 @@ Public event viewers and voters see only the specific competition divisions conf
 
 - **Duplicate Name Warnings**: Real-time client-side warning if an organizer tries to add a division/category name that already exists in the list (case-insensitive).
 - **Network / API Failures**: Optimistic updates roll back gracefully with a toast error notification if an API request fails.
-- **Empty State Guidance**: When no divisions or categories exist, display helpful empty state cards with preset recommendations.
+- **Empty State Guidance**: When no divisions or categories exist, display clear empty state cards with quick "Add First Division" and "Add First Award Track" action triggers.
 - **Dynamic Division Fallback**: If an event has no divisions configured yet, the public roster displays "All Candidates" or auto-derives from active contestant division names.
+- **Concurrent Edit Guard**: While an item is being edited inline, other Edit and Add action triggers are disabled until the active edit is saved or cancelled, preventing form state conflicts.
 
 ## Requirements _(mandatory)_
 
@@ -102,9 +115,9 @@ Public event viewers and voters see only the specific competition divisions conf
 - **FR-003**: System MUST fetch and display existing event divisions and award categories using `GET /api/events/[slug]/categories`.
 - **FR-004**: System MUST allow adding new divisions via `POST /api/events/[slug]/divisions` with instant UI update.
 - **FR-005**: System MUST allow adding new award categories via `POST /api/events/[slug]/award-categories` with instant UI update.
-- **FR-006**: System MUST provide 1-click preset templates (Beauty Pageant, Talent Contest, Dance Championship, Academic/Hackathon) that batch-create standard taxonomy.
+- **FR-006**: System MUST provide inline card editing for existing Divisions (name, description, display order) via `PATCH /api/events/[slug]/divisions/[divisionId]`.
 - **FR-007**: System MUST provide an interactive switch on each award category card to toggle `isVotingOpen` in real-time via `PATCH`.
-- **FR-008**: System MUST provide inline editing of item names and display orders.
+- **FR-008**: System MUST provide inline card editing for existing Award Categories (name, description, display order, isVotingOpen) via `PATCH /api/events/[slug]/award-categories/[categoryId]`.
 - **FR-009**: System MUST display confirmation modal when attempting to delete an item linked to active contestants, preventing accidental data corruption.
 - **FR-010**: System MUST enforce WCAG 2.1 AA accessibility standards for all buttons, inputs, switches, and modal dialogs.
 - **FR-011**: System MUST dynamically populate the public candidate roster division filter (`CategoryFilterBar`) from the event's configured `Division` taxonomy records instead of static enum constants.
@@ -113,14 +126,13 @@ Public event viewers and voters see only the specific competition divisions conf
 
 - **Division**: Custom competition bracket (`id`, `name`, `description`, `displayOrder`, `contestantCount`).
 - **AwardCategory**: Custom award track (`id`, `name`, `description`, `isVotingOpen`, `displayOrder`, `contestantCount`).
-- **TaxonomyPreset**: Client-side template definition containing preset division names and award category names.
 
 ## Success Criteria _(mandatory)_
 
 ### Measurable Outcomes
 
-- **SC-001**: Organizers can configure an entire competition's taxonomy (4 divisions, 5 award tracks) in under 30 seconds using presets.
-- **SC-002**: Inline mutations (toggle voting, add item) provide optimistic feedback in < 50ms.
+- **SC-001**: Organizers can edit any division or award category in under 3 clicks with immediate visual feedback and persistent database updates.
+- **SC-002**: Inline mutations (toggle voting, add item, save edit) provide optimistic feedback in < 50ms.
 - **SC-003**: 100% of deletion attempts on items with active contestants show clear blocker dialogs without data loss.
 - **SC-004**: Zero accessibility regressions (100% keyboard navigable with visible focus rings and ARIA labels).
 - **SC-005**: Public candidate roster division filter dynamically matches the active competition divisions configured in Organizer Settings.

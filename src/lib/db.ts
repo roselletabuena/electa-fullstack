@@ -9,7 +9,12 @@ const globalForPrisma = globalThis as unknown as {
 
 function createPrismaClient() {
   const connectionString = env.DATABASE_URL ?? "";
-  const pool = new Pool({ connectionString });
+  const isCloud =
+    connectionString.includes("supabase.co") || connectionString.includes("pooler.supabase.com");
+  const pool = new Pool({
+    connectionString,
+    ssl: isCloud ? { rejectUnauthorized: false } : undefined,
+  });
   const adapter = new PrismaPg(pool);
   return new PrismaClient({ adapter });
 }

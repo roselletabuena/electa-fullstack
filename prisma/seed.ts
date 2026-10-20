@@ -1,4 +1,7 @@
-import "dotenv/config";
+import dotenv from "dotenv";
+dotenv.config({ path: ".env.local" });
+dotenv.config();
+
 import { Pool } from "pg";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { PrismaClient } from "../src/generated/client/client";
@@ -11,7 +14,12 @@ import type {
 
 const connectionString =
   process.env.DATABASE_URL ?? "postgresql://postgres:postgres@127.0.0.1:54322/postgres";
-const pool = new Pool({ connectionString });
+const isCloud =
+  connectionString.includes("supabase.co") || connectionString.includes("pooler.supabase.com");
+const pool = new Pool({
+  connectionString,
+  ssl: isCloud ? { rejectUnauthorized: false } : undefined,
+});
 const adapter = new PrismaPg(pool);
 const prisma = new PrismaClient({ adapter });
 

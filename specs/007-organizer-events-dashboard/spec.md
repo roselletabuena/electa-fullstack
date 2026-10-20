@@ -57,17 +57,17 @@ An organizer with multiple events uses the dashboard search bar and status pill 
 
 ### User Story 3 - Quick Action Routing & Public Link Sharing (Priority: P3)
 
-Each event card in the dashboard grid displays quick action triggers, allowing the organizer to jump directly into contestant rosters, event settings tabs, or copy the public voting link directly to their clipboard with user feedback.
+Each event card in the dashboard grid displays quick action triggers, allowing the organizer to jump directly into event management settings, inspect contestant rosters via interactive telemetry, access settings panels, or copy the public voting link directly to their clipboard with inline visual feedback.
 
 **Why this priority**: Minimizes clicks and friction for routine event operations.
 
-**Independent Test**: Can be tested by clicking the "Candidates", "Settings", and "Share Link" action buttons on any card, confirming proper routing and clipboard copy feedback.
+**Independent Test**: Can be tested by clicking the "Manage Event" button, the interactive "Contestants" telemetry link, the "Settings" button, and the "Share Link" action button on any card, confirming proper routing and clipboard copy feedback.
 
 **Acceptance Scenarios**:
 
-1. **Given** an event card for slug `muph-2026`, **When** the organizer clicks the "Candidates" action button, **Then** the browser navigates to `/events/muph-2026/contestants`.
-2. **Given** an event card for slug `muph-2026`, **When** the organizer clicks the "Settings" button, **Then** the browser navigates to `/events/muph-2026/settings`.
-3. **Given** an event card, **When** the organizer clicks the "Share Link" button, **Then** the canonical public event URL is copied to their clipboard and a confirmation toast notification appears.
+1. **Given** an event card for slug `muph-2026`, **When** the organizer clicks the primary "Manage Event" action button, the banner, or the title link, **Then** the browser navigates to `/events/muph-2026/settings`.
+2. **Given** an event card for slug `muph-2026`, **When** the organizer clicks the "Contestants" metric telemetry block, **Then** the browser navigates directly to `/events/muph-2026/contestants`.
+3. **Given** an event card, **When** the organizer clicks the "Share Link" button, **Then** the canonical public event URL is copied to their clipboard and the button visually toggles to an emerald checkmark confirmation icon for 2.5 seconds.
 
 ---
 
@@ -83,8 +83,15 @@ A newly registered organizer who has not yet created an event visits `/dashboard
 
 1. **Given** an authenticated user with 0 owned events, **When** they visit `/dashboard`, **Then** the metric cards display `0` values and the main viewport displays an onboarding illustration, explanatory copy, and a feature checklist, leaving the primary event creation action focused in the persistent navigation header (`SiteHeader`).
 
-### Spec Revision Note (Bugfix Alignment - VS-118)
+### Spec Revision Notes
 
+- **Date**: 2026-10-21
+- **Focus**: `EventCard` Design System & Telemetry Synchronization
+- **Change**: Synchronized `EventCard` specification with brutalist design system refinements:
+  - Primary CTA upgraded to `"Manage Event"` (`/events/[slug]/settings`) with `ArrowUpRight` icon.
+  - "Contestants" metric telemetry turned into a direct interactive link to `/events/[slug]/contestants`.
+  - Banner container standardized to Tailwind v4 `aspect-16/9` with WCAG 2.1 AA text-protection dark gradient scrim.
+  - Share link button visual feedback upgraded to inline emerald checkmark toggle.
 - **Date**: 2026-10-20
 - **Issue**: [VS-118](https://the-three-devsketeers.atlassian.net/browse/VS-118)
 - **Change**: Updated User Story 4 Acceptance Scenario 1 to eliminate the embedded duplicate "Create Your First Event" button inside `DashboardEmptyState`.
@@ -105,11 +112,11 @@ A newly registered organizer who has not yet created an event visits `/dashboard
 - **FR-001**: System MUST require authenticated session to access `/dashboard` and `/events`, redirecting unauthenticated users to `/login?redirect=%2Fdashboard`. `/events` MUST redirect to `/dashboard`.
 - **FR-002**: System MUST retrieve and display only the events where `organizerId` matches the authenticated user's ID.
 - **FR-003**: System MUST compute and display aggregate counts: Total Events, Live Events (`PUBLISHED` and within `startsAt..endsAt` window), Total Candidates across owned events, and Total Votes cast across owned events.
-- **FR-004**: System MUST render event cards showing: Banner image, Publication status badge (Live Voting, Draft, Completed), Title, Description preview, End date/time, Contestant count, and Total votes count.
+- **FR-004**: System MUST render event cards showing: 16:9 banner image with WCAG 2.1 AA dark gradient scrim overlay, Publication status badge (Live Voting, Draft, Completed), Title (linking to `/settings`), Description preview, End date/time, Interactive Contestant count telemetry (linking to `/contestants`), and Total votes count.
 - **FR-005**: System MUST support client-side filtering by status (`ALL`, `PUBLISHED`, `DRAFT`, `ARCHIVED`) and keyword search matching title, description, or slug.
 - **FR-006**: System MUST synchronize filter and search state with URL query parameters (`?status=...&q=...`) using `nuqs`.
-- **FR-007**: Event cards MUST provide direct navigation links to `/events/[slug]/contestants` and `/events/[slug]/settings`.
-- **FR-008**: Event cards MUST provide a 1-click "Share Link" button that writes the full public event URL to the clipboard and triggers visual feedback.
+- **FR-007**: Event cards MUST provide direct navigation links to `/events/[slug]/settings` (via "Manage Event" primary button, title, and banner) and `/events/[slug]/contestants` (via interactive contestant count telemetry block).
+- **FR-008**: Event cards MUST provide a 1-click "Share Link" button that writes the full public event URL to the clipboard and triggers inline checkmark visual feedback for 2.5 seconds.
 - **FR-009**: System MUST display an onboarding empty state when an organizer has zero events.
 - **FR-010**: System MUST paginate event card lists with 12 items per page when total filtered events exceed 12.
 

@@ -49,6 +49,10 @@ export function AwardCategoriesSection({
   const [editError, setEditError] = useState<string | null>(null);
   const [isSavingEdit, setIsSavingEdit] = useState(false);
 
+  // Compute next sequential 1-based display order
+  const nextDisplayOrder =
+    awardCategories.length > 0 ? Math.max(...awardCategories.map((c) => c.displayOrder)) + 1 : 1;
+
   const {
     register,
     handleSubmit,
@@ -62,7 +66,7 @@ export function AwardCategoriesSection({
       name: "",
       description: "",
       isVotingOpen: true,
-      displayOrder: awardCategories.length,
+      displayOrder: nextDisplayOrder,
     },
   });
 
@@ -74,6 +78,7 @@ export function AwardCategoriesSection({
 
   const handleStartAdding = () => {
     if (isBusy || editingCategoryId !== null) return;
+    setValue("displayOrder", nextDisplayOrder);
     setIsAdding(true);
     onEditingChange?.(true);
   };
@@ -91,13 +96,13 @@ export function AwardCategoriesSection({
         name: data.name,
         description: data.description || null,
         isVotingOpen: data.isVotingOpen ?? true,
-        displayOrder: data.displayOrder ?? awardCategories.length,
+        displayOrder: Number(data.displayOrder) || nextDisplayOrder,
       });
       reset({
         name: "",
         description: "",
         isVotingOpen: true,
-        displayOrder: awardCategories.length + 1,
+        displayOrder: nextDisplayOrder + 1,
       });
       setIsAdding(false);
       onEditingChange?.(false);
@@ -161,29 +166,39 @@ export function AwardCategoriesSection({
   const isBusy = isLoading || isSubmitting || disabled;
   const isAnyActionBlocked = isBusy || editingCategoryId !== null || isAdding;
 
+  // Deterministically sort categories by displayOrder ascending, then name
+  const sortedCategories = React.useMemo(() => {
+    return [...awardCategories].sort((a, b) => {
+      if (a.displayOrder !== b.displayOrder) {
+        return a.displayOrder - b.displayOrder;
+      }
+      return a.name.localeCompare(b.name);
+    });
+  }, [awardCategories]);
+
   return (
-    <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+    <Card className="rounded-none border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
       <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
             <div className="flex items-center gap-2">
               <Award className="size-5 text-indigo-600 dark:text-indigo-400" />
               <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
-                Award Categories & Voting Tracks
+                Award Categories
               </CardTitle>
             </div>
             <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
-              Configure specialized award titles and toggle live public voting availability per
-              award track.
+              Configure specialized award categories and toggle live public voting availability per
+              award category.
             </CardDescription>
           </div>
 
           <div className="flex items-center gap-2">
             <Badge
               variant="outline"
-              className="border-slate-200 bg-slate-50 text-xs font-semibold dark:border-slate-800 dark:bg-slate-800"
+              className="rounded-none border-slate-200 bg-slate-50 text-xs font-semibold dark:border-slate-800 dark:bg-slate-800"
             >
-              {awardCategories.length} Award Track{awardCategories.length !== 1 ? "s" : ""}
+              {awardCategories.length} Award Categor{awardCategories.length !== 1 ? "ies" : "y"}
             </Badge>
             {!isAdding && (
               <Button
@@ -192,10 +207,10 @@ export function AwardCategoriesSection({
                 variant="outline"
                 disabled={isAnyActionBlocked}
                 onClick={handleStartAdding}
-                className="gap-1.5 text-xs font-semibold"
+                className="gap-1.5 rounded-none text-xs font-semibold"
               >
                 <Plus className="size-3.5" />
-                Add Award Track
+                Add Award Category
               </Button>
             )}
           </div>
@@ -207,7 +222,7 @@ export function AwardCategoriesSection({
         {isAdding && (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-xl border border-indigo-200 bg-indigo-50/40 p-4 transition-all dark:border-indigo-900/60 dark:bg-indigo-950/20"
+            className="rounded-none border border-indigo-200 bg-indigo-50/40 p-4 transition-all dark:border-indigo-900/60 dark:bg-indigo-950/20"
           >
             <div className="flex items-center justify-between pb-3">
               <h4 className="text-xs font-bold text-indigo-950 dark:text-indigo-200">
@@ -215,18 +230,15 @@ export function AwardCategoriesSection({
               </h4>
               <button
                 type="button"
-                onClick={() => {
-                  setIsAdding(false);
-                  reset();
-                }}
-                className="text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                onClick={handleCancelAdding}
+                className="cursor-pointer text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
               >
                 Cancel
               </button>
             </div>
 
             {submitError && (
-              <div className="mb-3 flex items-center gap-2 rounded-md border border-red-200 bg-red-50 p-2.5 text-xs text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+              <div className="mb-3 flex items-center gap-2 rounded-none border border-red-200 bg-red-50 p-2.5 text-xs text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
                 <AlertCircle className="size-3.5 shrink-0" />
                 <span>{submitError}</span>
               </div>
@@ -235,14 +247,14 @@ export function AwardCategoriesSection({
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-12">
               <div className="space-y-1 sm:col-span-5">
                 <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
-                  Award Title <span className="text-red-500">*</span>
+                  Award Category Name <span className="text-red-500">*</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. People's Choice, Best Talent"
                   {...register("name")}
                   className={cn(
-                    "w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
+                    "w-full rounded-none border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
                     errors.name && "border-red-500",
                   )}
                 />
@@ -255,9 +267,9 @@ export function AwardCategoriesSection({
                 </label>
                 <input
                   type="text"
-                  placeholder="e.g. Open public voting track"
+                  placeholder="e.g. Open public voting category"
                   {...register("description")}
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
+                  className="w-full rounded-none border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
                 />
               </div>
 
@@ -272,19 +284,19 @@ export function AwardCategoriesSection({
                     aria-checked={watchedIsVotingOpen}
                     onClick={() => setValue("isVotingOpen", !watchedIsVotingOpen)}
                     className={cn(
-                      "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                      "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
                       watchedIsVotingOpen ? "bg-emerald-600" : "bg-slate-300 dark:bg-slate-700",
                     )}
                   >
                     <span
                       className={cn(
-                        "pointer-events-none inline-block size-4 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out",
+                        "pointer-events-none inline-block size-4 transform rounded-none bg-white shadow-sm transition duration-200 ease-in-out",
                         watchedIsVotingOpen ? "translate-x-4" : "translate-x-0",
                       )}
                     />
                   </button>
                   <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
-                    {watchedIsVotingOpen ? "Open to Voting" : "Closed (Judges Only)"}
+                    {watchedIsVotingOpen ? "Voting Open" : "Judged Only"}
                   </span>
                 </div>
               </div>
@@ -296,7 +308,7 @@ export function AwardCategoriesSection({
                 variant="ghost"
                 size="sm"
                 onClick={handleCancelAdding}
-                className="text-xs"
+                className="rounded-none text-xs"
               >
                 Cancel
               </Button>
@@ -304,7 +316,7 @@ export function AwardCategoriesSection({
                 type="submit"
                 size="sm"
                 disabled={isSubmitting}
-                className="gap-1.5 bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                className="gap-1.5 rounded-none bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
               >
                 {isSubmitting ? (
                   <>
@@ -314,7 +326,7 @@ export function AwardCategoriesSection({
                 ) : (
                   <>
                     <Plus className="size-3.5" />
-                    Save Award Track
+                    Save Award Category
                   </>
                 )}
               </Button>
@@ -323,16 +335,16 @@ export function AwardCategoriesSection({
         )}
 
         {/* Award Categories List / Empty State */}
-        {awardCategories.length === 0 && !isAdding ? (
-          <div className="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-200 p-8 text-center dark:border-slate-800">
-            <div className="flex size-10 items-center justify-center rounded-full bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
+        {sortedCategories.length === 0 && !isAdding ? (
+          <div className="flex flex-col items-center justify-center rounded-none border border-dashed border-slate-200 p-8 text-center dark:border-slate-800">
+            <div className="flex size-10 items-center justify-center rounded-none bg-slate-100 text-slate-500 dark:bg-slate-800 dark:text-slate-400">
               <Award className="size-5" />
             </div>
             <h4 className="mt-3 text-xs font-bold text-slate-900 dark:text-slate-100">
-              No Award Tracks Configured
+              No Award Categories Configured
             </h4>
             <p className="mt-1 max-w-sm text-[11px] text-slate-500 dark:text-slate-400">
-              Define custom award categories to configure voting tracks.
+              Define custom award categories to organize competition recognitions.
             </p>
             <Button
               type="button"
@@ -340,15 +352,15 @@ export function AwardCategoriesSection({
               variant="outline"
               disabled={isAnyActionBlocked}
               onClick={handleStartAdding}
-              className="mt-4 gap-1.5 text-xs font-semibold"
+              className="mt-4 gap-1.5 rounded-none text-xs font-semibold"
             >
               <Plus className="size-3.5" />
-              Add First Award Track
+              Add First Award Category
             </Button>
           </div>
         ) : (
           <div className="grid grid-cols-1 gap-2.5 sm:grid-cols-2 lg:grid-cols-3">
-            {awardCategories.map((category) => {
+            {sortedCategories.map((category) => {
               const isEditing = editingCategoryId === category.id;
               const isToggling = togglingId === category.id;
 
@@ -356,7 +368,7 @@ export function AwardCategoriesSection({
                 return (
                   <div
                     key={category.id}
-                    className="relative flex flex-col justify-between rounded-xl border border-indigo-300 bg-indigo-50/30 p-3.5 shadow-xs transition-all dark:border-indigo-800 dark:bg-indigo-950/30"
+                    className="relative flex flex-col justify-between rounded-none border border-indigo-300 bg-indigo-50/30 p-3.5 shadow-xs transition-all dark:border-indigo-800 dark:bg-indigo-950/30"
                   >
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
@@ -369,7 +381,7 @@ export function AwardCategoriesSection({
                       </div>
 
                       {editError && (
-                        <div className="flex items-center gap-1.5 rounded-md border border-red-200 bg-red-50 p-2 text-[11px] text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
+                        <div className="flex items-center gap-1.5 rounded-none border border-red-200 bg-red-50 p-2 text-[11px] text-red-700 dark:border-red-900 dark:bg-red-950/40 dark:text-red-300">
                           <AlertCircle className="size-3 shrink-0" />
                           <span>{editError}</span>
                         </div>
@@ -385,7 +397,7 @@ export function AwardCategoriesSection({
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
                           disabled={isSavingEdit}
-                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                           autoFocus
                         />
                       </div>
@@ -400,7 +412,7 @@ export function AwardCategoriesSection({
                           value={editDescription}
                           onChange={(e) => setEditDescription(e.target.value)}
                           disabled={isSavingEdit}
-                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                         />
                       </div>
 
@@ -415,12 +427,12 @@ export function AwardCategoriesSection({
                           value={editDisplayOrder}
                           onChange={(e) => setEditDisplayOrder(Number(e.target.value))}
                           disabled={isSavingEdit}
-                          className="w-full rounded-md border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                         />
                       </div>
 
                       {/* Voting Toggle Row inside Edit Mode */}
-                      <div className="flex items-center justify-between rounded-lg border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-900">
+                      <div className="flex items-center justify-between rounded-none border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-900">
                         <div className="flex items-center gap-1.5 text-[11px]">
                           <Vote className="size-3 text-slate-400" />
                           <span className="font-medium text-slate-700 dark:text-slate-300">
@@ -431,13 +443,13 @@ export function AwardCategoriesSection({
                           <Badge
                             variant="outline"
                             className={cn(
-                              "px-1.5 py-0 text-[10px] font-semibold transition-colors",
+                              "rounded-none px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase transition-colors",
                               editIsVotingOpen
-                                ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
-                                : "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400",
+                                ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+                                : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
                             )}
                           >
-                            {editIsVotingOpen ? "Open" : "Closed"}
+                            {editIsVotingOpen ? "VOTING OPEN" : "JUDGED ONLY"}
                           </Badge>
                           <button
                             type="button"
@@ -446,7 +458,7 @@ export function AwardCategoriesSection({
                             disabled={isSavingEdit}
                             onClick={() => setEditIsVotingOpen(!editIsVotingOpen)}
                             className={cn(
-                              "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                              "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
                               editIsVotingOpen
                                 ? "bg-emerald-600"
                                 : "bg-slate-300 dark:bg-slate-700",
@@ -455,7 +467,7 @@ export function AwardCategoriesSection({
                             <span className="sr-only">Toggle voting for {category.name}</span>
                             <span
                               className={cn(
-                                "pointer-events-none inline-block size-3 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out",
+                                "pointer-events-none inline-block size-3 transform rounded-none bg-white shadow-sm transition duration-200 ease-in-out",
                                 editIsVotingOpen ? "translate-x-3" : "translate-x-0",
                               )}
                             />
@@ -471,7 +483,7 @@ export function AwardCategoriesSection({
                         size="sm"
                         disabled={isSavingEdit}
                         onClick={handleCancelEdit}
-                        className="h-7 text-xs"
+                        className="h-7 rounded-none text-xs"
                       >
                         Cancel
                       </Button>
@@ -480,7 +492,7 @@ export function AwardCategoriesSection({
                         size="sm"
                         disabled={isSavingEdit || !editName.trim()}
                         onClick={() => handleSaveEdit(category.id)}
-                        className="h-7 gap-1 bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                        className="h-7 gap-1 rounded-none bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
                       >
                         {isSavingEdit ? (
                           <>
@@ -499,7 +511,7 @@ export function AwardCategoriesSection({
               return (
                 <div
                   key={category.id}
-                  className="group relative flex flex-col justify-between rounded-xl border border-slate-200/90 bg-white p-3.5 transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900/90 dark:hover:border-slate-700"
+                  className="group relative flex flex-col justify-between rounded-none border border-slate-200/90 bg-white p-3.5 transition-all hover:border-slate-300 dark:border-slate-800 dark:bg-slate-900/90 dark:hover:border-slate-700"
                 >
                   <div>
                     <div className="flex items-start justify-between gap-2">
@@ -524,7 +536,7 @@ export function AwardCategoriesSection({
                           aria-label={`Edit ${category.name}`}
                           disabled={isAnyActionBlocked}
                           onClick={() => handleStartEdit(category)}
-                          className="size-7 text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                          className="size-7 rounded-none text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
                           title="Edit award category"
                         >
                           <Pencil className="size-3.5" />
@@ -536,7 +548,7 @@ export function AwardCategoriesSection({
                           size="icon"
                           disabled={isAnyActionBlocked}
                           onClick={() => onDeleteRequest(category)}
-                          className="size-7 text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
+                          className="size-7 rounded-none text-slate-400 opacity-60 transition-opacity group-hover:opacity-100 hover:bg-red-50 hover:text-red-600 dark:hover:bg-red-950/40 dark:hover:text-red-400"
                           title="Delete award category"
                         >
                           <Trash2 className="size-3.5" />
@@ -546,7 +558,7 @@ export function AwardCategoriesSection({
                     </div>
 
                     {/* Voting Toggle Row */}
-                    <div className="mt-3 flex items-center justify-between rounded-lg border border-slate-100 bg-slate-50/70 px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-950/40">
+                    <div className="mt-3 flex items-center justify-between rounded-none border border-slate-100 bg-slate-50/70 px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-950/40">
                       <div className="flex items-center gap-1.5 text-[11px]">
                         <Vote className="size-3 text-slate-400" />
                         <span className="font-medium text-slate-700 dark:text-slate-300">
@@ -558,13 +570,13 @@ export function AwardCategoriesSection({
                         <Badge
                           variant="outline"
                           className={cn(
-                            "px-1.5 py-0 text-[10px] font-semibold transition-colors",
+                            "rounded-none px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase transition-colors",
                             category.isVotingOpen
-                              ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
-                              : "border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400",
+                              ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
+                              : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
                           )}
                         >
-                          {category.isVotingOpen ? "Open" : "Closed"}
+                          {category.isVotingOpen ? "VOTING OPEN" : "JUDGED ONLY"}
                         </Badge>
 
                         <button
@@ -574,7 +586,7 @@ export function AwardCategoriesSection({
                           disabled={isAnyActionBlocked || isToggling}
                           onClick={() => handleToggle(category)}
                           className={cn(
-                            "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-full border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                            "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
                             category.isVotingOpen
                               ? "bg-emerald-600"
                               : "bg-slate-300 dark:bg-slate-700",
@@ -583,7 +595,7 @@ export function AwardCategoriesSection({
                           <span className="sr-only">Toggle voting for {category.name}</span>
                           <span
                             className={cn(
-                              "pointer-events-none inline-block size-3 transform rounded-full bg-white shadow-sm transition duration-200 ease-in-out",
+                              "pointer-events-none inline-block size-3 transform rounded-none bg-white shadow-sm transition duration-200 ease-in-out",
                               category.isVotingOpen ? "translate-x-3" : "translate-x-0",
                             )}
                           />

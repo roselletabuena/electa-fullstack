@@ -532,10 +532,10 @@ export function TaxonomyEditor({
                       "rounded-none px-2 py-0.5 text-[10px] font-bold tracking-wider uppercase",
                       award.isVotingOpen
                         ? "border border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
-                        : "border border-slate-200 bg-slate-100 text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400",
+                        : "border border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
                     )}
                   >
-                    {award.isVotingOpen ? "Voting Open" : "Judged Only"}
+                    {award.isVotingOpen ? "VOTING OPEN" : "JUDGED ONLY"}
                   </span>
                   <button
                     type="button"

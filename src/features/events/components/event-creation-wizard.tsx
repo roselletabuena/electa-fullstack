@@ -799,7 +799,7 @@ export function EventCreationWizard({
                 </div>
                 <div className="mt-2 text-xs text-slate-600 dark:text-slate-400">
                   {watchedArchetype === "PAGEANT"
-                    ? `${divisions.length} Divisions, ${awardCategories.length} Award Tracks`
+                    ? `${divisions.length} Divisions, ${awardCategories.length} Award Categories`
                     : `${positions.length} ${EVENT_ARCHETYPE_CONFIGS[watchedArchetype].groupingTerm}s configured`}
                 </div>
               </div>

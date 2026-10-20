@@ -81,6 +81,7 @@ const eslintConfig = defineConfig([
     files: ["prisma/**/*.ts", "scripts/**/*.{ts,js,mjs}"],
     rules: {
       "no-console": "off",
+      "sonarjs/cognitive-complexity": "off",
     },
   },
 

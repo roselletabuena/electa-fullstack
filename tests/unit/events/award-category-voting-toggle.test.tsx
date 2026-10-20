@@ -30,7 +30,7 @@ describe("AwardCategoriesSection & Voting Toggle", () => {
     },
   ];
 
-  it("renders award tracks with their respective voting statuses", () => {
+  it("renders award categories with their respective voting statuses", () => {
     render(
       <AwardCategoriesSection
         slug="miss-universe-2026"
@@ -44,8 +44,8 @@ describe("AwardCategoriesSection & Voting Toggle", () => {
 
     expect(screen.getByText("People's Choice")).toBeDefined();
     expect(screen.getByText("Best in Evening Gown")).toBeDefined();
-    expect(screen.getByText("Open")).toBeDefined();
-    expect(screen.getByText("Closed")).toBeDefined();
+    expect(screen.getByText("VOTING OPEN")).toBeDefined();
+    expect(screen.getByText("JUDGED ONLY")).toBeDefined();
   });
 
   it("calls onToggleVoting when voting switch is clicked", async () => {

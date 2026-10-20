@@ -1,7 +1,7 @@
 # Implementation Plan: Launch Readiness Checklist
 
 **Feature ID**: `038-launch-readiness-checklist`  
-**Jira Key**: [VS-106](https://the-three-devsketeers.atlassian.net/browse/VS-106)  
+**Jira Key**: [VS-106](https://the-three-devsketeers.atlassian.net/browse/VS-106)
 
 ---
 
@@ -38,7 +38,7 @@
                      Zero-Radius Brutalist Card                     Compact "Ready & Live" Banner
                      - 4 Milestones                                 - Dismiss Button
                      - Progress Bar (0..100%)                       - Stored in localStorage
-                     - "Copy Draft Preview Link"
+                     - In-Flow Collapse/Expand Toggle
 ```
 
 ---
@@ -51,7 +51,7 @@
    - `src/features/events/types/launch-readiness.ts`: Re-export Zod types and interfaces for launch readiness.
    - Export in `src/features/events/types/index.ts`.
 3. **New UI Component**:
-   - `src/features/events/components/dashboard/LaunchReadinessChecklist.tsx`: Embedded zero-radius brutalist widget with copy action, toast notification, milestone links, progress bar, and published dismissal state.
+   - `src/features/events/components/dashboard/LaunchReadinessChecklist.tsx`: Embedded zero-radius brutalist widget with in-flow collapse toggle, milestone links, progress bar, and published dismissal state.
 4. **Page Integration**:
    - `src/app/(dashboard)/events/[slug]/settings/page.tsx`: Fetch division, contestant, and audit counts in parallel, compute snapshot, and render `<LaunchReadinessChecklist />` above `<SettingsTabsContainer />`.
 5. **Unit Tests**:

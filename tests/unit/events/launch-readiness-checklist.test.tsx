@@ -1,16 +1,8 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import React from "react";
 import { LaunchReadinessChecklist } from "@/features/events/components/dashboard/LaunchReadinessChecklist";
 import type { LaunchReadinessSnapshot } from "@/features/events/types/launch-readiness";
-import { toast } from "sonner";
-
-vi.mock("sonner", () => ({
-  toast: {
-    success: vi.fn(),
-    error: vi.fn(),
-  },
-}));
 
 const mockDraftSnapshot: LaunchReadinessSnapshot = {
   eventId: "550e8400-e29b-41d4-a716-446655440000",
@@ -88,31 +80,6 @@ describe("LaunchReadinessChecklist", () => {
     expect(progressBar.getAttribute("aria-valuemax")).toBe("100");
   });
 
-  it("copies draft preview link to clipboard and fires a success toast", async () => {
-    const writeTextMock = vi.fn().mockResolvedValue(undefined);
-    Object.defineProperty(navigator, "clipboard", {
-      value: { writeText: writeTextMock },
-      configurable: true,
-      writable: true,
-    });
-
-    render(<LaunchReadinessChecklist snapshot={mockDraftSnapshot} />);
-
-    const copyButton = screen.getByRole("button", { name: /copy draft preview link/i });
-    expect(copyButton).toBeDefined();
-
-    fireEvent.click(copyButton);
-
-    await waitFor(() => {
-      expect(writeTextMock).toHaveBeenCalledWith(
-        expect.stringContaining("/events/rey-ng-tarlac-2026"),
-      );
-      expect(toast.success).toHaveBeenCalledWith(
-        expect.stringMatching(/draft preview link copied/i),
-      );
-    });
-  });
-
   it("renders compact 'Ready & Live' banner when status is PUBLISHED and handles dismissal", async () => {
     const publishedSnapshot: LaunchReadinessSnapshot = {
       ...mockDraftSnapshot,
@@ -133,14 +100,59 @@ describe("LaunchReadinessChecklist", () => {
 
     // After dismissal, it should no longer be visible
     expect(screen.queryByText(/competition is ready & live/i)).toBeNull();
-    expect(
-      localStorage.getItem(`electa_dismissed_readiness_${publishedSnapshot.eventId}`),
-    ).toBe("true");
+    expect(localStorage.getItem(`electa_dismissed_readiness_${publishedSnapshot.eventId}`)).toBe(
+      "true",
+    );
 
     unmount();
 
     // Subsequent render should return null directly due to localStorage check
     const { container } = render(<LaunchReadinessChecklist snapshot={publishedSnapshot} />);
     expect(container.firstChild).toBeNull();
+  });
+
+  it("toggles collapse state between expanded cards and compact strip with persistence", () => {
+    const { unmount } = render(<LaunchReadinessChecklist snapshot={mockDraftSnapshot} />);
+
+    // Initially expanded: subtitle and milestone cards are visible
+    expect(screen.getByText(/complete these essential setup tasks before opening/i)).toBeDefined();
+    expect(screen.getByText("Event Profile Created")).toBeDefined();
+
+    // Find and click the Minimize button
+    const toggleButton = screen.getByRole("button", {
+      name: /minimize launch readiness checklist/i,
+    });
+    expect(toggleButton).toBeDefined();
+    fireEvent.click(toggleButton);
+
+    // After collapse: 4 cards & subtitle are hidden, compact next milestone inline is shown
+    expect(screen.queryByText(/complete these essential setup tasks before opening/i)).toBeNull();
+    expect(screen.getByText(/next:/i)).toBeDefined();
+    expect(localStorage.getItem(`electa_collapsed_readiness_${mockDraftSnapshot.eventId}`)).toBe(
+      "true",
+    );
+
+    // The toggle button now has "Expand" label and aria-label
+    const expandButton = screen.getByRole("button", {
+      name: /expand launch readiness checklist/i,
+    });
+    expect(expandButton).toBeDefined();
+
+    // Click Expand to restore
+    fireEvent.click(expandButton);
+    expect(screen.getByText(/complete these essential setup tasks before opening/i)).toBeDefined();
+    expect(localStorage.getItem(`electa_collapsed_readiness_${mockDraftSnapshot.eventId}`)).toBe(
+      "false",
+    );
+
+    unmount();
+
+    // If pre-set to collapsed in localStorage, renders collapsed directly
+    localStorage.setItem(`electa_collapsed_readiness_${mockDraftSnapshot.eventId}`, "true");
+    render(<LaunchReadinessChecklist snapshot={mockDraftSnapshot} />);
+    expect(screen.queryByText(/complete these essential setup tasks before opening/i)).toBeNull();
+    expect(
+      screen.getByRole("button", { name: /expand launch readiness checklist/i }),
+    ).toBeDefined();
   });
 });

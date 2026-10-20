@@ -16,9 +16,15 @@
 - Q: When renaming a division or award category that already has assigned contestants, how should the system proceed? → A: Save immediately with toast notification — No extra confirmation modal; contestant foreign key relationships remain intact and update seamlessly.
 - Q: How should the interface handle other actions if an item is already being edited inline? → A: Disallow other Edit/Add actions — Disable other edit/add buttons while an item is in edit mode, requiring explicit Save or Cancel.
 
+### Spec Revision Note (Bugfix Alignment - VS-118)
+
+- **Date**: 2026-10-21
+- **Change**: Standardized nomenclature from "Award Tracks" / "Voting Tracks" to "Award Categories" across all dashboard settings components. Harmonized status indicators from "Open/Closed" to "VOTING OPEN" and "JUDGED ONLY" badges. Enforced sequential 1-based displayOrder generation during preset hydration and manual creation, and applied Electa's brutalist zero-radius geometry (`rounded-none`, ADR-002).
+- **Rationale**: Aligned with ADR-002 (Strict Zero-Radius Brutalist-Refined Geometry), ADR-003 (Opal Light Mode default), and Jira ticket VS-118 (FE: Standardize Award Categories Nomenclature, Status Badges & Ordering Across Creation Wizard and Settings).
+
 ## User Scenarios & Testing _(mandatory)_
 
-### User Story 1 - Add & Configure Custom Divisions and Award Tracks (Priority: P1) 🎯 MVP
+### User Story 1 - Add & Configure Custom Divisions and Award Categories (Priority: P1) 🎯 MVP
 
 An authenticated event organizer navigates to the "Categories & Awards" settings tab at `/events/[slug]/settings?tab=categories` to configure the event's competition divisions (e.g., "Miss", "Mister", "Teen") and award categories (e.g., "People's Choice", "Best in Evening Gown"). The organizer enters new names, optional descriptions, and display orders, receiving instant optimistic feedback and persistent database synchronization.
 
@@ -55,16 +61,16 @@ An authenticated event organizer navigates to the "Categories & Awards" settings
 
 ### User Story 3 - Granular Voting Toggle & Display Ordering (Priority: P3)
 
-An organizer manages active award tracks by toggling public voting availability on/off per award (e.g., opening public voting for "People's Choice" while keeping "Best Gown" closed for judges only) and rearranging display order.
+An organizer manages active award categories by toggling public voting availability on/off per award (e.g., opening public voting for "People's Choice" with "VOTING OPEN" badge while keeping "Best Gown" as "JUDGED ONLY") and rearranging display order.
 
-**Why this priority**: Enables organizers to control voting access per award track independently throughout different competition phases.
+**Why this priority**: Enables organizers to control voting access per award category independently throughout different competition phases.
 
-**Independent Test**: Toggle the voting status switch on "Best in Evening Gown" to OFF, reload the page, and verify the status persists as "Voting Closed" (grey badge).
+**Independent Test**: Toggle the voting status switch on "Best in Evening Gown" to OFF, reload the page, and verify the status persists as "JUDGED ONLY" (high-contrast grey badge).
 
 **Acceptance Scenarios**:
 
-1. **Given** an existing award category, **When** the organizer flips its voting switch, **Then** a `PATCH` request updates `isVotingOpen` in real-time with toast confirmation.
-2. **Given** multiple divisions, **When** the organizer adjusts display order indices, **Then** the items reorder deterministically.
+1. **Given** an existing award category, **When** the organizer flips its voting switch, **Then** a `PATCH` request updates `isVotingOpen` in real-time with toast confirmation and updates the badge to "VOTING OPEN" or "JUDGED ONLY".
+2. **Given** multiple divisions or award categories, **When** the organizer adjusts display order indices, **Then** the items maintain unique sequential ordering without index collisions.
 
 ---
 
@@ -102,7 +108,7 @@ Public event viewers and voters see only the specific competition divisions conf
 
 - **Duplicate Name Warnings**: Real-time client-side warning if an organizer tries to add a division/category name that already exists in the list (case-insensitive).
 - **Network / API Failures**: Optimistic updates roll back gracefully with a toast error notification if an API request fails.
-- **Empty State Guidance**: When no divisions or categories exist, display clear empty state cards with quick "Add First Division" and "Add First Award Track" action triggers.
+- **Empty State Guidance**: When no divisions or categories exist, display clear empty state cards with quick "Add First Division" and "Add First Award Category" action triggers.
 - **Dynamic Division Fallback**: If an event has no divisions configured yet, the public roster displays "All Candidates" or auto-derives from active contestant division names.
 - **Concurrent Edit Guard**: While an item is being edited inline, other Edit and Add action triggers are disabled until the active edit is saved or cancelled, preventing form state conflicts.
 
@@ -125,7 +131,7 @@ Public event viewers and voters see only the specific competition divisions conf
 ### Key Entities
 
 - **Division**: Custom competition bracket (`id`, `name`, `description`, `displayOrder`, `contestantCount`).
-- **AwardCategory**: Custom award track (`id`, `name`, `description`, `isVotingOpen`, `displayOrder`, `contestantCount`).
+- **AwardCategory**: Custom award category (`id`, `name`, `description`, `isVotingOpen`, `displayOrder`, `contestantCount`).
 
 ## Success Criteria _(mandatory)_
 

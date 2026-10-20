@@ -1,6 +1,5 @@
 import React from "react";
-import Link from "next/link";
-import { Plus, Trophy, CheckCircle2 } from "lucide-react";
+import { Trophy, CheckCircle2 } from "lucide-react";
 
 export function DashboardEmptyState(): React.JSX.Element {
   return (
@@ -26,14 +25,6 @@ export function DashboardEmptyState(): React.JSX.Element {
           <span>Real-time Secure Voting</span>
         </li>
       </ul>
-
-      <Link
-        href="/events/new"
-        className="mt-8 inline-flex items-center gap-2 rounded-none border border-slate-900 bg-slate-900 px-6 py-3 text-xs font-extrabold tracking-widest text-white uppercase shadow-sm transition-colors hover:bg-slate-800 dark:border-slate-100 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
-      >
-        <Plus className="size-4" />
-        <span>Create Your First Event</span>
-      </Link>
     </div>
   );
 }

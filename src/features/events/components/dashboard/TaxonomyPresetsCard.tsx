@@ -43,11 +43,11 @@ export function TaxonomyPresetsCard({
   };
 
   return (
-    <Card className="border-indigo-100/70 bg-linear-to-br from-indigo-50/40 via-white to-purple-50/20 shadow-xs dark:border-indigo-950/40 dark:from-indigo-950/20 dark:via-slate-900 dark:to-purple-950/10">
+    <Card className="rounded-none border-indigo-100/70 bg-linear-to-br from-indigo-50/40 via-white to-purple-50/20 shadow-xs dark:border-indigo-950/40 dark:from-indigo-950/20 dark:via-slate-900 dark:to-purple-950/10">
       <CardHeader className="pb-4">
         <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
-            <div className="flex size-8 items-center justify-center rounded-lg bg-indigo-100 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
+            <div className="flex size-8 items-center justify-center rounded-none bg-indigo-100 text-indigo-600 dark:bg-indigo-950/60 dark:text-indigo-400">
               <Wand2 className="size-4" />
             </div>
             <div>
@@ -55,8 +55,8 @@ export function TaxonomyPresetsCard({
                 1-Click Competition Taxonomy Presets
               </CardTitle>
               <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
-                Instantly populate standard competition divisions and award tracks with zero manual
-                typing.
+                Instantly populate standard competition divisions and award categories with zero
+                manual typing.
               </CardDescription>
             </div>
           </div>
@@ -77,7 +77,7 @@ export function TaxonomyPresetsCard({
                 disabled={isApplying || disabled}
                 onClick={() => setSelectedPresetId(preset.id)}
                 className={cn(
-                  "relative flex flex-col items-start gap-2 rounded-xl border p-3.5 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                  "relative flex flex-col items-start gap-2 rounded-none border p-3.5 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
                   isSelected
                     ? "border-indigo-600 bg-white shadow-xs ring-1 ring-indigo-600 dark:border-indigo-500 dark:bg-slate-900 dark:ring-indigo-500"
                     : "border-slate-200/80 bg-white/70 hover:border-slate-300 hover:bg-white dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-slate-700 dark:hover:bg-slate-900",
@@ -86,7 +86,7 @@ export function TaxonomyPresetsCard({
                 <div className="flex w-full items-center justify-between">
                   <div
                     className={cn(
-                      "flex size-7 items-center justify-center rounded-lg",
+                      "flex size-7 items-center justify-center rounded-none",
                       isSelected
                         ? "bg-indigo-600 text-white dark:bg-indigo-500"
                         : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400",
@@ -96,7 +96,7 @@ export function TaxonomyPresetsCard({
                   </div>
                   <Badge
                     variant="outline"
-                    className="border-slate-200 bg-slate-50 text-[10px] text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                    className="rounded-none border-slate-200 bg-slate-50 text-[10px] text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                   >
                     {preset.badge}
                   </Badge>
@@ -112,7 +112,7 @@ export function TaxonomyPresetsCard({
                 </div>
 
                 {isSelected && (
-                  <div className="absolute top-2.5 right-2.5 flex size-4 items-center justify-center rounded-full bg-indigo-600 text-white dark:bg-indigo-500">
+                  <div className="absolute top-2.5 right-2.5 flex size-4 items-center justify-center rounded-none bg-indigo-600 text-white dark:bg-indigo-500">
                     <Check className="size-2.5" />
                   </div>
                 )}
@@ -123,17 +123,18 @@ export function TaxonomyPresetsCard({
 
         {/* Selected Preset Details & Action Footer */}
         {currentPreset && (
-          <div className="flex flex-col gap-3 rounded-xl border border-indigo-100 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900/80">
+          <div className="flex flex-col gap-3 rounded-none border border-indigo-100 bg-white/90 p-4 sm:flex-row sm:items-center sm:justify-between dark:border-slate-800 dark:bg-slate-900/80">
             <div className="space-y-1">
               <div className="flex flex-wrap items-center gap-2">
                 <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
                   Included in &quot;{currentPreset.title}&quot;:
                 </span>
-                <Badge variant="muted" className="text-[10px]">
+                <Badge variant="muted" className="rounded-none text-[10px]">
                   {currentPreset.divisions.length} Divisions
                 </Badge>
-                <Badge variant="muted" className="text-[10px]">
-                  {currentPreset.awardCategories.length} Award Tracks
+                <Badge variant="muted" className="rounded-none text-[10px]">
+                  {currentPreset.awardCategories.length} Award Categor
+                  {currentPreset.awardCategories.length !== 1 ? "ies" : "y"}
                 </Badge>
               </div>
               <p className="text-[11px] text-slate-500 dark:text-slate-400">
@@ -146,7 +147,7 @@ export function TaxonomyPresetsCard({
               size="sm"
               disabled={isApplying || disabled}
               onClick={handleApply}
-              className="shrink-0 gap-1.5 bg-indigo-600 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+              className="shrink-0 gap-1.5 rounded-none bg-indigo-600 text-xs font-semibold text-white shadow-xs hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
             >
               {applyingPresetId === currentPreset.id || isApplying ? (
                 <>

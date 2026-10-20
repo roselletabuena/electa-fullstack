@@ -39,7 +39,7 @@ const TABS: Array<{
     id: "categories",
     label: "Categories & Awards",
     icon: Layers,
-    description: "Divisions & award tracks",
+    description: "Divisions & award categories",
   },
 ];
 

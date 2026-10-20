@@ -229,7 +229,7 @@ export function CategoryAwardsSettingsForm({
                 <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
                   {isPositionBased
                     ? `${config.label} Taxonomy & Ballot Structure`
-                    : "Categories & Award Tracks"}
+                    : "Categories & Award Categories"}
                 </CardTitle>
               </div>
               <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
@@ -262,7 +262,8 @@ export function CategoryAwardsSettingsForm({
                   </Badge>
                   <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
                     <Award className="size-3 text-amber-500" />
-                    {awardCategories.length} Award Tracks
+                    {awardCategories.length} Award Categor
+                    {awardCategories.length !== 1 ? "ies" : "y"}
                   </Badge>
                   <Badge
                     variant="outline"

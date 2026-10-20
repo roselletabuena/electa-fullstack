@@ -65,8 +65,8 @@
 
 ### Implementation for User Story 3
 
-- [x] T014 [US3] Create `EventCard.tsx` component with banner preview, pulsing live badge, metrics summary, and action buttons in `src/features/events/components/dashboard-overview/EventCard.tsx`
-- [x] T015 [US3] Add 1-click clipboard copy utility with toast notification feedback in `src/features/events/components/dashboard-overview/EventCard.tsx`
+- [x] T014 [US3] Create `EventCard.tsx` component with 16:9 banner preview, status badge, metrics summary, and action buttons in `src/features/events/components/dashboard-overview/EventCard.tsx`
+- [x] T015 [US3] Add 1-click clipboard copy utility with inline checkmark visual feedback in `src/features/events/components/dashboard-overview/EventCard.tsx`
 - [x] T016 [US3] Integrate `EventCard.tsx` into the events grid in `EventsDashboardClient.tsx`
 
 **Checkpoint**: User Story 3 provides comprehensive event card interactions and quick operational links.

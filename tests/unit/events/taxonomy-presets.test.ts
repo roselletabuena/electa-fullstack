@@ -21,16 +21,16 @@ describe("TAXONOMY_PRESETS catalog", () => {
       expect(preset.divisions.length).toBeGreaterThanOrEqual(3);
       expect(preset.awardCategories.length).toBeGreaterThanOrEqual(3);
 
-      // Verify displayOrder sequencing
+      // Verify 1-based sequential displayOrder sequencing
       for (const [idx, div] of preset.divisions.entries()) {
         expect(div.name.length).toBeGreaterThan(0);
-        expect(div.displayOrder).toBe(idx);
+        expect(div.displayOrder).toBe(idx + 1);
       }
 
       for (const [idx, award] of preset.awardCategories.entries()) {
         expect(award.name.length).toBeGreaterThan(0);
         expect(typeof award.isVotingOpen).toBe("boolean");
-        expect(award.displayOrder).toBe(idx);
+        expect(award.displayOrder).toBe(idx + 1);
       }
     }
   });

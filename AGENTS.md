@@ -150,7 +150,7 @@ Autonomous coding agents operating in this repository leverage the customization
 
 Specialized on-demand workflows, tools, and quality gates:
 
-- **Quality & Workflow**: `atomic-commit`, `pr-creator`, `constitution-check`, `code-review-and-quality`, `tdd`, `branch-cleanup`
+- **Quality & Workflow**: `atomic-commit`, `pr-creator`, `constitution-check`, `code-review-and-quality`, `tdd`, `branch-cleanup`, `spec-aware-bugfix`
 - **SpecKit Lifecycle**: `speckit-workflow`, `speckit-specify`, `speckit-clarify`, `speckit-checklist`, `speckit-plan`, `speckit-tasks`, `speckit-implement`, `speckit-converge`
 - **Frontend & Design System**: `accessibility-colors`, `accessibility`, `anti-ui-slop`, `frontend-design`, `frontend-ui-engineering`, `vercel-react-best-practices`
 - **Backend & Database**: `db-migrate`, `supabase`, `supabase-postgres-best-practices`, `env-validator`
@@ -172,6 +172,7 @@ Multi-step slash command orchestrations:
 
 - `/speckit`: End-to-end spec-driven development in an isolated worktree with quality gates and automated PR creation
 - `/graphify`: Codebase knowledge graph extraction and navigation
+- `/bugfix`: Spec-aware bug triage and resolution (code bug vs spec drift)
 
 ### 4. Automated Hooks (`.agents/hooks.json` & `.agents/scripts/`)
 

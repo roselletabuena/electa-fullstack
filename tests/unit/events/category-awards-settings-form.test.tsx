@@ -95,7 +95,7 @@ describe("CategoryAwardsSettingsForm", () => {
     );
 
     await waitFor(() => {
-      expect(screen.getByText("Categories & Award Tracks")).toBeDefined();
+      expect(screen.getByText("Categories & Award Categories")).toBeDefined();
       expect(screen.getByText("Female Category")).toBeDefined();
       expect(screen.getByText("People's Choice Award")).toBeDefined();
       // Preset card should be completely removed

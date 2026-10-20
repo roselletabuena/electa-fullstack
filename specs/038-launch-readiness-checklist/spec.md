@@ -4,7 +4,7 @@
 **Jira Key**: [VS-106](https://the-three-devsketeers.atlassian.net/browse/VS-106)  
 **Parent Epic**: [VS-102: Event Creation Experience & Organizer Onboarding Overhaul](https://the-three-devsketeers.atlassian.net/browse/VS-102)  
 **Status**: In Progress  
-**Created**: 2026-10-13  
+**Created**: 2026-10-13
 
 ---
 
@@ -15,6 +15,7 @@ Immediately after creating a new competition from `/events/new`, organizers curr
 Rather than interrupting the user journey with disruptive modal popups, this feature implements an **embedded, non-intrusive launch readiness checklist widget** (`LaunchReadinessChecklist`) placed directly at the top of the event settings dashboard.
 
 The widget strictly adheres to:
+
 1. **Electa Zero-Radius Geometry**: Sharp brutalist container (`rounded-none`, `border border-slate-300 dark:border-slate-800 bg-white dark:bg-[#0d1424]`).
 2. **Brand Typography**: Headings in `Outfit` (`font-heading`), body copy in `Sora` (`font-sans`), metrics & URLs in `JetBrains Mono` (`font-mono`).
 3. **Dual-Theme WCAG 2.1 AA Contrast**: High-contrast states in both Light Mode (Opal `#F8FAFC`) and Dark Mode (Obsidian `#090D16` / `#0d1424`), with accessible status badges, progress bars, and interactive buttons.
@@ -23,7 +24,7 @@ The widget strictly adheres to:
    - Milestone 2: `○ Set Up Divisions` (Links directly to Categories/Divisions tab: `/events/[slug]/settings?tab=categories`)
    - Milestone 3: `○ Add Contestants` (Links directly to Contestants management: `/events/[slug]/contestants`)
    - Milestone 4: `○ Configure Voting Rules & Pricing` (Links directly to Voting Rules tab: `/events/[slug]/settings?tab=voting-rules`)
-5. **Draft Preview Link Action**: Quick `"Copy Draft Preview Link"` action copying `${origin}/events/${slug}` with instantaneous toast feedback via `sonner`.
+5. **In-Flow Collapsible Strip with Persistence**: Allows organizers to toggle between expanded 4-card mode and a sleek ~46px summary strip (`electa_collapsed_readiness_${eventId}`), ensuring settings tabs and forms remain 100% visible above the fold while highlighting the immediate next milestone. _(Note: Redundant copy preview button removed; handled centrally by `OrganizerDashboardHeader`)._
 6. **Publication Auto-Transition**: In `DRAFT` status, displays the actionable setup checklist. When the competition transitions to `PUBLISHED`, the widget seamlessly transforms into a compact `"Ready & Live"` indicator with permanent dismissal capability.
 
 ---
@@ -61,11 +62,11 @@ The widget strictly adheres to:
      - Milestone 4: Link to `/events/${slug}/settings?tab=voting-rules` (Configure Voting Rules)
    - Completed milestones display a bold green completion badge (`✓ Completed`) with high-contrast text (`text-emerald-700 dark:text-emerald-300`).
 
-4. **FR-4 Copy Draft Preview Link Action**:
-   - Provides an action button `"Copy Draft Preview Link"` with a link icon.
-   - Copies the full URL `${window.location.origin}/events/${slug}` to clipboard.
-   - Triggers a sonner toast: `"Draft preview link copied to clipboard!"`.
-   - Offers fallback copy for environments where `navigator.clipboard` is unavailable.
+4. **FR-4 In-Flow Collapsible Strip & Persistence**:
+   - Provides a "Minimize" / "Expand" toggle (`aria-expanded`, chevron indicator).
+   - When collapsed, reduces height to ~46px, displaying the readiness percentage and surfacing the immediate next milestone action inline without obstructing dashboard settings forms.
+   - Persists collapsed state across browser reloads using `localStorage` key `electa_collapsed_readiness_${eventId}`.
+   - Note: Redundant preview link action removed from checklist as event preview and copy actions are centrally accessible in `OrganizerDashboardHeader`.
 
 5. **FR-5 Published Status State & Dismissal**:
    - When `publicationStatus === "PUBLISHED"`, the full checklist transitions into a compact banner:
@@ -78,6 +79,7 @@ The widget strictly adheres to:
 ## 🧪 Acceptance Criteria (Gherkin Scenarios)
 
 ### Scenario 1: Post-Creation Redirection Without Modals (Happy Path)
+
 - **Given** an organizer successfully creates a new event from `/events/new`,
 - **When** the server action completes and redirects to `/events/[slug]/settings`,
 - **Then** the settings dashboard opens directly with the General tab active,
@@ -85,6 +87,7 @@ The widget strictly adheres to:
 - **and Then** the `LaunchReadinessChecklist` is embedded directly into the layout above the settings tabs.
 
 ### Scenario 2: Persistent Launch Readiness Checklist (Validation & Error Handling)
+
 - **Given** an event is in `DRAFT` status with no divisions or contestants registered,
 - **When** the organizer views their event settings page,
 - **Then** a prominent zero-radius checklist card is embedded at the top displaying:
@@ -92,9 +95,10 @@ The widget strictly adheres to:
   2. `○ Set Up Divisions` (Direct link to `/events/[slug]/settings?tab=categories`)
   3. `○ Add Contestants` (Direct link to `/events/[slug]/contestants`)
   4. `○ Configure Voting Rules & Pricing` (Direct link to `/events/[slug]/settings?tab=voting-rules`),
-- **and Then** a `"Copy Draft Preview Link"` action allows copying the private preview URL with clipboard toast feedback.
+- **and Then** a `"Minimize"` / `"Expand"` action allows toggling between the 4 milestone cards and a compact ~46px summary strip with localStorage persistence.
 
 ### Scenario 3: Auto-Dismissal on Event Publication (Edge Case)
+
 - **Given** all required setup tasks are completed and the organizer publishes the competition,
 - **When** the event status transitions to `PUBLISHED`,
 - **Then** the checklist automatically transitions into a compact `"Ready & Live"` indicator with a `"Dismiss"` button,

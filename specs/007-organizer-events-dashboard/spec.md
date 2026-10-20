@@ -73,15 +73,22 @@ Each event card in the dashboard grid displays quick action triggers, allowing t
 
 ### User Story 4 - Empty State & First-Time Organizer Onboarding (Priority: P4)
 
-A newly registered organizer who has not yet created an event visits `/dashboard`. The system presents an engaging empty state with onboarding guidance and a prominent call-to-action to create their first event.
+A newly registered organizer who has not yet created an event visits `/dashboard`. The system presents an engaging empty state with onboarding guidance and platform feature highlights, while the sticky persistent navigation header provides immediate, non-redundant access to event creation.
 
-**Why this priority**: Prevents a confusing blank screen for new users and guides them toward immediate event creation.
+**Why this priority**: Prevents a confusing blank screen for new users and guides them toward immediate event creation while maintaining clean brutalist visual hierarchy without duplicate call-to-actions.
 
-**Independent Test**: Can be tested by logging in as a user with zero events and verifying the empty state UI and "Create Your First Event" button.
+**Independent Test**: Can be tested by logging in as a user with zero events and verifying the empty state UI renders onboarding guidance and features, with primary event creation available via the persistent navigation header.
 
 **Acceptance Scenarios**:
 
-1. **Given** an authenticated user with 0 owned events, **When** they visit `/dashboard`, **Then** the metric cards display `0` values and the main viewport displays an onboarding illustration, explanatory copy, and a primary "Create Your First Event" button routing to `/events/new`.
+1. **Given** an authenticated user with 0 owned events, **When** they visit `/dashboard`, **Then** the metric cards display `0` values and the main viewport displays an onboarding illustration, explanatory copy, and a feature checklist, leaving the primary event creation action focused in the persistent navigation header (`SiteHeader`).
+
+### Spec Revision Note (Bugfix Alignment - VS-118)
+
+- **Date**: 2026-10-20
+- **Issue**: [VS-118](https://the-three-devsketeers.atlassian.net/browse/VS-118)
+- **Change**: Updated User Story 4 Acceptance Scenario 1 to eliminate the embedded duplicate "Create Your First Event" button inside `DashboardEmptyState`.
+- **Rationale**: The persistent `SiteHeader` already provides an omnipresent, accessible "+ Create Event" CTA routing to `/events/new`. A duplicate button in the center of the dashboard empty state introduced visual redundancy and violated clean brutalist information hierarchy.
 
 ---
 

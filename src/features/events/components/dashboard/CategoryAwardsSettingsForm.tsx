@@ -1,10 +1,9 @@
 "use client";
 
 import React, { useState } from "react";
-import { Layers, Award, Vote, Sparkles, AlertCircle, RotateCcw, Loader2 } from "lucide-react";
+import { Sparkles, AlertCircle, RotateCcw, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import {
   useEventTaxonomy,
   useCreateDivision,
@@ -69,7 +68,6 @@ export function CategoryAwardsSettingsForm({
   const positions = taxonomy?.positions ?? [];
   const divisions = taxonomy?.divisions ?? [];
   const awardCategories = taxonomy?.awardCategories ?? [];
-  const openVotingAwardsCount = awardCategories.filter((a) => a.isVotingOpen).length;
 
   const handleUpdateDivision = async (id: string, data: UpdateDivisionInput) => {
     setNotification(null);
@@ -177,10 +175,10 @@ export function CategoryAwardsSettingsForm({
   if (isLoading) {
     return (
       <div className={cn("space-y-6", className)}>
-        <Card className="border-slate-200 dark:border-slate-800">
+        <Card className="rounded-none border border-slate-300 dark:border-slate-800">
           <CardContent className="flex flex-col items-center justify-center p-12 text-center">
-            <Loader2 className="size-8 animate-spin text-indigo-600 dark:text-indigo-400" />
-            <p className="mt-3 text-xs font-semibold text-slate-600 dark:text-slate-400">
+            <Loader2 className="size-8 animate-spin text-sky-600 dark:text-sky-400" />
+            <p className="mt-3 font-sans text-xs font-semibold text-slate-600 dark:text-slate-400">
               Loading competition categories and awards...
             </p>
           </CardContent>
@@ -192,13 +190,13 @@ export function CategoryAwardsSettingsForm({
   if (isError) {
     return (
       <div className={cn("space-y-6", className)}>
-        <Card className="border-red-200 bg-red-50/50 dark:border-red-900/60 dark:bg-red-950/20">
+        <Card className="rounded-none border border-red-200 bg-red-50/50 dark:border-red-900/60 dark:bg-red-950/20">
           <CardContent className="flex flex-col items-center justify-center p-8 text-center">
             <AlertCircle className="size-8 text-red-600 dark:text-red-400" />
-            <h3 className="mt-3 text-sm font-bold text-red-900 dark:text-red-200">
+            <h3 className="font-heading mt-3 text-sm font-bold text-red-900 dark:text-red-200">
               Failed to load categories
             </h3>
-            <p className="mt-1 text-xs text-red-700 dark:text-red-300">
+            <p className="mt-1 font-sans text-xs text-red-700 dark:text-red-300">
               {error instanceof Error ? error.message : "An unexpected network error occurred."}
             </p>
             <Button
@@ -206,7 +204,7 @@ export function CategoryAwardsSettingsForm({
               size="sm"
               variant="outline"
               onClick={() => refetch()}
-              className="mt-4 gap-1.5 text-xs font-semibold"
+              className="mt-4 gap-1.5 rounded-none font-sans text-xs font-semibold"
             >
               <RotateCcw className="size-3.5" />
               Try Again
@@ -219,67 +217,20 @@ export function CategoryAwardsSettingsForm({
 
   return (
     <div className={cn("space-y-6", className)}>
-      {/* Top Banner Header with Metrics */}
-      <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
-        <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
-          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-            <div className="space-y-1">
-              <div className="flex items-center gap-2">
-                <Layers className="size-5 text-indigo-600 dark:text-indigo-400" />
-                <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                  {isPositionBased
-                    ? `${config.label} Taxonomy & Ballot Structure`
-                    : "Categories & Award Categories"}
-                </CardTitle>
-              </div>
-              <CardDescription className="text-sm text-slate-500 dark:text-slate-400">
-                {isPositionBased
-                  ? `Configure ${config.groupingTerm.toLowerCase()}s, voting limits, and candidate ballot slots.`
-                  : "Structure competition brackets, customize award categories, and control public voting availability."}
-              </CardDescription>
-            </div>
-
-            {/* Quick Metrics Badges */}
-            <div className="flex flex-wrap items-center gap-2">
-              {isPositionBased ? (
-                <>
-                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-                    <Layers className="size-3 text-sky-500" />
-                    {positions.length} {config.groupingTerm}s
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    className="gap-1.5 border-sky-200 bg-sky-50 px-2.5 py-1 text-xs font-medium text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300"
-                  >
-                    {config.label}
-                  </Badge>
-                </>
-              ) : (
-                <>
-                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-                    <Layers className="size-3 text-indigo-500" />
-                    {divisions.length} Divisions
-                  </Badge>
-                  <Badge variant="muted" className="gap-1.5 px-2.5 py-1 text-xs font-medium">
-                    <Award className="size-3 text-amber-500" />
-                    {awardCategories.length} Award Categor
-                    {awardCategories.length !== 1 ? "ies" : "y"}
-                  </Badge>
-                  <Badge
-                    variant="outline"
-                    className={cn(
-                      "gap-1.5 px-2.5 py-1 text-xs font-medium",
-                      openVotingAwardsCount > 0
-                        ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300"
-                        : "border-slate-200 text-slate-600 dark:border-slate-700 dark:text-slate-400",
-                    )}
-                  >
-                    <Vote className="size-3" />
-                    {openVotingAwardsCount} Voting Open
-                  </Badge>
-                </>
-              )}
-            </div>
+      {/* Top Banner Header */}
+      <Card className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <CardHeader>
+          <div>
+            <CardTitle className="font-heading text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              {isPositionBased
+                ? `${config.label} Taxonomy & Ballot Structure`
+                : "Categories & Award Categories"}
+            </CardTitle>
+            <CardDescription className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
+              {isPositionBased
+                ? `Configure ${config.groupingTerm.toLowerCase()}s, voting limits, and candidate ballot slots.`
+                : "Structure competition brackets, customize award categories, and control public voting availability."}
+            </CardDescription>
           </div>
         </CardHeader>
       </Card>

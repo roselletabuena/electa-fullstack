@@ -8,7 +8,6 @@ import {
 import { OrganizerDashboardHeader } from "@/features/events/components/dashboard/OrganizerDashboardHeader";
 import { SettingsTabsContainer } from "@/features/events/components/dashboard/SettingsTabsContainer";
 import { ForbiddenAccessCard } from "@/features/events/components/dashboard/ForbiddenAccessCard";
-import { LaunchReadinessChecklist } from "@/features/events/components/dashboard/LaunchReadinessChecklist";
 import { computeLaunchReadinessSnapshot } from "@/features/events/utils/launch-readiness";
 import { db } from "@/lib/db";
 
@@ -74,17 +73,15 @@ export default async function EventSettingsPage({
       <OrganizerDashboardHeader event={event} user={session} />
 
       <main className="mx-auto max-w-7xl px-4 py-6 sm:px-6 lg:px-8">
-        <LaunchReadinessChecklist snapshot={readinessSnapshot} />
-
         <Suspense
           fallback={
-            <div className="space-y-6">
-              <div className="h-12 w-full animate-pulse border-b border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
-              <div className="h-96 w-full animate-pulse rounded-none bg-white dark:bg-slate-900" />
+            <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-[280px_1fr]">
+              <div className="h-80 w-full animate-pulse rounded-none border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
+              <div className="h-96 w-full animate-pulse rounded-none border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900" />
             </div>
           }
         >
-          <SettingsTabsContainer event={event} initialTab={tab} />
+          <SettingsTabsContainer event={event} initialTab={tab} snapshot={readinessSnapshot} />
         </Suspense>
       </main>
     </div>

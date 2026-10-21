@@ -23,7 +23,7 @@ The widget strictly adheres to:
    - Milestone 1: `✓ Event Profile Created` (Completed on creation)
    - Milestone 2: `○ Set Up Divisions` (Links directly to Categories/Divisions tab: `/events/[slug]/settings?tab=categories`)
    - Milestone 3: `○ Add Contestants` (Links directly to Contestants management: `/events/[slug]/contestants`)
-   - Milestone 4: `○ Configure Voting Rules & Pricing` (Links directly to Voting Rules tab: `/events/[slug]/settings?tab=voting-rules`)
+   - Milestone 4: `○ Configure Voting Rules` (Links directly to Voting Rules tab: `/events/[slug]/settings?tab=voting-rules`)
 5. **In-Flow Collapsible Strip with Persistence**: Allows organizers to toggle between expanded 4-card mode and a sleek ~46px summary strip (`electa_collapsed_readiness_${eventId}`), ensuring settings tabs and forms remain 100% visible above the fold while highlighting the immediate next milestone. _(Note: Redundant copy preview button removed; handled centrally by `OrganizerDashboardHeader`)._
 6. **Publication Auto-Transition**: In `DRAFT` status, displays the actionable setup checklist. When the competition transitions to `PUBLISHED`, the widget seamlessly transforms into a compact `"Ready & Live"` indicator with permanent dismissal capability.
 
@@ -94,7 +94,7 @@ The widget strictly adheres to:
   1. `✓ Event Profile Created` (Completed)
   2. `○ Set Up Divisions` (Direct link to `/events/[slug]/settings?tab=categories`)
   3. `○ Add Contestants` (Direct link to `/events/[slug]/contestants`)
-  4. `○ Configure Voting Rules & Pricing` (Direct link to `/events/[slug]/settings?tab=voting-rules`),
+  4. `○ Configure Voting Rules` (Direct link to `/events/[slug]/settings?tab=voting-rules`),
 - **and Then** a `"Minimize"` / `"Expand"` action allows toggling between the 4 milestone cards and a compact ~46px summary strip with localStorage persistence.
 
 ### Scenario 3: Auto-Dismissal on Event Publication (Edge Case)

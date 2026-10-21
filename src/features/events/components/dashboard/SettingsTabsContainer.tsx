@@ -8,16 +8,22 @@ import { ScheduleLifecycleForm } from "./ScheduleLifecycleForm";
 import { VotingRulesForm } from "./VotingRulesForm";
 import { CategoryAwardsSettingsForm } from "./CategoryAwardsSettingsForm";
 import { SETTINGS_TABS, type SettingsTabId } from "../../types";
+import type { LaunchReadinessSnapshot } from "../../types/launch-readiness";
 import type { Event } from "@/generated/client/client";
+import { cn } from "@/lib/utils";
 
 export interface SettingsTabsContainerProps {
   event: Event;
-  initialTab?: SettingsTabId;
+  initialTab?: SettingsTabId | undefined;
+  snapshot?: LaunchReadinessSnapshot | undefined;
+  className?: string | undefined;
 }
 
 export function SettingsTabsContainer({
   event,
   initialTab = "general",
+  snapshot,
+  className,
 }: Readonly<SettingsTabsContainerProps>): React.JSX.Element {
   const [activeTab] = useQueryState(
     "tab",
@@ -27,10 +33,19 @@ export function SettingsTabsContainer({
   );
 
   return (
-    <div className="space-y-6">
-      <SettingsTabNav initialTab={initialTab} />
+    <div className={cn("grid grid-cols-1 items-start gap-8 lg:grid-cols-[280px_1fr]", className)}>
+      {/* Left Column: Vertical Sub-Navigation Sidebar */}
+      <aside className="w-full lg:sticky lg:top-6">
+        <SettingsTabNav event={event} initialTab={initialTab} snapshot={snapshot} />
+      </aside>
 
-      <section role="tabpanel" id={`panel-${activeTab}`} aria-labelledby={`tab-${activeTab}`}>
+      {/* Right Column: Active Settings Form Canvas */}
+      <section
+        role="tabpanel"
+        id={`panel-${activeTab}`}
+        aria-labelledby={`tab-${activeTab}`}
+        className="min-w-0 flex-1 space-y-6"
+      >
         {activeTab === "general" && <GeneralBrandingForm event={event} />}
         {activeTab === "schedule" && <ScheduleLifecycleForm event={event} />}
         {activeTab === "voting-rules" && <VotingRulesForm event={event} />}

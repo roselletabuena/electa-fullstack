@@ -32,7 +32,7 @@ export function computeLaunchReadinessSnapshot(
     {
       id: "divisions",
       title: "Set Up Divisions",
-      description: "Structure competition brackets (e.g. Female, Male, Teen) and categories.",
+      description: "Structure competition brackets (e.g. Female, Male, Teen) and divisions.",
       isCompleted: divisionsCompleted,
       actionLabel: "Configure Divisions",
       actionHref: `/events/${event.slug}/settings?tab=categories`,
@@ -47,8 +47,8 @@ export function computeLaunchReadinessSnapshot(
     },
     {
       id: "voting-rules",
-      title: "Configure Voting Rules & Pricing",
-      description: "Set daily free voting limits, paid boost voting packages, and take rates.",
+      title: "Configure Voting Rules",
+      description: "Set daily free voting limits and manage voting cycle rules.",
       isCompleted: votingRulesCompleted,
       actionLabel: "Configure Rules",
       actionHref: `/events/${event.slug}/settings?tab=voting-rules`,

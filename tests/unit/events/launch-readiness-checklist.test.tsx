@@ -42,8 +42,8 @@ const mockDraftSnapshot: LaunchReadinessSnapshot = {
     },
     {
       id: "voting-rules",
-      title: "Configure Voting Rules & Pricing",
-      description: "Set free limits and boost packages.",
+      title: "Configure Voting Rules",
+      description: "Set free limits and voting rules.",
       isCompleted: false,
       actionLabel: "Configure Rules",
       actionHref: "/events/rey-ng-tarlac-2026/settings?tab=voting-rules",

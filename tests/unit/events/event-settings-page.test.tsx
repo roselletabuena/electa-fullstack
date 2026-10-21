@@ -31,7 +31,26 @@ vi.mock("@/features/events/components/dashboard/OrganizerDashboardHeader", () =>
 }));
 
 vi.mock("@/features/events/components/dashboard/SettingsTabsContainer", () => ({
-  SettingsTabsContainer: () => <div data-testid="settings-tabs">Settings Tabs</div>,
+  SettingsTabsContainer: ({
+    snapshot,
+  }: {
+    snapshot?: {
+      completedMilestones: number;
+      totalMilestones: number;
+      percentageComplete: number;
+    };
+  }) => (
+    <div data-testid="settings-tabs">
+      {snapshot && (
+        <section role="region" aria-label="Launch Readiness Checklist">
+          <span>
+            {snapshot.completedMilestones} of {snapshot.totalMilestones} Completed
+          </span>
+          <span>{snapshot.percentageComplete}%</span>
+        </section>
+      )}
+    </div>
+  ),
 }));
 
 describe("EventSettingsPage", () => {

@@ -40,7 +40,7 @@ npm run lint
    - At the top of the settings page, a zero-radius brutalist card appears titled **"Launch Readiness Checklist"**.
    - Progress shows **1 of 4 Completed (25%)**.
    - Milestone 1 (`✓ Event Profile Created`) shows completed.
-   - Milestone 2 (`Set Up Divisions`), Milestone 3 (`Add Contestants`), and Milestone 4 (`Configure Voting Rules & Pricing`) display actionable links.
+   - Milestone 2 (`Set Up Divisions`), Milestone 3 (`Add Contestants`), and Milestone 4 (`Configure Voting Rules`) display actionable links.
    - Clicking `"Minimize"` collapses the checklist into a slim ~46px strip displaying the next incomplete milestone inline; clicking `"Expand"` restores the cards.
 
 ### Test Scenario B: Direct Navigation to Milestones

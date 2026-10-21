@@ -58,10 +58,52 @@ describe("EventCard Component", () => {
       ...mockEvent,
       publicationStatus: "PUBLISHED",
       isLive: true,
+      startsAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+      endsAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
     };
 
     render(<EventCard event={liveEvent} />);
     expect(screen.getByText("Live Voting")).toBeInTheDocument();
+  });
+
+  it("renders scheduled status badge when event starts in future", () => {
+    const scheduledEvent: OrganizerEventItemDto = {
+      ...mockEvent,
+      publicationStatus: "PUBLISHED",
+      isLive: false,
+      isEnded: false,
+      startsAt: new Date(Date.now() + 24 * 60 * 60 * 1000).toISOString(),
+      endsAt: new Date(Date.now() + 10 * 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    render(<EventCard event={scheduledEvent} />);
+    expect(screen.getByText("Scheduled")).toBeInTheDocument();
+  });
+
+  it("renders completed status badge when event has ended", () => {
+    const completedEvent: OrganizerEventItemDto = {
+      ...mockEvent,
+      publicationStatus: "PUBLISHED",
+      isLive: false,
+      isEnded: true,
+      startsAt: new Date(Date.now() - 10 * 24 * 60 * 60 * 1000).toISOString(),
+      endsAt: new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString(),
+    };
+
+    render(<EventCard event={completedEvent} />);
+    expect(screen.getByText("Completed")).toBeInTheDocument();
+  });
+
+  it("renders archived status badge when event publication status is ARCHIVED", () => {
+    const archivedEvent: OrganizerEventItemDto = {
+      ...mockEvent,
+      publicationStatus: "ARCHIVED",
+      isLive: false,
+      isEnded: true,
+    };
+
+    render(<EventCard event={archivedEvent} />);
+    expect(screen.getByText("Archived")).toBeInTheDocument();
   });
 
   it("copies public URL to clipboard on share button click", async () => {

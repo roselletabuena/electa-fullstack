@@ -15,7 +15,6 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { BannerAspectPreview } from "./BannerAspectPreview";
-import { CopySlugButton } from "./CopySlugButton";
 import {
   updateEventBrandingSchema,
   type UpdateEventBrandingInput,
@@ -132,7 +131,7 @@ export function GeneralBrandingForm({
                 role="status"
                 aria-live="polite"
                 className={cn(
-                  "flex items-start gap-3 rounded-xl border p-4 text-xs font-medium transition-all",
+                  "flex items-start gap-3 rounded-none border p-4 text-xs font-medium transition-all",
                   statusMessage.type === "success"
                     ? "border-emerald-500/30 bg-emerald-50 text-emerald-900 dark:border-emerald-500/20 dark:bg-emerald-950/30 dark:text-emerald-300"
                     : "border-rose-500/30 bg-rose-50 text-rose-900 dark:border-rose-500/20 dark:bg-rose-950/30 dark:text-rose-300",
@@ -169,7 +168,7 @@ export function GeneralBrandingForm({
                   aria-invalid={Boolean(errors.title)}
                   aria-describedby={errors.title ? "title-error" : undefined}
                   className={cn(
-                    "w-full rounded-xl border bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                    "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                     errors.title
                       ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
                       : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
@@ -183,22 +182,19 @@ export function GeneralBrandingForm({
                 )}
               </div>
 
-              {/* Public Slug (Read-only + Copy Button) */}
+              {/* Public Slug (Read-only Identifier) */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
                   <label className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                     Public URL Identifier
                   </label>
-                  <span className="py-0.2 rounded-sm bg-slate-200/60 px-1.5 font-mono text-[10px] font-semibold text-slate-600 uppercase dark:bg-slate-800 dark:text-slate-400">
+                  <span className="rounded-none bg-slate-200/60 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-600 uppercase dark:bg-slate-800 dark:text-slate-400">
                     Permanent
                   </span>
                 </div>
-                <div className="flex items-center gap-2">
-                  <div className="flex flex-1 items-center gap-2 rounded-xl border border-slate-200 bg-slate-100/70 px-3.5 py-2.5 font-mono text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-300">
-                    <Globe className="size-4 shrink-0 text-slate-400" />
-                    <span className="truncate">/events/{event.slug}</span>
-                  </div>
-                  <CopySlugButton slug={event.slug} />
+                <div className="flex w-full items-center gap-2 rounded-none border border-slate-200 bg-slate-100/70 px-3.5 py-2.5 font-mono text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-300">
+                  <Globe className="size-4 shrink-0 text-slate-400" />
+                  <span className="truncate">/events/{event.slug}</span>
                 </div>
                 <p className="text-[11px] text-slate-500 dark:text-slate-400">
                   Slugs are immutable after event creation to preserve canonical voter links.
@@ -226,7 +222,7 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.description)}
                 aria-describedby={errors.description ? "description-error" : undefined}
                 className={cn(
-                  "w-full rounded-xl border bg-slate-50/50 p-3.5 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 p-3.5 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.description
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
@@ -255,7 +251,7 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.bannerUrl)}
                 aria-describedby={errors.bannerUrl ? "bannerUrl-error" : undefined}
                 className={cn(
-                  "w-full rounded-xl border bg-slate-50/50 px-3.5 py-2.5 font-mono text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 font-mono text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.bannerUrl
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
@@ -295,7 +291,7 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.reason)}
                 aria-describedby={errors.reason ? "reason-error" : undefined}
                 className={cn(
-                  "w-full rounded-xl border bg-slate-50/50 px-3.5 py-2 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.reason
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
                     : "border-slate-200 hover:border-slate-300 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",

@@ -13,7 +13,6 @@ import {
   CardFooter,
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 import { BannerAspectPreview } from "./BannerAspectPreview";
 import {
   updateEventBrandingSchema,
@@ -97,30 +96,25 @@ export function GeneralBrandingForm({
   return (
     <div className={cn("space-y-6", className)}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card className="border-slate-200/80 bg-white/90 shadow-sm backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/90">
+        <Card className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
           <CardHeader>
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <CardTitle className="text-xl font-bold tracking-tight text-slate-900 dark:text-slate-100">
+                <CardTitle className="font-heading text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
                   Event Identity & Public Branding
                 </CardTitle>
-                <CardDescription className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                <CardDescription className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
                   Manage public-facing competition titles, descriptions, and high-resolution banner
                   artwork.
                 </CardDescription>
               </div>
 
-              <div className="flex items-center gap-2">
-                <Badge variant="outline" className="font-mono text-xs tracking-wider uppercase">
-                  {event.publicationStatus}
-                </Badge>
-                {isDirty && (
-                  <span className="inline-flex items-center gap-1 rounded-full bg-amber-500/10 px-2.5 py-0.5 text-[11px] font-semibold text-amber-600 dark:text-amber-400">
-                    <Sparkles className="size-3" />
-                    Unsaved changes
-                  </span>
-                )}
-              </div>
+              {isDirty && (
+                <span className="inline-flex items-center gap-1.5 rounded-none border border-amber-300/40 bg-amber-500/10 px-2.5 py-1 font-mono text-[11px] font-semibold text-amber-700 dark:text-amber-400">
+                  <Sparkles className="size-3" />
+                  Unsaved changes
+                </span>
+              )}
             </div>
           </CardHeader>
 
@@ -153,7 +147,7 @@ export function GeneralBrandingForm({
                 <div className="flex items-center justify-between">
                   <label
                     htmlFor="title"
-                    className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                    className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Event Title <span className="text-rose-500">*</span>
                   </label>
@@ -168,10 +162,10 @@ export function GeneralBrandingForm({
                   aria-invalid={Boolean(errors.title)}
                   aria-describedby={errors.title ? "title-error" : undefined}
                   className={cn(
-                    "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 text-sm font-medium text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                    "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 font-sans text-sm font-medium text-slate-900 transition focus:ring-1 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                     errors.title
                       ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
-                      : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
+                      : "border-slate-300 hover:border-slate-400 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-800 dark:hover:border-slate-700",
                   )}
                   placeholder="e.g. Miss Visayas 2026"
                 />
@@ -185,14 +179,11 @@ export function GeneralBrandingForm({
               {/* Public Slug (Read-only Identifier) */}
               <div className="space-y-2">
                 <div className="flex items-center justify-between">
-                  <label className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  <label className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                     Public URL Identifier
                   </label>
-                  <span className="rounded-none bg-slate-200/60 px-1.5 py-0.5 font-mono text-[10px] font-semibold text-slate-600 uppercase dark:bg-slate-800 dark:text-slate-400">
-                    Permanent
-                  </span>
                 </div>
-                <div className="flex w-full items-center gap-2 rounded-none border border-slate-200 bg-slate-100/70 px-3.5 py-2.5 font-mono text-sm text-slate-600 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-300">
+                <div className="flex w-full items-center gap-2 rounded-none border border-slate-300 bg-slate-50/70 px-3.5 py-2.5 font-mono text-sm text-slate-700 dark:border-slate-800 dark:bg-slate-950/70 dark:text-slate-300">
                   <Globe className="size-4 shrink-0 text-slate-400" />
                   <span className="truncate">/events/{event.slug}</span>
                 </div>
@@ -207,7 +198,7 @@ export function GeneralBrandingForm({
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="description"
-                  className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                  className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                 >
                   Event Description
                 </label>
@@ -222,10 +213,10 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.description)}
                 aria-describedby={errors.description ? "description-error" : undefined}
                 className={cn(
-                  "w-full rounded-none border bg-slate-50/50 p-3.5 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 p-3.5 font-sans text-sm text-slate-900 transition focus:ring-1 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.description
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
-                    : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
+                    : "border-slate-300 hover:border-slate-400 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-800 dark:hover:border-slate-700",
                 )}
                 placeholder="Describe your pageant, competition vision, judging criteria, or special announcements..."
               />
@@ -240,7 +231,7 @@ export function GeneralBrandingForm({
             <div className="space-y-2">
               <label
                 htmlFor="bannerUrl"
-                className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
               >
                 Banner Artwork URL <span className="text-rose-500">*</span>
               </label>
@@ -251,10 +242,10 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.bannerUrl)}
                 aria-describedby={errors.bannerUrl ? "bannerUrl-error" : undefined}
                 className={cn(
-                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 font-mono text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2.5 font-mono text-sm text-slate-900 transition focus:ring-1 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.bannerUrl
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
-                    : "border-slate-300 hover:border-slate-400 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
+                    : "border-slate-300 hover:border-slate-400 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-800 dark:hover:border-slate-700",
                 )}
                 placeholder="https://images.unsplash.com/... or https://cdn.example.com/banner.jpg"
               />
@@ -273,10 +264,10 @@ export function GeneralBrandingForm({
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="reason"
-                  className="text-xs font-semibold tracking-wider text-slate-500 uppercase dark:text-slate-400"
+                  className="font-heading text-[11px] font-extrabold tracking-wider text-slate-500 uppercase dark:text-slate-400"
                 >
                   Reason for Change{" "}
-                  <span className="font-normal text-slate-400 lowercase">
+                  <span className="font-sans font-normal text-slate-400 lowercase">
                     (optional audit note)
                   </span>
                 </label>
@@ -291,10 +282,10 @@ export function GeneralBrandingForm({
                 aria-invalid={Boolean(errors.reason)}
                 aria-describedby={errors.reason ? "reason-error" : undefined}
                 className={cn(
-                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2 text-sm text-slate-900 transition focus:ring-2 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
+                  "w-full rounded-none border bg-slate-50/50 px-3.5 py-2 font-sans text-sm text-slate-900 transition focus:ring-1 focus:outline-hidden dark:bg-slate-950 dark:text-slate-100",
                   errors.reason
                     ? "border-rose-500/80 focus:border-rose-500 focus:ring-rose-500/20"
-                    : "border-slate-200 hover:border-slate-300 focus:border-violet-500 focus:ring-violet-500/20 dark:border-slate-800 dark:hover:border-slate-700",
+                    : "border-slate-200 hover:border-slate-300 focus:border-sky-500 focus:ring-sky-500/20 dark:border-slate-800 dark:hover:border-slate-700",
                 )}
                 placeholder="e.g. Updated sponsor logos, refreshed event header artwork"
               />
@@ -316,7 +307,7 @@ export function GeneralBrandingForm({
                 reset();
                 setStatusMessage(null);
               }}
-              className="cursor-pointer text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+              className="cursor-pointer rounded-none text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
             >
               <RotateCcw className="mr-1.5 size-3.5" />
               Discard Changes
@@ -326,7 +317,7 @@ export function GeneralBrandingForm({
               type="submit"
               size="sm"
               disabled={isWorking || !isDirty}
-              className="cursor-pointer bg-violet-600 font-semibold text-white shadow-md hover:bg-violet-700"
+              className="font-heading cursor-pointer rounded-none bg-slate-900 px-5 py-2 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
             >
               {isWorking ? (
                 <>

@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Plus, Trash2, Layers, AlertCircle, Loader2 } from "lucide-react";
+import { Plus, Trash2, AlertCircle, Loader2 } from "lucide-react";
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from "@/components/ui/card";
 import {
   EVENT_ARCHETYPE_CONFIGS,
@@ -77,16 +77,16 @@ export function PositionsSection({
 
   return (
     <Card
-      className={cn("rounded-none border-slate-200 shadow-xs dark:border-slate-800", className)}
+      className={cn(
+        "rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900",
+        className,
+      )}
     >
       <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
-        <div className="flex items-center gap-2">
-          <Layers className="size-5 text-sky-600 dark:text-sky-400" />
-          <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
-            {config.groupingTerm}s & Ballot Limits
-          </CardTitle>
-        </div>
-        <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+        <CardTitle className="font-heading text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+          {config.groupingTerm}s & Ballot Limits
+        </CardTitle>
+        <CardDescription className="font-sans text-xs text-slate-500 dark:text-slate-400">
           Manage {config.groupingTerm.toLowerCase()}s for this {config.label.toLowerCase()}. Each
           voter is constrained by maximum seat limits.
         </CardDescription>

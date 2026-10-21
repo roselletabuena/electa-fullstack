@@ -4,17 +4,14 @@ import React, { useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
-  Calendar,
   Clock,
   Globe,
-  KeyRound,
   Lock,
   Unlock,
   AlertCircle,
   CheckCircle2,
   RotateCcw,
   Loader2,
-  ShieldCheck,
   Eye,
   EyeOff,
   AlertTriangle,
@@ -196,7 +193,7 @@ function PassphraseStatusBadge({
     return (
       <Badge
         variant="outline"
-        className="rounded-none border-amber-200 bg-amber-50 text-xs text-amber-700 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
+        className="rounded-none border-amber-300 bg-amber-50 font-mono text-xs text-amber-800 dark:border-amber-800 dark:bg-amber-950/40 dark:text-amber-300"
       >
         <span className="flex items-center gap-1">
           <Lock className="size-3" /> Passphrase Set
@@ -208,7 +205,7 @@ function PassphraseStatusBadge({
   return (
     <Badge
       variant="outline"
-      className="rounded-none border-slate-200 bg-slate-50 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
+      className="rounded-none border-slate-300 bg-slate-50 font-mono text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900 dark:text-slate-400"
     >
       <span className="flex items-center gap-1">
         <Unlock className="size-3" /> No Passphrase
@@ -286,15 +283,21 @@ function LifecycleConfirmModal({
           <StatusTransitionNote status={targetStatus} />
         </div>
 
-        <DialogFooter>
-          <Button type="button" variant="outline" size="sm" onClick={() => onOpenChange(false)}>
+        <DialogFooter className="gap-2">
+          <Button
+            type="button"
+            variant="outline"
+            size="sm"
+            onClick={() => onOpenChange(false)}
+            className="rounded-none font-sans text-xs font-semibold"
+          >
             Cancel
           </Button>
           <Button
             type="button"
             size="sm"
             onClick={onConfirm}
-            className="bg-indigo-600 text-white hover:bg-indigo-700 dark:bg-indigo-500 dark:hover:bg-indigo-600"
+            className="font-heading rounded-none bg-slate-900 px-4 py-2 text-xs font-extrabold tracking-wider text-white uppercase hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
           >
             Confirm Transition
           </Button>
@@ -417,39 +420,16 @@ export function ScheduleLifecycleForm({
   return (
     <div className={cn("space-y-6", className)}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <Card className="border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+        <Card className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
           <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
-            <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-              <div>
-                <div className="flex items-center gap-2">
-                  <Calendar className="size-5 text-indigo-600 dark:text-indigo-400" />
-                  <CardTitle className="text-lg font-bold text-slate-900 dark:text-slate-100">
-                    Schedule & Publication Lifecycle
-                  </CardTitle>
-                </div>
-                <CardDescription className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                  Configure voting start/end operational windows, publication status, and draft
-                  preview passphrase.
-                </CardDescription>
-              </div>
-
-              <div className="flex items-center gap-2">
-                <Badge
-                  variant="outline"
-                  className={cn(
-                    "px-2.5 py-0.5 text-xs font-medium transition-colors",
-                    STATUS_CONFIG[watchedStatus].badgeClass,
-                  )}
-                >
-                  <span
-                    className={cn(
-                      "mr-1.5 inline-block size-1.5 rounded-full",
-                      STATUS_CONFIG[watchedStatus].dotClass,
-                    )}
-                  />
-                  {STATUS_CONFIG[watchedStatus].label} Status
-                </Badge>
-              </div>
+            <div>
+              <CardTitle className="font-heading text-xl font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+                Schedule & Publication Lifecycle
+              </CardTitle>
+              <CardDescription className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
+                Configure voting start/end operational windows, publication status, and draft
+                preview passphrase.
+              </CardDescription>
             </div>
           </CardHeader>
 
@@ -461,15 +441,15 @@ export function ScheduleLifecycleForm({
             <div className="space-y-4">
               <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                  <h3 className="font-heading text-xs font-extrabold tracking-wider text-slate-900 uppercase dark:text-slate-100">
                     Operational Voting Window
                   </h3>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                     Times are in Philippine Standard Time (PST / Asia/Manila, UTC+8).
                   </p>
                 </div>
                 {durationText && (
-                  <span className="inline-flex w-fit items-center gap-1.5 rounded-md border border-indigo-200 bg-indigo-50 px-2.5 py-1 text-xs font-semibold text-indigo-700 dark:border-indigo-900/60 dark:bg-indigo-950/40 dark:text-indigo-300">
+                  <span className="inline-flex w-fit items-center gap-1.5 rounded-none border border-sky-300/60 bg-sky-50 px-2.5 py-1 font-mono text-xs font-semibold text-sky-800 dark:border-sky-800 dark:bg-sky-950/40 dark:text-sky-300">
                     <Clock className="size-3.5" />
                     Duration: {durationText}
                   </span>
@@ -481,7 +461,7 @@ export function ScheduleLifecycleForm({
                 <div className="space-y-1.5">
                   <label
                     htmlFor="startsAt"
-                    className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                    className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Voting Starts At <span className="text-red-500">*</span>
                   </label>
@@ -490,7 +470,7 @@ export function ScheduleLifecycleForm({
                     type="datetime-local"
                     {...register("startsAt")}
                     className={cn(
-                      "w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100",
+                      "w-full rounded-none border border-slate-300 bg-slate-50/50 px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100",
                       errors.startsAt && "border-red-500 focus:border-red-500 focus:ring-red-500",
                     )}
                   />
@@ -506,7 +486,7 @@ export function ScheduleLifecycleForm({
                 <div className="space-y-1.5">
                   <label
                     htmlFor="endsAt"
-                    className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                    className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                   >
                     Voting Ends At (Cutoff) <span className="text-red-500">*</span>
                   </label>
@@ -515,7 +495,7 @@ export function ScheduleLifecycleForm({
                     type="datetime-local"
                     {...register("endsAt")}
                     className={cn(
-                      "w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100",
+                      "w-full rounded-none border border-slate-300 bg-slate-50/50 px-3.5 py-2 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100",
                       errors.endsAt && "border-red-500 focus:border-red-500 focus:ring-red-500",
                     )}
                   />
@@ -532,10 +512,10 @@ export function ScheduleLifecycleForm({
             {/* Section 2: Publication Lifecycle Status */}
             <div className="space-y-3 border-t border-slate-100 pt-6 dark:border-slate-800/80">
               <div>
-                <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
+                <h3 className="font-heading text-xs font-extrabold tracking-wider text-slate-900 uppercase dark:text-slate-100">
                   Publication Status
                 </h3>
-                <p className="text-xs text-slate-500 dark:text-slate-400">
+                <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                   Control the visibility and lifecycle phase of this event.
                 </p>
               </div>
@@ -557,10 +537,10 @@ export function ScheduleLifecycleForm({
                         })
                       }
                       className={cn(
-                        "flex flex-col items-start gap-2 rounded-xl border p-4 text-left transition-all focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                        "flex flex-col items-start gap-2 rounded-none border p-4 text-left transition-all focus:outline-hidden focus-visible:ring-1 focus-visible:ring-sky-500",
                         isSelected
-                          ? "border-indigo-600 bg-indigo-50/80 shadow-xs ring-1 ring-indigo-600 dark:border-indigo-500 dark:bg-indigo-950/40 dark:ring-indigo-500"
-                          : "border-slate-200 bg-white hover:border-slate-300 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800/60",
+                          ? "border-sky-600 bg-sky-50/60 shadow-xs ring-1 ring-sky-600 dark:border-sky-500 dark:bg-sky-950/40 dark:ring-sky-500"
+                          : "border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800/60",
                       )}
                     >
                       <div className="flex w-full items-center justify-between">
@@ -569,15 +549,15 @@ export function ScheduleLifecycleForm({
                             className={cn(
                               "size-4",
                               isSelected
-                                ? "text-indigo-600 dark:text-indigo-400"
+                                ? "text-sky-600 dark:text-sky-400"
                                 : "text-slate-400 dark:text-slate-500",
                             )}
                           />
                           <span
                             className={cn(
-                              "font-semibold",
+                              "font-heading text-xs font-bold tracking-wide uppercase",
                               isSelected
-                                ? "text-indigo-950 dark:text-indigo-100"
+                                ? "text-slate-950 dark:text-white"
                                 : "text-slate-800 dark:text-slate-200",
                             )}
                           >
@@ -585,10 +565,10 @@ export function ScheduleLifecycleForm({
                           </span>
                         </div>
                         {isSelected && (
-                          <span className="size-2 rounded-full bg-indigo-600 dark:bg-indigo-400" />
+                          <span className="size-2 rounded-none bg-sky-600 dark:bg-sky-400" />
                         )}
                       </div>
-                      <p className="text-xs leading-relaxed text-slate-500 dark:text-slate-400">
+                      <p className="font-sans text-xs leading-relaxed text-slate-500 dark:text-slate-400">
                         {config.description}
                       </p>
                     </button>
@@ -601,13 +581,10 @@ export function ScheduleLifecycleForm({
             <div className="space-y-4 border-t border-slate-100 pt-6 dark:border-slate-800/80">
               <div className="flex items-center justify-between">
                 <div>
-                  <div className="flex items-center gap-2">
-                    <KeyRound className="size-4 text-amber-500" />
-                    <h3 className="text-sm font-semibold text-slate-900 dark:text-slate-100">
-                      Draft Review Passphrase
-                    </h3>
-                  </div>
-                  <p className="text-xs text-slate-500 dark:text-slate-400">
+                  <h3 className="font-heading text-xs font-extrabold tracking-wider text-slate-900 uppercase dark:text-slate-100">
+                    Draft Review Passphrase
+                  </h3>
+                  <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
                     Allows invited reviewers (sponsors, contestants, judges) to inspect the event
                     page while in Draft mode.
                   </p>
@@ -616,7 +593,7 @@ export function ScheduleLifecycleForm({
                 <PassphraseStatusBadge hasActivePassphrase={hasActivePassphrase} />
               </div>
 
-              <div className="space-y-3 rounded-xl border border-slate-200 bg-slate-50/50 p-4 dark:border-slate-800 dark:bg-slate-900/40">
+              <div className="space-y-3 rounded-none border border-slate-300 bg-slate-50/40 p-4 dark:border-slate-800 dark:bg-slate-900/40">
                 <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                   <div className="relative flex-1">
                     <input
@@ -625,7 +602,7 @@ export function ScheduleLifecycleForm({
                       placeholder={draftPassphrasePlaceholder}
                       {...register("draftPassphrase")}
                       className={cn(
-                        "w-full rounded-lg border border-slate-200 bg-white py-2 pr-10 pl-3 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500",
+                        "w-full rounded-none border border-slate-300 bg-white py-2 pr-10 pl-3 font-mono text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500",
                         errors.draftPassphrase &&
                           "border-red-500 focus:border-red-500 focus:ring-red-500",
                       )}
@@ -649,7 +626,7 @@ export function ScheduleLifecycleForm({
                         setValue("clearDraftPassphrase", true, { shouldDirty: true });
                         setValue("draftPassphrase", "", { shouldDirty: true });
                       }}
-                      className="gap-1.5 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-950/30"
+                      className="gap-1.5 rounded-none border-red-200 font-sans text-xs font-semibold text-red-600 hover:bg-red-50 hover:text-red-700 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-950/30"
                     >
                       <Trash2 className="size-3.5" />
                       Remove Passphrase
@@ -658,7 +635,7 @@ export function ScheduleLifecycleForm({
 
                   {watchedClearPassphrase && (
                     <div className="flex items-center gap-2">
-                      <span className="text-xs font-semibold text-red-600 dark:text-red-400">
+                      <span className="font-mono text-xs font-semibold text-red-600 dark:text-red-400">
                         Passphrase marked for removal
                       </span>
                       <Button
@@ -668,7 +645,7 @@ export function ScheduleLifecycleForm({
                         onClick={() =>
                           setValue("clearDraftPassphrase", false, { shouldDirty: true })
                         }
-                        className="text-xs text-slate-500"
+                        className="rounded-none text-xs font-semibold text-slate-500"
                       >
                         Undo
                       </Button>
@@ -688,7 +665,7 @@ export function ScheduleLifecycleForm({
                   <div className="flex items-start gap-2.5">
                     <Info className="mt-0.5 size-4 shrink-0 text-sky-600 dark:text-sky-400" />
                     <div className="space-y-0.5">
-                      <p className="font-bold tracking-wider text-sky-950 uppercase dark:text-sky-100">
+                      <p className="font-heading font-extrabold tracking-wider text-sky-950 uppercase dark:text-sky-100">
                         Organizer Preview Note
                       </p>
                       <p className="leading-relaxed text-sky-800 dark:text-sky-300">
@@ -713,14 +690,14 @@ export function ScheduleLifecycleForm({
               <div className="flex items-center justify-between">
                 <label
                   htmlFor="reason"
-                  className="text-xs font-semibold tracking-wider text-slate-700 uppercase dark:text-slate-300"
+                  className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300"
                 >
                   Reason for Adjustment{" "}
-                  <span className="font-normal text-slate-400 lowercase">(optional)</span>
+                  <span className="font-sans font-normal text-slate-400 lowercase">(optional)</span>
                 </label>
                 <span
                   className={cn(
-                    "text-[11px] font-medium",
+                    "font-mono text-[11px] font-medium",
                     watchedReason.length > 500
                       ? "font-bold text-red-500"
                       : "text-slate-400 dark:text-slate-500",
@@ -735,7 +712,7 @@ export function ScheduleLifecycleForm({
                 placeholder="e.g. Adjusted operational voting window for grand coronation..."
                 {...register("reason")}
                 className={cn(
-                  "w-full resize-none rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:ring-1 focus:ring-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500",
+                  "w-full resize-none rounded-none border border-slate-300 bg-slate-50/50 px-3.5 py-2.5 font-sans text-sm text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-950 dark:text-slate-100 dark:placeholder:text-slate-500",
                   errors.reason && "border-red-500 focus:border-red-500 focus:ring-red-500",
                 )}
               />
@@ -745,15 +722,6 @@ export function ScheduleLifecycleForm({
                   {errors.reason.message}
                 </p>
               )}
-            </div>
-
-            {/* Governance & Audit Note */}
-            <div className="flex items-start gap-3 rounded-lg border border-slate-200 bg-slate-50/60 p-4 text-xs text-slate-600 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-400">
-              <ShieldCheck className="size-4 shrink-0 text-indigo-600 dark:text-indigo-400" />
-              <p>
-                <strong>Audit Trail Enforced:</strong> All schedule, lifecycle, and security
-                adjustments are recorded immediately in the immutable event audit trail.
-              </p>
             </div>
           </CardContent>
 
@@ -769,7 +737,7 @@ export function ScheduleLifecycleForm({
                     reset(defaultValues);
                     setHasPassphrase(Boolean(event.draftPassphraseHash));
                   }}
-                  className="gap-1.5 text-xs text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
+                  className="gap-1.5 rounded-none font-sans text-xs font-semibold text-slate-600 hover:text-slate-900 dark:text-slate-400 dark:hover:text-slate-100"
                 >
                   <RotateCcw className="size-3.5" />
                   Discard Changes
@@ -781,7 +749,7 @@ export function ScheduleLifecycleForm({
               <Button
                 type="submit"
                 disabled={isWorking || !isDirty}
-                className="w-full gap-2 font-semibold shadow-xs sm:w-auto"
+                className="font-heading w-full gap-2 rounded-none bg-slate-900 px-5 py-2.5 text-xs font-extrabold tracking-widest text-white uppercase shadow-xs transition hover:bg-slate-800 sm:w-auto dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 {isWorking ? (
                   <>

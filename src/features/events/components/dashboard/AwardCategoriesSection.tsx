@@ -3,7 +3,7 @@
 import React, { useState } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Award, Plus, Trash2, Users, Loader2, AlertCircle, Hash, Vote, Pencil } from "lucide-react";
+import { Award, Plus, Trash2, Users, Loader2, AlertCircle, Hash, Pencil } from "lucide-react";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
@@ -177,17 +177,14 @@ export function AwardCategoriesSection({
   }, [awardCategories]);
 
   return (
-    <Card className="rounded-none border-slate-200 shadow-xs dark:border-slate-800 dark:bg-slate-900">
+    <Card className="rounded-none border border-slate-300 bg-white shadow-xs dark:border-slate-800 dark:bg-slate-900">
       <CardHeader className="border-b border-slate-100 dark:border-slate-800/80">
         <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
           <div className="space-y-1">
-            <div className="flex items-center gap-2">
-              <Award className="size-5 text-indigo-600 dark:text-indigo-400" />
-              <CardTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
-                Award Categories
-              </CardTitle>
-            </div>
-            <CardDescription className="text-xs text-slate-500 dark:text-slate-400">
+            <CardTitle className="font-heading text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
+              Award Categories
+            </CardTitle>
+            <CardDescription className="font-sans text-xs text-slate-500 dark:text-slate-400">
               Configure specialized award categories and toggle live public voting availability per
               award category.
             </CardDescription>
@@ -196,7 +193,7 @@ export function AwardCategoriesSection({
           <div className="flex items-center gap-2">
             <Badge
               variant="outline"
-              className="rounded-none border-slate-200 bg-slate-50 text-xs font-semibold dark:border-slate-800 dark:bg-slate-800"
+              className="rounded-none border-slate-300 bg-slate-50 font-mono text-xs font-semibold dark:border-slate-800 dark:bg-slate-800"
             >
               {awardCategories.length} Award Categor{awardCategories.length !== 1 ? "ies" : "y"}
             </Badge>
@@ -207,7 +204,7 @@ export function AwardCategoriesSection({
                 variant="outline"
                 disabled={isAnyActionBlocked}
                 onClick={handleStartAdding}
-                className="gap-1.5 rounded-none text-xs font-semibold"
+                className="font-heading gap-1.5 rounded-none text-xs font-extrabold tracking-wider uppercase"
               >
                 <Plus className="size-3.5" />
                 Add Award Category
@@ -222,16 +219,16 @@ export function AwardCategoriesSection({
         {isAdding && (
           <form
             onSubmit={handleSubmit(onSubmit)}
-            className="rounded-none border border-indigo-200 bg-indigo-50/40 p-4 transition-all dark:border-indigo-900/60 dark:bg-indigo-950/20"
+            className="rounded-none border border-slate-300 bg-slate-50/50 p-4 transition-all dark:border-slate-800 dark:bg-slate-950/40"
           >
             <div className="flex items-center justify-between pb-3">
-              <h4 className="text-xs font-bold text-indigo-950 dark:text-indigo-200">
+              <h4 className="font-heading text-xs font-extrabold tracking-wider text-slate-900 uppercase dark:text-slate-100">
                 New Award Category
               </h4>
               <button
                 type="button"
                 onClick={handleCancelAdding}
-                className="cursor-pointer text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
+                className="font-sans text-xs text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"
               >
                 Cancel
               </button>
@@ -246,7 +243,7 @@ export function AwardCategoriesSection({
 
             <div className="grid grid-cols-1 gap-3 sm:grid-cols-12">
               <div className="space-y-1 sm:col-span-5">
-                <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                <label className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                   Award Category Name <span className="text-red-500">*</span>
                 </label>
                 <input
@@ -254,7 +251,7 @@ export function AwardCategoriesSection({
                   placeholder="e.g. People's Choice, Best Talent"
                   {...register("name")}
                   className={cn(
-                    "w-full rounded-none border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
+                    "w-full rounded-none border border-slate-300 bg-white px-3 py-1.5 font-sans text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100",
                     errors.name && "border-red-500",
                   )}
                 />
@@ -262,19 +259,20 @@ export function AwardCategoriesSection({
               </div>
 
               <div className="space-y-1 sm:col-span-4">
-                <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
-                  Description <span className="font-normal text-slate-400">(optional)</span>
+                <label className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                  Description{" "}
+                  <span className="font-sans font-normal text-slate-400 lowercase">(optional)</span>
                 </label>
                 <input
                   type="text"
                   placeholder="e.g. Open public voting category"
                   {...register("description")}
-                  className="w-full rounded-none border border-slate-200 bg-white px-3 py-1.5 text-xs text-slate-900 placeholder:text-slate-400 focus:border-indigo-600 focus:outline-none dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
+                  className="w-full rounded-none border border-slate-300 bg-white px-3 py-1.5 font-sans text-xs text-slate-900 placeholder:text-slate-400 focus:border-sky-500 focus:ring-1 focus:ring-sky-500/20 focus:outline-hidden dark:border-slate-800 dark:bg-slate-900 dark:text-slate-100"
                 />
               </div>
 
               <div className="space-y-1 sm:col-span-3">
-                <label className="text-[11px] font-semibold text-slate-700 dark:text-slate-300">
+                <label className="font-heading text-[11px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                   Voting Availability
                 </label>
                 <div className="flex items-center gap-2 pt-1">
@@ -284,7 +282,7 @@ export function AwardCategoriesSection({
                     aria-checked={watchedIsVotingOpen}
                     onClick={() => setValue("isVotingOpen", !watchedIsVotingOpen)}
                     className={cn(
-                      "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                      "relative inline-flex h-5 w-9 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500",
                       watchedIsVotingOpen ? "bg-emerald-600" : "bg-slate-300 dark:bg-slate-700",
                     )}
                   >
@@ -295,7 +293,7 @@ export function AwardCategoriesSection({
                       )}
                     />
                   </button>
-                  <span className="text-[11px] font-medium text-slate-600 dark:text-slate-400">
+                  <span className="font-sans text-[11px] font-medium text-slate-600 dark:text-slate-400">
                     {watchedIsVotingOpen ? "Voting Open" : "Judged Only"}
                   </span>
                 </div>
@@ -308,7 +306,7 @@ export function AwardCategoriesSection({
                 variant="ghost"
                 size="sm"
                 onClick={handleCancelAdding}
-                className="rounded-none text-xs"
+                className="rounded-none font-sans text-xs"
               >
                 Cancel
               </Button>
@@ -316,7 +314,7 @@ export function AwardCategoriesSection({
                 type="submit"
                 size="sm"
                 disabled={isSubmitting}
-                className="gap-1.5 rounded-none bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                className="font-heading gap-1.5 rounded-none bg-slate-900 text-xs font-extrabold tracking-wider text-white uppercase hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
               >
                 {isSubmitting ? (
                   <>
@@ -352,7 +350,7 @@ export function AwardCategoriesSection({
               variant="outline"
               disabled={isAnyActionBlocked}
               onClick={handleStartAdding}
-              className="mt-4 gap-1.5 rounded-none text-xs font-semibold"
+              className="font-heading mt-4 gap-1.5 rounded-none text-xs font-extrabold tracking-wider uppercase"
             >
               <Plus className="size-3.5" />
               Add First Award Category
@@ -368,14 +366,14 @@ export function AwardCategoriesSection({
                 return (
                   <div
                     key={category.id}
-                    className="relative flex flex-col justify-between rounded-none border border-indigo-300 bg-indigo-50/30 p-3.5 shadow-xs transition-all dark:border-indigo-800 dark:bg-indigo-950/30"
+                    className="relative flex flex-col justify-between rounded-none border border-sky-400 bg-sky-50/30 p-3.5 shadow-xs transition-all dark:border-sky-800 dark:bg-sky-950/20"
                   >
                     <div className="space-y-2.5">
                       <div className="flex items-center justify-between">
-                        <span className="text-xs font-bold text-indigo-950 dark:text-indigo-200">
+                        <span className="font-heading text-xs font-extrabold tracking-wider text-slate-900 uppercase dark:text-slate-100">
                           Edit Award Category
                         </span>
-                        <span className="text-[10px] text-slate-400">
+                        <span className="font-mono text-[10px] text-slate-500 dark:text-slate-400">
                           {category.contestantCount ?? 0} contestants
                         </span>
                       </div>
@@ -388,7 +386,7 @@ export function AwardCategoriesSection({
                       )}
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
+                        <label className="font-heading text-[10px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                           Category Name <span className="text-red-500">*</span>
                         </label>
                         <input
@@ -397,14 +395,17 @@ export function AwardCategoriesSection({
                           value={editName}
                           onChange={(e) => setEditName(e.target.value)}
                           disabled={isSavingEdit}
-                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 font-sans text-xs text-slate-900 focus:border-sky-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                           autoFocus
                         />
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
-                          Description <span className="font-normal text-slate-400">(optional)</span>
+                        <label className="font-heading text-[10px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+                          Description{" "}
+                          <span className="font-sans font-normal text-slate-400 lowercase">
+                            (optional)
+                          </span>
                         </label>
                         <input
                           type="text"
@@ -412,12 +413,12 @@ export function AwardCategoriesSection({
                           value={editDescription}
                           onChange={(e) => setEditDescription(e.target.value)}
                           disabled={isSavingEdit}
-                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 font-sans text-xs text-slate-900 focus:border-sky-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                         />
                       </div>
 
                       <div className="space-y-1">
-                        <label className="text-[10px] font-semibold tracking-wider text-slate-600 uppercase dark:text-slate-400">
+                        <label className="font-heading text-[10px] font-extrabold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                           Order
                         </label>
                         <input
@@ -427,23 +428,20 @@ export function AwardCategoriesSection({
                           value={editDisplayOrder}
                           onChange={(e) => setEditDisplayOrder(Number(e.target.value))}
                           disabled={isSavingEdit}
-                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 text-xs text-slate-900 focus:border-indigo-600 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
+                          className="w-full rounded-none border border-slate-300 bg-white px-2.5 py-1 font-mono text-xs text-slate-900 focus:border-sky-500 focus:outline-hidden dark:border-slate-700 dark:bg-slate-900 dark:text-slate-100"
                         />
                       </div>
 
                       {/* Voting Toggle Row inside Edit Mode */}
                       <div className="flex items-center justify-between rounded-none border border-slate-200 bg-white px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-900">
-                        <div className="flex items-center gap-1.5 text-[11px]">
-                          <Vote className="size-3 text-slate-400" />
-                          <span className="font-medium text-slate-700 dark:text-slate-300">
-                            Voting Status:
-                          </span>
-                        </div>
+                        <span className="font-sans text-[11px] font-medium text-slate-700 dark:text-slate-300">
+                          Voting Status:
+                        </span>
                         <div className="flex items-center gap-2">
                           <Badge
                             variant="outline"
                             className={cn(
-                              "rounded-none px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase transition-colors",
+                              "rounded-none px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider uppercase transition-colors",
                               editIsVotingOpen
                                 ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
                                 : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
@@ -458,7 +456,7 @@ export function AwardCategoriesSection({
                             disabled={isSavingEdit}
                             onClick={() => setEditIsVotingOpen(!editIsVotingOpen)}
                             className={cn(
-                              "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                              "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500",
                               editIsVotingOpen
                                 ? "bg-emerald-600"
                                 : "bg-slate-300 dark:bg-slate-700",
@@ -483,7 +481,7 @@ export function AwardCategoriesSection({
                         size="sm"
                         disabled={isSavingEdit}
                         onClick={handleCancelEdit}
-                        className="h-7 rounded-none text-xs"
+                        className="h-7 rounded-none font-sans text-xs"
                       >
                         Cancel
                       </Button>
@@ -492,7 +490,7 @@ export function AwardCategoriesSection({
                         size="sm"
                         disabled={isSavingEdit || !editName.trim()}
                         onClick={() => handleSaveEdit(category.id)}
-                        className="h-7 gap-1 rounded-none bg-indigo-600 text-xs font-semibold text-white hover:bg-indigo-700 dark:bg-indigo-600 dark:hover:bg-indigo-500"
+                        className="font-heading h-7 gap-1 rounded-none bg-slate-900 text-xs font-extrabold tracking-wider text-white uppercase hover:bg-slate-800 dark:bg-slate-100 dark:text-slate-900 dark:hover:bg-slate-200"
                       >
                         {isSavingEdit ? (
                           <>
@@ -517,12 +515,12 @@ export function AwardCategoriesSection({
                     <div className="flex items-start justify-between gap-2">
                       <div className="space-y-1">
                         <div className="flex items-center gap-1.5">
-                          <span className="text-xs font-bold text-slate-900 dark:text-slate-100">
+                          <span className="font-heading text-xs font-bold text-slate-900 dark:text-slate-100">
                             {category.name}
                           </span>
                         </div>
                         {category.description && (
-                          <p className="line-clamp-2 text-[11px] text-slate-500 dark:text-slate-400">
+                          <p className="line-clamp-2 font-sans text-[11px] text-slate-500 dark:text-slate-400">
                             {category.description}
                           </p>
                         )}
@@ -559,18 +557,15 @@ export function AwardCategoriesSection({
 
                     {/* Voting Toggle Row */}
                     <div className="mt-3 flex items-center justify-between rounded-none border border-slate-100 bg-slate-50/70 px-2.5 py-1.5 dark:border-slate-800 dark:bg-slate-950/40">
-                      <div className="flex items-center gap-1.5 text-[11px]">
-                        <Vote className="size-3 text-slate-400" />
-                        <span className="font-medium text-slate-700 dark:text-slate-300">
-                          Voting Status:
-                        </span>
-                      </div>
+                      <span className="font-sans text-[11px] font-medium text-slate-700 dark:text-slate-300">
+                        Voting Status:
+                      </span>
 
                       <div className="flex items-center gap-2">
                         <Badge
                           variant="outline"
                           className={cn(
-                            "rounded-none px-1.5 py-0.5 text-[10px] font-bold tracking-wider uppercase transition-colors",
+                            "rounded-none px-1.5 py-0.5 font-mono text-[10px] font-bold tracking-wider uppercase transition-colors",
                             category.isVotingOpen
                               ? "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/50 dark:text-emerald-300"
                               : "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300",
@@ -586,7 +581,7 @@ export function AwardCategoriesSection({
                           disabled={isAnyActionBlocked || isToggling}
                           onClick={() => handleToggle(category)}
                           className={cn(
-                            "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-none focus-visible:ring-2 focus-visible:ring-indigo-600",
+                            "relative inline-flex h-4 w-7 shrink-0 cursor-pointer rounded-none border-2 border-transparent transition-colors duration-200 ease-in-out focus:outline-hidden focus-visible:ring-2 focus-visible:ring-sky-500",
                             category.isVotingOpen
                               ? "bg-emerald-600"
                               : "bg-slate-300 dark:bg-slate-700",
@@ -604,7 +599,7 @@ export function AwardCategoriesSection({
                     </div>
                   </div>
 
-                  <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5 text-[11px] text-slate-500 dark:border-slate-800/80 dark:text-slate-400">
+                  <div className="mt-3 flex items-center justify-between border-t border-slate-100 pt-2.5 font-mono text-[11px] text-slate-500 dark:border-slate-800/80 dark:text-slate-400">
                     <span className="flex items-center gap-1">
                       <Users className="size-3 text-slate-400" />
                       <span>{category.contestantCount ?? 0} assigned</span>

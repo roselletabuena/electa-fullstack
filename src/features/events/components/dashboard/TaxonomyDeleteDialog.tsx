@@ -46,15 +46,15 @@ export function TaxonomyDeleteDialog({
     <Dialog open={isOpen} onOpenChange={(open) => !open && !isDeleting && onClose()}>
       <DialogContent
         onClose={isDeleting ? undefined : onClose}
-        className="max-w-md rounded-xl border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900"
+        className="max-w-md rounded-none border border-slate-300 bg-white p-6 shadow-md dark:border-slate-800 dark:bg-slate-900"
       >
         <DialogHeader>
           <div className="flex items-center gap-3">
             <div
               className={
                 isBlocked
-                  ? "flex size-10 items-center justify-center rounded-full bg-amber-100 text-amber-600 dark:bg-amber-950/60 dark:text-amber-400"
-                  : "flex size-10 items-center justify-center rounded-full bg-red-100 text-red-600 dark:bg-red-950/60 dark:text-red-400"
+                  ? "flex size-10 items-center justify-center rounded-none border border-amber-300 bg-amber-50 text-amber-600 dark:border-amber-900/60 dark:bg-amber-950/60 dark:text-amber-400"
+                  : "flex size-10 items-center justify-center rounded-none border border-red-300 bg-red-50 text-red-600 dark:border-red-900/60 dark:bg-red-950/60 dark:text-red-400"
               }
             >
               {isBlocked ? (
@@ -63,12 +63,12 @@ export function TaxonomyDeleteDialog({
                 <AlertTriangle className="size-5" />
               )}
             </div>
-            <DialogTitle className="text-base font-bold text-slate-900 dark:text-slate-100">
+            <DialogTitle className="font-heading text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-100">
               {isBlocked ? `Cannot Delete ${typeLabel}` : `Delete ${typeLabel}?`}
             </DialogTitle>
           </div>
 
-          <DialogDescription className="pt-2 text-xs leading-relaxed text-slate-600 dark:text-slate-400">
+          <DialogDescription className="pt-2 font-sans text-xs leading-relaxed text-slate-600 dark:text-slate-400">
             {isBlocked ? (
               <span className="space-y-2">
                 <span className="block">
@@ -95,12 +95,23 @@ export function TaxonomyDeleteDialog({
 
         <DialogFooter className="mt-4 gap-2">
           {isBlocked ? (
-            <Button type="button" variant="outline" onClick={onClose} className="w-full sm:w-auto">
+            <Button
+              type="button"
+              variant="outline"
+              onClick={onClose}
+              className="font-heading w-full rounded-none text-xs font-extrabold tracking-wider uppercase sm:w-auto"
+            >
               Understood
             </Button>
           ) : (
             <>
-              <Button type="button" variant="outline" disabled={isDeleting} onClick={onClose}>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={isDeleting}
+                onClick={onClose}
+                className="font-heading rounded-none text-xs font-extrabold tracking-wider uppercase"
+              >
                 Cancel
               </Button>
               <Button
@@ -110,7 +121,7 @@ export function TaxonomyDeleteDialog({
                   e.preventDefault();
                   await onConfirm();
                 }}
-                className="bg-red-600 text-white hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
+                className="font-heading rounded-none bg-red-600 text-xs font-extrabold tracking-wider text-white uppercase hover:bg-red-700 dark:bg-red-600 dark:hover:bg-red-700"
               >
                 {isDeleting ? (
                   <>

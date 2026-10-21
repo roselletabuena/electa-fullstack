@@ -1,4 +1,4 @@
-import { CalendarClock, CheckCircle2, Lock, Radio } from "lucide-react";
+import { CalendarClock, CheckCircle2, Lock } from "lucide-react";
 import React from "react";
 
 import { Badge } from "@/components/ui/badge";
@@ -20,11 +20,11 @@ export function EventStateBadge({
         <Badge
           variant="outline"
           className={cn(
-            "gap-1.5 border-amber-500/20 bg-amber-500/10 px-3 py-1 text-xs font-medium tracking-wide text-amber-500 uppercase hover:bg-amber-500/15",
+            "gap-1.5 border-amber-300 bg-amber-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-amber-800 uppercase dark:border-amber-700/60 dark:bg-amber-950/40 dark:text-amber-300",
             className,
           )}
         >
-          <CalendarClock className="size-3.5 animate-pulse" />
+          <CalendarClock className="size-3 animate-pulse text-amber-600 dark:text-amber-400" />
           Scheduled — Opens Soon
         </Badge>
       );
@@ -33,11 +33,14 @@ export function EventStateBadge({
         <Badge
           variant="default"
           className={cn(
-            "gap-1.5 border-emerald-500/30 bg-emerald-500/15 px-3 py-1 text-xs font-medium tracking-wide text-emerald-500 uppercase shadow-sm shadow-emerald-500/10 hover:bg-emerald-500/20",
+            "gap-1.5 border-emerald-300 bg-emerald-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-emerald-800 uppercase shadow-xs dark:border-emerald-700/60 dark:bg-emerald-950/50 dark:text-emerald-300",
             className,
           )}
         >
-          <Radio className="size-3.5 animate-pulse text-emerald-500" />
+          <span className="relative flex size-2">
+            <span className="absolute inline-flex h-full w-full animate-ping bg-emerald-400 opacity-75" />
+            <span className="relative inline-flex size-2 bg-emerald-600 dark:bg-emerald-400" />
+          </span>
           Voting Live & Active
         </Badge>
       );
@@ -46,11 +49,11 @@ export function EventStateBadge({
         <Badge
           variant="outline"
           className={cn(
-            "text-muted-foreground border-border gap-1.5 bg-slate-500/10 px-3 py-1 text-xs font-medium tracking-wide uppercase",
+            "gap-1.5 border-slate-300 bg-slate-100 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-slate-700 uppercase dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300",
             className,
           )}
         >
-          <Lock className="size-3.5" />
+          <Lock className="size-3 text-slate-500 dark:text-slate-400" />
           Voting Concluded
         </Badge>
       );
@@ -59,11 +62,11 @@ export function EventStateBadge({
         <Badge
           variant="outline"
           className={cn(
-            "gap-1.5 border-violet-500/30 bg-violet-500/10 px-3 py-1 text-xs font-medium tracking-wide text-violet-400 uppercase",
+            "gap-1.5 border-violet-200 bg-violet-50 px-2.5 py-0.5 text-[10px] font-bold tracking-wider text-violet-700 uppercase dark:border-violet-700/60 dark:bg-violet-950/40 dark:text-violet-300",
             className,
           )}
         >
-          <CheckCircle2 className="size-3.5" />
+          <CheckCircle2 className="size-3 text-violet-600 dark:text-violet-400" />
           Draft Preview
         </Badge>
       );

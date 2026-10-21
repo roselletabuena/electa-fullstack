@@ -25,11 +25,12 @@ const mockUser: UserSession = {
 };
 
 describe("OrganizerDashboardHeader", () => {
-  it("renders event title, organizer info, and all section navigation tabs", () => {
+  it("renders event title, breadcrumbs, and all section navigation tabs without redundant email", () => {
     render(<OrganizerDashboardHeader event={mockEvent} user={mockUser} activeSection="revenue" />);
 
     expect(screen.getByText("Miss Caloocan 2026")).toBeDefined();
-    expect(screen.getByText("rosellerpxtabuena@gmail.com")).toBeDefined();
+    expect(screen.getByText("Back to Dashboard")).toBeDefined();
+    expect(screen.queryByText("rosellerpxtabuena@gmail.com")).toBeNull();
 
     const settingsTab = screen.getByRole("link", { name: /event settings/i });
     const contestantsTab = screen.getByRole("link", { name: /contestants/i });

@@ -5,9 +5,64 @@ import Link from "next/link";
 import Image from "next/image";
 import { ArrowUpRight, Settings, Share2, Check, Calendar } from "lucide-react";
 import type { OrganizerEventItemDto } from "../../types/dashboard-overview";
+import { deriveEventState } from "../../utils/derive-event-state";
 
 export interface EventCardProps {
   event: OrganizerEventItemDto;
+}
+
+interface StatusBadgeConfig {
+  label: string;
+  dotClass: string;
+  badgeClass: string;
+}
+
+function getEventCardStatusBadge(
+  event: OrganizerEventItemDto,
+  operationalState: string,
+): StatusBadgeConfig {
+  if (event.publicationStatus === "ARCHIVED") {
+    return {
+      label: "Archived",
+      dotClass: "bg-slate-400 dark:bg-slate-500",
+      badgeClass:
+        "border-slate-300 bg-white/95 text-slate-800 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-200",
+    };
+  }
+
+  if (operationalState === "Draft" || event.publicationStatus === "DRAFT") {
+    return {
+      label: "Draft",
+      dotClass: "bg-amber-500",
+      badgeClass:
+        "border-amber-500/40 bg-white/95 text-amber-950 dark:border-amber-500/40 dark:bg-slate-900/90 dark:text-amber-300",
+    };
+  }
+
+  if (operationalState === "Active" || event.isLive) {
+    return {
+      label: "Live Voting",
+      dotClass: "bg-emerald-500 animate-pulse",
+      badgeClass:
+        "border-emerald-500/40 bg-white/95 text-emerald-950 dark:border-emerald-500/40 dark:bg-slate-900/90 dark:text-emerald-300",
+    };
+  }
+
+  if (operationalState === "Scheduled" || (!event.isEnded && !event.isLive)) {
+    return {
+      label: "Scheduled",
+      dotClass: "bg-sky-500",
+      badgeClass:
+        "border-sky-500/40 bg-white/95 text-sky-950 dark:border-sky-500/40 dark:bg-slate-900/90 dark:text-sky-300",
+    };
+  }
+
+  return {
+    label: "Completed",
+    dotClass: "bg-slate-400 dark:bg-slate-500",
+    badgeClass:
+      "border-slate-300 bg-white/95 text-slate-800 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-200",
+  };
 }
 
 export function EventCard({ event }: Readonly<EventCardProps>): React.JSX.Element {
@@ -33,27 +88,13 @@ export function EventCard({ event }: Readonly<EventCardProps>): React.JSX.Elemen
     year: "numeric",
   });
 
-  let statusBadge = {
-    label: "Completed",
-    dotClass: "bg-slate-400 dark:bg-slate-500",
-    badgeClass:
-      "border-slate-300 bg-white/95 text-slate-800 dark:border-slate-700 dark:bg-slate-900/90 dark:text-slate-200",
-  };
-  if (event.isLive) {
-    statusBadge = {
-      label: "Live Voting",
-      dotClass: "bg-emerald-500 animate-pulse",
-      badgeClass:
-        "border-emerald-500/40 bg-white/95 text-emerald-950 dark:border-emerald-500/40 dark:bg-slate-900/90 dark:text-emerald-300",
-    };
-  } else if (event.publicationStatus === "DRAFT") {
-    statusBadge = {
-      label: "Draft",
-      dotClass: "bg-amber-500",
-      badgeClass:
-        "border-amber-500/40 bg-white/95 text-amber-950 dark:border-amber-500/40 dark:bg-slate-900/90 dark:text-amber-300",
-    };
-  }
+  const operationalState = deriveEventState({
+    publicationStatus: event.publicationStatus,
+    startsAt: event.startsAt,
+    endsAt: event.endsAt,
+  });
+
+  const statusBadge = getEventCardStatusBadge(event, operationalState);
 
   return (
     <article className="group flex flex-col overflow-hidden rounded-none border border-slate-300 bg-white shadow-xs transition-all duration-200 hover:border-slate-400 hover:shadow-md dark:border-slate-800 dark:bg-[#0d1424] dark:hover:border-slate-700">

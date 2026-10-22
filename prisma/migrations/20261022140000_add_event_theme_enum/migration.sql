@@ -1,0 +1,9 @@
+-- CreateEnum
+DO $$ BEGIN
+    CREATE TYPE "EventTheme" AS ENUM ('ELECTA_DEFAULT', 'PAGEANT_EDITORIAL');
+EXCEPTION
+    WHEN duplicate_object THEN null;
+END $$;
+
+-- AlterTable
+ALTER TABLE "Event" ADD COLUMN IF NOT EXISTS "theme" "EventTheme" NOT NULL DEFAULT 'ELECTA_DEFAULT';

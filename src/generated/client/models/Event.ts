@@ -53,6 +53,7 @@ export type EventMinAggregateOutputType = {
   takeRatePercentage: runtime.Decimal | null
   organizerId: string | null
   archetype: $Enums.EventArchetype | null
+  theme: $Enums.EventTheme | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -74,6 +75,7 @@ export type EventMaxAggregateOutputType = {
   takeRatePercentage: runtime.Decimal | null
   organizerId: string | null
   archetype: $Enums.EventArchetype | null
+  theme: $Enums.EventTheme | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -95,6 +97,7 @@ export type EventCountAggregateOutputType = {
   takeRatePercentage: number
   organizerId: number
   archetype: number
+  theme: number
   allowedEmailDomains: number
   createdAt: number
   updatedAt: number
@@ -129,6 +132,7 @@ export type EventMinAggregateInputType = {
   takeRatePercentage?: true
   organizerId?: true
   archetype?: true
+  theme?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -150,6 +154,7 @@ export type EventMaxAggregateInputType = {
   takeRatePercentage?: true
   organizerId?: true
   archetype?: true
+  theme?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -171,6 +176,7 @@ export type EventCountAggregateInputType = {
   takeRatePercentage?: true
   organizerId?: true
   archetype?: true
+  theme?: true
   allowedEmailDomains?: true
   createdAt?: true
   updatedAt?: true
@@ -280,6 +286,7 @@ export type EventGroupByOutputType = {
   takeRatePercentage: runtime.Decimal
   organizerId: string
   archetype: $Enums.EventArchetype
+  theme: $Enums.EventTheme
   allowedEmailDomains: string[]
   createdAt: Date
   updatedAt: Date
@@ -325,6 +332,7 @@ export type EventWhereInput = {
   takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeFilter<"Event"> | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFilter<"Event"> | $Enums.EventTheme
   allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
@@ -363,6 +371,7 @@ export type EventOrderByWithRelationInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
   allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -404,6 +413,7 @@ export type EventWhereUniqueInput = Prisma.AtLeast<{
   takeRatePercentage?: Prisma.DecimalFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeFilter<"Event"> | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFilter<"Event"> | $Enums.EventTheme
   allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeFilter<"Event"> | Date | string
@@ -442,6 +452,7 @@ export type EventOrderByWithAggregationInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
   allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -472,6 +483,7 @@ export type EventScalarWhereWithAggregatesInput = {
   takeRatePercentage?: Prisma.DecimalWithAggregatesFilter<"Event"> | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringWithAggregatesFilter<"Event"> | string
   archetype?: Prisma.EnumEventArchetypeWithAggregatesFilter<"Event"> | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeWithAggregatesFilter<"Event"> | $Enums.EventTheme
   allowedEmailDomains?: Prisma.StringNullableListFilter<"Event">
   createdAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"Event"> | Date | string
@@ -494,6 +506,7 @@ export type EventCreateInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -532,6 +545,7 @@ export type EventUncheckedCreateInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -570,6 +584,7 @@ export type EventUpdateInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -608,6 +623,7 @@ export type EventUncheckedUpdateInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -646,6 +662,7 @@ export type EventCreateManyInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -668,6 +685,7 @@ export type EventUpdateManyMutationInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -690,6 +708,7 @@ export type EventUncheckedUpdateManyInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -720,6 +739,7 @@ export type EventCountOrderByAggregateInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
   allowedEmailDomains?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
@@ -747,6 +767,7 @@ export type EventMaxOrderByAggregateInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -768,6 +789,7 @@ export type EventMinOrderByAggregateInput = {
   takeRatePercentage?: Prisma.SortOrder
   organizerId?: Prisma.SortOrder
   archetype?: Prisma.SortOrder
+  theme?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -824,6 +846,10 @@ export type DecimalFieldUpdateOperationsInput = {
 
 export type EnumEventArchetypeFieldUpdateOperationsInput = {
   set?: $Enums.EventArchetype
+}
+
+export type EnumEventThemeFieldUpdateOperationsInput = {
+  set?: $Enums.EventTheme
 }
 
 export type EventUpdateallowedEmailDomainsInput = {
@@ -1072,6 +1098,7 @@ export type EventCreateWithoutDivisionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1109,6 +1136,7 @@ export type EventUncheckedCreateWithoutDivisionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1162,6 +1190,7 @@ export type EventUpdateWithoutDivisionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1199,6 +1228,7 @@ export type EventUncheckedUpdateWithoutDivisionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1236,6 +1266,7 @@ export type EventCreateWithoutPositionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1273,6 +1304,7 @@ export type EventUncheckedCreateWithoutPositionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1326,6 +1358,7 @@ export type EventUpdateWithoutPositionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1363,6 +1396,7 @@ export type EventUncheckedUpdateWithoutPositionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1400,6 +1434,7 @@ export type EventCreateWithoutContestantsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1437,6 +1472,7 @@ export type EventUncheckedCreateWithoutContestantsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1490,6 +1526,7 @@ export type EventUpdateWithoutContestantsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1527,6 +1564,7 @@ export type EventUncheckedUpdateWithoutContestantsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1564,6 +1602,7 @@ export type EventCreateWithoutAwardCategoriesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1601,6 +1640,7 @@ export type EventUncheckedCreateWithoutAwardCategoriesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1654,6 +1694,7 @@ export type EventUpdateWithoutAwardCategoriesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1691,6 +1732,7 @@ export type EventUncheckedUpdateWithoutAwardCategoriesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1728,6 +1770,7 @@ export type EventCreateWithoutAuditLogsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1765,6 +1808,7 @@ export type EventUncheckedCreateWithoutAuditLogsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1818,6 +1862,7 @@ export type EventUpdateWithoutAuditLogsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1855,6 +1900,7 @@ export type EventUncheckedUpdateWithoutAuditLogsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -1892,6 +1938,7 @@ export type EventCreateWithoutVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1929,6 +1976,7 @@ export type EventUncheckedCreateWithoutVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -1982,6 +2030,7 @@ export type EventUpdateWithoutVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2019,6 +2068,7 @@ export type EventUncheckedUpdateWithoutVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2056,6 +2106,7 @@ export type EventCreateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2093,6 +2144,7 @@ export type EventUncheckedCreateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2146,6 +2198,7 @@ export type EventUpdateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2183,6 +2236,7 @@ export type EventUncheckedUpdateWithoutBallotSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2220,6 +2274,7 @@ export type EventCreateWithoutVoterParticipationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2257,6 +2312,7 @@ export type EventUncheckedCreateWithoutVoterParticipationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2310,6 +2366,7 @@ export type EventUpdateWithoutVoterParticipationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2347,6 +2404,7 @@ export type EventUncheckedUpdateWithoutVoterParticipationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2384,6 +2442,7 @@ export type EventCreateWithoutBallotSelectionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2421,6 +2480,7 @@ export type EventUncheckedCreateWithoutBallotSelectionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2474,6 +2534,7 @@ export type EventUpdateWithoutBallotSelectionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2511,6 +2572,7 @@ export type EventUncheckedUpdateWithoutBallotSelectionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2548,6 +2610,7 @@ export type EventCreateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2585,6 +2648,7 @@ export type EventUncheckedCreateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2638,6 +2702,7 @@ export type EventUpdateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2675,6 +2740,7 @@ export type EventUncheckedUpdateWithoutPaymentTransactionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2712,6 +2778,7 @@ export type EventCreateWithoutPayoutRequestsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2749,6 +2816,7 @@ export type EventUncheckedCreateWithoutPayoutRequestsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2802,6 +2870,7 @@ export type EventUpdateWithoutPayoutRequestsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2839,6 +2908,7 @@ export type EventUncheckedUpdateWithoutPayoutRequestsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -2876,6 +2946,7 @@ export type EventCreateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2913,6 +2984,7 @@ export type EventUncheckedCreateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -2966,6 +3038,7 @@ export type EventUpdateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3003,6 +3076,7 @@ export type EventUncheckedUpdateWithoutProjectSubmissionsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3040,6 +3114,7 @@ export type EventCreateWithoutRubricCriteriaInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3077,6 +3152,7 @@ export type EventUncheckedCreateWithoutRubricCriteriaInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3130,6 +3206,7 @@ export type EventUpdateWithoutRubricCriteriaInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3167,6 +3244,7 @@ export type EventUncheckedUpdateWithoutRubricCriteriaInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3204,6 +3282,7 @@ export type EventCreateWithoutStudentRosterInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3241,6 +3320,7 @@ export type EventUncheckedCreateWithoutStudentRosterInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3294,6 +3374,7 @@ export type EventUpdateWithoutStudentRosterInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3331,6 +3412,7 @@ export type EventUncheckedUpdateWithoutStudentRosterInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3368,6 +3450,7 @@ export type EventCreateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3405,6 +3488,7 @@ export type EventUncheckedCreateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3458,6 +3542,7 @@ export type EventUpdateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3495,6 +3580,7 @@ export type EventUncheckedUpdateWithoutJudgeEvaluationsInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3532,6 +3618,7 @@ export type EventCreateWithoutProjectVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3569,6 +3656,7 @@ export type EventUncheckedCreateWithoutProjectVotesInput = {
   takeRatePercentage?: runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId: string
   archetype?: $Enums.EventArchetype
+  theme?: $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventCreateallowedEmailDomainsInput | string[]
   createdAt?: Date | string
   updatedAt?: Date | string
@@ -3622,6 +3710,7 @@ export type EventUpdateWithoutProjectVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3659,6 +3748,7 @@ export type EventUncheckedUpdateWithoutProjectVotesInput = {
   takeRatePercentage?: Prisma.DecimalFieldUpdateOperationsInput | runtime.Decimal | runtime.DecimalJsLike | number | string
   organizerId?: Prisma.StringFieldUpdateOperationsInput | string
   archetype?: Prisma.EnumEventArchetypeFieldUpdateOperationsInput | $Enums.EventArchetype
+  theme?: Prisma.EnumEventThemeFieldUpdateOperationsInput | $Enums.EventTheme
   allowedEmailDomains?: Prisma.EventUpdateallowedEmailDomainsInput | string[]
   createdAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
@@ -3862,6 +3952,7 @@ export type EventSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = 
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  theme?: boolean
   allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3901,6 +3992,7 @@ export type EventSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  theme?: boolean
   allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3923,6 +4015,7 @@ export type EventSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensi
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  theme?: boolean
   allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
@@ -3945,12 +4038,13 @@ export type EventSelectScalar = {
   takeRatePercentage?: boolean
   organizerId?: boolean
   archetype?: boolean
+  theme?: boolean
   allowedEmailDomains?: boolean
   createdAt?: boolean
   updatedAt?: boolean
 }
 
-export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "isFreeVotingOnly" | "dailyFreeVoteLimit" | "takeRatePercentage" | "organizerId" | "archetype" | "allowedEmailDomains" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
+export type EventOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "title" | "description" | "bannerUrl" | "startsAt" | "endsAt" | "publicationStatus" | "draftPassphraseHash" | "showResultsOnClose" | "isFreeVotingEnabled" | "isFreeVotingOnly" | "dailyFreeVoteLimit" | "takeRatePercentage" | "organizerId" | "archetype" | "theme" | "allowedEmailDomains" | "createdAt" | "updatedAt", ExtArgs["result"]["event"]>
 export type EventInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   contestants?: boolean | Prisma.Event$contestantsArgs<ExtArgs>
   divisions?: boolean | Prisma.Event$divisionsArgs<ExtArgs>
@@ -4010,6 +4104,7 @@ export type $EventPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs 
     takeRatePercentage: runtime.Decimal
     organizerId: string
     archetype: $Enums.EventArchetype
+    theme: $Enums.EventTheme
     allowedEmailDomains: string[]
     createdAt: Date
     updatedAt: Date
@@ -4468,6 +4563,7 @@ export interface EventFieldRefs {
   readonly takeRatePercentage: Prisma.FieldRef<"Event", 'Decimal'>
   readonly organizerId: Prisma.FieldRef<"Event", 'String'>
   readonly archetype: Prisma.FieldRef<"Event", 'EventArchetype'>
+  readonly theme: Prisma.FieldRef<"Event", 'EventTheme'>
   readonly allowedEmailDomains: Prisma.FieldRef<"Event", 'String[]'>
   readonly createdAt: Prisma.FieldRef<"Event", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"Event", 'DateTime'>

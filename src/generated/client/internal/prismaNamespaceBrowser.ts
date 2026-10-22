@@ -109,6 +109,7 @@ export const EventScalarFieldEnum = {
   takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
   archetype: 'archetype',
+  theme: 'theme',
   allowedEmailDomains: 'allowedEmailDomains',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'

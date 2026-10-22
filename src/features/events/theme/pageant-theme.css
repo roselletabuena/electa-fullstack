@@ -1,0 +1,316 @@
+/* =========================================================================
+   HAUTE-COUTURE EDITORIAL PAGEANT THEME SKIN
+   Scoped exclusively under [data-event-theme="pageant-editorial"]
+   Zero impact on ELECTA_DEFAULT events
+   ========================================================================= */
+
+[data-event-theme="pageant-editorial"] {
+  --bg-base: #0B0C10;
+  --bg-surface: #12141C;
+  --bg-surface-elevated: #181B26;
+  --bg-surface-hover: #1E2230;
+
+  --border-hairline: rgba(255, 255, 255, 0.08);
+  --border-champagne: rgba(203, 178, 121, 0.35);
+  --border-champagne-bright: #CBB279;
+
+  --champagne-light: #F4EBD9;
+  --champagne-primary: #CBB279;
+  --champagne-muted: #8E7C55;
+
+  --text-primary: #F9F9FB;
+  --text-secondary: #9BA3B4;
+  --text-tertiary: #5D6577;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 14px;
+  --radius-pill: 9999px;
+
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+  font-family: var(--font-body, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif);
+  min-height: 100vh;
+}
+
+/* -------------------------------------------------------------------------
+   Typography Scoping
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .font-heading,
+[data-event-theme="pageant-editorial"] .heading-font,
+[data-event-theme="pageant-editorial"] h1,
+[data-event-theme="pageant-editorial"] h2,
+[data-event-theme="pageant-editorial"] h3 {
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  letter-spacing: -0.01em;
+}
+
+[data-event-theme="pageant-editorial"] .font-serif {
+  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+}
+
+/* -------------------------------------------------------------------------
+   EventBanner Adaptations
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] header {
+  background-color: var(--bg-surface);
+  border-color: var(--border-hairline);
+  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+}
+
+[data-event-theme="pageant-editorial"] header h1 {
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+[data-event-theme="pageant-editorial"] .theme-badge-champagne {
+  border-color: var(--border-champagne);
+  background-color: rgba(203, 178, 121, 0.15);
+  color: var(--champagne-light);
+}
+
+/* -------------------------------------------------------------------------
+   EventCountdown Architectural Timer
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .event-countdown-container {
+  background-color: var(--bg-surface);
+  border-color: var(--border-hairline);
+  border-radius: var(--radius-md);
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+}
+
+[data-event-theme="pageant-editorial"] .countdown-unit-card {
+  background-color: var(--bg-surface-elevated);
+  border-color: var(--border-hairline);
+  border-radius: var(--radius-sm);
+}
+
+[data-event-theme="pageant-editorial"] .countdown-unit-value {
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  color: var(--champagne-primary);
+  font-size: 1.85rem;
+  line-height: 1;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-unit-label {
+  color: var(--text-tertiary);
+  letter-spacing: 0.16em;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+/* Architectural Dividers */
+[data-event-theme="pageant-editorial"] .countdown-separator {
+  color: var(--border-champagne);
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+}
+
+/* -------------------------------------------------------------------------
+   ContestantCard Haute-Couture Dossier
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .contestant-card {
+  background-color: var(--bg-surface);
+  border-color: var(--border-hairline);
+  border-radius: var(--radius-sm);
+  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-card:hover {
+  transform: translateY(-4px);
+  border-color: var(--border-champagne);
+  box-shadow: 0 12px 30px -8px rgba(203, 178, 121, 0.15);
+}
+
+/* Sash Badge (Hometown / Division) */
+[data-event-theme="pageant-editorial"] .contestant-sash-badge {
+  background-color: rgba(11, 12, 16, 0.85);
+  border: 1px solid var(--border-hairline);
+  color: var(--champagne-primary);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  padding: 3px 10px;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(8px);
+}
+
+/* Candidate Number Badge */
+[data-event-theme="pageant-editorial"] .contestant-num-badge {
+  background-color: rgba(11, 12, 16, 0.85);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-tertiary);
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  font-size: 14px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: var(--radius-sm);
+  backdrop-filter: blur(8px);
+}
+
+/* Candidate Name */
+[data-event-theme="pageant-editorial"] .contestant-name {
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  font-size: 1.35rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-primary);
+}
+
+[data-event-theme="pageant-editorial"] .contestant-card:hover .contestant-name {
+  color: var(--champagne-light);
+}
+
+/* Card Action Footer */
+[data-event-theme="pageant-editorial"] .contestant-card-footer {
+  background-color: var(--bg-surface);
+  border-top-color: var(--border-hairline);
+}
+
+[data-event-theme="pageant-editorial"] .contestant-vote-count {
+  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: var(--champagne-primary);
+}
+
+/* Free Vote Button in Pageant Theme */
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote {
+  background-color: var(--text-primary);
+  color: var(--bg-base);
+  border: 1px solid var(--text-primary);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+}
+
+/* Boost Vote Outline Button in Pageant Theme */
+[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline {
+  background-color: transparent;
+  border: 1px solid var(--border-champagne);
+  color: var(--champagne-primary);
+  font-weight: 600;
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  border-radius: var(--radius-sm);
+  transition: all 0.2s ease;
+}
+
+[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover {
+  background-color: rgba(203, 178, 121, 0.12);
+  border-color: var(--champagne-primary);
+  color: var(--champagne-light);
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.2);
+}
+
+/* -------------------------------------------------------------------------
+   Category Filters & Roster Controls
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .category-tab-btn {
+  background-color: transparent;
+  color: var(--text-secondary);
+  border: 1px solid transparent;
+  border-radius: var(--radius-sm);
+  font-size: 13px;
+  transition: all 0.2s ease;
+}
+
+[data-event-theme="pageant-editorial"] .category-tab-btn:hover {
+  color: var(--text-primary);
+  background-color: rgba(255, 255, 255, 0.04);
+}
+
+[data-event-theme="pageant-editorial"] .category-tab-btn[data-state="active"],
+[data-event-theme="pageant-editorial"] .category-tab-btn.active {
+  color: var(--champagne-light);
+  background-color: var(--bg-surface);
+  border-color: var(--border-hairline);
+  font-weight: 600;
+}
+
+/* -------------------------------------------------------------------------
+   BoostVoteModal Scoping
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .boost-modal-dialog {
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-hairline);
+  color: var(--text-primary);
+  border-radius: var(--radius-md);
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card {
+  background-color: var(--bg-surface-elevated);
+  border-color: var(--border-hairline);
+  border-radius: var(--radius-sm);
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card.selected {
+  border-color: var(--champagne-primary);
+  background-color: rgba(203, 178, 121, 0.08);
+}
+
+/* -------------------------------------------------------------------------
+   Main Layout & Rules Banner
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] main {
+  background-color: var(--bg-base);
+  color: var(--text-primary);
+}
+
+/* -------------------------------------------------------------------------
+   FreeVoteButton Theme Scoping
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] .group\/vote {
+  background-color: var(--text-primary);
+  color: var(--bg-base);
+  border: 1px solid var(--text-primary);
+  border-radius: var(--radius-sm);
+}
+
+[data-event-theme="pageant-editorial"] .group\/vote:hover {
+  background-color: #FFFFFF;
+  color: #000000;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+}
+
+[data-event-theme="pageant-editorial"] .group\/vote svg {
+  fill: var(--bg-base);
+  color: var(--bg-base);
+}
+
+[data-event-theme="pageant-editorial"] .group\/vote:hover svg {
+  fill: #000000;
+  color: #000000;
+}
+
+/* -------------------------------------------------------------------------
+   Category & Division Filter Buttons
+   ------------------------------------------------------------------------- */
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
+  border-color: var(--border-champagne-bright) !important;
+  background-color: var(--bg-surface-elevated) !important;
+  color: var(--champagne-light) !important;
+  box-shadow: 0 0 10px rgba(203, 178, 121, 0.2);
+}
+
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
+  border-color: var(--border-hairline) !important;
+  background-color: var(--bg-surface) !important;
+  color: var(--text-secondary) !important;
+}
+
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
+  border-color: rgba(255, 255, 255, 0.2) !important;
+  color: var(--text-primary) !important;
+}
+

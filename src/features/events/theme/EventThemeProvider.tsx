@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useMemo } from "react";
 import type { EventTheme, ThemeDefinition, ThemeTokens } from "../types/theme";
 import { resolveEventTheme, THEME_REGISTRY } from "./theme-registry";
+import "./pageant-theme.css";
 
 export interface EventThemeContextValue {
   theme: EventTheme;

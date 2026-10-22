@@ -2,7 +2,7 @@
 
 import React from "react";
 import Image from "next/image";
-import { Play, Sparkles, MapPin } from "lucide-react";
+import { Play, Sparkles, MapPin, Zap } from "lucide-react";
 import type { ContestantDto } from "../types";
 import { FreeVoteButton } from "@/features/voting/components/FreeVoteButton";
 
@@ -42,7 +42,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
   }
 
   return (
-    <div className="group relative flex flex-col overflow-hidden rounded-none border border-slate-300 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-sky-500 hover:shadow-xl dark:border-slate-800 dark:bg-[#0d1424]">
+    <div className="contestant-card group relative flex flex-col overflow-hidden rounded-none border border-slate-300 bg-white shadow-xs transition-all duration-300 hover:-translate-y-1 hover:border-sky-500 hover:shadow-xl dark:border-slate-800 dark:bg-[#0d1424]">
       {/* 4:5 Portrait Image Container & Profile Trigger */}
       <button
         type="button"
@@ -64,7 +64,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
           <div className="absolute inset-0 bg-linear-to-t from-slate-950 via-slate-950/40 to-transparent transition-opacity group-hover:opacity-95" />
 
           {/* Candidate Number Badge (Clean Brutalist Pill) */}
-          <div className="absolute top-3 left-3 flex items-center gap-1 rounded-none border border-slate-300 bg-white/95 px-2.5 py-1 font-mono text-xs font-bold tracking-wider text-slate-950 shadow-sm backdrop-blur-md dark:border-slate-700 dark:bg-slate-950/95 dark:text-slate-100">
+          <div className="contestant-num-badge absolute top-3 left-3 flex items-center gap-1 rounded-none border border-slate-300 bg-white/95 px-2.5 py-1 font-mono text-xs font-bold tracking-wider text-slate-950 shadow-sm backdrop-blur-md dark:border-slate-700 dark:bg-slate-950/95 dark:text-slate-100">
             <Sparkles className="size-3 text-sky-600 dark:text-sky-400" />
             <span>#{String(contestant.contestantNumber).padStart(2, "0")}</span>
           </div>
@@ -83,6 +83,13 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
             )}
           </div>
 
+          {/* Sash Badge (Pageant Editorial) */}
+          {(contestant.hometown || divisionDisplay) && (
+            <div className="contestant-sash-badge absolute top-3 right-3 hidden items-center backdrop-blur-md">
+              <span>{contestant.hometown || divisionDisplay}</span>
+            </div>
+          )}
+
           {/* Category Pills (Floating Over Bottom Gradient) */}
           {contestant.categories.length > 0 && (
             <div className="absolute right-3 bottom-16 left-3 flex flex-wrap gap-1">
@@ -99,7 +106,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
 
           {/* Candidate Identity Dossier Snippet */}
           <div className="absolute right-3 bottom-3 left-3">
-            <h3 className="font-heading line-clamp-1 text-lg font-extrabold tracking-tight text-white drop-shadow-xs transition-colors group-hover:text-sky-300">
+            <h3 className="contestant-name font-heading line-clamp-1 text-lg font-extrabold tracking-tight text-white drop-shadow-xs transition-colors group-hover:text-sky-300">
               {contestant.name}
             </h3>
 
@@ -117,11 +124,11 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
       </button>
 
       {/* Card Action Bar */}
-      <div className="flex items-center justify-between gap-2 border-t border-slate-200 bg-slate-50/90 px-3 py-2.5 dark:border-slate-800 dark:bg-[#0d1424]">
+      <div className="contestant-card-footer flex items-center justify-between gap-2 border-t border-slate-200 bg-slate-50/90 px-3 py-2.5 dark:border-slate-800 dark:bg-[#0d1424]">
         <div className="flex min-w-0 flex-col justify-center">
           {contestant.voteCount > 0 ? (
             <div className="flex items-baseline gap-1">
-              <span className="font-mono text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
+              <span className="contestant-vote-count font-mono text-base font-extrabold tracking-tight text-slate-900 dark:text-slate-50">
                 {contestant.voteCount.toLocaleString()}
               </span>
               <span className="text-[10px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
@@ -130,7 +137,7 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
             </div>
           ) : (
             <div className="flex items-baseline gap-1">
-              <span className="font-mono text-base font-extrabold tracking-tight text-slate-400 dark:text-slate-500">
+              <span className="contestant-vote-count font-mono text-base font-extrabold tracking-tight text-slate-400 dark:text-slate-500">
                 0
               </span>
               <span className="text-[10px] font-bold tracking-wider text-slate-400 uppercase dark:text-slate-500">
@@ -140,7 +147,21 @@ export const ContestantCard: React.FC<ContestantCardProps> = ({
           )}
         </div>
 
-        <div className="shrink-0">
+        <div className="shrink-0 flex items-center gap-1.5">
+          {onVoteClick && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                onVoteClick(contestant);
+              }}
+              className="btn-pageant-boost-outline hidden items-center gap-1 px-2.5 py-1 text-xs font-semibold tracking-wider uppercase transition-all"
+              aria-label={`Boost vote for ${contestant.name}`}
+            >
+              <Zap className="size-3 fill-current" />
+              <span>Boost</span>
+            </button>
+          )}
           <FreeVoteButton
             eventId={contestant.eventId}
             contestantId={contestant.id}

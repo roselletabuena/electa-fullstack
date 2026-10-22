@@ -18,6 +18,7 @@ export const mockScheduledEvent: PublicEventDto = {
   dailyFreeVoteLimit: 1,
   organizerId: "usr_org_01",
   location: "Baguio City, Northern Luzon",
+  theme: "ELECTA_DEFAULT",
   contestants: [
     {
       id: "cst_01",
@@ -97,8 +98,23 @@ export const mockDraftEvent: PublicEventDto = {
   operationalState: "Draft",
 };
 
+export const mockPageantEvent: PublicEventDto = {
+  ...mockActiveEvent,
+  id: "evt_pageant_01",
+  slug: "ms-tala-2026",
+  title: "Ms. Tala 2026 — Official People's Choice Ballot",
+  location: "Manila, Philippines",
+  theme: "PAGEANT_EDITORIAL",
+};
+
 export function getMockEventBySlug(slug: string): PublicEventDto | null {
-  const events = [mockScheduledEvent, mockActiveEvent, mockClosedEvent, mockDraftEvent];
+  const events = [
+    mockScheduledEvent,
+    mockActiveEvent,
+    mockClosedEvent,
+    mockDraftEvent,
+    mockPageantEvent,
+  ];
   const found = events.find((e) => e.slug === slug);
   if (!found) {
     return null;

@@ -49,6 +49,7 @@ const mockEvent: Event = {
   takeRatePercentage: new Prisma.Decimal(12.0),
   organizerId: "org-123",
   archetype: "PAGEANT",
+  theme: "ELECTA_DEFAULT",
   createdAt: new Date("2026-09-01T00:00:00Z"),
   updatedAt: new Date("2026-09-01T00:00:00Z"),
 };

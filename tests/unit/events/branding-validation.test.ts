@@ -91,4 +91,42 @@ describe("updateEventBrandingSchema", () => {
       expect(result.error.issues[0]?.message).toContain("Reason must not exceed 500 characters");
     }
   });
+
+  it("validates when valid theme is provided (ELECTA_DEFAULT or PAGEANT_EDITORIAL)", () => {
+    const defaultThemeResult = updateEventBrandingSchema.safeParse({
+      title: "Valid Title",
+      description: "Valid description",
+      bannerUrl: "https://example.com/banner.jpg",
+      theme: "ELECTA_DEFAULT",
+    });
+    expect(defaultThemeResult.success).toBe(true);
+    if (defaultThemeResult.success) {
+      expect(defaultThemeResult.data.theme).toBe("ELECTA_DEFAULT");
+    }
+
+    const pageantThemeResult = updateEventBrandingSchema.safeParse({
+      title: "Valid Title",
+      description: "Valid description",
+      bannerUrl: "https://example.com/banner.jpg",
+      theme: "PAGEANT_EDITORIAL",
+    });
+    expect(pageantThemeResult.success).toBe(true);
+    if (pageantThemeResult.success) {
+      expect(pageantThemeResult.data.theme).toBe("PAGEANT_EDITORIAL");
+    }
+  });
+
+  it("fails when invalid theme identifier is provided", () => {
+    const result = updateEventBrandingSchema.safeParse({
+      title: "Valid Title",
+      description: "Valid description",
+      bannerUrl: "https://example.com/banner.jpg",
+      theme: "INVALID_NEON_THEME",
+    });
+
+    expect(result.success).toBe(false);
+    if (!result.success) {
+      expect(result.error.issues[0]?.message).toContain("Invalid event theme identifier");
+    }
+  });
 });

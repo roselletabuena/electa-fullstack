@@ -77,6 +77,7 @@ describe("EventSettingsPage", () => {
       takeRatePercentage: "12.00" as unknown as Event["takeRatePercentage"],
       organizerId: "org-1",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

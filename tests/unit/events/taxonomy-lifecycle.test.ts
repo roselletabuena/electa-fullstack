@@ -52,6 +52,7 @@ describe("Division Lifecycle (PATCH & DELETE)", () => {
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     archetype: "PAGEANT",
+    theme: "ELECTA_DEFAULT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -197,6 +198,7 @@ describe("Award Category Lifecycle (PATCH & DELETE)", () => {
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     archetype: "PAGEANT",
+    theme: "ELECTA_DEFAULT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

@@ -83,6 +83,7 @@ describe("Core Voting Engine: castVoteAction", () => {
       showResultsOnClose: true,
       organizerId: "org-1",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       isFreeVotingOnly: false,
       allowedEmailDomains: [],
       startsAt: new Date(Date.now() - 3600 * 1000),

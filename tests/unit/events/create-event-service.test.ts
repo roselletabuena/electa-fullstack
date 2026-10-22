@@ -108,6 +108,7 @@ describe("createEvent Service", () => {
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_user_123",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -202,6 +203,7 @@ describe("createEvent Service", () => {
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_user_123",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

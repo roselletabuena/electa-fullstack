@@ -68,6 +68,7 @@ describe("requireEventOwnership", () => {
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_owner_123",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };
@@ -100,6 +101,7 @@ describe("requireEventOwnership", () => {
       takeRatePercentage: new Prisma.Decimal(12.0),
       organizerId: "org_owner_123",
       archetype: "PAGEANT",
+      theme: "ELECTA_DEFAULT",
       createdAt: new Date(),
       updatedAt: new Date(),
     };

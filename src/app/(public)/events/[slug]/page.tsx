@@ -10,6 +10,7 @@ import { getSession } from "@/lib/auth/get-session";
 import { db } from "@/lib/db";
 import { deriveEventState } from "@/features/events/utils/derive-event-state";
 import { getMockEventBySlug } from "@/features/events/utils/mock-data";
+import { EventThemeProvider } from "@/features/events/theme";
 import type { PublicEventDto } from "@/features/events/types";
 import EventLoading from "./loading";
 
@@ -52,6 +53,7 @@ async function getPublicEvent(slug: string): Promise<PublicEventDto | null> {
         isFreeVotingEnabled: event.isFreeVotingEnabled,
         dailyFreeVoteLimit: event.dailyFreeVoteLimit,
         organizerId: event.organizerId,
+        theme: event.theme,
         contestants: event.contestants.map((c) => ({
           id: c.id,
           contestantNumber: c.contestantNumber,
@@ -99,6 +101,62 @@ export async function generateMetadata(props: PageProps): Promise<Metadata> {
   };
 }
 
+async function renderDraftEventContent(
+  slug: string,
+  event: PublicEventDto,
+): Promise<React.JSX.Element> {
+  const session = await getSession();
+  const isOwner = Boolean(session && event.organizerId && session.userId === event.organizerId);
+
+  if (isOwner) {
+    return (
+      <main>
+        <Suspense fallback={<EventLoading />}>
+          <EventPageClient initialEvent={event} isDraftPreview accessMode="organizer" />
+        </Suspense>
+      </main>
+    );
+  }
+
+  let draftHash: string | null = null;
+  let isDbRecord = false;
+  try {
+    const dbEvent = await db.event.findUnique({
+      where: { slug },
+      select: { draftPassphraseHash: true },
+    });
+    if (dbEvent) {
+      isDbRecord = true;
+      draftHash = dbEvent.draftPassphraseHash;
+    }
+  } catch {
+    // Optional in mock environments
+  }
+
+  const activeDigest = isDbRecord
+    ? computePassphraseDigest(draftHash)
+    : computePassphraseDigest("judge-preview-2026");
+
+  const cookieStore = await cookies();
+  const previewCookie = cookieStore.get(`vs_preview_${slug}`)?.value;
+
+  if (previewCookie && verifyPreviewToken(previewCookie, slug, activeDigest)) {
+    return (
+      <main>
+        <Suspense fallback={<EventLoading />}>
+          <EventPageClient initialEvent={event} isDraftPreview accessMode="guest" />
+        </Suspense>
+      </main>
+    );
+  }
+
+  return (
+    <main className="py-12">
+      <DraftPassphraseModal slug={slug} />
+    </main>
+  );
+}
+
 export default async function EventPage(props: Readonly<PageProps>): Promise<React.JSX.Element> {
   const { slug } = await props.params;
   const event = await getPublicEvent(slug);
@@ -107,67 +165,16 @@ export default async function EventPage(props: Readonly<PageProps>): Promise<Rea
     notFound();
   }
 
-  // Draft state authorization gates
-  if (event.operationalState === "Draft") {
-    const session = await getSession();
-    const isOwner = Boolean(session && event.organizerId && session.userId === event.organizerId);
-
-    if (isOwner) {
-      return (
-        <main>
-          <Suspense fallback={<EventLoading />}>
-            <EventPageClient initialEvent={event} isDraftPreview accessMode="organizer" />
-          </Suspense>
-        </main>
-      );
-    }
-
-    let draftHash: string | null = null;
-    let isDbRecord = false;
-    try {
-      const dbEvent = await db.event.findUnique({
-        where: { slug },
-        select: { draftPassphraseHash: true },
-      });
-      if (dbEvent) {
-        isDbRecord = true;
-        draftHash = dbEvent.draftPassphraseHash;
-      }
-    } catch {
-      // Optional in mock environments
-    }
-
-    // Active digest from db hash, or for mock fallback
-    const activeDigest = isDbRecord
-      ? computePassphraseDigest(draftHash)
-      : computePassphraseDigest("judge-preview-2026");
-
-    const cookieStore = await cookies();
-    const previewCookie = cookieStore.get(`vs_preview_${slug}`)?.value;
-
-    if (previewCookie && verifyPreviewToken(previewCookie, slug, activeDigest)) {
-      return (
-        <main>
-          <Suspense fallback={<EventLoading />}>
-            <EventPageClient initialEvent={event} isDraftPreview accessMode="guest" />
-          </Suspense>
-        </main>
-      );
-    }
-
-    // Unauthenticated guest reviewer or non-owner: render Passphrase unlock prompt
-    return (
-      <main className="py-12">
-        <DraftPassphraseModal slug={slug} />
+  const content =
+    event.operationalState === "Draft" ? (
+      await renderDraftEventContent(slug, event)
+    ) : (
+      <main>
+        <Suspense fallback={<EventLoading />}>
+          <EventPageClient initialEvent={event} />
+        </Suspense>
       </main>
     );
-  }
 
-  return (
-    <main>
-      <Suspense fallback={<EventLoading />}>
-        <EventPageClient initialEvent={event} />
-      </Suspense>
-    </main>
-  );
+  return <EventThemeProvider theme={event.theme}>{content}</EventThemeProvider>;
 }

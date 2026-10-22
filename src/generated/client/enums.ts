@@ -38,6 +38,14 @@ export const EventArchetype = {
 export type EventArchetype = (typeof EventArchetype)[keyof typeof EventArchetype]
 
 
+export const EventTheme = {
+  ELECTA_DEFAULT: 'ELECTA_DEFAULT',
+  PAGEANT_EDITORIAL: 'PAGEANT_EDITORIAL'
+} as const
+
+export type EventTheme = (typeof EventTheme)[keyof typeof EventTheme]
+
+
 export const ContestantStatus = {
   ACTIVE: 'ACTIVE',
   HIDDEN: 'HIDDEN',

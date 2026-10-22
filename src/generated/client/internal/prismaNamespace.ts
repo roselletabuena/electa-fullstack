@@ -2197,6 +2197,7 @@ export const EventScalarFieldEnum = {
   takeRatePercentage: 'takeRatePercentage',
   organizerId: 'organizerId',
   archetype: 'archetype',
+  theme: 'theme',
   allowedEmailDomains: 'allowedEmailDomains',
   createdAt: 'createdAt',
   updatedAt: 'updatedAt'
@@ -2676,6 +2677,20 @@ export type EnumEventArchetypeFieldRefInput<$PrismaModel> = FieldRefInputType<$P
  * Reference to a field of type 'EventArchetype[]'
  */
 export type ListEnumEventArchetypeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventArchetype[]'>
+    
+
+
+/**
+ * Reference to a field of type 'EventTheme'
+ */
+export type EnumEventThemeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventTheme'>
+    
+
+
+/**
+ * Reference to a field of type 'EventTheme[]'
+ */
+export type ListEnumEventThemeFieldRefInput<$PrismaModel> = FieldRefInputType<$PrismaModel, 'EventTheme[]'>
     
 
 

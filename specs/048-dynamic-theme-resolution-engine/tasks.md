@@ -55,5 +55,5 @@
 - [x] T014 Run full unit test suite: `npm run test:unit`
 - [x] T015 Run typecheck and lint: `npm run typecheck && npm run lint`
 - [x] T016 Perform two-axis Code Review (Spec & Standards) and 5-axis quality audit
-- [ ] T017 Trigger `pr-creator` to rebase on `origin/main`, push, and open PR
-- [ ] T018 Post completion changelog and PR link comment to Jira ticket VS-120
+- [x] T017 Trigger `pr-creator` to rebase on `origin/main`, push, and open PR
+- [x] T018 Post completion changelog and PR link comment to Jira ticket VS-120

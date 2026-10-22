@@ -1,6 +1,7 @@
 import type { Event } from "@/generated/client/client";
 import type { UserSession } from "@/lib/auth/get-session";
 import type { EventArchetype, EventPositionDto } from "./archetype";
+import type { EventTheme } from "./theme";
 
 export type EventPublicationStatus = "DRAFT" | "PUBLISHED" | "ARCHIVED";
 
@@ -47,6 +48,7 @@ export interface PublicEventDto {
   organizerId?: string;
   location?: string;
   contestants: ContestantDto[];
+  theme?: EventTheme;
 }
 
 export const EVENT_LIFECYCLE_FILTERS = ["all", "active", "scheduled", "closed"] as const;
@@ -219,4 +221,6 @@ export type {
   UnifiedTaxonomyDto,
 } from "./archetype";
 export { EVENT_ARCHETYPES, EVENT_ARCHETYPE_CONFIGS } from "./archetype";
+export type { EventTheme, ThemeTokens, ThemeDefinition } from "./theme";
+export { EVENT_THEMES } from "./theme";
 

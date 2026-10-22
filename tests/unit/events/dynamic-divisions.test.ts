@@ -90,6 +90,7 @@ describe("POST /api/events/[slug]/divisions", () => {
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "org-1",
     archetype: "PAGEANT",
+    theme: "ELECTA_DEFAULT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

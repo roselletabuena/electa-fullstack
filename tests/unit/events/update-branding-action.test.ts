@@ -41,6 +41,7 @@ describe("updateEventBrandingAction", () => {
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "usr_organizer_mock_01",
     archetype: "PAGEANT",
+    theme: "ELECTA_DEFAULT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };
@@ -177,4 +178,74 @@ describe("updateEventBrandingAction", () => {
       expect(result.fieldErrors?.bannerUrl).toBeDefined();
     }
   });
+
+  it("successfully updates event theme to PAGEANT_EDITORIAL and records previous and new theme in audit log", async () => {
+    vi.mocked(requireEventOwnership).mockResolvedValue({
+      authorized: true,
+      event: baseEvent,
+      session: { userId: "usr_organizer_mock_01", email: "organizer@electa.ph" },
+    });
+
+    const mockUpdatedEvent: Event = {
+      ...baseEvent,
+      theme: "PAGEANT_EDITORIAL",
+      title: "Miss Visayas 2026 Editorial",
+      updatedAt: new Date(),
+    };
+
+    const mockUpdate = vi.fn().mockResolvedValue(mockUpdatedEvent);
+    const mockAuditLogCreate = vi.fn().mockResolvedValue({ id: "audit_123" });
+
+    vi.mocked(db.$transaction).mockImplementation(async (callback) => {
+      return callback({
+        event: { update: mockUpdate },
+        eventAuditLog: { create: mockAuditLogCreate },
+      } as unknown as Parameters<Parameters<typeof db.$transaction>[0]>[0]);
+    });
+
+    const result = await updateEventBrandingAction("miss-visayas-2026", {
+      title: "Miss Visayas 2026 Editorial",
+      description: "Annual pageant.",
+      bannerUrl: "https://example.com/banner.jpg",
+      theme: "PAGEANT_EDITORIAL",
+      reason: "Switching to editorial haute-couture skin",
+    });
+
+    expect(result.success).toBe(true);
+    if (result.success) {
+      expect(result.data?.theme).toBe("PAGEANT_EDITORIAL");
+    }
+
+    expect(mockUpdate).toHaveBeenCalledWith({
+      where: { id: "evt_123" },
+      data: {
+        title: "Miss Visayas 2026 Editorial",
+        description: "Annual pageant.",
+        bannerUrl: "https://example.com/banner.jpg",
+        theme: "PAGEANT_EDITORIAL",
+      },
+    });
+
+    expect(mockAuditLogCreate).toHaveBeenCalledWith({
+      data: {
+        eventId: "evt_123",
+        action: "UPDATE_BRANDING",
+        changedBy: "usr_organizer_mock_01",
+        previousVal: {
+          title: "Miss Visayas 2026",
+          description: "Annual pageant.",
+          bannerUrl: "https://example.com/banner.jpg",
+          theme: "ELECTA_DEFAULT",
+        },
+        newVal: {
+          title: "Miss Visayas 2026 Editorial",
+          description: "Annual pageant.",
+          bannerUrl: "https://example.com/banner.jpg",
+          theme: "PAGEANT_EDITORIAL",
+        },
+        reason: "Switching to editorial haute-couture skin",
+      },
+    });
+  });
 });
+

@@ -8,7 +8,7 @@ import {
   type UpdateEventBrandingInput,
 } from "@/lib/validations/event-branding";
 import type { ActionResponse } from "@/features/events/types";
-import type { Event } from "@/generated/client/client";
+import type { Event, Prisma } from "@/generated/client/client";
 
 export async function updateEventBrandingAction(
   slug: string,
@@ -44,7 +44,7 @@ export async function updateEventBrandingAction(
     };
   }
 
-  const { title, description, bannerUrl, reason } = parsed.data;
+  const { title, description, bannerUrl, theme, reason } = parsed.data;
   const currentEvent = authResult.event;
 
   // 3. Atomically update event and write audit log
@@ -56,24 +56,30 @@ export async function updateEventBrandingAction(
           title,
           description,
           bannerUrl,
+          ...(theme ? { theme } : {}),
         },
       });
+
+      const previousVal: Prisma.InputJsonObject = {
+        title: currentEvent.title,
+        description: currentEvent.description,
+        bannerUrl: currentEvent.bannerUrl,
+        ...(theme !== undefined ? { theme: currentEvent.theme } : {}),
+      };
+      const newVal: Prisma.InputJsonObject = {
+        title: updated.title,
+        description: updated.description,
+        bannerUrl: updated.bannerUrl,
+        ...(theme !== undefined ? { theme: updated.theme } : {}),
+      };
 
       await tx.eventAuditLog.create({
         data: {
           eventId: currentEvent.id,
           action: "UPDATE_BRANDING",
           changedBy: authResult.session.userId,
-          previousVal: {
-            title: currentEvent.title,
-            description: currentEvent.description,
-            bannerUrl: currentEvent.bannerUrl,
-          },
-          newVal: {
-            title: updated.title,
-            description: updated.description,
-            bannerUrl: updated.bannerUrl,
-          },
+          previousVal,
+          newVal,
           reason: reason && reason.trim().length > 0 ? reason.trim() : null,
         },
       });

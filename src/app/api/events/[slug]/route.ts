@@ -60,6 +60,7 @@ async function fetchDbEvent(slug: string): Promise<RetrievedEvent> {
         isFreeVotingEnabled: dbEvent.isFreeVotingEnabled,
         dailyFreeVoteLimit: dbEvent.dailyFreeVoteLimit,
         organizerId: dbEvent.organizerId,
+        theme: dbEvent.theme,
         contestants: dbEvent.contestants.map((c) => ({
           id: c.id,
           contestantNumber: c.contestantNumber,

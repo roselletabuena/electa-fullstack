@@ -77,6 +77,7 @@ function createMockEvent(overrides: Partial<Event> = {}): Event {
     takeRatePercentage: new Prisma.Decimal("12.00"),
     organizerId: "org-1",
     archetype: "HACKATHON",
+    theme: "ELECTA_DEFAULT",
     allowedEmailDomains: [],
     createdAt: new Date(),
     updatedAt: new Date(),

@@ -1,4 +1,9 @@
 import { z } from "zod";
+import { EVENT_THEMES } from "@/features/events/types/theme";
+
+export const eventThemeSchema = z.enum(EVENT_THEMES, {
+  message: "Invalid event theme identifier",
+});
 
 export const updateEventBrandingSchema = z.object({
   title: z
@@ -12,6 +17,7 @@ export const updateEventBrandingSchema = z.object({
     .trim()
     .url("Banner image URL must be a valid URL")
     .regex(/^https:\/\/.+/i, "Banner image URL must use secure HTTPS protocol"),
+  theme: eventThemeSchema.optional(),
   reason: z.string().trim().max(500, "Reason must not exceed 500 characters").optional(),
 });
 

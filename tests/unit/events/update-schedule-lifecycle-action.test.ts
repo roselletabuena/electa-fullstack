@@ -41,6 +41,7 @@ describe("updateScheduleLifecycleAction", () => {
     takeRatePercentage: new Prisma.Decimal(12.0),
     organizerId: "usr_organizer_mock_01",
     archetype: "PAGEANT",
+    theme: "ELECTA_DEFAULT",
     createdAt: new Date(),
     updatedAt: new Date(),
   };

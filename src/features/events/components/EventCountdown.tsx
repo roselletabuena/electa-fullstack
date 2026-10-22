@@ -53,7 +53,7 @@ export function EventCountdown({
     <section
       aria-label="Contest Operational Window Countdown"
       className={cn(
-        "relative overflow-hidden rounded-none border border-slate-300 bg-white p-4 shadow-xs backdrop-blur-xl sm:p-6 dark:border-slate-800 dark:bg-[#0d1424]",
+        "event-countdown-container relative overflow-hidden rounded-none border border-slate-300 bg-white p-4 shadow-xs backdrop-blur-xl sm:p-6 dark:border-slate-800 dark:bg-[#0d1424]",
         className,
       )}
     >
@@ -85,15 +85,15 @@ export function EventCountdown({
         {/* Digit Display Grid */}
         <div className="flex flex-wrap items-center justify-center gap-1.5 sm:gap-3 md:gap-4">
           <CountdownUnit value={days} label="Days" />
-          <span className="text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
+          <span className="countdown-separator text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
             :
           </span>
           <CountdownUnit value={hours} label="Hours" />
-          <span className="text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
+          <span className="countdown-separator text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
             :
           </span>
           <CountdownUnit value={minutes} label="Mins" />
-          <span className="text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
+          <span className="countdown-separator text-muted-foreground/40 -mt-3 text-lg font-bold sm:-mt-4 sm:text-xl md:text-2xl">
             :
           </span>
           <CountdownUnit value={seconds} label="Secs" isLive={isActive} />
@@ -113,17 +113,17 @@ function CountdownUnit({ value, label, isLive }: Readonly<CountdownUnitProps>): 
   const padded = String(value).padStart(2, "0");
 
   return (
-    <div className="flex flex-col items-center">
+    <div className="countdown-unit flex flex-col items-center">
       <div
         className={cn(
-          "relative flex h-13 w-13 items-center justify-center rounded-none border border-slate-300 bg-slate-50 font-mono text-xl font-extrabold shadow-inner sm:h-16 sm:w-16 sm:text-2xl md:h-20 md:w-20 md:text-3xl dark:border-slate-800 dark:bg-slate-900",
+          "countdown-unit-card relative flex h-13 w-13 items-center justify-center rounded-none border border-slate-300 bg-slate-50 font-mono text-xl font-extrabold shadow-inner sm:h-16 sm:w-16 sm:text-2xl md:h-20 md:w-20 md:text-3xl dark:border-slate-800 dark:bg-slate-900",
           isLive && "border-sky-500/50 text-sky-600 dark:text-sky-400",
         )}
       >
-        <span>{padded}</span>
+        <span className="countdown-unit-value">{padded}</span>
         <div className="bg-border/40 pointer-events-none absolute inset-x-0 top-1/2 h-px" />
       </div>
-      <span className="text-muted-foreground mt-1 text-[9px] font-medium tracking-wider uppercase sm:mt-1.5 sm:text-[10px] md:text-xs">
+      <span className="countdown-unit-label text-muted-foreground mt-1 text-[9px] font-medium tracking-wider uppercase sm:mt-1.5 sm:text-[10px] md:text-xs">
         {label}
       </span>
     </div>

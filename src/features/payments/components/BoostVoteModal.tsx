@@ -129,9 +129,9 @@ function PricingTierCard({
     <button
       type="button"
       onClick={() => onSelect(tier.id)}
-      className={`relative flex flex-col justify-between border p-3 text-left transition-all ${
+      className={`boost-tier-card relative flex flex-col justify-between border p-3 text-left transition-all ${
         isSelected
-          ? "border-2 border-slate-900 bg-slate-50 shadow-xs dark:border-sky-400 dark:bg-sky-950/20"
+          ? "selected border-2 border-slate-900 bg-slate-50 shadow-xs dark:border-sky-400 dark:bg-sky-950/20"
           : "border-slate-200 bg-white hover:border-slate-400 dark:border-slate-800 dark:bg-slate-900/60 dark:hover:border-slate-700"
       }`}
     >
@@ -333,7 +333,7 @@ export function BoostVoteModal({
       aria-labelledby="boost-modal-title"
       className="animate-in fade-in fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-slate-950/70 p-3 backdrop-blur-xs duration-150 sm:p-4"
     >
-      <div className="relative flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
+      <div className="boost-modal-dialog relative flex max-h-[92vh] w-full max-w-xl flex-col overflow-hidden border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 bg-slate-50 px-5 py-3.5 dark:border-slate-800 dark:bg-slate-900/60">
           <div className="flex items-center gap-2">

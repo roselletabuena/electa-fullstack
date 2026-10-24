@@ -117,7 +117,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
   const sizeClasses = {
     sm: "px-2.5 py-1 text-xs gap-1.5",
     md: "px-3.5 py-1.5 text-xs gap-1.5",
-    lg: "px-5 py-2.5 text-sm gap-2",
+    lg: "h-10 px-5 text-sm gap-2",
   }[size];
 
   const storyPayload: StoryCardPayload = {
@@ -142,9 +142,10 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         <button
           type="button"
           onClick={handleVoteClick}
+          aria-label={`Boost votes for ${contestantName}`}
           className={`flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
         >
-          <Zap className="size-3.5 fill-white" />
+          <Zap className="size-3.5 fill-white" aria-hidden="true" />
           <span>Boost Only</span>
         </button>
       );
@@ -159,10 +160,11 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             if (onBoostClick) onBoostClick();
             else setIsBoostModalOpen(true);
           }}
+          aria-label={`Boost votes for ${contestantName}`}
           className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
           title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
         >
-          <Zap className="size-3.5 fill-white" />
+          <Zap className="size-3.5 fill-white" aria-hidden="true" />
           <span>Boost</span>
         </button>
       );
@@ -173,17 +175,22 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         type="button"
         disabled={isCasting || isQuotaLoading}
         onClick={handleVoteClick}
+        aria-label={`Vote for ${contestantName}`}
+        aria-busy={isCasting}
         className={`group/vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
       >
         {isCasting ? (
           <>
-            <Loader2 className="size-3.5 animate-spin text-white" />
-            <span>Voting...</span>
+            <Loader2 className="size-3.5 animate-spin text-white" aria-hidden="true" />
+            <span className="btn-vote-label font-bold text-white">Voting...</span>
           </>
         ) : (
           <>
-            <Heart className="size-3.5 fill-white text-white transition-transform group-hover/vote:scale-125" />
-            <span>Vote</span>
+            <Heart
+              className="size-3.5 fill-white text-white transition-transform group-hover/vote:scale-125"
+              aria-hidden="true"
+            />
+            <span className="btn-vote-label font-bold text-white">Vote</span>
             {total > 1 && (
               <span className="py-0.2 ml-0.5 rounded-none bg-sky-800/90 px-1.5 font-mono text-[10px] font-bold text-sky-100">
                 {remaining}/{total}
@@ -208,14 +215,14 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
               e.stopPropagation();
               setIsStoryModalOpen(true);
             }}
-            className={`ml-1.5 flex items-center justify-center border border-slate-300 bg-white text-slate-600 shadow-2xs transition-colors hover:border-sky-500 hover:bg-sky-50 hover:text-sky-600 active:scale-95 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300 dark:hover:border-sky-500 dark:hover:bg-slate-700 dark:hover:text-sky-400 ${
-              size === "lg" ? "h-10 gap-1.5 px-3 text-xs font-bold" : "h-7 w-7"
+            className={`btn-share-story ml-2 inline-flex items-center justify-center rounded-none border border-slate-300 bg-white font-semibold text-slate-800 shadow-2xs transition-all hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 active:scale-95 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-200 dark:hover:border-slate-600 dark:hover:bg-slate-700 dark:hover:text-white ${
+              size === "lg" ? "h-10 gap-2 px-3.5 text-xs font-bold" : "h-7 w-7"
             }`}
-            title="Create & Share Campaign Story Card"
-            aria-label="Create & Share Campaign Story Card"
+            title={`Create & share story card for ${contestantName}`}
+            aria-label={`Create & share story card for ${contestantName}`}
           >
-            <Share2 className={size === "lg" ? "size-4" : "size-3.5"} />
-            {size === "lg" && <span>Share Story</span>}
+            <Share2 className={size === "lg" ? "size-4" : "size-3.5"} aria-hidden="true" />
+            {size === "lg" && <span className="btn-share-story-label">Share Story</span>}
           </button>
         )}
       </div>

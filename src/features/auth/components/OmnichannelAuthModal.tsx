@@ -7,6 +7,7 @@ import { X, ShieldCheck } from "lucide-react";
 import { savePendingVoteIntent } from "@/features/voting/utils/vote-intent";
 import type { PendingVoteIntent } from "@/features/voting/types";
 import { useIsMounted } from "@/hooks/use-is-mounted";
+import { useEventTheme } from "@/features/events/theme/EventThemeProvider";
 
 export interface OmnichannelAuthModalProps {
   isOpen: boolean;
@@ -27,6 +28,7 @@ export function OmnichannelAuthModal({
 }: Readonly<OmnichannelAuthModalProps>): React.JSX.Element | null {
   const router = useRouter();
   const isMounted = useIsMounted();
+  const { themeSlug } = useEventTheme();
 
   React.useEffect(() => {
     if (!isOpen) return;
@@ -60,6 +62,7 @@ export function OmnichannelAuthModal({
     <dialog
       open
       aria-labelledby="auth-modal-title"
+      data-event-theme={themeSlug}
       className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-0 bg-transparent p-4 outline-hidden backdrop:bg-transparent"
     >
       {/* Backdrop */}
@@ -68,11 +71,11 @@ export function OmnichannelAuthModal({
         aria-label="Close modal overlay"
         tabIndex={-1}
         onClick={onClose}
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
+        className="modal-backdrop fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Card - Zero-Radius Electa Style */}
-      <div className="relative w-full max-w-md border border-slate-300 bg-white p-6 shadow-xl sm:p-8 dark:border-slate-800 dark:bg-[#0d1424]">
+      <div className="auth-modal-card relative w-full max-w-md border border-slate-300 bg-white p-6 shadow-xl sm:p-8 dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Close Button */}
         <button
           type="button"

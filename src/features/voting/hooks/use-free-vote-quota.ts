@@ -12,12 +12,16 @@ export function useFreeVoteQuota(eventId: string) {
   const query = useQuery<VoterQuotaStateDto | null>({
     queryKey: ["voting-quota", eventId],
     queryFn: async () => {
+      if (!eventId) {
+        return null;
+      }
       const response = await getVoterQuotaAction(eventId);
       if (response.success && response.data) {
         return response.data;
       }
       return null;
     },
+    enabled: Boolean(eventId),
     staleTime: 30 * 1000, // 30 seconds
     refetchOnWindowFocus: true,
   });

@@ -22,12 +22,7 @@ describe("ThemeAppearancePreview", () => {
   });
 
   it("renders sample countdown timer and sample contestant card", () => {
-    render(
-      <ThemeAppearancePreview
-        theme={defaultTheme}
-        eventTitle="Miss Visayas 2026"
-      />,
-    );
+    render(<ThemeAppearancePreview theme={defaultTheme} eventTitle="Miss Visayas 2026" />);
 
     expect(screen.getByText(/Voting Closes In/i)).toBeInTheDocument();
     expect(screen.getByText(/Sample Candidate/i)).toBeInTheDocument();
@@ -37,28 +32,38 @@ describe("ThemeAppearancePreview", () => {
 
   it("applies theme custom properties and data-event-theme attribute", () => {
     const { container } = render(
-      <ThemeAppearancePreview
-        theme={pageantTheme}
-        eventTitle="Miss Mindanao 2026"
-      />,
+      <ThemeAppearancePreview theme={pageantTheme} eventTitle="Miss Mindanao 2026" />,
     );
 
     const themedBox = container.querySelector('[data-event-theme="pageant-editorial"]');
     expect(themedBox).toBeInTheDocument();
   });
 
-  it("enforces strict zero-radius brutalist branding across preview elements", () => {
+  it("enforces strict zero-radius brutalist branding for ELECTA_DEFAULT theme", () => {
     const { container } = render(
-      <ThemeAppearancePreview
-        theme={pageantTheme}
-        eventTitle="Miss Visayas 2026"
-      />,
+      <ThemeAppearancePreview theme={defaultTheme} eventTitle="Campus Choice 2026" />,
     );
 
-    const elementsWithRounded = container.querySelectorAll('[class*="rounded"]');
-    elementsWithRounded.forEach((el) => {
-      expect(el.className).toContain("rounded-none");
-      expect(el.className).not.toMatch(/rounded-(sm|md|lg|xl|2xl|full)/);
-    });
+    expect(screen.getByText("0px (Brutalist Zero-Radius)")).toBeInTheDocument();
+    const themedContainer = container.querySelector('[data-event-theme="electa-default"]');
+    const elementsWithRounded = themedContainer?.querySelectorAll('[class*="rounded"]');
+    if (elementsWithRounded)
+      for (const el of elementsWithRounded) {
+        expect(el.className).toContain("rounded-none");
+        expect(el.className).not.toMatch(/rounded-(sm|md|lg|xl|2xl|full)/);
+      }
+  });
+
+  it("applies non-brutalist soft luxury curves for PAGEANT_EDITORIAL theme", () => {
+    const { container } = render(
+      <ThemeAppearancePreview theme={pageantTheme} eventTitle="Miss Visayas 2026" />,
+    );
+
+    expect(screen.getByText("Soft Radii (6px, 10px, 16px, pill)")).toBeInTheDocument();
+    const themedContainer = container.querySelector('[data-event-theme="pageant-editorial"]');
+    const softCurveElements = themedContainer?.querySelectorAll(
+      ".rounded-xl, .rounded-lg, .rounded-md, .rounded-sm",
+    );
+    expect(softCurveElements && softCurveElements.length).toBeGreaterThan(0);
   });
 });

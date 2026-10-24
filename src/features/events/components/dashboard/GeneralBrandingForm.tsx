@@ -3,7 +3,15 @@
 import React, { useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe, Sparkles, AlertCircle, CheckCircle2, RotateCcw, Loader2, Palette } from "lucide-react";
+import {
+  Globe,
+  Sparkles,
+  AlertCircle,
+  CheckCircle2,
+  RotateCcw,
+  Loader2,
+  Palette,
+} from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -119,7 +127,8 @@ export function GeneralBrandingForm({
                   Event Identity & Public Branding
                 </CardTitle>
                 <CardDescription className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
-                  Manage public-facing competition titles, descriptions, visual themes, and high-resolution banner artwork.
+                  Manage public-facing competition titles, descriptions, visual themes, and
+                  high-resolution banner artwork.
                 </CardDescription>
               </div>
 
@@ -283,7 +292,9 @@ export function GeneralBrandingForm({
                   </h3>
                 </div>
                 <p className="font-sans text-xs text-slate-500 dark:text-slate-400">
-                  Select a tailored skin for your public competition page. All themes strictly enforce Electa&apos;s zero-radius brutalist geometry.
+                  Select a tailored skin for your public competition page. Electa Default enforces
+                  signature zero-radius brutalism, while Pageant Editorial embraces refined soft
+                  luxury curves.
                 </p>
               </div>
 

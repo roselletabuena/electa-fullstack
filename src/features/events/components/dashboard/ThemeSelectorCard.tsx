@@ -50,7 +50,7 @@ export function ThemeSelectorCard({
         "group relative flex flex-col justify-between rounded-none border p-4 transition-all duration-150 focus:ring-2 focus:ring-sky-500 focus:outline-hidden",
         disabled ? "cursor-not-allowed opacity-60" : "cursor-pointer",
         isSelected
-          ? "border-sky-600 bg-sky-50/30 ring-1 ring-sky-600 shadow-xs dark:border-sky-500 dark:bg-sky-950/20 dark:ring-sky-500"
+          ? "border-sky-600 bg-sky-50/30 shadow-xs ring-1 ring-sky-600 dark:border-sky-500 dark:bg-sky-950/20 dark:ring-sky-500"
           : "border-slate-300 bg-white hover:border-slate-400 hover:bg-slate-50/50 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-slate-700 dark:hover:bg-slate-800/40",
         className,
       )}
@@ -82,7 +82,7 @@ export function ThemeSelectorCard({
         </div>
 
         {/* Description */}
-        <p className="mt-2 font-sans text-xs text-slate-600 line-clamp-2 dark:text-slate-400">
+        <p className="mt-2 line-clamp-2 font-sans text-xs text-slate-600 dark:text-slate-400">
           {theme.description}
         </p>
 
@@ -123,6 +123,9 @@ export function ThemeSelectorCard({
         </span>
         <span className="inline-flex items-center rounded-none border border-slate-300 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
           Body {bodyFontDisplay}
+        </span>
+        <span className="inline-flex items-center rounded-none border border-slate-300 bg-slate-100 px-1.5 py-0.5 font-mono text-[10px] font-medium text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+          {theme.id === "PAGEANT_EDITORIAL" ? "Soft Curves" : "0px Brutalist"}
         </span>
       </div>
     </div>

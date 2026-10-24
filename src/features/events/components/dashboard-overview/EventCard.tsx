@@ -94,6 +94,7 @@ export function EventCard({ event }: Readonly<EventCardProps>): React.JSX.Elemen
     endsAt: event.endsAt,
   });
 
+  const [hasImageError, setHasImageError] = useState(false);
   const statusBadge = getEventCardStatusBadge(event, operationalState);
 
   return (
@@ -106,13 +107,14 @@ export function EventCard({ event }: Readonly<EventCardProps>): React.JSX.Elemen
           tabIndex={-1}
           aria-hidden="true"
         >
-          {event.bannerUrl ? (
+          {event.bannerUrl && !hasImageError ? (
             <Image
               src={event.bannerUrl}
               alt={event.title}
               fill
               sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
               className="object-cover transition-transform duration-500 group-hover:scale-105"
+              onError={() => setHasImageError(true)}
             />
           ) : (
             <div className="flex size-full items-center justify-center bg-slate-100 text-sky-700 dark:bg-slate-800 dark:text-sky-400">

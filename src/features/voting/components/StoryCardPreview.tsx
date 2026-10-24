@@ -47,7 +47,7 @@ export function StoryCardPreview({
   }, [payload, onGenerated]);
 
   return (
-    <div className="relative mx-auto aspect-9/16 w-full max-w-52 overflow-hidden border border-slate-300 bg-slate-950 shadow-md sm:max-w-56 dark:border-slate-700">
+    <div className="vote-story-preview-container relative mx-auto aspect-9/16 w-full max-w-52 overflow-hidden border border-slate-300 bg-slate-950 shadow-md sm:max-w-56 dark:border-slate-700">
       {isGenerating && (
         <div className="absolute inset-0 flex flex-col items-center justify-center bg-slate-950/85 p-3 text-center text-white backdrop-blur-xs">
           <Loader2 className="h-6 w-6 animate-spin text-sky-400" />

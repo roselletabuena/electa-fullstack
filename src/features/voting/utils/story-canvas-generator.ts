@@ -13,7 +13,118 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
+async function waitForFonts(): Promise<void> {
+  if (typeof document !== "undefined" && document.fonts) {
+    try {
+      await document.fonts.ready;
+    } catch {
+      // Ignore if document.fonts.ready is unsupported or throws in test environments
+    }
+  }
+}
+
+async function drawCandidatePhoto(
+  ctx: CanvasRenderingContext2D,
+  avatarUrl: string | undefined,
+  width: number,
+  targetHeight: number,
+  fallbackStart: string,
+  fallbackEnd: string,
+) {
+  if (!avatarUrl) return;
+  try {
+    const avatarImg = await loadImage(avatarUrl);
+    const imgRatio = avatarImg.width / avatarImg.height;
+    const targetRatio = width / targetHeight;
+
+    let drawWidth = width;
+    let drawHeight = targetHeight;
+    let offsetX = 0;
+    let offsetY = 0;
+
+    if (imgRatio > targetRatio) {
+      drawWidth = targetHeight * imgRatio;
+      offsetX = (width - drawWidth) / 2;
+    } else {
+      drawHeight = width / imgRatio;
+      offsetY = (targetHeight - drawHeight) / 2;
+    }
+
+    ctx.drawImage(avatarImg, offsetX, offsetY, drawWidth, drawHeight);
+  } catch {
+    const fallbackGrad = ctx.createLinearGradient(0, 0, width, targetHeight);
+    fallbackGrad.addColorStop(0, fallbackStart);
+    fallbackGrad.addColorStop(1, fallbackEnd);
+    ctx.fillStyle = fallbackGrad;
+    ctx.fillRect(0, 0, width, targetHeight);
+  }
+}
+
+function drawScrims(
+  ctx: CanvasRenderingContext2D,
+  theme: string,
+  width: number,
+  height: number,
+  scrimBottom: string,
+) {
+  const isOpal = theme === "opal";
+  const topScrim = ctx.createLinearGradient(0, 0, 0, 450);
+  topScrim.addColorStop(0, isOpal ? "rgba(248, 250, 252, 0.95)" : "rgba(2, 6, 23, 0.92)");
+  topScrim.addColorStop(0.6, isOpal ? "rgba(248, 250, 252, 0.6)" : "rgba(2, 6, 23, 0.5)");
+  topScrim.addColorStop(1, isOpal ? "rgba(248, 250, 252, 0)" : "rgba(2, 6, 23, 0)");
+  ctx.fillStyle = topScrim;
+  ctx.fillRect(0, 0, width, 450);
+
+  const startY = isOpal ? 750 : 800;
+  const bottomScrim = ctx.createLinearGradient(0, startY, 0, height);
+  bottomScrim.addColorStop(0, isOpal ? "rgba(248, 250, 252, 0)" : "rgba(2, 6, 23, 0)");
+  bottomScrim.addColorStop(0.35, isOpal ? "rgba(248, 250, 252, 0.85)" : "rgba(2, 6, 23, 0.85)");
+  bottomScrim.addColorStop(0.6, scrimBottom);
+  bottomScrim.addColorStop(1, scrimBottom);
+  ctx.fillStyle = bottomScrim;
+  ctx.fillRect(0, startY, width, height - startY);
+}
+
+function getStoryFonts(isCoronation: boolean) {
+  return {
+    heading: isCoronation ? "'Cormorant Garamond', Georgia, serif" : "'Outfit', 'Sora', sans-serif",
+    body: isCoronation ? "'Plus Jakarta Sans', sans-serif" : "'Sora', sans-serif",
+    mono: isCoronation ? "'Plus Jakarta Sans', sans-serif" : "'JetBrains Mono', monospace",
+  };
+}
+
+async function drawQrCodeBox(
+  ctx: CanvasRenderingContext2D,
+  votingUrl: string,
+  width: number,
+  qrBorder: string,
+) {
+  try {
+    const qrDataUrl = await generateVotingQrCode(votingUrl);
+    const qrImg = await loadImage(qrDataUrl);
+
+    const qrSize = 340;
+    const qrX = (width - qrSize) / 2;
+    const qrY = 1260;
+
+    // QR Code Container background
+    ctx.fillStyle = "#ffffff";
+    ctx.fillRect(qrX - 16, qrY - 16, qrSize + 32, qrSize + 32);
+
+    // Border around QR container
+    ctx.strokeStyle = qrBorder;
+    ctx.lineWidth = 6;
+    ctx.strokeRect(qrX - 16, qrY - 16, qrSize + 32, qrSize + 32);
+
+    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
+  } catch (err) {
+    console.error("Failed to render QR on canvas:", err);
+  }
+}
+
 export async function generateStoryCard(payload: StoryCardPayload): Promise<StoryGeneratorResult> {
+  await waitForFonts();
+
   const width = 1080;
   const height = 1920;
 
@@ -85,80 +196,29 @@ export async function generateStoryCard(payload: StoryCardPayload): Promise<Stor
   ctx.fillRect(0, 0, width, height);
 
   // 2. Candidate Background Photo (Top 65% of screen)
-  if (payload.candidateAvatarUrl) {
-    try {
-      const avatarImg = await loadImage(payload.candidateAvatarUrl);
-      const targetHeight = 1350;
-      const imgRatio = avatarImg.width / avatarImg.height;
-      const targetRatio = width / targetHeight;
-
-      let drawWidth = width;
-      let drawHeight = targetHeight;
-      let offsetX = 0;
-      let offsetY = 0;
-
-      if (imgRatio > targetRatio) {
-        drawWidth = targetHeight * imgRatio;
-        offsetX = (width - drawWidth) / 2;
-      } else {
-        drawHeight = width / imgRatio;
-        offsetY = (targetHeight - drawHeight) / 2;
-      }
-
-      ctx.drawImage(avatarImg, offsetX, offsetY, drawWidth, drawHeight);
-    } catch {
-      // Fallback geometric abstract background if CORS or image loading fails
-      const fallbackGrad = ctx.createLinearGradient(0, 0, width, 1350);
-      fallbackGrad.addColorStop(0, config.fallbackGradStart);
-      fallbackGrad.addColorStop(1, config.fallbackGradEnd);
-      ctx.fillStyle = fallbackGrad;
-      ctx.fillRect(0, 0, width, 1350);
-    }
-  }
+  await drawCandidatePhoto(
+    ctx,
+    payload.candidateAvatarUrl,
+    width,
+    1350,
+    config.fallbackGradStart,
+    config.fallbackGradEnd,
+  );
 
   // 3. High-Contrast Gradient Scrim Overlays
-  if (theme === "opal") {
-    // Light theme top & bottom scrims
-    const topScrim = ctx.createLinearGradient(0, 0, 0, 450);
-    topScrim.addColorStop(0, "rgba(248, 250, 252, 0.95)");
-    topScrim.addColorStop(0.6, "rgba(248, 250, 252, 0.6)");
-    topScrim.addColorStop(1, "rgba(248, 250, 252, 0)");
-    ctx.fillStyle = topScrim;
-    ctx.fillRect(0, 0, width, 450);
+  drawScrims(ctx, theme, width, height, config.scrimBottom);
 
-    const bottomScrim = ctx.createLinearGradient(0, 750, 0, height);
-    bottomScrim.addColorStop(0, "rgba(248, 250, 252, 0)");
-    bottomScrim.addColorStop(0.35, "rgba(248, 250, 252, 0.85)");
-    bottomScrim.addColorStop(0.6, config.scrimBottom);
-    bottomScrim.addColorStop(1, config.scrimBottom);
-    ctx.fillStyle = bottomScrim;
-    ctx.fillRect(0, 750, width, height - 750);
-  } else {
-    // Dark / Gold theme scrims
-    const topScrim = ctx.createLinearGradient(0, 0, 0, 450);
-    topScrim.addColorStop(0, "rgba(2, 6, 23, 0.92)");
-    topScrim.addColorStop(0.6, "rgba(2, 6, 23, 0.5)");
-    topScrim.addColorStop(1, "rgba(2, 6, 23, 0)");
-    ctx.fillStyle = topScrim;
-    ctx.fillRect(0, 0, width, 450);
-
-    const bottomScrim = ctx.createLinearGradient(0, 800, 0, height);
-    bottomScrim.addColorStop(0, "rgba(2, 6, 23, 0)");
-    bottomScrim.addColorStop(0.35, "rgba(2, 6, 23, 0.85)");
-    bottomScrim.addColorStop(0.6, config.scrimBottom);
-    bottomScrim.addColorStop(1, config.scrimBottom);
-    ctx.fillStyle = bottomScrim;
-    ctx.fillRect(0, 800, width, height - 800);
-  }
+  const isCoronation = theme === "coronation";
+  const fonts = getStoryFonts(isCoronation);
 
   // 4. Header: Brand Bar & Event Title
   ctx.fillStyle = config.brandBar;
-  ctx.font = "bold 26px sans-serif";
+  ctx.font = `bold 24px ${fonts.body}`;
   ctx.textAlign = "center";
   ctx.fillText("ELECTA • OFFICIAL BALLOT VERIFIED", width / 2, 110);
 
   ctx.fillStyle = config.eventTitle;
-  ctx.font = "900 48px sans-serif";
+  ctx.font = isCoronation ? `700 52px ${fonts.heading}` : `900 48px ${fonts.heading}`;
   const eventTitleUpper = payload.eventTitle.toUpperCase();
   ctx.fillText(
     eventTitleUpper.length > 32 ? `${eventTitleUpper.slice(0, 30)}...` : eventTitleUpper,
@@ -169,7 +229,7 @@ export async function generateStoryCard(payload: StoryCardPayload): Promise<Stor
   if (payload.divisionName || payload.categoryName) {
     const subtitle = [payload.divisionName, payload.categoryName].filter(Boolean).join(" • ");
     ctx.fillStyle = config.subtitle;
-    ctx.font = "600 24px sans-serif";
+    ctx.font = `600 24px ${fonts.body}`;
     ctx.fillText(subtitle.toUpperCase(), width / 2, 225);
   }
 
@@ -178,16 +238,16 @@ export async function generateStoryCard(payload: StoryCardPayload): Promise<Stor
   ctx.fillRect(width / 2 - 190, 940, 380, 64);
 
   ctx.fillStyle = config.badgeText;
-  ctx.font = "900 32px sans-serif";
+  ctx.font = `bold 30px ${fonts.body}`;
   ctx.fillText("⭐ I VOTED FOR ⭐", width / 2, 984);
 
   // 6. Contestant Number & Name
   ctx.fillStyle = config.contestantNum;
-  ctx.font = "bold 36px monospace";
+  ctx.font = `bold 32px ${fonts.mono}`;
   ctx.fillText(`CONTESTANT #${String(payload.candidateNumber).padStart(2, "0")}`, width / 2, 1070);
 
   ctx.fillStyle = config.contestantName;
-  ctx.font = "900 64px sans-serif";
+  ctx.font = isCoronation ? `700 70px ${fonts.heading}` : `900 64px ${fonts.heading}`;
   const candidateName = payload.candidateName;
   ctx.fillText(
     candidateName.length > 22 ? `${candidateName.slice(0, 20)}...` : candidateName,
@@ -196,35 +256,15 @@ export async function generateStoryCard(payload: StoryCardPayload): Promise<Stor
   );
 
   // 7. Dynamic QR Code Box
-  try {
-    const qrDataUrl = await generateVotingQrCode(payload.votingUrl);
-    const qrImg = await loadImage(qrDataUrl);
-
-    const qrSize = 340;
-    const qrX = (width - qrSize) / 2;
-    const qrY = 1260;
-
-    // QR Code Container background
-    ctx.fillStyle = "#ffffff";
-    ctx.fillRect(qrX - 16, qrY - 16, qrSize + 32, qrSize + 32);
-
-    // Border around QR container
-    ctx.strokeStyle = config.qrBorder;
-    ctx.lineWidth = 6;
-    ctx.strokeRect(qrX - 16, qrY - 16, qrSize + 32, qrSize + 32);
-
-    ctx.drawImage(qrImg, qrX, qrY, qrSize, qrSize);
-  } catch (err) {
-    console.error("Failed to render QR on canvas:", err);
-  }
+  await drawQrCodeBox(ctx, payload.votingUrl, width, config.qrBorder);
 
   // 8. Footer CTA & Instructions
   ctx.fillStyle = config.ctaText;
-  ctx.font = "800 32px sans-serif";
+  ctx.font = `bold 30px ${fonts.body}`;
   ctx.fillText("SCAN OR VISIT TO CAST YOUR VOTE", width / 2, 1710);
 
   ctx.fillStyle = config.footerUrl;
-  ctx.font = "bold 22px monospace";
+  ctx.font = `bold 22px ${fonts.mono}`;
   ctx.fillText("electa.app", width / 2, 1760);
 
   // 9. Export to Data URL and Blob

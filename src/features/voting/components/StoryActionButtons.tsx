@@ -73,7 +73,7 @@ export function StoryActionButtons({
           type="button"
           onClick={handleShare}
           disabled={!isReady || isSharing}
-          className="flex h-9 items-center justify-center gap-1.5 border border-sky-600 bg-sky-600 px-3 font-mono text-xs font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-500 active:scale-[0.99] disabled:opacity-50"
+          className="story-btn-share flex h-9 items-center justify-center gap-1.5 border border-sky-600 bg-sky-600 px-3 font-mono text-xs font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-500 active:scale-[0.99] disabled:opacity-50"
         >
           <Share2 className="h-3.5 w-3.5" />
           <span>Share Story</span>
@@ -83,7 +83,7 @@ export function StoryActionButtons({
           type="button"
           onClick={handleDownload}
           disabled={!isReady}
-          className="flex h-9 items-center justify-center gap-1.5 border border-slate-900 bg-slate-900 px-3 font-mono text-xs font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-slate-800 active:scale-[0.99] disabled:opacity-50 dark:border-white dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
+          className="story-btn-download flex h-9 items-center justify-center gap-1.5 border border-slate-900 bg-slate-900 px-3 font-mono text-xs font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-slate-800 active:scale-[0.99] disabled:opacity-50 dark:border-white dark:bg-white dark:text-slate-950 dark:hover:bg-slate-100"
         >
           <Download className="h-3.5 w-3.5" />
           <span>Download</span>
@@ -94,7 +94,7 @@ export function StoryActionButtons({
       <button
         type="button"
         onClick={handleCopyLink}
-        className="flex h-8 items-center justify-center gap-1.5 border border-slate-200 bg-slate-50 px-3 font-sans text-[11px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+        className="story-btn-copy flex h-8 items-center justify-center gap-1.5 border border-slate-200 bg-slate-50 px-3 font-sans text-[11px] font-semibold text-slate-700 transition-colors hover:bg-slate-100 hover:text-slate-950 dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
       >
         {copied ? (
           <>

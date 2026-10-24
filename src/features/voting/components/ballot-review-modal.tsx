@@ -4,6 +4,7 @@ import React, { useEffect } from "react";
 import Image from "next/image";
 import { X, CheckCircle, AlertCircle, Loader2, ArrowLeft } from "lucide-react";
 import type { BallotPositionDto, BallotCandidateDto } from "../types/ballot";
+import { useEventTheme } from "@/features/events/theme/EventThemeProvider";
 
 export interface SelectedGroup {
   position: BallotPositionDto;
@@ -27,6 +28,8 @@ export function BallotReviewModal({
   errorMessage,
   groups,
 }: Readonly<BallotReviewModalProps>): React.JSX.Element | null {
+  const { themeSlug } = useEventTheme();
+
   useEffect(() => {
     if (!isOpen) return;
 
@@ -49,6 +52,7 @@ export function BallotReviewModal({
       open
       aria-modal="true"
       aria-labelledby="ballot-review-title"
+      data-event-theme={themeSlug}
       className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-0 bg-transparent p-4 outline-hidden backdrop:bg-transparent"
     >
       {/* Backdrop */}
@@ -57,11 +61,11 @@ export function BallotReviewModal({
         aria-label="Close modal overlay"
         tabIndex={-1}
         onClick={() => !isSubmitting && onClose()}
-        className="fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
+        className="modal-backdrop fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
       />
 
       {/* Modal Surface */}
-      <div className="relative flex max-h-[90vh] w-full max-w-2xl flex-col border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
+      <div className="ballot-review-modal-container relative flex max-h-[90vh] w-full max-w-2xl flex-col border border-slate-300 bg-white shadow-2xl dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Header */}
         <div className="flex items-center justify-between border-b border-slate-200 p-5 dark:border-slate-800">
           <div>
@@ -90,8 +94,8 @@ export function BallotReviewModal({
         {/* Scrollable Summary List */}
         <div className="flex-1 space-y-6 overflow-y-auto p-5 sm:p-6">
           <p className="font-sans text-xs text-slate-600 dark:text-slate-300">
-            Please carefully inspect your candidates below before finalizing your submission. Once cast,
-            your ballot cannot be modified or withdrawn.
+            Please carefully inspect your candidates below before finalizing your submission. Once
+            cast, your ballot cannot be modified or withdrawn.
           </p>
 
           {errorMessage && (
@@ -125,7 +129,7 @@ export function BallotReviewModal({
                   </div>
 
                   {candidates.length === 0 ? (
-                    <div className="pt-2 text-xs italic text-slate-400 dark:text-slate-500">
+                    <div className="pt-2 text-xs text-slate-400 italic dark:text-slate-500">
                       [No candidates selected for this position]
                     </div>
                   ) : (
@@ -133,7 +137,7 @@ export function BallotReviewModal({
                       {candidates.map((candidate) => (
                         <li
                           key={candidate.id}
-                          className="flex items-center justify-between bg-white px-3 py-2 border border-slate-200 dark:border-slate-800 dark:bg-[#0d1424]"
+                          className="flex items-center justify-between border border-slate-200 bg-white px-3 py-2 dark:border-slate-800 dark:bg-[#0d1424]"
                         >
                           <div className="flex items-center gap-3">
                             {candidate.avatarUrl ? (
@@ -142,7 +146,7 @@ export function BallotReviewModal({
                                 alt={candidate.name}
                                 width={32}
                                 height={32}
-                                className="size-8 object-cover border border-slate-200 dark:border-slate-700"
+                                className="size-8 border border-slate-200 object-cover dark:border-slate-700"
                               />
                             ) : (
                               <div className="flex size-8 items-center justify-center border border-slate-200 bg-slate-100 font-mono text-xs font-bold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">

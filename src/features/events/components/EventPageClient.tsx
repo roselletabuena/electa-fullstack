@@ -110,6 +110,7 @@ export function EventPageClient({
     apiContestants && apiContestants.length > 0 ? apiContestants : fallbackRichContestants;
 
   const totalVotes = contestantsToDisplay.reduce((sum, c) => sum + (c.voteCount ?? 0), 0);
+  const featuredCandidate = contestantsToDisplay[0];
 
   return (
     <main className="bg-background text-foreground w-full max-w-full min-w-0 flex-1 overflow-x-hidden px-3 py-4 pb-20 sm:px-6 sm:py-8 sm:pb-8 lg:px-8">
@@ -129,8 +130,12 @@ export function EventPageClient({
         />
 
         <EventVotingRulesBanner
+          eventId={event.id}
           isFreeVotingEnabled={event.isFreeVotingEnabled}
           dailyFreeVoteLimit={event.dailyFreeVoteLimit}
+          onBoostClick={
+            featuredCandidate ? () => handleSelectCandidate(featuredCandidate) : undefined
+          }
         />
 
         <ContestantRoster

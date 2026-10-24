@@ -3,7 +3,7 @@
 **Feature ID**: `049-pageant-editorial-theme`  
 **Ticket**: [VS-121](https://the-three-devsketeers.atlassian.net/browse/VS-121)  
 **Parent Epic**: [VS-119](https://the-three-devsketeers.atlassian.net/browse/VS-119)  
-**Date**: 2026-10-23  
+**Date**: 2026-10-23
 
 ---
 
@@ -57,6 +57,16 @@
 - [x] **Task 3.4**: Refine `BoostVoteModal.tsx`
   - Scope modal interior when opened within `[data-event-theme="pageant-editorial"]` with obsidian surfaces and champagne accents.
   - Target files: `src/features/payments/components/BoostVoteModal.tsx`.
+
+- [x] **Task 3.5**: Modal Backdrop Opacity & Pageant Modal Theming
+  - Enhance modal backdrop overlays across `ContestantProfileModal`, `BoostVoteModal`, `OmnichannelAuthModal`, `VoteStoryModal`, and `ballot-review-modal` with high-opacity dark backdrops (`bg-black/85`–`bg-black/90` or `backdrop-blur-md`) to eliminate background bleed-through.
+  - Scope `ContestantProfileModal` with obsidian cards and champagne accents.
+  - Target files: `src/features/contestants/components/ContestantProfileModal.tsx`, `src/features/payments/components/BoostVoteModal.tsx`.
+
+- [x] **Task 3.6**: Voting Rules & Free Vote Cooldown Banner Theming
+  - Adapt `EventVotingRulesBanner` and `FreeVoteCooldownBanner` to obsidian and champagne luxury palette.
+  - Consolidate quota messages to avoid duplicate countdown banners.
+  - Target files: `src/features/events/components/EventVotingRulesBanner.tsx`, `src/features/voting/components/FreeVoteCooldownBanner.tsx`.
 
 ---
 

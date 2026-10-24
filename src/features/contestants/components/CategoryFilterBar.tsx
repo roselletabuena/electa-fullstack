@@ -38,82 +38,88 @@ export const CategoryFilterBar: React.FC<CategoryFilterBarProps> = ({
     : [];
 
   return (
-    <div className="flex flex-col gap-3 py-4">
+    <div className="category-filter-bar flex w-full max-w-full min-w-0 flex-col gap-2.5 py-2 sm:gap-3 sm:py-4">
       {/* Primary Division Pill Tabs */}
       {hasMultipleDivisions && (
-        <fieldset
+        <div
+          role="group"
           aria-label="Competition Divisions"
-          className="m-0 flex flex-wrap items-center gap-2 border-none p-0 pb-1"
+          className="category-filter-group category-division-group w-full max-w-full min-w-0 overflow-hidden"
         >
-          <div className="mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
-            <Users className="size-3.5 text-sky-600 dark:text-sky-400" />
-            <span>Division:</span>
+          <div className="category-filter-track flex w-full max-w-full min-w-0 [scrollbar-width:none] items-center gap-2 overflow-x-auto scroll-smooth pb-1 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="category-filter-label mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+              <Users className="category-filter-icon size-3.5 text-sky-600 dark:text-sky-400" />
+              <span className="category-filter-label-text">Division:</span>
+            </div>
+            {activeDivisions.map((div) => {
+              const isSelected =
+                selectedDivision === div.value ||
+                (selectedDivision !== "ALL" &&
+                  selectedDivision.toLowerCase() === div.value.toLowerCase());
+              return (
+                <button
+                  key={div.value}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => onSelectDivision(div.value)}
+                  className={`category-filter-pill division-pill category-tab-btn shrink-0 rounded-none px-3.5 py-1.5 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
+                    isSelected
+                      ? "category-filter-pill-selected active border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
+                      : "category-filter-pill-unselected border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
+                  }`}
+                >
+                  {div.label}
+                </button>
+              );
+            })}
           </div>
-          {activeDivisions.map((div) => {
-            const isSelected =
-              selectedDivision === div.value ||
-              (selectedDivision !== "ALL" &&
-                selectedDivision.toLowerCase() === div.value.toLowerCase());
-            return (
-              <button
-                key={div.value}
-                type="button"
-                aria-pressed={isSelected}
-                onClick={() => onSelectDivision(div.value)}
-                className={`rounded-none px-4 py-1.5 text-xs font-bold tracking-wider whitespace-nowrap uppercase transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
-                  isSelected
-                    ? "border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
-                    : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
-                }`}
-              >
-                {div.label}
-              </button>
-            );
-          })}
-        </fieldset>
+        </div>
       )}
 
       {/* Award Category Filter Track */}
       {categories.length > 0 && (
-        <fieldset
+        <div
+          role="group"
           aria-label="Award Categories"
-          className="m-0 flex flex-wrap items-center gap-2 border-none p-0 pt-1"
+          className="category-filter-group category-award-group w-full max-w-full min-w-0 overflow-hidden"
         >
-          <div className="mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
-            <Award className="size-3.5 text-sky-600 dark:text-sky-400" />
-            <span>Award Category:</span>
+          <div className="category-filter-track flex w-full max-w-full min-w-0 [scrollbar-width:none] items-center gap-2 overflow-x-auto scroll-smooth pt-1 pb-1 [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            <div className="category-filter-label mr-1 flex shrink-0 items-center gap-1.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
+              <Award className="category-filter-icon size-3.5 text-sky-600 dark:text-sky-400" />
+              <span className="category-filter-label-text">Award Category:</span>
+            </div>
+            <button
+              type="button"
+              aria-pressed={selectedCategoryId === "ALL"}
+              onClick={() => onSelectCategory("ALL")}
+              className={`category-filter-pill award-category-pill category-tab-btn shrink-0 rounded-none px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
+                selectedCategoryId === "ALL"
+                  ? "category-filter-pill-selected active border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
+                  : "category-filter-pill-unselected border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
+              }`}
+            >
+              All Awards
+            </button>
+            {categories.map((cat) => {
+              const isSelected = selectedCategoryId === cat.id;
+              return (
+                <button
+                  key={cat.id}
+                  type="button"
+                  aria-pressed={isSelected}
+                  onClick={() => onSelectCategory(cat.id)}
+                  className={`category-filter-pill award-category-pill category-tab-btn shrink-0 rounded-none px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
+                    isSelected
+                      ? "category-filter-pill-selected active border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
+                      : "category-filter-pill-unselected border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
+                  }`}
+                >
+                  {cat.name}
+                </button>
+              );
+            })}
           </div>
-          <button
-            type="button"
-            aria-pressed={selectedCategoryId === "ALL"}
-            onClick={() => onSelectCategory("ALL")}
-            className={`rounded-none px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
-              selectedCategoryId === "ALL"
-                ? "border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
-                : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
-            }`}
-          >
-            All Awards
-          </button>
-          {categories.map((cat) => {
-            const isSelected = selectedCategoryId === cat.id;
-            return (
-              <button
-                key={cat.id}
-                type="button"
-                aria-pressed={isSelected}
-                onClick={() => onSelectCategory(cat.id)}
-                className={`rounded-none px-3 py-1 text-xs font-semibold whitespace-nowrap transition-all focus-visible:ring-2 focus-visible:ring-sky-500 focus-visible:ring-offset-2 focus-visible:outline-none dark:focus-visible:ring-offset-slate-900 ${
-                  isSelected
-                    ? "border border-sky-600 bg-sky-600 font-bold text-white shadow-xs dark:border-sky-500 dark:bg-sky-500 dark:text-slate-950"
-                    : "border border-slate-300 bg-white text-slate-700 hover:border-slate-400 hover:bg-slate-50 hover:text-slate-950 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:border-white/20 dark:hover:bg-white/10 dark:hover:text-white"
-                }`}
-              >
-                {cat.name}
-              </button>
-            );
-          })}
-        </fieldset>
+        </div>
       )}
     </div>
   );

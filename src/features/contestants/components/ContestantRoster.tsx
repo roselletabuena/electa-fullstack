@@ -148,15 +148,15 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   });
 
   return (
-    <section className="w-full py-8">
+    <section className="w-full max-w-full min-w-0 py-4 sm:py-8">
       {/* Roster Header */}
-      <div className="roster-section-header flex flex-col justify-between gap-4 border-b border-slate-300 pb-4 md:flex-row md:items-end dark:border-slate-800">
+      <div className="roster-section-header flex flex-col justify-between gap-3 border-b border-slate-300 pb-3 sm:gap-4 sm:pb-4 md:flex-row md:items-end dark:border-slate-800">
         <div>
           <div className="roster-tag flex items-center gap-2 text-xs font-bold tracking-widest text-sky-700 uppercase dark:text-sky-400">
             <Users className="h-4 w-4" />
             <span>Official Candidates</span>
           </div>
-          <h2 className="heading-font roster-title mt-1 text-2xl tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+          <h2 className="heading-font roster-title mt-1 text-xl tracking-tight text-slate-900 sm:text-2xl md:text-3xl dark:text-white">
             Meet the Candidates
           </h2>
         </div>
@@ -176,7 +176,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
 
       {/* Free Daily Voting Quota & Live Cooldown Status Banner */}
       {initialContestants.length > 0 && initialContestants[0]?.eventId && (
-        <div className="mt-6">
+        <div className="mt-4 sm:mt-6">
           <FreeVoteCooldownBanner
             eventId={initialContestants[0].eventId}
             onBoostClick={
@@ -205,7 +205,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
 
       {/* Contestant 4:5 Card Grid */}
       {filteredContestants.length > 0 ? (
-        <div className="mt-6 grid grid-cols-1 gap-6 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-4 grid w-full max-w-full min-w-0 grid-cols-2 gap-3 sm:mt-6 sm:gap-4 md:grid-cols-3 lg:grid-cols-4">
           {filteredContestants.map((contestant) => (
             <ContestantCard
               key={contestant.id}

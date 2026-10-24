@@ -1,6 +1,13 @@
 "use client";
 
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from "react";
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useSyncExternalStore,
+} from "react";
 
 type Theme = "light" | "dark";
 
@@ -8,6 +15,7 @@ interface ThemeContextValue {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
+  mounted: boolean;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
@@ -18,6 +26,7 @@ interface ThemeProviderProps {
 }
 
 function applyDocumentTheme(currentTheme: Theme) {
+  if (typeof document === "undefined") return;
   const root = document.documentElement;
   if (currentTheme === "dark") {
     root.classList.add("dark");
@@ -28,42 +37,86 @@ function applyDocumentTheme(currentTheme: Theme) {
   }
 }
 
-export function ThemeProvider({ children, defaultTheme = "light" }: Readonly<ThemeProviderProps>) {
-  const [theme, setTheme] = useState<Theme>(() => {
+const themeListeners = new Set<() => void>();
+
+function notifyThemeListeners() {
+  for (const listener of themeListeners) {
+    listener();
+  }
+}
+
+function subscribeTheme(callback: () => void) {
+  themeListeners.add(callback);
+  if (typeof window !== "undefined") {
+    window.addEventListener("storage", callback);
+  }
+  return () => {
+    themeListeners.delete(callback);
     if (typeof window !== "undefined") {
+      window.removeEventListener("storage", callback);
+    }
+  };
+}
+
+export function ThemeProvider({ children, defaultTheme = "light" }: Readonly<ThemeProviderProps>) {
+  const getSnapshot = useCallback((): Theme => {
+    if (typeof window === "undefined") return defaultTheme;
+    try {
       const stored = (localStorage.getItem("electa-theme") ??
         localStorage.getItem("votesphere-theme")) as Theme | null;
       if (stored === "light" || stored === "dark") {
         return stored;
       }
+    } catch {
+      // Gracefully handle restricted localStorage environments (e.g. sandboxed iframes)
     }
     return defaultTheme;
-  });
+  }, [defaultTheme]);
+
+  const getServerSnapshot = useCallback((): Theme => defaultTheme, [defaultTheme]);
+
+  const theme = useSyncExternalStore(subscribeTheme, getSnapshot, getServerSnapshot);
+
+  const mounted = useSyncExternalStore(
+    subscribeTheme,
+    () => true,
+    () => false,
+  );
 
   useEffect(() => {
     applyDocumentTheme(theme);
   }, [theme]);
 
   const handleSetTheme = useCallback((newTheme: Theme) => {
-    setTheme(newTheme);
-    localStorage.setItem("electa-theme", newTheme);
+    try {
+      localStorage.setItem("electa-theme", newTheme);
+    } catch {
+      // Gracefully handle restricted localStorage environments
+    }
+    applyDocumentTheme(newTheme);
+    notifyThemeListeners();
   }, []);
 
   const toggleTheme = useCallback(() => {
-    setTheme((prev) => {
-      const next = prev === "light" ? "dark" : "light";
-      localStorage.setItem("electa-theme", next);
-      return next;
-    });
-  }, []);
+    const currentTheme = getSnapshot();
+    const nextTheme: Theme = currentTheme === "light" ? "dark" : "light";
+    try {
+      localStorage.setItem("electa-theme", nextTheme);
+    } catch {
+      // Gracefully handle restricted localStorage environments
+    }
+    applyDocumentTheme(nextTheme);
+    notifyThemeListeners();
+  }, [getSnapshot]);
 
   const contextValue = useMemo(
     () => ({
       theme,
       setTheme: handleSetTheme,
       toggleTheme,
+      mounted,
     }),
-    [theme, handleSetTheme, toggleTheme],
+    [theme, handleSetTheme, toggleTheme, mounted],
   );
 
   return <ThemeContext.Provider value={contextValue}>{children}</ThemeContext.Provider>;

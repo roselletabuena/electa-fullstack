@@ -71,7 +71,7 @@ export function OmnichannelAuthModal({
         aria-label="Close modal overlay"
         tabIndex={-1}
         onClick={onClose}
-        className="modal-backdrop fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/70 p-0 backdrop-blur-xs transition-opacity"
+        className="modal-backdrop fixed inset-0 h-full w-full cursor-default border-0 bg-slate-950/50 p-0 backdrop-blur-md transition-all dark:bg-black/60"
       />
 
       {/* Modal Card - Zero-Radius Electa Style */}

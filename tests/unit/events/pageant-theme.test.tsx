@@ -9,6 +9,8 @@ import { ContestantCard } from "@/features/contestants/components/ContestantCard
 import { ContestantProfileModal } from "@/features/contestants/components/ContestantProfileModal";
 import { BoostVoteModal } from "@/features/payments/components/BoostVoteModal";
 import { VoteStoryModal } from "@/features/voting/components/VoteStoryModal";
+import { FreeVoteCooldownBanner } from "@/features/voting/components/FreeVoteCooldownBanner";
+import { CategoryFilterBar } from "@/features/contestants/components/CategoryFilterBar";
 import type { PublicEventDto } from "@/features/events/types";
 import type { ContestantDto } from "@/features/contestants/types";
 import type { StoryCardPayload } from "@/features/voting/types/story";
@@ -463,5 +465,90 @@ describe("Haute-Couture Pageant Editorial Theme Skin (VS-121)", () => {
     expect(defaultDialog).not.toBeNull();
     const defaultActiveTab = defaultDialog?.querySelector(".vote-story-theme-tab.active");
     expect(defaultActiveTab?.textContent).toContain("Midnight");
+  });
+
+  it("renders FreeVoteCooldownBanner with semantic theme classes and respects theme boundaries", async () => {
+    let container!: HTMLElement;
+
+    await act(async () => {
+      const rendered = render(
+        <EventThemeProvider theme="PAGEANT_EDITORIAL">
+          <FreeVoteCooldownBanner eventId="evt-pageant-1" />
+        </EventThemeProvider>,
+      );
+      container = rendered.container;
+    });
+
+    const banner = container.querySelector(".cooldown-banner-card.free-vote-status-banner");
+    expect(banner).not.toBeNull();
+    expect(screen.getByText(/free votes available today for this event/i)).toBeInTheDocument();
+    expect(screen.getByText(/24h Rolling Reset/i)).toBeInTheDocument();
+
+    const sparkleIcon = container.querySelector(".free-vote-sparkle-icon");
+    expect(sparkleIcon).not.toBeNull();
+
+    const countHighlight = container.querySelector(".free-vote-count-highlight");
+    expect(countHighlight).not.toBeNull();
+    expect(countHighlight?.textContent).toBe("1 of 1");
+
+    const resetBadge = container.querySelector(".free-vote-reset-badge");
+    expect(resetBadge).not.toBeNull();
+  });
+
+  it("renders CategoryFilterBar with semantic theme classes and respects theme boundaries", async () => {
+    let container!: HTMLElement;
+
+    await act(async () => {
+      const rendered = render(
+        <EventThemeProvider theme="PAGEANT_EDITORIAL">
+          <CategoryFilterBar
+            divisions={[
+              { label: "Female", value: "FEMALE" },
+              { label: "Male", value: "MALE" },
+            ]}
+            selectedDivision="ALL"
+            onSelectDivision={vi.fn()}
+            categories={[
+              {
+                id: "cat-1",
+                name: "People's Choice Award",
+                eventId: "evt-pageant-1",
+                isVotingOpen: true,
+              },
+              {
+                id: "cat-2",
+                name: "Miss Photogenic",
+                eventId: "evt-pageant-1",
+                isVotingOpen: true,
+              },
+            ]}
+            selectedCategoryId="ALL"
+            onSelectCategory={vi.fn()}
+          />
+        </EventThemeProvider>,
+      );
+      container = rendered.container;
+    });
+
+    const filterBar = container.querySelector(".category-filter-bar");
+    expect(filterBar).not.toBeNull();
+
+    const divisionGroup = container.querySelector(".category-division-group");
+    expect(divisionGroup).not.toBeNull();
+
+    const awardGroup = container.querySelector(".category-award-group");
+    expect(awardGroup).not.toBeNull();
+
+    const icons = container.querySelectorAll(".category-filter-icon");
+    expect(icons.length).toBeGreaterThanOrEqual(2);
+
+    const labels = container.querySelectorAll(".category-filter-label");
+    expect(labels.length).toBeGreaterThanOrEqual(2);
+
+    const pills = container.querySelectorAll(".category-filter-pill");
+    expect(pills.length).toBeGreaterThanOrEqual(5);
+
+    const activePills = container.querySelectorAll(".category-filter-pill-selected");
+    expect(activePills).toHaveLength(2);
   });
 });

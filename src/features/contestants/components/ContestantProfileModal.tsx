@@ -68,7 +68,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
       aria-modal="true"
       aria-labelledby="contestant-modal-title"
       data-event-theme={themeSlug}
-      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-center justify-center border-none bg-transparent p-4 outline-hidden backdrop:bg-transparent sm:p-6"
+      className="fixed inset-0 z-50 m-0 flex h-full max-h-none w-full max-w-none items-end justify-center border-none bg-transparent p-0 outline-hidden backdrop:bg-transparent sm:items-center sm:p-6"
     >
       {/* Backdrop */}
       <button
@@ -80,14 +80,14 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
       />
 
       {/* Modal Container */}
-      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border border-slate-300 bg-white/80 shadow-2xl backdrop-blur-2xl dark:border-slate-800 dark:bg-[#0d1424]/75">
+      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-t border-slate-300 bg-white/95 shadow-2xl backdrop-blur-2xl sm:border sm:bg-white/80 dark:border-slate-800 dark:bg-[#0d1424]/95 sm:dark:bg-[#0d1424]/75">
         {/* Header Bar */}
-        <div className="contestant-modal-header flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/70 px-6 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
-          <div className="flex items-center gap-3">
-            <div className="contestant-modal-badge flex items-center rounded-none border border-slate-300 bg-white px-3 py-1 font-mono text-xs font-bold text-slate-900 shadow-xs dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
+        <div className="contestant-modal-header flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/70 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4 dark:border-slate-800 dark:bg-slate-900/80">
+          <div className="flex items-center gap-2 sm:gap-3">
+            <div className="contestant-modal-badge flex items-center rounded-none border border-slate-300 bg-white px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-900 shadow-xs sm:px-3 sm:py-1 sm:text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
               <span>Candidate #{String(contestant.contestantNumber).padStart(2, "0")}</span>
             </div>
-            <span className="contestant-modal-division-badge rounded-none border border-slate-300 bg-slate-100 px-2.5 py-0.5 text-xs font-bold tracking-wider text-slate-700 uppercase dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <span className="contestant-modal-division-badge rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 text-[11px] font-bold tracking-wider text-slate-700 uppercase sm:px-2.5 sm:text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
               {contestant.division.toLowerCase()} Division
             </span>
           </div>
@@ -103,7 +103,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
         </div>
 
         {/* Modal Scrollable Body */}
-        <div className="grid flex-1 scrollbar-thin scrollbar-thumb-slate-300 grid-cols-1 gap-6 overflow-y-auto p-6 md:grid-cols-12 dark:scrollbar-thumb-slate-700">
+        <div className="grid flex-1 scrollbar-thin scrollbar-thumb-slate-300 grid-cols-1 gap-4 overflow-y-auto p-4 sm:gap-6 sm:p-6 md:grid-cols-12 dark:scrollbar-thumb-slate-700">
           {/* Left Column: Visual Media Showcase (Carousel or Video Reel) */}
           <div className="flex flex-col gap-3 md:col-span-6">
             {/* Media Selector Tabs (if both photos and video exist) */}
@@ -285,7 +285,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
             )}
 
             {/* Candidate Standing & Vote Action Card */}
-            <div className="contestant-modal-footer mt-auto flex flex-wrap items-center justify-between gap-3 rounded-none border border-slate-200 bg-slate-50/70 p-4 shadow-2xs dark:border-slate-800 dark:bg-slate-900/60">
+            <div className="contestant-modal-footer sticky bottom-0 z-20 -mx-4 -mb-4 flex flex-wrap items-center justify-between gap-3 border-t border-slate-200 bg-slate-50/95 p-3.5 shadow-lg backdrop-blur-md sm:static sm:mx-0 sm:mt-auto sm:mb-0 sm:border sm:bg-slate-50/70 sm:p-4 sm:shadow-2xs dark:border-slate-800 dark:bg-slate-900/95 sm:dark:bg-slate-900/60">
               <div className="flex flex-col justify-center">
                 <span className="contestant-standing-label text-[11px] font-bold tracking-wider text-slate-700 uppercase dark:text-slate-300">
                   Current Standing

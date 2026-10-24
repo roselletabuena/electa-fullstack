@@ -1,316 +1,2863 @@
 /* =========================================================================
    HAUTE-COUTURE EDITORIAL PAGEANT THEME SKIN
    Scoped exclusively under [data-event-theme="pageant-editorial"]
+   Dual-Theme Parity:
+     - Light Mode: Warm Alabaster Silk (#FAF8F5), Pure Pearl White (#FFFFFF),
+       Warm Champagne Cream (#F7F3E9), Deep Noir Typography (#181512),
+       and Haute-Couture Gold (#846422, WCAG AA 5.18:1)
+     - Dark Mode: Deep Obsidian (#0B0C10), Midnight Velvet (#12141C),
+       Dark Slate Velvet (#181B26), Pearl White Typography (#F9F9FB),
+       and Radiant Champagne Gold (#CBB279, WCAG AAA 9.48:1)
+   Strictly Non-Brutalist: Soft radii (6px, 10px, 16px, pill)
    Zero impact on ELECTA_DEFAULT events
    ========================================================================= */
 
-[data-event-theme="pageant-editorial"] {
-  --bg-base: #0B0C10;
-  --bg-surface: #12141C;
-  --bg-surface-elevated: #181B26;
-  --bg-surface-hover: #1E2230;
+/* =========================================================================
+   1. SHARED FOUNDATION & TYPOGRAPHY
+   ========================================================================= */
+[data-event-theme="pageant-editorial"],
+dialog[data-event-theme="pageant-editorial"] {
+  --radius-sm: 6px !important;
+  --radius-md: 10px !important;
+  --radius-lg: 16px !important;
+  --radius-pill: 9999px !important;
 
-  --border-hairline: rgba(255, 255, 255, 0.08);
-  --border-champagne: rgba(203, 178, 121, 0.35);
-  --border-champagne-bright: #CBB279;
+  --font-heading: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  --font-body:
+    var(--font-plus-jakarta-sans), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+  --font-sans:
+    var(--font-plus-jakarta-sans), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
+  --font-serif: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  --font-mono:
+    var(--font-plus-jakarta-sans), "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont,
+    sans-serif !important;
 
-  --champagne-light: #F4EBD9;
-  --champagne-primary: #CBB279;
-  --champagne-muted: #8E7C55;
-
-  --text-primary: #F9F9FB;
-  --text-secondary: #9BA3B4;
-  --text-tertiary: #5D6577;
-
-  --radius-sm: 4px;
-  --radius-md: 8px;
-  --radius-lg: 14px;
-  --radius-pill: 9999px;
-
-  background-color: var(--bg-base);
-  color: var(--text-primary);
-  font-family: var(--font-body, "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif);
+  font-family:
+    var(--font-plus-jakarta-sans),
+    "Plus Jakarta Sans",
+    -apple-system,
+    BlinkMacSystemFont,
+    sans-serif !important;
   min-height: 100vh;
 }
 
-/* -------------------------------------------------------------------------
-   Typography Scoping
-   ------------------------------------------------------------------------- */
 [data-event-theme="pageant-editorial"] .font-heading,
 [data-event-theme="pageant-editorial"] .heading-font,
 [data-event-theme="pageant-editorial"] h1,
 [data-event-theme="pageant-editorial"] h2,
-[data-event-theme="pageant-editorial"] h3 {
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  letter-spacing: -0.01em;
+[data-event-theme="pageant-editorial"] h3,
+[data-event-theme="pageant-editorial"] h4,
+dialog[data-event-theme="pageant-editorial"] .font-heading,
+dialog[data-event-theme="pageant-editorial"] .heading-font,
+dialog[data-event-theme="pageant-editorial"] h1,
+dialog[data-event-theme="pageant-editorial"] h2,
+dialog[data-event-theme="pageant-editorial"] h3,
+dialog[data-event-theme="pageant-editorial"] h4 {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  letter-spacing: -0.015em;
 }
 
-[data-event-theme="pageant-editorial"] .font-serif {
-  font-family: var(--font-serif, "Cormorant Garamond", Georgia, serif);
+[data-event-theme="pageant-editorial"] .font-serif,
+dialog[data-event-theme="pageant-editorial"] .font-serif {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
 }
 
-/* -------------------------------------------------------------------------
-   EventBanner Adaptations
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] header {
-  background-color: var(--bg-surface);
-  border-color: var(--border-hairline);
-  box-shadow: 0 10px 30px -10px rgba(0, 0, 0, 0.5);
+[data-event-theme="pageant-editorial"] .font-sans,
+[data-event-theme="pageant-editorial"] .font-body,
+dialog[data-event-theme="pageant-editorial"] .font-sans,
+dialog[data-event-theme="pageant-editorial"] .font-body {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
 }
 
-[data-event-theme="pageant-editorial"] header h1 {
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  font-weight: 500;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
+[data-event-theme="pageant-editorial"] .font-mono,
+dialog[data-event-theme="pageant-editorial"] .font-mono {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
 }
 
-[data-event-theme="pageant-editorial"] .theme-badge-champagne {
-  border-color: var(--border-champagne);
-  background-color: rgba(203, 178, 121, 0.15);
-  color: var(--champagne-light);
+/* =========================================================================
+   2. LIGHT MODE — HAUTE-COUTURE ALABASTER & CHAMPAGNE SILK
+   Applies when document is in light mode (default)
+   ========================================================================= */
+[data-event-theme="pageant-editorial"],
+html:not(.dark) [data-event-theme="pageant-editorial"],
+html.light [data-event-theme="pageant-editorial"] {
+  --bg-base: #faf8f5 !important;
+  --bg-surface: #ffffff !important;
+  --bg-surface-elevated: #f7f3e9 !important;
+  --bg-surface-hover: #f2ece0 !important;
+
+  --border-hairline: rgba(180, 140, 75, 0.22) !important;
+  --border-champagne: rgba(180, 140, 75, 0.35) !important;
+  --border-champagne-bright: #846422 !important;
+
+  --champagne-light: #f7f3e9 !important;
+  --champagne-primary: #846422 !important;
+  --champagne-muted: #5c554b !important;
+
+  --text-primary: #181512 !important;
+  --text-secondary: #5c554b !important;
+  --text-tertiary: #7d7568 !important;
+
+  background-color: #faf8f5 !important;
+  color: #181512 !important;
 }
 
-/* -------------------------------------------------------------------------
-   EventCountdown Architectural Timer
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] .event-countdown-container {
-  background-color: var(--bg-surface);
-  border-color: var(--border-hairline);
-  border-radius: var(--radius-md);
-  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.4);
+/* Light Mode: Main Page */
+[data-event-theme="pageant-editorial"] main,
+html:not(.dark) [data-event-theme="pageant-editorial"] main,
+html.light [data-event-theme="pageant-editorial"] main {
+  background-color: #faf8f5 !important;
+  color: #181512 !important;
 }
 
-[data-event-theme="pageant-editorial"] .countdown-unit-card {
-  background-color: var(--bg-surface-elevated);
-  border-color: var(--border-hairline);
-  border-radius: var(--radius-sm);
+/* Light Mode: EventBanner Hero Masthead */
+[data-event-theme="pageant-editorial"] .event-banner-card,
+[data-event-theme="pageant-editorial"] header.event-banner-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-banner-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] header.event-banner-card,
+html.light [data-event-theme="pageant-editorial"] .event-banner-card,
+html.light [data-event-theme="pageant-editorial"] header.event-banner-card {
+  background-color: #0b0c10 !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 12px 36px -8px rgba(0, 0, 0, 0.4),
+    0 0 0 1px rgba(180, 140, 75, 0.2) !important;
 }
 
-[data-event-theme="pageant-editorial"] .countdown-unit-value {
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  color: var(--champagne-primary);
-  font-size: 1.85rem;
+[data-event-theme="pageant-editorial"] .event-banner-title,
+[data-event-theme="pageant-editorial"] header h1,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-banner-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] header h1,
+html.light [data-event-theme="pageant-editorial"] .event-banner-title,
+html.light [data-event-theme="pageant-editorial"] header h1 {
+  color: #ffffff !important;
+  text-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.95),
+    0 1px 3px rgba(0, 0, 0, 0.9) !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-banner-description,
+[data-event-theme="pageant-editorial"] header p,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-banner-description,
+html:not(.dark) [data-event-theme="pageant-editorial"] header p,
+html.light [data-event-theme="pageant-editorial"] .event-banner-description,
+html.light [data-event-theme="pageant-editorial"] header p {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Light Mode: EventBanner Timeline & Schedule Icons */
+[data-event-theme="pageant-editorial"] .event-banner-timeline,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-banner-timeline,
+html.light [data-event-theme="pageant-editorial"] .event-banner-timeline {
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-banner-timeline .timeline-label,
+[data-event-theme="pageant-editorial"] .event-banner-timeline strong,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-banner-timeline strong {
+  color: #ffffff !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-schedule-icon,
+[data-event-theme="pageant-editorial"] header .lucide-calendar,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-schedule-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] header .lucide-calendar,
+html.light [data-event-theme="pageant-editorial"] .event-schedule-icon,
+html.light [data-event-theme="pageant-editorial"] header .lucide-calendar {
+  color: #cbb279 !important;
+}
+
+[data-event-theme="pageant-editorial"] .theme-badge-champagne,
+html:not(.dark) [data-event-theme="pageant-editorial"] .theme-badge-champagne,
+html.light [data-event-theme="pageant-editorial"] .theme-badge-champagne {
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: #f7f3e9 !important;
+  color: #846422 !important;
+  border-radius: 9999px !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-official-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-official-badge,
+html.light [data-event-theme="pageant-editorial"] .event-official-badge {
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  background-color: rgba(24, 21, 18, 0.65) !important;
+  color: #f7f3e9 !important;
+  border-radius: 9999px !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-official-badge svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-official-badge svg,
+html.light [data-event-theme="pageant-editorial"] .event-official-badge svg {
+  color: #cbb279 !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-slug-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-slug-badge,
+html.light [data-event-theme="pageant-editorial"] .event-slug-badge {
+  border-radius: 9999px !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-slug-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-slug-icon,
+html.light [data-event-theme="pageant-editorial"] .event-slug-icon {
+  color: #cbb279 !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-state-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-state-badge,
+html.light [data-event-theme="pageant-editorial"] .event-state-badge {
+  border-radius: 9999px !important;
+}
+
+/* Light Mode: EventCountdown Timer */
+[data-event-theme="pageant-editorial"] .event-countdown-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-countdown-container,
+html.light [data-event-theme="pageant-editorial"] .event-countdown-container {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.25) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 20px -2px rgba(180, 140, 75, 0.1) !important;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-heading,
+[data-event-theme="pageant-editorial"] .event-countdown-container h3,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-heading,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-countdown-container h3 {
+  color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-eyebrow,
+[data-event-theme="pageant-editorial"] .event-countdown-container .text-primary,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-eyebrow,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-countdown-container .text-primary {
+  color: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-description,
+[data-event-theme="pageant-editorial"] .event-countdown-container p,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-description,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-countdown-container p {
+  color: #5c554b !important;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-unit-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-unit-card {
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.22) !important;
+  border-radius: 6px !important;
+}
+
+[data-event-theme="pageant-editorial"] .countdown-unit-value,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-unit-value {
+  color: #846422 !important;
+  font-size: 1.85rem !important;
   line-height: 1;
 }
 
-[data-event-theme="pageant-editorial"] .countdown-unit-label {
-  color: var(--text-tertiary);
+[data-event-theme="pageant-editorial"] .countdown-unit-label,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-unit-label {
+  color: #5c554b !important;
   letter-spacing: 0.16em;
   font-size: 9px;
   text-transform: uppercase;
 }
 
-/* Architectural Dividers */
-[data-event-theme="pageant-editorial"] .countdown-separator {
-  color: var(--border-champagne);
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
+[data-event-theme="pageant-editorial"] .countdown-separator,
+html:not(.dark) [data-event-theme="pageant-editorial"] .countdown-separator {
+  color: rgba(132, 100, 34, 0.45) !important;
 }
 
-/* -------------------------------------------------------------------------
-   ContestantCard Haute-Couture Dossier
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] .contestant-card {
-  background-color: var(--bg-surface);
-  border-color: var(--border-hairline);
-  border-radius: var(--radius-sm);
-  transition: transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+/* Light Mode: EventVotingRulesBanner */
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px -2px rgba(180, 140, 75, 0.08) !important;
 }
 
-[data-event-theme="pageant-editorial"] .contestant-card:hover {
-  transform: translateY(-4px);
-  border-color: var(--border-champagne);
-  box-shadow: 0 12px 30px -8px rgba(203, 178, 121, 0.15);
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner h3,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner h3 {
+  color: #181512 !important;
 }
 
-/* Sash Badge (Hometown / Division) */
-[data-event-theme="pageant-editorial"] .contestant-sash-badge {
-  background-color: rgba(11, 12, 16, 0.85);
-  border: 1px solid var(--border-hairline);
-  color: var(--champagne-primary);
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: var(--radius-sm);
-  backdrop-filter: blur(8px);
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner p,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner p {
+  color: #5c554b !important;
 }
 
-/* Candidate Number Badge */
-[data-event-theme="pageant-editorial"] .contestant-num-badge {
-  background-color: rgba(11, 12, 16, 0.85);
-  border: 1px solid var(--border-hairline);
-  color: var(--text-tertiary);
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  font-size: 14px;
-  font-weight: 600;
-  padding: 1px 8px;
-  border-radius: var(--radius-sm);
-  backdrop-filter: blur(8px);
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box {
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #846422 !important;
+  border-radius: 6px !important;
 }
 
-/* Candidate Name */
-[data-event-theme="pageant-editorial"] .contestant-name {
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  font-size: 1.35rem;
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text-primary);
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge {
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #846422 !important;
+  border-radius: 9999px !important;
 }
 
-[data-event-theme="pageant-editorial"] .contestant-card:hover .contestant-name {
-  color: var(--champagne-light);
+/* Light Mode: Candidate Roster & Filter Controls */
+[data-event-theme="pageant-editorial"] .roster-section-header,
+html:not(.dark) [data-event-theme="pageant-editorial"] .roster-section-header {
+  border-bottom: 1px solid rgba(180, 140, 75, 0.22) !important;
 }
 
-/* Card Action Footer */
-[data-event-theme="pageant-editorial"] .contestant-card-footer {
-  background-color: var(--bg-surface);
-  border-top-color: var(--border-hairline);
+[data-event-theme="pageant-editorial"] .roster-tag,
+html:not(.dark) [data-event-theme="pageant-editorial"] .roster-tag {
+  color: #846422 !important;
 }
 
-[data-event-theme="pageant-editorial"] .contestant-vote-count {
-  font-family: var(--font-heading, "Cormorant Garamond", Georgia, serif);
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--champagne-primary);
+[data-event-theme="pageant-editorial"] .roster-title,
+[data-event-theme="pageant-editorial"] h2.heading-font,
+html:not(.dark) [data-event-theme="pageant-editorial"] .roster-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] h2.heading-font {
+  color: #181512 !important;
 }
 
-/* Free Vote Button in Pageant Theme */
-[data-event-theme="pageant-editorial"] .btn-pageant-free-vote {
-  background-color: var(--text-primary);
-  color: var(--bg-base);
-  border: 1px solid var(--text-primary);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
+[data-event-theme="pageant-editorial"] .roster-counter,
+html:not(.dark) [data-event-theme="pageant-editorial"] .roster-counter {
+  color: #5c554b !important;
 }
 
-[data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover {
-  background-color: #FFFFFF;
-  color: #000000;
-  box-shadow: 0 0 12px rgba(255, 255, 255, 0.3);
+[data-event-theme="pageant-editorial"] .roster-counter span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .roster-counter span {
+  color: #181512 !important;
 }
 
-/* Boost Vote Outline Button in Pageant Theme */
-[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline {
-  background-color: transparent;
-  border: 1px solid var(--border-champagne);
-  color: var(--champagne-primary);
-  font-weight: 600;
-  font-size: 12px;
-  letter-spacing: 0.04em;
-  border-radius: var(--radius-sm);
-  transition: all 0.2s ease;
+/* Light Mode: Filter Buttons (Pills) */
+[data-event-theme="pageant-editorial"] fieldset button,
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button {
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s ease !important;
 }
 
-[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover {
-  background-color: rgba(203, 178, 121, 0.12);
-  border-color: var(--champagne-primary);
-  color: var(--champagne-light);
-  box-shadow: 0 0 12px rgba(203, 178, 121, 0.2);
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
+  border-color: #181512 !important;
+  background-color: #181512 !important;
+  color: #ffffff !important;
+  font-weight: 700 !important;
+  box-shadow: 0 2px 10px rgba(24, 21, 18, 0.2) !important;
 }
 
-/* -------------------------------------------------------------------------
-   Category Filters & Roster Controls
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] .category-tab-btn {
-  background-color: transparent;
-  color: var(--text-secondary);
-  border: 1px solid transparent;
-  border-radius: var(--radius-sm);
-  font-size: 13px;
-  transition: all 0.2s ease;
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: #ffffff !important;
+  color: #5c554b !important;
 }
 
-[data-event-theme="pageant-editorial"] .category-tab-btn:hover {
-  color: var(--text-primary);
-  background-color: rgba(255, 255, 255, 0.04);
+[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
+  border-color: #846422 !important;
+  background-color: #f7f3e9 !important;
+  color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"] .category-tab-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-tab-btn {
+  background-color: transparent !important;
+  color: #5c554b !important;
+  border: 1px solid transparent !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .category-tab-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-tab-btn:hover {
+  color: #181512 !important;
+  background-color: #f7f3e9 !important;
 }
 
 [data-event-theme="pageant-editorial"] .category-tab-btn[data-state="active"],
-[data-event-theme="pageant-editorial"] .category-tab-btn.active {
-  color: var(--champagne-light);
-  background-color: var(--bg-surface);
-  border-color: var(--border-hairline);
-  font-weight: 600;
+[data-event-theme="pageant-editorial"] .category-tab-btn.active,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-tab-btn[data-state="active"],
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-tab-btn.active {
+  color: #ffffff !important;
+  background-color: #181512 !important;
+  border-color: #181512 !important;
+  font-weight: 700 !important;
 }
 
-/* -------------------------------------------------------------------------
-   BoostVoteModal Scoping
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] .boost-modal-dialog {
-  background-color: var(--bg-surface);
-  border: 1px solid var(--border-hairline);
-  color: var(--text-primary);
-  border-radius: var(--radius-md);
+/* Light Mode: ContestantCard */
+[data-event-theme="pageant-editorial"] .contestant-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.28) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease !important;
+  box-shadow: 0 4px 16px -2px rgba(180, 140, 75, 0.12) !important;
 }
 
-[data-event-theme="pageant-editorial"] .boost-tier-card {
-  background-color: var(--bg-surface-elevated);
-  border-color: var(--border-hairline);
-  border-radius: var(--radius-sm);
+[data-event-theme="pageant-editorial"] .contestant-card:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #846422 !important;
+  box-shadow: 0 12px 28px -6px rgba(180, 140, 75, 0.22) !important;
 }
 
-[data-event-theme="pageant-editorial"] .boost-tier-card.selected {
-  border-color: var(--champagne-primary);
-  background-color: rgba(203, 178, 121, 0.08);
+[data-event-theme="pageant-editorial"] .contestant-num-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-num-badge {
+  background-color: rgba(255, 255, 255, 0.95) !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  padding: 2px 9px !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
 }
 
-/* -------------------------------------------------------------------------
-   Main Layout & Rules Banner
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] main {
-  background-color: var(--bg-base);
-  color: var(--text-primary);
+[data-event-theme="pageant-editorial"] .contestant-sash-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-sash-badge {
+  background-color: rgba(247, 243, 233, 0.95) !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  color: #846422 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
 }
 
-/* -------------------------------------------------------------------------
-   FreeVoteButton Theme Scoping
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] .group\/vote {
-  background-color: var(--text-primary);
-  color: var(--bg-base);
-  border: 1px solid var(--text-primary);
-  border-radius: var(--radius-sm);
+[data-event-theme="pageant-editorial"] .contestant-name,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-name {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.45rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+  color: #ffffff !important;
 }
 
-[data-event-theme="pageant-editorial"] .group\/vote:hover {
-  background-color: #FFFFFF;
-  color: #000000;
-  box-shadow: 0 0 10px rgba(255, 255, 255, 0.25);
+[data-event-theme="pageant-editorial"] .contestant-card-footer,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card-footer {
+  background-color: #ffffff !important;
+  border-top: 1px solid rgba(180, 140, 75, 0.2) !important;
 }
 
-[data-event-theme="pageant-editorial"] .group\/vote svg {
-  fill: var(--bg-base);
-  color: var(--bg-base);
+[data-event-theme="pageant-editorial"] .contestant-vote-count,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-vote-count {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #846422 !important;
 }
 
-[data-event-theme="pageant-editorial"] .group\/vote:hover svg {
-  fill: #000000;
-  color: #000000;
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote,
+[data-event-theme="pageant-editorial"] .group\/vote,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-free-vote,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote {
+  background-color: #181512 !important;
+  color: #ffffff !important;
+  border: 1px solid #181512 !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
 }
 
-/* -------------------------------------------------------------------------
-   Category & Division Filter Buttons
-   ------------------------------------------------------------------------- */
-[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
-  border-color: var(--border-champagne-bright) !important;
-  background-color: var(--bg-surface-elevated) !important;
-  color: var(--champagne-light) !important;
-  box-shadow: 0 0 10px rgba(203, 178, 121, 0.2);
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote span,
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote .btn-vote-label,
+[data-event-theme="pageant-editorial"] .group\/vote span,
+[data-event-theme="pageant-editorial"] .group\/vote .btn-vote-label,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-free-vote span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-free-vote .btn-vote-label,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote .btn-vote-label {
+  color: #ffffff !important;
 }
 
-[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
-  border-color: var(--border-hairline) !important;
-  background-color: var(--bg-surface) !important;
-  color: var(--text-secondary) !important;
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover,
+[data-event-theme="pageant-editorial"] .group\/vote:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote:hover {
+  background-color: #846422 !important;
+  border-color: #846422 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 12px rgba(132, 100, 34, 0.25) !important;
 }
 
-[data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
-  border-color: rgba(255, 255, 255, 0.2) !important;
-  color: var(--text-primary) !important;
+[data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover span,
+[data-event-theme="pageant-editorial"] .group\/vote:hover span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote:hover span {
+  color: #ffffff !important;
 }
 
+[data-event-theme="pageant-editorial"] .group\/vote svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .group\/vote svg {
+  fill: #ffffff !important;
+  color: #ffffff !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline {
+  background-color: transparent !important;
+  border: 1px solid #846422 !important;
+  color: #846422 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover {
+  background-color: #f7f3e9 !important;
+  border-color: #846422 !important;
+  color: #846422 !important;
+  box-shadow: 0 2px 8px rgba(132, 100, 34, 0.15) !important;
+}
+
+/* Light Mode: Modal Backdrops (Airy Translucent Frosted Veil) */
+[data-event-theme="pageant-editorial"] .modal-backdrop,
+[data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
+dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+dialog[data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+dialog[data-event-theme="pageant-editorial"]::backdrop,
+html:not(.dark) [data-event-theme="pageant-editorial"] .modal-backdrop,
+html:not(.dark) [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+html:not(.dark) [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+html:not(.dark) dialog[data-event-theme="pageant-editorial"]::backdrop,
+html.light [data-event-theme="pageant-editorial"] .modal-backdrop,
+html.light dialog[data-event-theme="pageant-editorial"] .modal-backdrop {
+  background-color: rgba(24, 20, 16, 0.2) !important;
+  backdrop-filter: blur(8px) saturate(120%) !important;
+  -webkit-backdrop-filter: blur(8px) saturate(120%) !important;
+}
+
+/* Light Mode: ContestantProfileModal & General Modal Containers */
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+[data-event-theme="pageant-editorial"] .auth-modal-card,
+[data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+dialog[data-event-theme="pageant-editorial"] .auth-modal-card,
+dialog[data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .auth-modal-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #181512 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 60px -15px rgba(24, 21, 18, 0.16) !important;
+  overflow: hidden !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-header,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-header,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-header,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-header {
+  background-color: rgba(247, 243, 233, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(180, 140, 75, 0.22) !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-badge,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-badge,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 6px !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge {
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  color: #846422 !important;
+  border-radius: 6px !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Light Mode Modal Close Buttons */
+[data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+[data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: #ffffff !important;
+  color: #846422 !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+[data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover {
+  background-color: #f7f3e9 !important;
+  border-color: #846422 !important;
+  color: #846422 !important;
+  box-shadow: 0 0 10px rgba(132, 100, 34, 0.25) !important;
+  transform: scale(1.05);
+}
+
+[data-event-theme="pageant-editorial"] #contestant-modal-title,
+[data-event-theme="pageant-editorial"] .contestant-modal-name,
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+dialog[data-event-theme="pageant-editorial"] #contestant-modal-title,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-name,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+html:not(.dark) [data-event-theme="pageant-editorial"] #contestant-modal-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] #contestant-modal-title,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  h2 {
+  color: #181512 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 2.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .font-mono,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .font-mono {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-500,
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-400,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-500,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-400,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-500,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-400,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-500 {
+  color: #5c554b !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box {
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  border-radius: 6px !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4 {
+  color: #846422 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p {
+  color: #181512 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  line-height: 1.65 !important;
+  font-style: italic !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container span.uppercase,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container span.uppercase,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  span.uppercase,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  span.uppercase {
+  color: #846422 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container p.whitespace-pre-line,
+dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line {
+  color: #5c554b !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container a {
+  border-radius: 6px !important;
+  border-color: rgba(180, 140, 75, 0.25) !important;
+  background-color: #f7f3e9 !important;
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Light Mode: PhotoGalleryCarousel & Media Showcase */
+[data-event-theme="pageant-editorial"] .carousel-main-display,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-main-display {
+  border-radius: 10px !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  background-color: #181512 !important;
+  box-shadow: 0 10px 30px -5px rgba(24, 21, 18, 0.25) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-expand-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-expand-btn {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-expand-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-expand-btn:hover {
+  background-color: rgba(24, 21, 18, 0.95) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.45) !important;
+  transform: scale(1.05);
+}
+
+[data-event-theme="pageant-editorial"] .carousel-counter-badge,
+dialog[data-event-theme="pageant-editorial"] .carousel-counter-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-counter-badge,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .carousel-counter-badge {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-nav-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-nav-btn {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-nav-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-nav-btn:hover {
+  background-color: rgba(24, 21, 18, 0.95) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.4) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-thumb-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-thumb-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-thumb-btn.active,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-thumb-btn.active {
+  border-color: #846422 !important;
+  box-shadow: 0 0 0 2px rgba(132, 100, 34, 0.35) !important;
+  opacity: 1 !important;
+}
+
+/* Light Mode: Modal Media Tabs & Video Reel */
+[data-event-theme="pageant-editorial"] .contestant-modal-media-tabs,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-media-tabs {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.25) !important;
+  background-color: #f7f3e9 !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-media-tab,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-media-tab {
+  border-radius: 4px !important;
+  color: #5c554b !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-media-tab.active,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-media-tab.active {
+  background-color: #181512 !important;
+  color: #ffffff !important;
+  box-shadow: 0 1px 4px rgba(24, 21, 18, 0.2) !important;
+}
+
+[data-event-theme="pageant-editorial"] .video-reel-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .video-reel-container {
+  border-radius: 10px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"] .video-reel-play-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .video-reel-play-btn {
+  border-radius: 9999px !important;
+  background-color: #846422 !important;
+  border: 1px solid #cbb279 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(132, 100, 34, 0.4) !important;
+}
+
+[data-event-theme="pageant-editorial"] .video-reel-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .video-reel-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  color: #cbb279 !important;
+}
+
+/* Light Mode: Fullscreen Lightbox */
+dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"],
+[data-event-theme="pageant-editorial"].carousel-lightbox-dialog,
+[data-event-theme="pageant-editorial"] .carousel-lightbox-dialog,
+html:not(.dark) dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"],
+html:not(.dark) [data-event-theme="pageant-editorial"].carousel-lightbox-dialog,
+html.light dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"] {
+  background: radial-gradient(
+    circle at center,
+    rgba(38, 32, 26, 0.85) 0%,
+    rgba(18, 16, 14, 0.9) 100%
+  ) !important;
+  backdrop-filter: blur(24px) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-eyebrow,
+dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"] .carousel-lightbox-eyebrow,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-eyebrow {
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  letter-spacing: 0.16em !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-candidate-name,
+dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-candidate-name,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-candidate-name {
+  color: #f7f3e9 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.5rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-counter-badge,
+dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-counter-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-counter-badge {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.85) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.85) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn:hover {
+  background-color: rgba(24, 21, 18, 0.95) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 16px rgba(203, 178, 121, 0.45) !important;
+  transform: scale(1.05);
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-image-frame,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-image-frame {
+  border-radius: 12px !important;
+  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  background-color: rgba(14, 12, 10, 0.6) !important;
+  box-shadow:
+    0 25px 60px -15px rgba(0, 0, 0, 0.85),
+    0 0 40px rgba(180, 140, 75, 0.15) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn {
+  border-radius: 6px !important;
+  background-color: rgba(24, 21, 18, 0.85) !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #f7f3e9 !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn:hover {
+  background-color: rgba(24, 21, 18, 0.95) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 16px rgba(203, 178, 121, 0.45) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-strip,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-strip {
+  border-radius: 10px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item.active,
+html:not(.dark) [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item.active {
+  border-color: #846422 !important;
+  box-shadow: 0 0 0 2px rgba(132, 100, 34, 0.4) !important;
+  opacity: 1 !important;
+}
+
+/* Light Mode: Candidate Card Badges (Photos & Category Pills) */
+[data-event-theme="pageant-editorial"] .contestant-card-photo-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card-photo-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  color: #f7f3e9 !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-card-category-pill,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card-category-pill {
+  border-radius: 4px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: rgba(24, 21, 18, 0.8) !important;
+  color: #f7f3e9 !important;
+}
+
+/* Light Mode Dossier & Action Icons */
+[data-event-theme="pageant-editorial"] .contestant-dossier-icon,
+[data-event-theme="pageant-editorial"] .lucide-map-pin,
+[data-event-theme="pageant-editorial"] .lucide-ruler,
+[data-event-theme="pageant-editorial"] .lucide-sparkles,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-dossier-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .lucide-map-pin,
+html:not(.dark) [data-event-theme="pageant-editorial"] .lucide-ruler,
+html:not(.dark) [data-event-theme="pageant-editorial"] .lucide-sparkles {
+  color: #846422 !important;
+}
+
+/* Candidate Cards (Over dark photo overlay, always use radiant champagne gold) */
+[data-event-theme="pageant-editorial"] .contestant-card .contestant-dossier-icon,
+[data-event-theme="pageant-editorial"] .contestant-card .lucide-map-pin,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card .contestant-dossier-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-card .lucide-map-pin {
+  color: #cbb279 !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-icon-box,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-icon-box {
+  background-color: #f7f3e9 !important;
+  border-color: rgba(180, 140, 75, 0.35) !important;
+  color: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-footer,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-footer,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer {
+  background-color: rgba(247, 243, 233, 0.85) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-top: 1px solid rgba(180, 140, 75, 0.22) !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .font-mono.text-2xl {
+  color: #846422 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-label,
+[data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-unit,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-label,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-unit,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-label,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-unit,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-label,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-unit {
+  color: #5c554b !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Light Mode: Share Story Button */
+[data-event-theme="pageant-editorial"] .btn-share-story,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  background-color: #ffffff !important;
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  height: 40px !important;
+  box-shadow: 0 1px 3px rgba(180, 140, 75, 0.12) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-share-story span,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story span,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story span {
+  color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-share-story svg,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story svg,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story svg {
+  color: #846422 !important;
+  stroke: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-share-story:hover,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story:hover,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover {
+  background-color: #f7f3e9 !important;
+  border-color: #846422 !important;
+  color: #846422 !important;
+  box-shadow: 0 4px 12px rgba(132, 100, 34, 0.2) !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover span {
+  color: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover svg {
+  color: #846422 !important;
+  stroke: #846422 !important;
+}
+
+/* Light Mode: BoostVoteModal */
+[data-event-theme="pageant-editorial"] .boost-modal-dialog,
+dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-dialog,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #181512 !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 60px -15px rgba(24, 21, 18, 0.16) !important;
+  overflow: hidden !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+html:not(.dark)
+  dialog[data-event-theme="pageant-editorial"]
+  .boost-modal-dialog
+  #boost-modal-title {
+  color: #181512 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.85rem !important;
+  font-weight: 700 !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-tier-card {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.25) !important;
+  border-radius: 6px !important;
+  color: #181512 !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-tier-card:hover {
+  border-color: #846422 !important;
+  background-color: #faf8f5 !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card.selected,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-tier-card.selected {
+  border: 2px solid #846422 !important;
+  background-color: #f7f3e9 !important;
+  box-shadow: 0 0 12px rgba(132, 100, 34, 0.2) !important;
+}
+
+[data-event-theme="pageant-editorial"] .boost-tier-card .font-heading,
+html:not(.dark) [data-event-theme="pageant-editorial"] .boost-tier-card .font-heading {
+  color: #181512 !important;
+}
+
+/* Light Mode: VoteStoryModal */
+[data-event-theme="pageant-editorial"] .vote-story-modal-container,
+dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-container,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
+html.light [data-event-theme="pageant-editorial"] .vote-story-modal-container {
+  background-color: rgba(255, 255, 255, 0.9) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #181512 !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 24px 60px -12px rgba(24, 21, 18, 0.15),
+    0 0 0 1px rgba(180, 140, 75, 0.2) !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+html.light [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  background-color: #faf8f5 !important;
+  color: #181512 !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+html.light [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover {
+  background-color: #f7f3e9 !important;
+  border-color: #846422 !important;
+  color: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+html.light [data-event-theme="pageant-editorial"] .vote-story-verified-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(132, 100, 34, 0.35) !important;
+  background-color: #f7f3e9 !important;
+  color: #846422 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+html.light [data-event-theme="pageant-editorial"] .vote-story-verified-badge svg {
+  color: #846422 !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-title,
+[data-event-theme="pageant-editorial"] #share-story-title,
+dialog[data-event-theme="pageant-editorial"] .vote-story-title,
+dialog[data-event-theme="pageant-editorial"] #share-story-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-title,
+html:not(.dark) [data-event-theme="pageant-editorial"] #share-story-title,
+html.light [data-event-theme="pageant-editorial"] .vote-story-title,
+html.light [data-event-theme="pageant-editorial"] #share-story-title {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  color: #181512 !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-description,
+dialog[data-event-theme="pageant-editorial"] .vote-story-description,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-description,
+html.light [data-event-theme="pageant-editorial"] .vote-story-description {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: #5c554b !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+dialog[data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+html.light [data-event-theme="pageant-editorial"] .vote-story-theme-bar {
+  border-radius: 8px !important;
+  border: 1px solid rgba(180, 140, 75, 0.25) !important;
+  background-color: #f7f3e9 !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+html.light [data-event-theme="pageant-editorial"] .vote-story-theme-tab {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 6px !important;
+  color: #5c554b !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+html.light [data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover {
+  color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+html.light [data-event-theme="pageant-editorial"] .vote-story-theme-tab.active {
+  background-color: #ffffff !important;
+  border: 1px solid rgba(180, 140, 75, 0.45) !important;
+  color: #181512 !important;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-event-theme="pageant-editorial"] .vote-story-preview-container,
+dialog[data-event-theme="pageant-editorial"] .vote-story-preview-container,
+html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-preview-container,
+html.light [data-event-theme="pageant-editorial"] .vote-story-preview-container {
+  border-radius: 10px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.15) !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-share,
+dialog[data-event-theme="pageant-editorial"] .story-btn-share,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-share,
+html.light [data-event-theme="pageant-editorial"] .story-btn-share {
+  border-radius: 6px !important;
+  background-color: #846422 !important;
+  border-color: #846422 !important;
+  color: #ffffff !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 8px rgba(132, 100, 34, 0.25) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-share:hover,
+dialog[data-event-theme="pageant-editorial"] .story-btn-share:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-share:hover,
+html.light [data-event-theme="pageant-editorial"] .story-btn-share:hover {
+  background-color: #6e531b !important;
+  border-color: #6e531b !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-download,
+dialog[data-event-theme="pageant-editorial"] .story-btn-download,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-download,
+html.light [data-event-theme="pageant-editorial"] .story-btn-download {
+  border-radius: 6px !important;
+  background-color: #181512 !important;
+  border-color: #181512 !important;
+  color: #ffffff !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15) !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-download:hover,
+dialog[data-event-theme="pageant-editorial"] .story-btn-download:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-download:hover,
+html.light [data-event-theme="pageant-editorial"] .story-btn-download:hover {
+  background-color: #2d2722 !important;
+  border-color: #2d2722 !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-copy,
+dialog[data-event-theme="pageant-editorial"] .story-btn-copy,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-copy,
+html.light [data-event-theme="pageant-editorial"] .story-btn-copy {
+  border-radius: 6px !important;
+  background-color: #faf8f5 !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  color: #5c554b !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s ease !important;
+}
+
+[data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+html.light [data-event-theme="pageant-editorial"] .story-btn-copy:hover {
+  background-color: #f7f3e9 !important;
+  color: #181512 !important;
+  border-color: #846422 !important;
+}
+
+/* =========================================================================
+   3. DARK MODE — HAUTE-COUTURE OBSIDIAN & RADIANT CHAMPAGNE GALA
+   Applies when document is in dark mode (html.dark or .dark ancestor)
+   ========================================================================= */
+html.dark [data-event-theme="pageant-editorial"],
+.dark [data-event-theme="pageant-editorial"],
+[data-event-theme="pageant-editorial"].dark {
+  --bg-base: #0b0c10 !important;
+  --bg-surface: #12141c !important;
+  --bg-surface-elevated: #181b26 !important;
+  --bg-surface-hover: #1e2230 !important;
+
+  --border-hairline: rgba(255, 255, 255, 0.08) !important;
+  --border-champagne: rgba(203, 178, 121, 0.35) !important;
+  --border-champagne-bright: #cbb279 !important;
+
+  --champagne-light: #f4ebd9 !important;
+  --champagne-primary: #cbb279 !important;
+  --champagne-muted: #8e7c55 !important;
+
+  --text-primary: #f9f9fb !important;
+  --text-secondary: #9ba3b4 !important;
+  --text-tertiary: #5d6577 !important;
+
+  background-color: #0b0c10 !important;
+  color: #f9f9fb !important;
+}
+
+/* Dark Mode: Main Page */
+html.dark [data-event-theme="pageant-editorial"] main,
+.dark [data-event-theme="pageant-editorial"] main,
+[data-event-theme="pageant-editorial"].dark main {
+  background-color: #0b0c10 !important;
+  color: #f9f9fb !important;
+}
+
+/* Dark Mode: EventBanner Hero Masthead */
+html.dark [data-event-theme="pageant-editorial"] .event-banner-card,
+html.dark [data-event-theme="pageant-editorial"] header.event-banner-card,
+.dark [data-event-theme="pageant-editorial"] .event-banner-card,
+.dark [data-event-theme="pageant-editorial"] header.event-banner-card,
+[data-event-theme="pageant-editorial"].dark .event-banner-card,
+[data-event-theme="pageant-editorial"].dark header.event-banner-card {
+  background-color: #0b0c10 !important;
+  border: 1px solid rgba(203, 178, 121, 0.25) !important;
+  border-radius: 12px !important;
+  box-shadow:
+    0 12px 36px -8px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(203, 178, 121, 0.15) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-banner-title,
+html.dark [data-event-theme="pageant-editorial"] header h1,
+.dark [data-event-theme="pageant-editorial"] .event-banner-title,
+.dark [data-event-theme="pageant-editorial"] header h1,
+[data-event-theme="pageant-editorial"].dark .event-banner-title,
+[data-event-theme="pageant-editorial"].dark header h1 {
+  color: #ffffff !important;
+  text-shadow:
+    0 2px 14px rgba(0, 0, 0, 0.95),
+    0 1px 3px rgba(0, 0, 0, 0.9) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-banner-description,
+html.dark [data-event-theme="pageant-editorial"] header p,
+.dark [data-event-theme="pageant-editorial"] .event-banner-description,
+.dark [data-event-theme="pageant-editorial"] header p,
+[data-event-theme="pageant-editorial"].dark .event-banner-description,
+[data-event-theme="pageant-editorial"].dark header p {
+  color: #f1f5f9 !important;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.8) !important;
+}
+
+/* Dark Mode: EventBanner Timeline & Schedule Icons */
+html.dark [data-event-theme="pageant-editorial"] .event-banner-timeline,
+.dark [data-event-theme="pageant-editorial"] .event-banner-timeline,
+[data-event-theme="pageant-editorial"].dark .event-banner-timeline {
+  border-top: 1px solid rgba(255, 255, 255, 0.2) !important;
+  color: #e2e8f0 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-banner-timeline .timeline-label,
+html.dark [data-event-theme="pageant-editorial"] .event-banner-timeline strong,
+.dark [data-event-theme="pageant-editorial"] .event-banner-timeline strong,
+[data-event-theme="pageant-editorial"].dark .event-banner-timeline strong {
+  color: #ffffff !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-schedule-icon,
+html.dark [data-event-theme="pageant-editorial"] header .lucide-calendar,
+.dark [data-event-theme="pageant-editorial"] .event-schedule-icon,
+.dark [data-event-theme="pageant-editorial"] header .lucide-calendar,
+[data-event-theme="pageant-editorial"].dark .event-schedule-icon,
+[data-event-theme="pageant-editorial"].dark header .lucide-calendar {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .theme-badge-champagne,
+.dark [data-event-theme="pageant-editorial"] .theme-badge-champagne,
+[data-event-theme="pageant-editorial"].dark .theme-badge-champagne {
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  color: #cbb279 !important;
+  border-radius: 9999px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-official-badge,
+.dark [data-event-theme="pageant-editorial"] .event-official-badge,
+[data-event-theme="pageant-editorial"].dark .event-official-badge {
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: rgba(11, 12, 16, 0.75) !important;
+  color: #cbb279 !important;
+  border-radius: 9999px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-official-badge svg,
+.dark [data-event-theme="pageant-editorial"] .event-official-badge svg,
+[data-event-theme="pageant-editorial"].dark .event-official-badge svg {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-slug-badge,
+.dark [data-event-theme="pageant-editorial"] .event-slug-badge,
+[data-event-theme="pageant-editorial"].dark .event-slug-badge {
+  border-radius: 9999px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-slug-icon,
+.dark [data-event-theme="pageant-editorial"] .event-slug-icon,
+[data-event-theme="pageant-editorial"].dark .event-slug-icon {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-state-badge,
+.dark [data-event-theme="pageant-editorial"] .event-state-badge,
+[data-event-theme="pageant-editorial"].dark .event-state-badge {
+  border-radius: 9999px !important;
+}
+
+/* Dark Mode: EventCountdown Architectural Timer */
+html.dark [data-event-theme="pageant-editorial"] .event-countdown-container,
+.dark [data-event-theme="pageant-editorial"] .event-countdown-container,
+[data-event-theme="pageant-editorial"].dark .event-countdown-container {
+  background-color: #12141c !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 20px -2px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-heading,
+html.dark [data-event-theme="pageant-editorial"] .event-countdown-container h3,
+.dark [data-event-theme="pageant-editorial"] .countdown-heading,
+.dark [data-event-theme="pageant-editorial"] .event-countdown-container h3 {
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-eyebrow,
+html.dark [data-event-theme="pageant-editorial"] .event-countdown-container .text-primary,
+.dark [data-event-theme="pageant-editorial"] .countdown-eyebrow,
+.dark [data-event-theme="pageant-editorial"] .event-countdown-container .text-primary {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-description,
+html.dark [data-event-theme="pageant-editorial"] .event-countdown-container p,
+.dark [data-event-theme="pageant-editorial"] .countdown-description,
+.dark [data-event-theme="pageant-editorial"] .event-countdown-container p {
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-unit-card,
+.dark [data-event-theme="pageant-editorial"] .countdown-unit-card {
+  background-color: #181b26 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-unit-value,
+.dark [data-event-theme="pageant-editorial"] .countdown-unit-value {
+  color: #cbb279 !important;
+  font-size: 1.85rem !important;
+  line-height: 1;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-unit-label,
+.dark [data-event-theme="pageant-editorial"] .countdown-unit-label {
+  color: #9ba3b4 !important;
+  letter-spacing: 0.16em;
+  font-size: 9px;
+  text-transform: uppercase;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .countdown-separator,
+.dark [data-event-theme="pageant-editorial"] .countdown-separator {
+  color: rgba(203, 178, 121, 0.4) !important;
+}
+
+/* Dark Mode: EventVotingRulesBanner */
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner {
+  background-color: #12141c !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  border-radius: 10px !important;
+  box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner h3,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner h3 {
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner p,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner p {
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box {
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  color: #cbb279 !important;
+  border-radius: 6px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge {
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  color: #cbb279 !important;
+  border-radius: 9999px !important;
+}
+
+/* Dark Mode: Candidate Roster & Filter Controls */
+html.dark [data-event-theme="pageant-editorial"] .roster-section-header,
+.dark [data-event-theme="pageant-editorial"] .roster-section-header {
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .roster-tag,
+.dark [data-event-theme="pageant-editorial"] .roster-tag {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .roster-title,
+html.dark [data-event-theme="pageant-editorial"] h2.heading-font,
+.dark [data-event-theme="pageant-editorial"] .roster-title,
+.dark [data-event-theme="pageant-editorial"] h2.heading-font {
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .roster-counter,
+.dark [data-event-theme="pageant-editorial"] .roster-counter {
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .roster-counter span,
+.dark [data-event-theme="pageant-editorial"] .roster-counter span {
+  color: #f9f9fb !important;
+}
+
+/* Dark Mode: Filter Buttons & Category Tabs */
+html.dark [data-event-theme="pageant-editorial"] fieldset button,
+.dark [data-event-theme="pageant-editorial"] fieldset button {
+  border-radius: 9999px !important;
+  font-size: 12px !important;
+  letter-spacing: 0.05em !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
+  border-color: #cbb279 !important;
+  background-color: #cbb279 !important;
+  color: #0b0c10 !important;
+  font-weight: 700 !important;
+  box-shadow: 0 0 14px rgba(203, 178, 121, 0.35) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #12141c !important;
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
+  border-color: rgba(203, 178, 121, 0.35) !important;
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .category-tab-btn,
+.dark [data-event-theme="pageant-editorial"] .category-tab-btn {
+  background-color: transparent !important;
+  color: #9ba3b4 !important;
+  border: 1px solid transparent !important;
+  border-radius: 9999px !important;
+  font-size: 13px !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .category-tab-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .category-tab-btn:hover {
+  color: #f9f9fb !important;
+  background-color: #181b26 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .category-tab-btn[data-state="active"],
+html.dark [data-event-theme="pageant-editorial"] .category-tab-btn.active,
+.dark [data-event-theme="pageant-editorial"] .category-tab-btn[data-state="active"],
+.dark [data-event-theme="pageant-editorial"] .category-tab-btn.active {
+  color: #0b0c10 !important;
+  background-color: #cbb279 !important;
+  border-color: #cbb279 !important;
+  font-weight: 700 !important;
+}
+
+/* Dark Mode: ContestantCard */
+html.dark [data-event-theme="pageant-editorial"] .contestant-card,
+.dark [data-event-theme="pageant-editorial"] .contestant-card {
+  background-color: #12141c !important;
+  border: 1px solid rgba(203, 178, 121, 0.3) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  transition:
+    transform 0.25s ease,
+    border-color 0.25s ease,
+    box-shadow 0.25s ease !important;
+  box-shadow: 0 8px 24px -4px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-card:hover,
+.dark [data-event-theme="pageant-editorial"] .contestant-card:hover {
+  transform: translateY(-4px) !important;
+  border-color: #cbb279 !important;
+  box-shadow: 0 12px 30px -8px rgba(203, 178, 121, 0.25) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-num-badge,
+.dark [data-event-theme="pageant-editorial"] .contestant-num-badge {
+  background-color: rgba(11, 12, 16, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  padding: 2px 9px !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-sash-badge,
+.dark [data-event-theme="pageant-editorial"] .contestant-sash-badge {
+  background-color: rgba(11, 12, 16, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+  text-transform: uppercase !important;
+  padding: 3px 10px !important;
+  border-radius: 6px !important;
+  backdrop-filter: blur(8px) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-name,
+.dark [data-event-theme="pageant-editorial"] .contestant-name {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.45rem !important;
+  font-weight: 600 !important;
+  letter-spacing: -0.015em !important;
+  color: #ffffff !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-card-footer,
+.dark [data-event-theme="pageant-editorial"] .contestant-card-footer {
+  background-color: #12141c !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-vote-count,
+.dark [data-event-theme="pageant-editorial"] .contestant-vote-count {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.35rem !important;
+  font-weight: 700 !important;
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote,
+html.dark [data-event-theme="pageant-editorial"] .group\/vote,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote,
+.dark [data-event-theme="pageant-editorial"] .group\/vote {
+  background-color: #f9f9fb !important;
+  color: #0b0c10 !important;
+  border: 1px solid #f9f9fb !important;
+  font-weight: 700 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote span,
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote .btn-vote-label,
+html.dark [data-event-theme="pageant-editorial"] .group\/vote span,
+html.dark [data-event-theme="pageant-editorial"] .group\/vote .btn-vote-label,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote span,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote .btn-vote-label,
+.dark [data-event-theme="pageant-editorial"] .group\/vote span,
+.dark [data-event-theme="pageant-editorial"] .group\/vote .btn-vote-label {
+  color: #0b0c10 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover,
+html.dark [data-event-theme="pageant-editorial"] .group\/vote:hover,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover,
+.dark [data-event-theme="pageant-editorial"] .group\/vote:hover {
+  background-color: #cbb279 !important;
+  border-color: #cbb279 !important;
+  color: #0b0c10 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover span,
+html.dark [data-event-theme="pageant-editorial"] .group\/vote:hover span,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-free-vote:hover span,
+.dark [data-event-theme="pageant-editorial"] .group\/vote:hover span {
+  color: #0b0c10 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .group\/vote svg,
+.dark [data-event-theme="pageant-editorial"] .group\/vote svg {
+  fill: #0b0c10 !important;
+  color: #0b0c10 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline {
+  background-color: transparent !important;
+  border: 1px solid #cbb279 !important;
+  color: #cbb279 !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  letter-spacing: 0.04em !important;
+  border-radius: 6px !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover,
+.dark [data-event-theme="pageant-editorial"] .btn-pageant-boost-outline:hover {
+  background-color: #cbb279 !important;
+  border-color: #cbb279 !important;
+  color: #0b0c10 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.3) !important;
+}
+
+/* Dark Mode: Modal Backdrops (Translucent Smoked Obsidian Veil) */
+html.dark [data-event-theme="pageant-editorial"] .modal-backdrop,
+html.dark [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+html.dark [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+html.dark dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
+html.dark dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+html.dark dialog[data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+html.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
+.dark [data-event-theme="pageant-editorial"] .modal-backdrop,
+.dark [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
+.dark [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+.dark dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
+.dark dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
+.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
+[data-event-theme="pageant-editorial"].dark .modal-backdrop {
+  background-color: rgba(8, 9, 13, 0.42) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+}
+
+/* Dark Mode: ContestantProfileModal & General Modal Containers */
+html.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+html.dark [data-event-theme="pageant-editorial"] .auth-modal-card,
+html.dark [data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+html.dark dialog[data-event-theme="pageant-editorial"] .auth-modal-card,
+html.dark dialog[data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+.dark [data-event-theme="pageant-editorial"] .auth-modal-card,
+.dark [data-event-theme="pageant-editorial"] .ballot-review-modal-container,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
+.dark dialog[data-event-theme="pageant-editorial"] .auth-modal-card,
+.dark dialog[data-event-theme="pageant-editorial"] .ballot-review-modal-container {
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75) !important;
+  overflow: hidden !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-header,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-header,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-header,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-header {
+  background-color: rgba(24, 27, 38, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-badge,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-badge,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
+[data-event-theme="pageant-editorial darkness"] .contestant-modal-badge {
+  background-color: #12141c !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 6px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge {
+  background-color: #181b26 !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #cbb279 !important;
+  border-radius: 6px !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+/* Dark Mode Modal Close Buttons */
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+html.dark [data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+html.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+html.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+.dark [data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
+.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: #181b26 !important;
+  color: #cbb279 !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+html.dark [data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+html.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover {
+  background-color: rgba(203, 178, 121, 0.18) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.35) !important;
+  transform: scale(1.05);
+}
+
+html.dark [data-event-theme="pageant-editorial"] #contestant-modal-title,
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-name,
+html.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+html.dark dialog[data-event-theme="pageant-editorial"] #contestant-modal-title,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-name,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+.dark [data-event-theme="pageant-editorial"] #contestant-modal-title,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-name,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2,
+.dark dialog[data-event-theme="pageant-editorial"] #contestant-modal-title,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-name,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container h2 {
+  color: #f9f9fb !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 2.15rem !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.02em !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container .font-mono,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .font-mono,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container .font-mono,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container .font-mono {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+}
+
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-500,
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-400,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-500,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-400,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-500,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container .text-slate-400,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-500,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  .text-slate-400 {
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box {
+  background-color: #181b26 !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  border-radius: 6px !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box h4,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box span,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box svg {
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-advocacy-box p {
+  color: #f9f9fb !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.05rem !important;
+  font-weight: 500 !important;
+  line-height: 1.65 !important;
+  font-style: italic !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container span.uppercase,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  span.uppercase,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container span.uppercase,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  span.uppercase {
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.14em !important;
+}
+
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line,
+.dark
+  [data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-profile-modal-container
+  p.whitespace-pre-line {
+  color: #9ba3b4 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13.5px !important;
+  line-height: 1.6 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+.dark [data-event-theme="pageant-editorial"] .contestant-profile-modal-container a,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container a {
+  border-radius: 6px !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+  background-color: #181b26 !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+}
+
+/* Dark Mode: PhotoGalleryCarousel & Media Showcase */
+html.dark [data-event-theme="pageant-editorial"] .carousel-main-display,
+.dark [data-event-theme="pageant-editorial"] .carousel-main-display {
+  border-radius: 10px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: #0b0d14 !important;
+  box-shadow: 0 10px 30px -5px rgba(0, 0, 0, 0.6) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-expand-btn,
+.dark [data-event-theme="pageant-editorial"] .carousel-expand-btn {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-expand-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .carousel-expand-btn:hover {
+  background-color: rgba(203, 178, 121, 0.2) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 14px rgba(203, 178, 121, 0.4) !important;
+  transform: scale(1.05);
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-counter-badge,
+html.dark dialog[data-event-theme="pageant-editorial"] .carousel-counter-badge,
+.dark [data-event-theme="pageant-editorial"] .carousel-counter-badge,
+.dark dialog[data-event-theme="pageant-editorial"] .carousel-counter-badge {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-nav-btn,
+.dark [data-event-theme="pageant-editorial"] .carousel-nav-btn {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  backdrop-filter: blur(8px) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-nav-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .carousel-nav-btn:hover {
+  background-color: rgba(203, 178, 121, 0.2) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-thumb-btn,
+.dark [data-event-theme="pageant-editorial"] .carousel-thumb-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-thumb-btn.active,
+.dark [data-event-theme="pageant-editorial"] .carousel-thumb-btn.active {
+  border-color: #cbb279 !important;
+  box-shadow:
+    0 0 0 2px rgba(203, 178, 121, 0.4),
+    0 2px 10px rgba(203, 178, 121, 0.25) !important;
+  opacity: 1 !important;
+}
+
+/* Dark Mode: Modal Media Tabs & Video Reel */
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-media-tabs,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-media-tabs {
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #181b26 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-media-tab,
+.dark [data-event-theme="pageant-editorial"] .contestant-media-tab {
+  border-radius: 4px !important;
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-media-tab.active,
+.dark [data-event-theme="pageant-editorial"] .contestant-media-tab.active {
+  background-color: #cbb279 !important;
+  color: #12141c !important;
+  box-shadow: 0 1px 6px rgba(203, 178, 121, 0.3) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .video-reel-container,
+.dark [data-event-theme="pageant-editorial"] .video-reel-container {
+  border-radius: 10px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: #0b0d14 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .video-reel-play-btn,
+.dark [data-event-theme="pageant-editorial"] .video-reel-play-btn {
+  border-radius: 9999px !important;
+  background-color: #cbb279 !important;
+  border: 1px solid #f7f3e9 !important;
+  color: #12141c !important;
+  box-shadow: 0 4px 16px rgba(203, 178, 121, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .video-reel-play-btn svg,
+.dark [data-event-theme="pageant-editorial"] .video-reel-play-btn svg {
+  fill: #12141c !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .video-reel-badge,
+.dark [data-event-theme="pageant-editorial"] .video-reel-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  color: #cbb279 !important;
+}
+
+/* Dark Mode: Fullscreen Lightbox */
+html.dark dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"],
+html.dark [data-event-theme="pageant-editorial"].carousel-lightbox-dialog,
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-dialog,
+.dark dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"],
+.dark [data-event-theme="pageant-editorial"].carousel-lightbox-dialog,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-dialog {
+  background: radial-gradient(
+    circle at center,
+    rgba(22, 25, 36, 0.85) 0%,
+    rgba(10, 11, 16, 0.9) 100%
+  ) !important;
+  backdrop-filter: blur(24px) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-eyebrow,
+html.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-eyebrow,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-eyebrow,
+.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-eyebrow {
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  letter-spacing: 0.16em !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-candidate-name,
+html.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-candidate-name,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-candidate-name,
+.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-candidate-name {
+  color: #f9f9fb !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.5rem !important;
+  letter-spacing: -0.01em !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-counter-badge,
+html.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-counter-badge,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-counter-badge,
+.dark
+  dialog.carousel-lightbox-dialog[data-event-theme="pageant-editorial"]
+  .carousel-lightbox-counter-badge {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-variant-numeric: tabular-nums !important;
+  font-size: 11px !important;
+  letter-spacing: 0.08em !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-close-btn:hover {
+  background-color: rgba(203, 178, 121, 0.2) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 16px rgba(203, 178, 121, 0.45) !important;
+  transform: scale(1.05);
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-image-frame,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-image-frame {
+  border-radius: 12px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: rgba(11, 13, 20, 0.6) !important;
+  box-shadow:
+    0 25px 60px -15px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(203, 178, 121, 0.2) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn {
+  border-radius: 6px !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  backdrop-filter: blur(8px) !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.5) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-nav-btn:hover {
+  background-color: rgba(203, 178, 121, 0.2) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 0 16px rgba(203, 178, 121, 0.45) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-strip,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-strip {
+  border-radius: 10px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: rgba(18, 20, 28, 0.8) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item {
+  border-radius: 6px !important;
+  border: 1px solid rgba(255, 255, 255, 0.1) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item.active,
+.dark [data-event-theme="pageant-editorial"] .carousel-lightbox-thumb-item.active {
+  border-color: #cbb279 !important;
+  box-shadow: 0 0 0 2px rgba(203, 178, 121, 0.4) !important;
+  opacity: 1 !important;
+}
+
+/* Dark Mode: Candidate Card Badges (Photos & Category Pills) */
+html.dark [data-event-theme="pageant-editorial"] .contestant-card-photo-badge,
+.dark [data-event-theme="pageant-editorial"] .contestant-card-photo-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-card-category-pill,
+.dark [data-event-theme="pageant-editorial"] .contestant-card-category-pill {
+  border-radius: 4px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  color: #f9f9fb !important;
+}
+
+/* Dark Mode Dossier & Action Icons */
+html.dark [data-event-theme="pageant-editorial"] .contestant-dossier-icon,
+html.dark [data-event-theme="pageant-editorial"] .lucide-map-pin,
+html.dark [data-event-theme="pageant-editorial"] .lucide-ruler,
+html.dark [data-event-theme="pageant-editorial"] .lucide-sparkles,
+.dark [data-event-theme="pageant-editorial"] .contestant-dossier-icon,
+.dark [data-event-theme="pageant-editorial"] .lucide-map-pin,
+.dark [data-event-theme="pageant-editorial"] .lucide-ruler,
+.dark [data-event-theme="pageant-editorial"] .lucide-sparkles {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-icon-box,
+.dark [data-event-theme="pageant-editorial"] .boost-icon-box {
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border-color: rgba(203, 178, 121, 0.35) !important;
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer {
+  background-color: rgba(24, 27, 38, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-top: 1px solid rgba(255, 255, 255, 0.08) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-footer .font-mono.text-2xl {
+  color: #cbb279 !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 2rem !important;
+  font-weight: 700 !important;
+  line-height: 1 !important;
+}
+
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-label,
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-unit,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-label,
+html.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-unit,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-label,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-footer .contestant-standing-unit,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-label,
+.dark
+  dialog[data-event-theme="pageant-editorial"]
+  .contestant-modal-footer
+  .contestant-standing-unit {
+  color: #9ba3b4 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.1em !important;
+}
+
+/* Dark Mode: Share Story Button */
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story,
+[data-event-theme="pageant-editorial"].dark .btn-share-story {
+  border-radius: 6px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: rgba(203, 178, 121, 0.08) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.04em !important;
+  height: 40px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.4) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story span,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story span,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story span,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story span,
+[data-event-theme="pageant-editorial"].dark .btn-share-story span {
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story svg,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story svg,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story svg,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story svg,
+[data-event-theme="pageant-editorial"].dark .btn-share-story svg {
+  color: #cbb279 !important;
+  stroke: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover,
+[data-event-theme="pageant-editorial"].dark .btn-share-story:hover {
+  background-color: rgba(203, 178, 121, 0.18) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover span,
+[data-event-theme="pageant-editorial"].dark .btn-share-story:hover span {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+html.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+.dark [data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+.dark dialog[data-event-theme="pageant-editorial"] .btn-share-story:hover svg,
+[data-event-theme="pageant-editorial"].dark .btn-share-story:hover svg {
+  color: #cbb279 !important;
+  stroke: #cbb279 !important;
+}
+
+/* Dark Mode: BoostVoteModal */
+html.dark [data-event-theme="pageant-editorial"] .boost-modal-dialog,
+html.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
+.dark [data-event-theme="pageant-editorial"] .boost-modal-dialog,
+.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog {
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  border-radius: 16px !important;
+  box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.75) !important;
+  overflow: hidden !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+html.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+.dark [data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title,
+.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog #boost-modal-title {
+  color: #f9f9fb !important;
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  font-size: 1.85rem !important;
+  font-weight: 700 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-tier-card,
+.dark [data-event-theme="pageant-editorial"] .boost-tier-card {
+  background-color: #181b26 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  border-radius: 6px !important;
+  color: #f9f9fb !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-tier-card:hover,
+.dark [data-event-theme="pageant-editorial"] .boost-tier-card:hover {
+  border-color: rgba(203, 178, 121, 0.35) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-tier-card.selected,
+.dark [data-event-theme="pageant-editorial"] .boost-tier-card.selected {
+  border-color: #cbb279 !important;
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  box-shadow: 0 0 14px rgba(203, 178, 121, 0.3) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .boost-tier-card .font-heading,
+.dark [data-event-theme="pageant-editorial"] .boost-tier-card .font-heading {
+  color: #f9f9fb !important;
+}
+
+/* Dark Mode: VoteStoryModal */
+html.dark [data-event-theme="pageant-editorial"] .vote-story-modal-container,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
+.dark [data-event-theme="pageant-editorial"] .vote-story-modal-container,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
+[data-event-theme="pageant-editorial"].dark .vote-story-modal-container {
+  background-color: rgba(18, 20, 28, 0.85) !important;
+  backdrop-filter: blur(20px) !important;
+  -webkit-backdrop-filter: blur(20px) !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  border-radius: 16px !important;
+  box-shadow:
+    0 24px 60px -12px rgba(0, 0, 0, 0.75),
+    0 0 0 1px rgba(203, 178, 121, 0.25) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
+[data-event-theme="pageant-editorial"].dark .vote-story-modal-close-btn {
+  border-radius: 6px !important;
+  border: 1px solid rgba(203, 178, 121, 0.3) !important;
+  background-color: #181b26 !important;
+  color: #9ba3b4 !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+.dark [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover,
+[data-event-theme="pageant-editorial"].dark .vote-story-modal-close-btn:hover {
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+.dark [data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge,
+[data-event-theme="pageant-editorial"].dark .vote-story-verified-badge {
+  border-radius: 4px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: rgba(203, 178, 121, 0.08) !important;
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10.5px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.12em !important;
+  text-transform: uppercase !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+.dark [data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-verified-badge svg,
+[data-event-theme="pageant-editorial"].dark .vote-story-verified-badge svg {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-title,
+html.dark [data-event-theme="pageant-editorial"] #share-story-title,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-title,
+html.dark dialog[data-event-theme="pageant-editorial"] #share-story-title,
+.dark [data-event-theme="pageant-editorial"] .vote-story-title,
+.dark [data-event-theme="pageant-editorial"] #share-story-title,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-title,
+.dark dialog[data-event-theme="pageant-editorial"] #share-story-title,
+[data-event-theme="pageant-editorial"].dark .vote-story-title,
+[data-event-theme="pageant-editorial"].dark #share-story-title {
+  font-family: var(--font-cormorant-garamond), "Cormorant Garamond", Georgia, serif !important;
+  color: #f9f9fb !important;
+  font-size: 26px !important;
+  font-weight: 700 !important;
+  line-height: 1.15 !important;
+  letter-spacing: -0.015em !important;
+  text-transform: none !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-description,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-description,
+.dark [data-event-theme="pageant-editorial"] .vote-story-description,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-description,
+[data-event-theme="pageant-editorial"].dark .vote-story-description {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 13px !important;
+  line-height: 1.45 !important;
+  color: #9ba3b4 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+.dark [data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-bar,
+[data-event-theme="pageant-editorial"].dark .vote-story-theme-bar {
+  border-radius: 8px !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: #181b26 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab,
+[data-event-theme="pageant-editorial"].dark .vote-story-theme-tab {
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  border-radius: 6px !important;
+  color: #9ba3b4 !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab:hover,
+[data-event-theme="pageant-editorial"].dark .vote-story-theme-tab:hover {
+  color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+.dark [data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-theme-tab.active,
+[data-event-theme="pageant-editorial"].dark .vote-story-theme-tab.active {
+  background-color: #12141c !important;
+  border: 1px solid rgba(203, 178, 121, 0.45) !important;
+  color: #f9f9fb !important;
+  box-shadow: 0 0 12px rgba(203, 178, 121, 0.2) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .vote-story-preview-container,
+html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-preview-container,
+.dark [data-event-theme="pageant-editorial"] .vote-story-preview-container,
+.dark dialog[data-event-theme="pageant-editorial"] .vote-story-preview-container,
+[data-event-theme="pageant-editorial"].dark .vote-story-preview-container {
+  border-radius: 10px !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  box-shadow:
+    0 12px 32px -4px rgba(0, 0, 0, 0.6),
+    0 0 16px rgba(203, 178, 121, 0.15) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-share,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-share,
+.dark [data-event-theme="pageant-editorial"] .story-btn-share,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-share,
+[data-event-theme="pageant-editorial"].dark .story-btn-share {
+  border-radius: 6px !important;
+  background-color: #cbb279 !important;
+  border-color: #cbb279 !important;
+  color: #0b0c10 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 0 14px rgba(203, 178, 121, 0.35) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-share:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-share:hover,
+.dark [data-event-theme="pageant-editorial"] .story-btn-share:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-share:hover,
+[data-event-theme="pageant-editorial"].dark .story-btn-share:hover {
+  background-color: #dac595 !important;
+  border-color: #dac595 !important;
+  color: #0b0c10 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-download,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-download,
+.dark [data-event-theme="pageant-editorial"] .story-btn-download,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-download,
+[data-event-theme="pageant-editorial"].dark .story-btn-download {
+  border-radius: 6px !important;
+  background-color: #181b26 !important;
+  border: 1px solid rgba(203, 178, 121, 0.4) !important;
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.08em !important;
+  text-transform: uppercase !important;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3) !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-download:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-download:hover,
+.dark [data-event-theme="pageant-editorial"] .story-btn-download:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-download:hover,
+[data-event-theme="pageant-editorial"].dark .story-btn-download:hover {
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border-color: #cbb279 !important;
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-copy,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-copy,
+.dark [data-event-theme="pageant-editorial"] .story-btn-copy,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-copy,
+[data-event-theme="pageant-editorial"].dark .story-btn-copy {
+  border-radius: 6px !important;
+  background-color: #181b26 !important;
+  border: 1px solid rgba(255, 255, 255, 0.08) !important;
+  color: #9ba3b4 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.02em !important;
+  transition: all 0.2s ease !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+html.dark dialog[data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+.dark [data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+.dark dialog[data-event-theme="pageant-editorial"] .story-btn-copy:hover,
+[data-event-theme="pageant-editorial"].dark .story-btn-copy:hover {
+  border-color: rgba(203, 178, 121, 0.35) !important;
+  color: #f9f9fb !important;
+  background-color: rgba(203, 178, 121, 0.08) !important;
+}

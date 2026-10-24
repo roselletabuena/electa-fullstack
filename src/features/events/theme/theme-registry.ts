@@ -25,6 +25,8 @@ export function themeTokensToCssVars(tokens: ThemeTokens): Record<string, string
     "--radius-md": tokens.radiusMd,
     "--radius-lg": tokens.radiusLg,
     "--radius-pill": tokens.radiusPill,
+    "--icon-accent": tokens.accentPrimary,
+    "--icon-muted": tokens.textTertiary,
   };
 
   if (tokens.fontSerif) {
@@ -72,7 +74,8 @@ const pageantEditorialTokens: ThemeTokens = {
   textSecondary: "#9BA3B4",
   textTertiary: "#5D6577",
   fontHeading: "var(--font-cormorant-garamond), 'Cormorant Garamond', Georgia, serif",
-  fontBody: "var(--font-plus-jakarta-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
+  fontBody:
+    "var(--font-plus-jakarta-sans), 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, sans-serif",
   fontSerif: "var(--font-cormorant-garamond), 'Cormorant Garamond', Georgia, serif",
   radiusSm: "4px",
   radiusMd: "8px",
@@ -85,7 +88,8 @@ export const THEME_REGISTRY: Record<EventTheme, ThemeDefinition> = {
     id: "ELECTA_DEFAULT",
     slug: "electa-default",
     displayName: "Electa Opal (Default)",
-    description: "Electa's clean Opal slate design system with sharp brutalist-refined zero-radius geometry.",
+    description:
+      "Electa's clean Opal slate design system with sharp brutalist-refined zero-radius geometry.",
     tokens: electaDefaultTokens,
     cssVariables: themeTokensToCssVars(electaDefaultTokens),
   },
@@ -93,7 +97,8 @@ export const THEME_REGISTRY: Record<EventTheme, ThemeDefinition> = {
     id: "PAGEANT_EDITORIAL",
     slug: "pageant-editorial",
     displayName: "Pageant Editorial Haute-Couture",
-    description: "Understated luxury, champagne accents, Cormorant Garamond typography, and dark atmosphere tailored for national pageants.",
+    description:
+      "Understated luxury, champagne accents, Cormorant Garamond typography, and dark atmosphere tailored for national pageants.",
     tokens: pageantEditorialTokens,
     cssVariables: themeTokensToCssVars(pageantEditorialTokens),
   },

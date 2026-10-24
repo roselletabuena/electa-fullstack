@@ -3,7 +3,7 @@
 import React, { useState, useTransition } from "react";
 import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Globe, Sparkles, AlertCircle, CheckCircle2, RotateCcw, Loader2 } from "lucide-react";
+import { Globe, Sparkles, AlertCircle, CheckCircle2, RotateCcw, Loader2, Palette } from "lucide-react";
 import {
   Card,
   CardHeader,
@@ -14,6 +14,10 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { BannerAspectPreview } from "./BannerAspectPreview";
+import { ThemeSelectorCard } from "./ThemeSelectorCard";
+import { ThemeAppearancePreview } from "./ThemeAppearancePreview";
+import { THEME_REGISTRY, resolveEventTheme } from "@/features/events/theme/theme-registry";
+import type { EventTheme } from "@/features/events/types/theme";
 import {
   updateEventBrandingSchema,
   type UpdateEventBrandingInput,
@@ -41,6 +45,7 @@ export function GeneralBrandingForm({
     register,
     handleSubmit,
     control,
+    setValue,
     reset,
     formState: { errors, isDirty, isSubmitting },
     setError,
@@ -50,6 +55,7 @@ export function GeneralBrandingForm({
       title: event.title || "",
       description: event.description || "",
       bannerUrl: event.bannerUrl || "",
+      theme: (event.theme as EventTheme) || "ELECTA_DEFAULT",
       reason: "",
     },
   });
@@ -57,7 +63,16 @@ export function GeneralBrandingForm({
   const watchedTitle = useWatch({ control, name: "title" }) ?? "";
   const watchedDescription = useWatch({ control, name: "description" }) ?? "";
   const watchedBannerUrl = useWatch({ control, name: "bannerUrl" }) ?? "";
+  const watchedTheme =
+    (useWatch({ control, name: "theme" }) as EventTheme) ??
+    ((event.theme as EventTheme) || "ELECTA_DEFAULT");
   const watchedReason = useWatch({ control, name: "reason" }) ?? "";
+
+  const selectedThemeDef = resolveEventTheme(watchedTheme);
+
+  const handleThemeSelect = (themeId: EventTheme) => {
+    setValue("theme", themeId, { shouldDirty: true, shouldValidate: true });
+  };
 
   const onSubmit = (data: UpdateEventBrandingInput) => {
     setStatusMessage(null);
@@ -104,8 +119,7 @@ export function GeneralBrandingForm({
                   Event Identity & Public Branding
                 </CardTitle>
                 <CardDescription className="mt-1 font-sans text-xs text-slate-500 dark:text-slate-400">
-                  Manage public-facing competition titles, descriptions, and high-resolution banner
-                  artwork.
+                  Manage public-facing competition titles, descriptions, visual themes, and high-resolution banner artwork.
                 </CardDescription>
               </div>
 
@@ -259,7 +273,48 @@ export function GeneralBrandingForm({
             {/* Live Aspect Ratio Preview Widget */}
             <BannerAspectPreview imageUrl={watchedBannerUrl} title={watchedTitle || event.title} />
 
-            {/* Row 4: Optional Audit Reason */}
+            {/* Row 4: Visual Theme & Appearance Section */}
+            <div className="space-y-4 border-t border-slate-200/80 pt-6 dark:border-slate-800/80">
+              <div className="flex flex-col gap-1">
+                <div className="flex items-center gap-2">
+                  <Palette className="size-4 text-sky-600 dark:text-sky-400" />
+                  <h3 className="font-heading text-sm font-extrabold tracking-wider text-slate-800 uppercase dark:text-slate-200">
+                    Visual Theme & Appearance
+                  </h3>
+                </div>
+                <p className="font-sans text-xs text-slate-500 dark:text-slate-400">
+                  Select a tailored skin for your public competition page. All themes strictly enforce Electa's zero-radius brutalist geometry.
+                </p>
+              </div>
+
+              {/* Theme Selector Grid */}
+              <div
+                role="radiogroup"
+                aria-label="Visual Theme Options"
+                className="grid grid-cols-1 gap-4 md:grid-cols-2"
+              >
+                {Object.values(THEME_REGISTRY).map((themeDef) => (
+                  <ThemeSelectorCard
+                    key={themeDef.id}
+                    theme={themeDef}
+                    isSelected={watchedTheme === themeDef.id}
+                    onSelect={handleThemeSelect}
+                    disabled={isWorking}
+                  />
+                ))}
+              </div>
+
+              {/* Live Real-Time Appearance Preview Card */}
+              <div className="pt-2">
+                <ThemeAppearancePreview
+                  theme={selectedThemeDef}
+                  eventTitle={watchedTitle || event.title}
+                  bannerUrl={watchedBannerUrl || event.bannerUrl}
+                />
+              </div>
+            </div>
+
+            {/* Row 5: Optional Audit Reason */}
             <div className="space-y-2 border-t border-slate-200/60 pt-4 dark:border-slate-800/60">
               <div className="flex items-center justify-between">
                 <label

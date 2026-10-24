@@ -1,5 +1,5 @@
 import { describe, it, expect, vi, beforeEach } from "vitest";
-import { render, screen, fireEvent, waitFor } from "@testing-library/react";
+import { render, screen, fireEvent, waitFor, act } from "@testing-library/react";
 import { GeneralBrandingForm } from "@/features/events/components/dashboard/GeneralBrandingForm";
 import { updateEventBrandingAction } from "@/features/events/actions/update-event-branding";
 import type { Event } from "@/generated/client/client";
@@ -52,7 +52,9 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
     render(<GeneralBrandingForm event={mockEvent} />);
 
     const pageantCard = screen.getByText("Pageant Editorial Haute-Couture");
-    fireEvent.click(pageantCard);
+    await act(async () => {
+      fireEvent.click(pageantCard);
+    });
 
     // Unsaved changes banner should appear
     expect(screen.getByText(/Unsaved changes/i)).toBeInTheDocument();
@@ -67,12 +69,16 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
     render(<GeneralBrandingForm event={mockEvent} />);
 
     const pageantCard = screen.getByText("Pageant Editorial Haute-Couture");
-    fireEvent.click(pageantCard);
+    await act(async () => {
+      fireEvent.click(pageantCard);
+    });
 
     expect(screen.getByText(/Unsaved changes/i)).toBeInTheDocument();
 
     const discardBtn = screen.getByRole("button", { name: /Discard Changes/i });
-    fireEvent.click(discardBtn);
+    await act(async () => {
+      fireEvent.click(discardBtn);
+    });
 
     // Unsaved changes should disappear
     expect(screen.queryByText(/Unsaved changes/i)).not.toBeInTheDocument();
@@ -93,10 +99,14 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
     render(<GeneralBrandingForm event={mockEvent} />);
 
     const pageantCard = screen.getByText("Pageant Editorial Haute-Couture");
-    fireEvent.click(pageantCard);
+    await act(async () => {
+      fireEvent.click(pageantCard);
+    });
 
     const submitBtn = screen.getByRole("button", { name: /Save Changes/i });
-    fireEvent.click(submitBtn);
+    await act(async () => {
+      fireEvent.click(submitBtn);
+    });
 
     await waitFor(() => {
       expect(updateEventBrandingAction).toHaveBeenCalledWith(

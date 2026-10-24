@@ -48,7 +48,7 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
     expect(screen.getByText(/Active Theme/i)).toBeInTheDocument();
   });
 
-  it("updates live preview immediately upon clicking a different theme", async () => {
+  it("updates selected theme and shows unsaved changes banner upon clicking a different theme", async () => {
     render(<GeneralBrandingForm event={mockEvent} />);
 
     const pageantCard = screen.getByText("Pageant Editorial Haute-Couture");
@@ -58,14 +58,9 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
 
     // Unsaved changes banner should appear
     expect(screen.getByText(/Unsaved changes/i)).toBeInTheDocument();
-
-    // Live preview badge should show Pageant Editorial
-    expect(
-      screen.getByText(/Previewing: Pageant Editorial Haute-Couture/i),
-    ).toBeInTheDocument();
   });
 
-  it("reverts selected theme and preview when Discard Changes is clicked", async () => {
+  it("reverts selected theme when Discard Changes is clicked", async () => {
     render(<GeneralBrandingForm event={mockEvent} />);
 
     const pageantCard = screen.getByText("Pageant Editorial Haute-Couture");
@@ -82,11 +77,6 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
 
     // Unsaved changes should disappear
     expect(screen.queryByText(/Unsaved changes/i)).not.toBeInTheDocument();
-
-    // Live preview should revert to default theme
-    expect(
-      screen.getByText(/Previewing: Electa Opal \(Default\)/i),
-    ).toBeInTheDocument();
   });
 
   it("submits the selected theme to updateEventBrandingAction", async () => {
@@ -117,8 +107,6 @@ describe("GeneralBrandingForm - Theme Selection & Appearance Preview", () => {
       );
     });
 
-    expect(
-      await screen.findByText(/Event branding updated successfully!/i),
-    ).toBeInTheDocument();
+    expect(await screen.findByText(/Event branding updated successfully!/i)).toBeInTheDocument();
   });
 });

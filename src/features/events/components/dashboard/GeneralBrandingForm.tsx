@@ -23,8 +23,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { BannerAspectPreview } from "./BannerAspectPreview";
 import { ThemeSelectorCard } from "./ThemeSelectorCard";
-import { ThemeAppearancePreview } from "./ThemeAppearancePreview";
-import { THEME_REGISTRY, resolveEventTheme } from "@/features/events/theme/theme-registry";
+import { THEME_REGISTRY } from "@/features/events/theme/theme-registry";
 import type { EventTheme } from "@/features/events/types/theme";
 import {
   updateEventBrandingSchema,
@@ -75,8 +74,6 @@ export function GeneralBrandingForm({
     (useWatch({ control, name: "theme" }) as EventTheme) ??
     ((event.theme as EventTheme) || "ELECTA_DEFAULT");
   const watchedReason = useWatch({ control, name: "reason" }) ?? "";
-
-  const selectedThemeDef = resolveEventTheme(watchedTheme);
 
   const handleThemeSelect = (themeId: EventTheme) => {
     setValue("theme", themeId, { shouldDirty: true, shouldValidate: true });
@@ -313,15 +310,6 @@ export function GeneralBrandingForm({
                     disabled={isWorking}
                   />
                 ))}
-              </div>
-
-              {/* Live Real-Time Appearance Preview Card */}
-              <div className="pt-2">
-                <ThemeAppearancePreview
-                  theme={selectedThemeDef}
-                  eventTitle={watchedTitle || event.title}
-                  bannerUrl={watchedBannerUrl || event.bannerUrl}
-                />
               </div>
             </div>
 

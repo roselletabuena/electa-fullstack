@@ -59,7 +59,7 @@ export function EventCountdown({
     >
       <div className="flex flex-col items-center justify-between gap-4 md:flex-row md:gap-6">
         <div className="space-y-1 text-center md:text-left">
-          <div className="text-primary inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
+          <div className="countdown-eyebrow text-primary inline-flex items-center gap-1.5 text-xs font-semibold tracking-wider uppercase">
             {isScheduled ? (
               <>
                 <Sparkles className="size-3.5" />
@@ -72,10 +72,10 @@ export function EventCountdown({
               </>
             )}
           </div>
-          <h3 className="heading-font text-lg font-bold tracking-tight text-slate-900 sm:text-xl md:text-2xl dark:text-slate-100">
+          <h3 className="heading-font countdown-heading text-lg font-bold tracking-tight text-slate-900 sm:text-xl md:text-2xl dark:text-slate-100">
             {isScheduled ? "Voting Opens In" : "Voting Closes In"}
           </h3>
-          <p className="text-muted-foreground text-xs">
+          <p className="countdown-description text-muted-foreground text-xs">
             {isScheduled
               ? "Contestant profiles are ready for preview. Cast votes once the timer expires."
               : "Votes are locked immediately upon reaching the zero deadline."}

@@ -143,7 +143,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
           type="button"
           onClick={handleVoteClick}
           aria-label={`Boost votes for ${contestantName}`}
-          className={`flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
+          className={`btn-vote-boost flex items-center justify-center rounded-none bg-amber-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-amber-600 active:scale-95 ${sizeClasses} ${className}`}
         >
           <Zap className="size-3.5 fill-white" aria-hidden="true" />
           <span>Boost Only</span>
@@ -161,7 +161,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
             else setIsBoostModalOpen(true);
           }}
           aria-label={`Boost votes for ${contestantName}`}
-          className={`flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
+          className={`btn-vote-boost flex items-center justify-center rounded-none bg-linear-to-r from-amber-500 to-rose-500 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:from-amber-600 hover:to-rose-600 active:scale-95 ${sizeClasses} ${className}`}
           title={`Daily event free vote quota used. Next free vote resets in ${formattedCountdown}. Click to Boost.`}
         >
           <Zap className="size-3.5 fill-white" aria-hidden="true" />
@@ -177,7 +177,7 @@ export const FreeVoteButton: React.FC<FreeVoteButtonProps> = ({
         onClick={handleVoteClick}
         aria-label={`Vote for ${contestantName}`}
         aria-busy={isCasting}
-        className={`group/vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
+        className={`group/vote btn-pageant-free-vote flex items-center justify-center rounded-none bg-sky-600 font-bold tracking-wider text-white uppercase shadow-xs transition-all hover:bg-sky-700 active:scale-95 disabled:opacity-75 ${sizeClasses} ${className}`}
       >
         {isCasting ? (
           <>

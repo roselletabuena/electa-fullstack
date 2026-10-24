@@ -10,14 +10,18 @@ export interface ThemeToggleProps {
   readonly variant?: "pill" | "icon" | "ghost";
 }
 
-function useSafeTheme(): { theme: "light" | "dark"; toggleTheme: () => void } {
+function useSafeTheme(): {
+  theme: "light" | "dark";
+  toggleTheme: () => void;
+  mounted: boolean;
+} {
   try {
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const { theme, toggleTheme } = useTheme();
-    return { theme, toggleTheme };
+    const { theme, toggleTheme, mounted } = useTheme();
+    return { theme, toggleTheme, mounted };
   } catch {
     // Fallback gracefully when rendered outside ThemeProvider (e.g. in isolated unit tests)
-    return { theme: "light", toggleTheme: () => {} };
+    return { theme: "light", toggleTheme: () => {}, mounted: true };
   }
 }
 
@@ -45,6 +49,7 @@ export function ThemeToggle({
     return (
       <button
         type="button"
+        suppressHydrationWarning
         onClick={toggleTheme}
         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
@@ -62,6 +67,7 @@ export function ThemeToggle({
     return (
       <button
         type="button"
+        suppressHydrationWarning
         onClick={toggleTheme}
         aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
         title={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
@@ -78,6 +84,7 @@ export function ThemeToggle({
   return (
     <button
       type="button"
+      suppressHydrationWarning
       onClick={toggleTheme}
       aria-label={`Switch to ${theme === "light" ? "dark" : "light"} mode`}
       className={cn(

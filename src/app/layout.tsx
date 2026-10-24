@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
-import { Outfit, Sora, JetBrains_Mono, Cormorant_Garamond, Plus_Jakarta_Sans } from "next/font/google";
+import {
+  Outfit,
+  Sora,
+  JetBrains_Mono,
+  Cormorant_Garamond,
+  Plus_Jakarta_Sans,
+} from "next/font/google";
 import { NuqsAdapter } from "nuqs/adapters/next/app";
 import { ThemeProvider } from "@/components/shared/theme-provider";
 import { ReactQueryProvider } from "@/components/shared/query-provider";
@@ -60,7 +66,7 @@ export default function RootLayout({
       <head>
         <script
           dangerouslySetInnerHTML={{
-            __html: `(function(){try{var stored=localStorage.getItem('electa-theme')||localStorage.getItem('electa-theme');if(stored==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})();`,
+            __html: `(function(){try{var stored=localStorage.getItem('electa-theme')||localStorage.getItem('votesphere-theme');if(stored==='dark'){document.documentElement.classList.add('dark')}else{document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}})();`,
           }}
         />
       </head>

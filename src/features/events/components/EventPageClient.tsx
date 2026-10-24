@@ -1,19 +1,24 @@
 "use client";
 
 import React, { useState } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
+import { Trophy } from "lucide-react";
+
+import { BoostVoteModal } from "@/features/payments";
 import { ContestantRoster } from "@/features/contestants/components/ContestantRoster";
-import { useContestants } from "@/features/contestants/hooks/use-contestants";
 import { useCategories } from "@/features/contestants/hooks/use-categories";
-import { useEventTaxonomy } from "../hooks/useEventTaxonomy";
-import type { ContestantDto as RichContestantDto } from "@/features/contestants/types";
+import { useContestants } from "@/features/contestants/hooks/use-contestants";
+import { usePendingVoteIntent } from "@/features/voting/hooks/use-pending-vote-intent";
+
 import { DraftPreviewBanner } from "./DraftPreviewBanner";
 import { EventBanner } from "./EventBanner";
 import { EventCountdown } from "./EventCountdown";
 import { EventVotingRulesBanner } from "./EventVotingRulesBanner";
-import { usePendingVoteIntent } from "@/features/voting/hooks/use-pending-vote-intent";
-import { BoostVoteModal } from "@/features/payments";
+import { useEventTaxonomy } from "../hooks/useEventTaxonomy";
+
+import type { ContestantDto as RichContestantDto } from "@/features/contestants/types";
 import type { EventOperationalState, PublicEventDto } from "../types";
 
 export interface EventPageClientProps {
@@ -107,18 +112,13 @@ export function EventPageClient({
   const totalVotes = contestantsToDisplay.reduce((sum, c) => sum + (c.voteCount ?? 0), 0);
 
   return (
-    <main className="bg-background text-foreground w-full flex-1 px-4 py-8 sm:px-6 lg:px-8">
-      <div className="mx-auto max-w-6xl space-y-8">
+    <main className="bg-background text-foreground w-full max-w-full min-w-0 flex-1 overflow-x-hidden px-3 py-4 pb-20 sm:px-6 sm:py-8 sm:pb-8 lg:px-8">
+      <div className="mx-auto w-full max-w-6xl min-w-0 space-y-4 sm:space-y-6 md:space-y-8">
         {(isDraftPreview || event.operationalState === "Draft") && (
           <DraftPreviewBanner accessMode={accessMode} />
         )}
 
         <EventBanner event={event} totalVotes={totalVotes} />
-
-        <EventVotingRulesBanner
-          isFreeVotingEnabled={event.isFreeVotingEnabled}
-          dailyFreeVoteLimit={event.dailyFreeVoteLimit}
-        />
 
         <EventCountdown
           operationalState={event.operationalState}
@@ -126,6 +126,11 @@ export function EventPageClient({
           endsAt={event.endsAt}
           serverTime={event.serverTime}
           onStateTransition={handleStateTransition}
+        />
+
+        <EventVotingRulesBanner
+          isFreeVotingEnabled={event.isFreeVotingEnabled}
+          dailyFreeVoteLimit={event.dailyFreeVoteLimit}
         />
 
         <ContestantRoster
@@ -156,6 +161,35 @@ export function EventPageClient({
           />
         )}
       </div>
+
+      {/* Mobile Sticky Quick-Action HUD */}
+      {event.operationalState === "Active" && (
+        <aside
+          aria-label="Mobile voting quick access"
+          className="fixed inset-x-0 bottom-0 z-30 flex w-full max-w-full items-center justify-between border-t border-slate-300 bg-white/95 px-4 py-2.5 shadow-lg backdrop-blur-md md:hidden dark:border-slate-800 dark:bg-slate-950/95"
+        >
+          <div className="flex items-center gap-2">
+            <span
+              className="flex size-2 animate-pulse rounded-full bg-emerald-500"
+              aria-hidden="true"
+            />
+            <span className="font-heading text-xs font-bold tracking-wider text-slate-900 uppercase dark:text-slate-100">
+              Live Ballot
+            </span>
+            <span className="font-mono text-xs text-slate-600 dark:text-slate-400">
+              ({totalVotes.toLocaleString()} votes)
+            </span>
+          </div>
+
+          <Link
+            href={`/events/${event.slug}/leaderboard`}
+            className="btn-primary inline-flex items-center gap-1.5 px-3 py-1.5 text-[11px]"
+          >
+            <Trophy className="size-3.5 text-amber-400" aria-hidden="true" />
+            <span>Leaderboard</span>
+          </Link>
+        </aside>
+      )}
     </main>
   );
 }

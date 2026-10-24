@@ -1,8 +1,8 @@
-# Data Model: Organizer Dashboard Theme Selector & Real-Time Appearance Preview
+# Data Model: Organizer Dashboard Theme Selector
 
 **Feature ID**: `050-organizer-dashboard-theme-selector`  
 **Ticket**: [VS-122](https://the-three-devsketeers.atlassian.net/browse/VS-122)  
-**Date**: 2026-10-24  
+**Date**: 2026-10-24
 
 ---
 
@@ -56,7 +56,11 @@ export const eventThemeSchema = z.enum(["ELECTA_DEFAULT", "PAGEANT_EDITORIAL"]);
 export const updateEventBrandingSchema = z.object({
   title: z.string().trim().min(3).max(100),
   description: z.string().trim().max(2000),
-  bannerUrl: z.string().trim().url().regex(/^https:\/\/.+/i),
+  bannerUrl: z
+    .string()
+    .trim()
+    .url()
+    .regex(/^https:\/\/.+/i),
   theme: eventThemeSchema.optional(),
   reason: z.string().trim().max(500).optional(),
 });
@@ -87,7 +91,9 @@ export interface ThemeSelectorCardProps {
 }
 ```
 
-### `ThemeAppearancePreviewProps`
+### `ThemeAppearancePreviewProps` (Retired from Dashboard)
+
+> _Note: Retired from `GeneralBrandingForm.tsx` to streamline the branding settings layout._
 
 ```typescript
 export interface ThemeAppearancePreviewProps {

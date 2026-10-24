@@ -1,31 +1,32 @@
-# Feature Specification: Organizer Dashboard Theme Selector & Real-Time Appearance Preview UI
+# Feature Specification: Organizer Dashboard Theme Selector UI
 
 **Feature ID**: `050-organizer-dashboard-theme-selector`  
 **Ticket**: [VS-122](https://the-three-devsketeers.atlassian.net/browse/VS-122)  
 **Parent Epic**: [VS-119](https://the-three-devsketeers.atlassian.net/browse/VS-119) (`[Epic] Dynamic Event Theming Engine & Visual Appearance System`)  
 **Status**: Ready for Implementation  
-**Created**: 2026-10-24  
+**Created**: 2026-10-24
 
 ---
 
 ## 1. Clarifications & Resolved Decisions
 
 ### Session 2026-10-24
+
 - **Q1: Where in the organizer dashboard does the theme selection UI reside?**  
   → **A**: Inside the "General & Branding" tab (`/dashboard/events/[slug]/settings?tab=general` and `/events/[slug]/settings?tab=general`) embedded directly within `GeneralBrandingForm.tsx`.
 - **Q2: Which themes are currently supported by the registry?**  
   → **A**: Two themes from `THEME_REGISTRY`:
-    1. `ELECTA_DEFAULT`: "Electa Opal (Default)" — Clean Opal slate design system with sharp brutalist-refined zero-radius geometry (`#F8FAFC`, `#0284C7`, Outfit + Sora typography).
-    2. `PAGEANT_EDITORIAL`: "Pageant Editorial Haute-Couture" — Obsidian surfaces (`#0B0C10`, `#12141C`), champagne gold accents (`#CBB279`), Cormorant Garamond serif typography.
+  1. `ELECTA_DEFAULT`: "Electa Opal (Default)" — Clean Opal slate design system with sharp brutalist-refined zero-radius geometry (`#F8FAFC`, `#0284C7`, Outfit + Sora typography).
+  2. `PAGEANT_EDITORIAL`: "Pageant Editorial Haute-Couture" — Obsidian surfaces (`#0B0C10`, `#12141C`), champagne gold accents (`#CBB279`), Cormorant Garamond serif typography.
 - **Q3: What elements should each Theme Selector Card display?**  
   → **A**:
-    - Theme Display Name and Description.
-    - Active / Selected indicator (badge or checkmark).
-    - Color swatches displaying the key tokens (Base, Surface, Primary Accent, Secondary Accent, and Text colors).
-    - Font family badges (Heading & Body font names).
-    - Strict zero-radius brutalist styling (`rounded-none`, `--radius: 0px`).
-- **Q4: How does the real-time live appearance preview work?**  
-  → **A**: An embedded preview container dynamically displays a miniature public page hero and contestant preview reflecting the actively selected theme tokens and CSS variables, instantly updating before saving without page reloads.
+  - Theme Display Name and Description.
+  - Active / Selected indicator (badge or checkmark).
+  - Color swatches displaying the key tokens (Base, Surface, Primary Accent, Secondary Accent, and Text colors).
+  - Font family badges (Heading & Body font names).
+  - Strict zero-radius brutalist styling (`rounded-none`, `--radius: 0px`).
+- **Q4: Is a separate live appearance preview widget necessary?**  
+  → **A**: No. The separate live appearance preview card was removed to eliminate visual clutter and vertical bloat in the settings tab. Each Theme Selector Card already self-contains comprehensive color swatches (Base, Surface, Primary Accent, Text Primary) and typography badges, which provide sufficient visual guidance directly.
 - **Q5: How are theme changes persisted and audited?**  
   → **A**: Submitting the form calls `updateEventBrandingAction(event.slug, data)`. The Server Action validates the payload with `updateEventBrandingSchema`, authorizes ownership via `requireEventOwnership(slug)`, executes an atomic transaction in Prisma updating `event.theme` and logging an `eventAuditLog` entry, and revalidates `/events/[slug]/settings` and `/events/[slug]`.
 - **Q6: How does form reset / dirty state interact with theme selection?**  
@@ -37,9 +38,10 @@
 
 With the implementation of the Dynamic Theme Resolution Engine (`VS-120`) and the Haute-Couture Pageant Editorial Theme (`VS-121`), Electa supports multiple visual identities for competition events. However, organizers previously lacked a visual interface to preview and switch themes in the dashboard.
 
-This feature introduces a first-class **Theme Selector & Real-Time Appearance Preview UI** in `GeneralBrandingForm.tsx`:
+This feature introduces a clean **Theme Selector UI** in `GeneralBrandingForm.tsx`:
+
 1. **Interactive Theme Selection**: Selectable cards for `ELECTA_DEFAULT` and `PAGEANT_EDITORIAL` showing color swatches and typography pairings.
-2. **Real-Time Live Appearance Preview**: A miniature public page preview component rendered with the selected theme's tokens, giving instant visual feedback before persisting.
+2. **Streamlined Settings Layout**: Clean layout without redundant preview boxes; cards encapsulate all required visual tokens directly.
 3. **Seamless State & Server Action Integration**: Full integration with React Hook Form, Zod validation, and atomic audit logging via Server Actions.
 4. **Zero-Radius Brutalist Design System**: Strict adherence to Electa's `--radius: 0px` design rules and WCAG 2.1 AA dual-theme contrast standards.
 
@@ -52,6 +54,7 @@ This feature introduces a first-class **Theme Selector & Real-Time Appearance Pr
 An event organizer on `/events/[slug]/settings?tab=general` sees the "Visual Theme & Appearance" section containing cards for each available theme in `THEME_REGISTRY`.
 
 **Acceptance Scenarios**:
+
 1. **Given** an organizer on the General Settings tab,  
    **When** the form loads,  
    **Then** all available themes in `THEME_REGISTRY` are displayed as selectable cards, with the event's current theme pre-selected.
@@ -61,17 +64,18 @@ An event organizer on `/events/[slug]/settings?tab=general` sees the "Visual The
 
 ---
 
-### User Story 2 - Instant Real-Time Appearance Preview (Priority: P1)
+### User Story 2 - Instant Theme Selection & Dirty State Tracking (Priority: P1)
 
-An organizer clicks on a theme card to evaluate its look. The embedded live preview immediately updates to reflect the chosen theme's palette and typography.
+An organizer clicks on a theme card to switch themes. The form tracks the selection and marks unsaved changes.
 
 **Acceptance Scenarios**:
+
 1. **Given** an organizer viewing the branding form with `ELECTA_DEFAULT` selected,  
    **When** they click the "Pageant Editorial Haute-Couture" card,  
-   **Then** the embedded preview card immediately updates to show the obsidian/champagne color scheme and Cormorant Garamond typography.
+   **Then** the selected theme card updates to active state and the "Unsaved changes" banner appears.
 2. **Given** an organizer with unsaved theme changes,  
    **When** they click "Discard Changes",  
-   **Then** the form and live preview revert to the event's saved theme and dirty state is cleared.
+   **Then** the form reverts to the event's saved theme and dirty state is cleared.
 
 ---
 
@@ -80,6 +84,7 @@ An organizer clicks on a theme card to evaluate its look. The embedded live prev
 An organizer selects a new theme and submits the form. The theme is validated and persisted in the database.
 
 **Acceptance Scenarios**:
+
 1. **Given** an organizer who has selected a new theme,  
    **When** they click "Save Changes",  
    **Then** `updateEventBrandingAction` updates `event.theme`, writes an audit log entry in `eventAuditLog`, revalidates paths, and displays a success message.
@@ -94,6 +99,7 @@ An organizer selects a new theme and submits the form. The theme is validated an
 A non-owner or unauthenticated user attempting to invoke `updateEventBrandingAction` is blocked.
 
 **Acceptance Scenarios**:
+
 1. **Given** an unauthenticated user invoking `updateEventBrandingAction`,  
    **When** the action executes,  
    **Then** it returns `{ success: false, error: "You must be signed in to perform this action." }`.

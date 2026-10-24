@@ -76,18 +76,24 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
         tabIndex={-1}
         aria-hidden="true"
         onClick={onClose}
-        className="modal-backdrop fixed inset-0 cursor-default border-none bg-slate-950/40 backdrop-blur-md transition-all dark:bg-black/50"
+        className="modal-backdrop fixed inset-0 cursor-default border-none bg-slate-950/50 backdrop-blur-md transition-all dark:bg-black/60"
       />
 
       {/* Modal Container */}
-      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-t border-slate-300 bg-white/95 shadow-2xl backdrop-blur-2xl sm:border sm:bg-white/80 dark:border-slate-800 dark:bg-[#0d1424]/95 sm:dark:bg-[#0d1424]/75">
+      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border-t border-slate-300 bg-white shadow-2xl sm:border dark:border-slate-800 dark:bg-[#0d1424]">
         {/* Header Bar */}
-        <div className="contestant-modal-header flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/70 px-4 py-3 backdrop-blur-md sm:px-6 sm:py-4 dark:border-slate-800 dark:bg-slate-900/80">
-          <div className="flex items-center gap-2 sm:gap-3">
-            <div className="contestant-modal-badge flex items-center rounded-none border border-slate-300 bg-white px-2.5 py-0.5 font-mono text-[11px] font-bold text-slate-900 shadow-xs sm:px-3 sm:py-1 sm:text-xs dark:border-slate-700 dark:bg-slate-950 dark:text-slate-100">
+        <div className="contestant-modal-header flex shrink-0 items-center justify-between border-b border-slate-200/80 bg-slate-50/70 px-4 py-2.5 sm:px-6 sm:py-3 dark:border-slate-800 dark:bg-slate-900/60">
+          <div className="flex items-center gap-2 sm:gap-2.5">
+            <div className="contestant-modal-badge flex items-center rounded-none bg-slate-900 px-2.5 py-0.5 font-mono text-[11px] font-bold tracking-wider text-white shadow-2xs dark:bg-slate-100 dark:text-slate-900">
               <span>Candidate #{String(contestant.contestantNumber).padStart(2, "0")}</span>
             </div>
-            <span className="contestant-modal-division-badge rounded-none border border-slate-300 bg-slate-100 px-2 py-0.5 text-[11px] font-bold tracking-wider text-slate-700 uppercase sm:px-2.5 sm:text-xs dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+            <span
+              className="contestant-modal-divider text-slate-300 select-none dark:text-slate-700"
+              aria-hidden="true"
+            >
+              &bull;
+            </span>
+            <span className="contestant-modal-division-badge text-[11px] font-bold tracking-wider text-slate-500 uppercase dark:text-slate-400">
               {contestant.division.toLowerCase()} Division
             </span>
           </div>
@@ -96,7 +102,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
             type="button"
             onClick={onClose}
             aria-label={`Close ${contestant.name} profile`}
-            className="contestant-modal-close-btn flex size-8 items-center justify-center rounded-none border border-slate-300 bg-white p-1 text-slate-700 transition-all hover:border-amber-400 hover:bg-amber-50 hover:text-amber-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-amber-500/50 dark:hover:bg-amber-950/30 dark:hover:text-amber-300"
+            className="contestant-modal-close-btn flex size-7 items-center justify-center rounded-none text-slate-400 transition-colors hover:bg-slate-200/70 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-slate-800 dark:hover:text-white"
           >
             <X className="size-4" aria-hidden="true" />
           </button>

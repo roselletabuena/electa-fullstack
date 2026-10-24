@@ -40,6 +40,9 @@ dialog[data-event-theme="pageant-editorial"] {
     -apple-system,
     BlinkMacSystemFont,
     sans-serif !important;
+}
+
+[data-event-theme="pageant-editorial"]:not(dialog) {
   min-height: 100vh;
 }
 
@@ -101,8 +104,13 @@ html.light [data-event-theme="pageant-editorial"] {
   --text-secondary: #5c554b !important;
   --text-tertiary: #7d7568 !important;
 
-  background-color: #faf8f5 !important;
   color: #181512 !important;
+}
+
+[data-event-theme="pageant-editorial"]:not(dialog),
+html:not(.dark) [data-event-theme="pageant-editorial"]:not(dialog),
+html.light [data-event-theme="pageant-editorial"]:not(dialog) {
+  background-color: #faf8f5 !important;
 }
 
 /* Light Mode: Main Page */
@@ -591,6 +599,29 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-boost-outlin
   box-shadow: 0 2px 8px rgba(132, 100, 34, 0.15) !important;
 }
 
+/* Dialog Base Overrides: Keep native <dialog> container fully transparent and non-blocking */
+dialog[data-event-theme="pageant-editorial"],
+dialog[data-event-theme="pageant-editorial"]::backdrop,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"],
+html:not(.dark) dialog[data-event-theme="pageant-editorial"]::backdrop,
+html.light dialog[data-event-theme="pageant-editorial"],
+html.light dialog[data-event-theme="pageant-editorial"]::backdrop,
+html.dark dialog[data-event-theme="pageant-editorial"],
+html.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
+.dark dialog[data-event-theme="pageant-editorial"],
+.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
+[data-event-theme="pageant-editorial"].dark dialog[data-event-theme="pageant-editorial"],
+[data-event-theme="pageant-editorial"].dark dialog[data-event-theme="pageant-editorial"]::backdrop,
+[data-event-theme="pageant-editorial"] dialog,
+[data-event-theme="pageant-editorial"] dialog::backdrop {
+  background: transparent !important;
+  background-color: transparent !important;
+  min-height: 0 !important;
+  border: none !important;
+  outline: none !important;
+  box-shadow: none !important;
+}
+
 /* Light Mode: Modal Backdrops (Airy Translucent Frosted Veil) */
 [data-event-theme="pageant-editorial"] .modal-backdrop,
 [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
@@ -598,20 +629,16 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .btn-pageant-boost-outlin
 dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
 dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
 dialog[data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
-dialog[data-event-theme="pageant-editorial"]::backdrop,
-[data-event-theme="pageant-editorial"] .modal-backdrop,
-dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
 html:not(.dark) [data-event-theme="pageant-editorial"] .modal-backdrop,
 html:not(.dark) [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
 html:not(.dark) [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
-html:not(.dark) dialog[data-event-theme="pageant-editorial"]::backdrop,
 html.light [data-event-theme="pageant-editorial"] .modal-backdrop,
 html.light dialog[data-event-theme="pageant-editorial"] .modal-backdrop {
   background-color: rgba(15, 23, 42, 0.45) !important;
-  backdrop-filter: blur(14px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  backdrop-filter: blur(12px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
 }
 
 /* Light Mode: ContestantProfileModal & General Modal Containers (Haute-Couture Frosted Glass) */
@@ -633,9 +660,9 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-contain
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-profile-modal-container,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container {
-  background-color: rgba(255, 255, 255, 0.68) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(180, 140, 75, 0.35) !important;
   color: #181512 !important;
   border-radius: 16px !important;
@@ -649,9 +676,9 @@ html:not(.dark) dialog[data-event-theme="pageant-editorial"] .vote-story-modal-c
 dialog[data-event-theme="pageant-editorial"] .contestant-modal-header,
 html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-header,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-header {
-  background-color: rgba(247, 243, 233, 0.55) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
+  background-color: rgba(253, 252, 248, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
   border-bottom: 1px solid rgba(180, 140, 75, 0.2) !important;
 }
 
@@ -659,29 +686,39 @@ html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-h
 dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
 html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-badge,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge {
-  background-color: #ffffff !important;
-  border: 1px solid rgba(180, 140, 75, 0.4) !important;
-  color: #181512 !important;
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  color: #846422 !important;
   font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
-  border-radius: 6px !important;
+  border-radius: 9999px !important;
+  padding: 2.5px 10px !important;
+  box-shadow: none !important;
+}
+
+[data-event-theme="pageant-editorial"] .contestant-modal-divider,
+dialog[data-event-theme="pageant-editorial"] .contestant-modal-divider,
+html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-divider,
+html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-divider {
+  color: rgba(180, 140, 75, 0.45) !important;
 }
 
 [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge {
-  background-color: #f7f3e9 !important;
-  border: 1px solid rgba(180, 140, 75, 0.4) !important;
+  background-color: transparent !important;
+  border: none !important;
   color: #846422 !important;
-  border-radius: 9999px !important;
+  border-radius: 0 !important;
   font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 11px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
+  padding: 0 !important;
 }
 
 [data-event-theme="pageant-editorial"] .contestant-modal-category-badge,
@@ -708,9 +745,9 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-close-b
 html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-close-btn,
 html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn {
-  border-radius: 6px !important;
-  border: 1px solid rgba(180, 140, 75, 0.35) !important;
-  background-color: #ffffff !important;
+  border-radius: 9999px !important;
+  border: 1px solid transparent !important;
+  background-color: transparent !important;
   color: #846422 !important;
   transition: all 0.2s ease !important;
 }
@@ -725,9 +762,9 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-modal-close-b
 html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
 html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover {
   background-color: #f7f3e9 !important;
-  border-color: #846422 !important;
+  border-color: rgba(180, 140, 75, 0.3) !important;
   color: #846422 !important;
-  box-shadow: 0 0 10px rgba(132, 100, 34, 0.25) !important;
+  box-shadow: 0 0 8px rgba(132, 100, 34, 0.15) !important;
   transform: scale(1.05);
 }
 
@@ -1500,9 +1537,9 @@ html.light [data-event-theme="pageant-editorial"] .btn-reset-filters:hover {
 dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
 html:not(.dark) [data-event-theme="pageant-editorial"] .boost-modal-dialog,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog {
-  background-color: rgba(255, 255, 255, 0.68) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(180, 140, 75, 0.35) !important;
   color: #181512 !important;
   border-radius: 16px !important;
@@ -1558,9 +1595,9 @@ dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
 html:not(.dark) [data-event-theme="pageant-editorial"] .vote-story-modal-container,
 html:not(.dark) dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
 html.light [data-event-theme="pageant-editorial"] .vote-story-modal-container {
-  background-color: rgba(255, 255, 255, 0.9) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  background-color: #ffffff !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(180, 140, 75, 0.35) !important;
   color: #181512 !important;
   border-radius: 16px !important;
@@ -1782,8 +1819,13 @@ html.dark [data-event-theme="pageant-editorial"],
   --text-secondary: #9ba3b4 !important;
   --text-tertiary: #5d6577 !important;
 
-  background-color: #0b0c10 !important;
   color: #f9f9fb !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"]:not(dialog),
+.dark [data-event-theme="pageant-editorial"]:not(dialog),
+[data-event-theme="pageant-editorial"].dark:not(dialog) {
+  background-color: #0b0c10 !important;
 }
 
 /* Dark Mode: Main Page */
@@ -2273,17 +2315,15 @@ html.dark [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
 html.dark dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
 html.dark dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
 html.dark dialog[data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
-html.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
 .dark [data-event-theme="pageant-editorial"] .modal-backdrop,
 .dark [data-event-theme="pageant-editorial"] button[aria-label="Close modal overlay"],
 .dark [data-event-theme="pageant-editorial"] > button[tabindex="-1"],
 .dark dialog[data-event-theme="pageant-editorial"] .modal-backdrop,
 .dark dialog[data-event-theme="pageant-editorial"] > button[tabindex="-1"],
-.dark dialog[data-event-theme="pageant-editorial"]::backdrop,
 [data-event-theme="pageant-editorial"].dark .modal-backdrop {
-  background-color: rgba(0, 0, 0, 0.7) !important;
-  backdrop-filter: blur(14px) saturate(140%) !important;
-  -webkit-backdrop-filter: blur(14px) saturate(140%) !important;
+  background-color: rgba(0, 0, 0, 0.65) !important;
+  backdrop-filter: blur(12px) saturate(140%) !important;
+  -webkit-backdrop-filter: blur(12px) saturate(140%) !important;
 }
 
 /* Dark Mode: ContestantProfileModal & General Modal Containers (Haute-Couture Frosted Glass) */
@@ -2307,9 +2347,9 @@ html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-contain
 .dark dialog[data-event-theme="pageant-editorial"] .ballot-review-modal-container,
 .dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
 .dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container {
-  background-color: rgba(18, 20, 28, 0.68) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  background-color: #12141c !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(203, 178, 121, 0.35) !important;
   color: #f9f9fb !important;
   border-radius: 16px !important;
@@ -2323,10 +2363,10 @@ html.dark [data-event-theme="pageant-editorial"] .contestant-modal-header,
 html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-header,
 .dark [data-event-theme="pageant-editorial"] .contestant-modal-header,
 .dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-header {
-  background-color: rgba(24, 27, 38, 0.55) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+  background-color: rgba(18, 20, 28, 0.95) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  border-bottom: 1px solid rgba(203, 178, 121, 0.18) !important;
 }
 
 html.dark [data-event-theme="pageant-editorial"] .contestant-modal-badge,
@@ -2334,29 +2374,39 @@ html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
 .dark [data-event-theme="pageant-editorial"] .contestant-modal-badge,
 .dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-badge,
 [data-event-theme="pageant-editorial darkness"] .contestant-modal-badge {
-  background-color: #12141c !important;
-  border: 1px solid rgba(203, 178, 121, 0.4) !important;
-  color: #f9f9fb !important;
+  background-color: rgba(203, 178, 121, 0.12) !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  color: #cbb279 !important;
   font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 11px !important;
   font-weight: 700 !important;
   letter-spacing: 0.08em !important;
-  border-radius: 6px !important;
+  border-radius: 9999px !important;
+  padding: 2.5px 10px !important;
+  box-shadow: none !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .contestant-modal-divider,
+html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-divider,
+.dark [data-event-theme="pageant-editorial"] .contestant-modal-divider,
+.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-divider {
+  color: rgba(203, 178, 121, 0.35) !important;
 }
 
 html.dark [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 html.dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 .dark [data-event-theme="pageant-editorial"] .contestant-modal-division-badge,
 .dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-division-badge {
-  background-color: #181b26 !important;
-  border: 1px solid rgba(203, 178, 121, 0.4) !important;
-  color: #cbb279 !important;
-  border-radius: 9999px !important;
+  background-color: transparent !important;
+  border: none !important;
+  color: #9ba3b4 !important;
+  border-radius: 0 !important;
   font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 11px !important;
-  font-weight: 700 !important;
+  font-weight: 600 !important;
   letter-spacing: 0.12em !important;
   text-transform: uppercase !important;
+  padding: 0 !important;
 }
 
 html.dark [data-event-theme="pageant-editorial"] .contestant-modal-category-badge,
@@ -2385,9 +2435,9 @@ html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-b
 .dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn,
 .dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn,
 .dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn {
-  border-radius: 6px !important;
-  border: 1px solid rgba(203, 178, 121, 0.35) !important;
-  background-color: #181b26 !important;
+  border-radius: 9999px !important;
+  border: 1px solid transparent !important;
+  background-color: transparent !important;
   color: #cbb279 !important;
   transition: all 0.2s ease !important;
 }
@@ -2404,10 +2454,10 @@ html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-b
 .dark dialog[data-event-theme="pageant-editorial"] .contestant-modal-close-btn:hover,
 .dark dialog[data-event-theme="pageant-editorial"] .boost-modal-close-btn:hover,
 .dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-close-btn:hover {
-  background-color: rgba(203, 178, 121, 0.18) !important;
-  border-color: #cbb279 !important;
+  background-color: rgba(203, 178, 121, 0.15) !important;
+  border-color: rgba(203, 178, 121, 0.35) !important;
   color: #cbb279 !important;
-  box-shadow: 0 0 12px rgba(203, 178, 121, 0.35) !important;
+  box-shadow: 0 0 10px rgba(203, 178, 121, 0.25) !important;
   transform: scale(1.05);
 }
 
@@ -3216,9 +3266,9 @@ html.dark [data-event-theme="pageant-editorial"] .boost-modal-dialog,
 html.dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog,
 .dark [data-event-theme="pageant-editorial"] .boost-modal-dialog,
 .dark dialog[data-event-theme="pageant-editorial"] .boost-modal-dialog {
-  background-color: rgba(18, 20, 28, 0.68) !important;
-  backdrop-filter: blur(28px) saturate(180%) !important;
-  -webkit-backdrop-filter: blur(28px) saturate(180%) !important;
+  background-color: #12141c !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(203, 178, 121, 0.35) !important;
   color: #f9f9fb !important;
   border-radius: 16px !important;
@@ -3270,9 +3320,9 @@ html.dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-contain
 .dark [data-event-theme="pageant-editorial"] .vote-story-modal-container,
 .dark dialog[data-event-theme="pageant-editorial"] .vote-story-modal-container,
 [data-event-theme="pageant-editorial"].dark .vote-story-modal-container {
-  background-color: rgba(18, 20, 28, 0.85) !important;
-  backdrop-filter: blur(20px) !important;
-  -webkit-backdrop-filter: blur(20px) !important;
+  background-color: #12141c !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
   border: 1px solid rgba(203, 178, 121, 0.4) !important;
   color: #f9f9fb !important;
   border-radius: 16px !important;

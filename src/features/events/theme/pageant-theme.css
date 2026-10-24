@@ -336,18 +336,52 @@ html:not(.dark) [data-event-theme="pageant-editorial"] .roster-counter span {
   color: #181512 !important;
 }
 
-/* Light Mode: Filter Buttons (Pills) */
+/* Light Mode: Filter Buttons (Pills) & Category Filter Bar */
+[data-event-theme="pageant-editorial"] .category-filter-bar,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-bar,
+html.light [data-event-theme="pageant-editorial"] .category-filter-bar {
+  border-color: rgba(180, 140, 75, 0.22) !important;
+}
+
+[data-event-theme="pageant-editorial"] .category-filter-label,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-label,
+html.light [data-event-theme="pageant-editorial"] .category-filter-label {
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+[data-event-theme="pageant-editorial"] .category-filter-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-icon,
+html.light [data-event-theme="pageant-editorial"] .category-filter-icon {
+  color: #846422 !important;
+}
+
 [data-event-theme="pageant-editorial"] fieldset button,
-html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button {
+[data-event-theme="pageant-editorial"] .category-filter-pill,
+[data-event-theme="pageant-editorial"] [role="group"] button,
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button,
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-pill,
+html:not(.dark) [data-event-theme="pageant-editorial"] [role="group"] button,
+html.light [data-event-theme="pageant-editorial"] .category-filter-pill {
   border-radius: 9999px !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 12px !important;
   letter-spacing: 0.05em !important;
   transition: all 0.2s ease !important;
 }
 
 [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
-html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
-  border-color: #181512 !important;
+[data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="true"],
+[data-event-theme="pageant-editorial"] .category-filter-pill.category-filter-pill-selected,
+[data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="true"],
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="true"],
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill.category-filter-pill-selected,
+html:not(.dark) [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="true"],
+html.light [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="true"] {
+  border: 1px solid #181512 !important;
   background-color: #181512 !important;
   color: #ffffff !important;
   font-weight: 700 !important;
@@ -355,14 +389,35 @@ html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pres
 }
 
 [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
-html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
+[data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"],
+[data-event-theme="pageant-editorial"] .category-filter-pill.category-filter-pill-unselected,
+[data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"],
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
+html:not(.dark) [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"],
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill.category-filter-pill-unselected,
+html:not(.dark) [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"],
+html.light [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"] {
   border: 1px solid rgba(180, 140, 75, 0.35) !important;
   background-color: #ffffff !important;
   color: #5c554b !important;
 }
 
 [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
-html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
+[data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"]:hover,
+[data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"]:hover,
+html:not(.dark) [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill[aria-pressed="false"]:hover,
+html:not(.dark)
+  [data-event-theme="pageant-editorial"]
+  [role="group"]
+  button[aria-pressed="false"]:hover,
+html.light
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill[aria-pressed="false"]:hover {
   border-color: #846422 !important;
   background-color: #f7f3e9 !important;
   color: #181512 !important;
@@ -1321,6 +1376,71 @@ html.light [data-event-theme="pageant-editorial"] .btn-power-boost-candidates:ho
   box-shadow: 0 6px 20px rgba(244, 63, 94, 0.4) !important;
 }
 
+/* Light Mode: Free Vote Available Quota State (Sparkles & Rolling Reset) */
+[data-event-theme="pageant-editorial"] .free-vote-sparkle-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .free-vote-sparkle-icon,
+html.light [data-event-theme="pageant-editorial"] .free-vote-sparkle-icon {
+  color: #cbb279 !important;
+}
+
+[data-event-theme="pageant-editorial"] .free-vote-banner-desc,
+html:not(.dark) [data-event-theme="pageant-editorial"] .free-vote-banner-desc,
+html.light [data-event-theme="pageant-editorial"] .free-vote-banner-desc {
+  color: #181512 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+[data-event-theme="pageant-editorial"] .free-vote-count-highlight,
+html:not(.dark) [data-event-theme="pageant-editorial"] .free-vote-count-highlight,
+html.light [data-event-theme="pageant-editorial"] .free-vote-count-highlight {
+  color: #846422 !important;
+  font-weight: 800 !important;
+}
+
+[data-event-theme="pageant-editorial"] .free-vote-reset-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .free-vote-reset-badge,
+html.light [data-event-theme="pageant-editorial"] .free-vote-reset-badge {
+  color: #5c554b !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+[data-event-theme="pageant-editorial"] .free-vote-reset-icon,
+html:not(.dark) [data-event-theme="pageant-editorial"] .free-vote-reset-icon,
+html.light [data-event-theme="pageant-editorial"] .free-vote-reset-icon {
+  color: #059669 !important;
+}
+
+/* Light Mode: EventVotingRulesBanner */
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+html.light [data-event-theme="pageant-editorial"] .event-voting-rules-banner {
+  border-radius: 12px !important;
+  border: 1px solid rgba(180, 140, 75, 0.35) !important;
+  background-color: #ffffff !important;
+  box-shadow: 0 4px 20px -4px rgba(24, 21, 18, 0.08) !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+html.light [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box {
+  border-radius: 8px !important;
+  background-color: #0b0c10 !important;
+  color: #cbb279 !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+}
+
+[data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+html:not(.dark) [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+html.light [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge {
+  border-radius: 6px !important;
+  background-color: #f7f3e9 !important;
+  border: 1px solid rgba(180, 140, 75, 0.3) !important;
+  color: #846422 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
+}
+
 /* Light Mode: Empty State (Image 3) */
 [data-event-theme="pageant-editorial"] .contestant-roster-empty-state,
 html:not(.dark) [data-event-theme="pageant-editorial"] .contestant-roster-empty-state,
@@ -1898,18 +2018,52 @@ html.dark [data-event-theme="pageant-editorial"] .roster-counter span,
   color: #f9f9fb !important;
 }
 
-/* Dark Mode: Filter Buttons & Category Tabs */
+/* Dark Mode: Filter Buttons & Category Filter Bar */
+html.dark [data-event-theme="pageant-editorial"] .category-filter-bar,
+.dark [data-event-theme="pageant-editorial"] .category-filter-bar,
+[data-event-theme="pageant-editorial"].dark .category-filter-bar {
+  border-color: rgba(203, 178, 121, 0.22) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .category-filter-label,
+.dark [data-event-theme="pageant-editorial"] .category-filter-label,
+[data-event-theme="pageant-editorial"].dark .category-filter-label {
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .category-filter-icon,
+.dark [data-event-theme="pageant-editorial"] .category-filter-icon,
+[data-event-theme="pageant-editorial"].dark .category-filter-icon {
+  color: #cbb279 !important;
+}
+
 html.dark [data-event-theme="pageant-editorial"] fieldset button,
-.dark [data-event-theme="pageant-editorial"] fieldset button {
+html.dark [data-event-theme="pageant-editorial"] .category-filter-pill,
+html.dark [data-event-theme="pageant-editorial"] [role="group"] button,
+.dark [data-event-theme="pageant-editorial"] fieldset button,
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill,
+.dark [data-event-theme="pageant-editorial"] [role="group"] button,
+[data-event-theme="pageant-editorial"].dark .category-filter-pill {
   border-radius: 9999px !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
   font-size: 12px !important;
   letter-spacing: 0.05em !important;
   transition: all 0.2s ease !important;
 }
 
 html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
-.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"] {
-  border-color: #cbb279 !important;
+html.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="true"],
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill.category-filter-pill-selected,
+html.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="true"],
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="true"],
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="true"],
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill.category-filter-pill-selected,
+.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="true"],
+[data-event-theme="pageant-editorial"].dark .category-filter-pill[aria-pressed="true"] {
+  border: 1px solid #cbb279 !important;
   background-color: #cbb279 !important;
   color: #0b0c10 !important;
   font-weight: 700 !important;
@@ -1917,15 +2071,30 @@ html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="t
 }
 
 html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
-.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"] {
+html.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"],
+html.dark
+  [data-event-theme="pageant-editorial"]
+  .category-filter-pill.category-filter-pill-unselected,
+html.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"],
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"],
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"],
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill.category-filter-pill-unselected,
+.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"],
+[data-event-theme="pageant-editorial"].dark .category-filter-pill[aria-pressed="false"] {
   border: 1px solid rgba(255, 255, 255, 0.08) !important;
   background-color: #12141c !important;
   color: #9ba3b4 !important;
 }
 
 html.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
-.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover {
+html.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"]:hover,
+html.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"]:hover,
+.dark [data-event-theme="pageant-editorial"] fieldset button[aria-pressed="false"]:hover,
+.dark [data-event-theme="pageant-editorial"] .category-filter-pill[aria-pressed="false"]:hover,
+.dark [data-event-theme="pageant-editorial"] [role="group"] button[aria-pressed="false"]:hover,
+[data-event-theme="pageant-editorial"].dark .category-filter-pill[aria-pressed="false"]:hover {
   border-color: rgba(203, 178, 121, 0.35) !important;
+  background-color: #181b26 !important;
   color: #f9f9fb !important;
 }
 
@@ -2922,6 +3091,71 @@ html.dark [data-event-theme="pageant-editorial"] .btn-power-boost-candidates:hov
 [data-event-theme="pageant-editorial"].dark .btn-power-boost-candidates:hover {
   filter: brightness(1.15) !important;
   transform: translateY(-1px) scale(1.02) !important;
+}
+
+/* Dark Mode: Free Vote Available Quota State (Sparkles & Rolling Reset) */
+html.dark [data-event-theme="pageant-editorial"] .free-vote-sparkle-icon,
+.dark [data-event-theme="pageant-editorial"] .free-vote-sparkle-icon,
+[data-event-theme="pageant-editorial"].dark .free-vote-sparkle-icon {
+  color: #cbb279 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .free-vote-banner-desc,
+.dark [data-event-theme="pageant-editorial"] .free-vote-banner-desc,
+[data-event-theme="pageant-editorial"].dark .free-vote-banner-desc {
+  color: #f9f9fb !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .free-vote-count-highlight,
+.dark [data-event-theme="pageant-editorial"] .free-vote-count-highlight,
+[data-event-theme="pageant-editorial"].dark .free-vote-count-highlight {
+  color: #cbb279 !important;
+  font-weight: 800 !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .free-vote-reset-badge,
+.dark [data-event-theme="pageant-editorial"] .free-vote-reset-badge,
+[data-event-theme="pageant-editorial"].dark .free-vote-reset-badge {
+  color: #9ba3b4 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .free-vote-reset-icon,
+.dark [data-event-theme="pageant-editorial"] .free-vote-reset-icon,
+[data-event-theme="pageant-editorial"].dark .free-vote-reset-icon {
+  color: #34d399 !important;
+}
+
+/* Dark Mode: EventVotingRulesBanner */
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner,
+[data-event-theme="pageant-editorial"].dark .event-voting-rules-banner {
+  border-radius: 12px !important;
+  border: 1px solid rgba(203, 178, 121, 0.35) !important;
+  background-color: #12141c !important;
+  box-shadow: 0 8px 30px -4px rgba(0, 0, 0, 0.5) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-icon-box,
+[data-event-theme="pageant-editorial"].dark .event-voting-rules-banner .rules-icon-box {
+  border-radius: 8px !important;
+  background-color: #181b26 !important;
+  color: #cbb279 !important;
+  border: 1px solid rgba(203, 178, 121, 0.3) !important;
+}
+
+html.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+.dark [data-event-theme="pageant-editorial"] .event-voting-rules-banner .rules-badge,
+[data-event-theme="pageant-editorial"].dark .event-voting-rules-banner .rules-badge {
+  border-radius: 6px !important;
+  background-color: #181b26 !important;
+  border: 1px solid rgba(203, 178, 121, 0.3) !important;
+  color: #cbb279 !important;
+  font-family: var(--font-plus-jakarta-sans), "Plus Jakarta Sans", sans-serif !important;
+  font-size: 10px !important;
+  font-weight: 700 !important;
 }
 
 /* Dark Mode: Empty State (Image 3) */

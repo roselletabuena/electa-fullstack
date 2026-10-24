@@ -283,7 +283,7 @@ export function GeneralBrandingForm({
                   </h3>
                 </div>
                 <p className="font-sans text-xs text-slate-500 dark:text-slate-400">
-                  Select a tailored skin for your public competition page. All themes strictly enforce Electa's zero-radius brutalist geometry.
+                  Select a tailored skin for your public competition page. All themes strictly enforce Electa&apos;s zero-radius brutalist geometry.
                 </p>
               </div>
 

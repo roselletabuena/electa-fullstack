@@ -216,12 +216,12 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
           ))}
         </div>
       ) : (
-        <div className="mt-12 flex flex-col items-center justify-center rounded-none border border-slate-300 bg-white p-12 text-center shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
+        <div className="contestant-roster-empty-state mt-12 flex flex-col items-center justify-center rounded-none border border-slate-300 bg-white p-12 text-center shadow-xs dark:border-slate-800 dark:bg-[#0d1424]">
           <AlertCircle className="mb-3 h-10 w-10 text-amber-600 dark:text-amber-400/80" />
-          <h3 className="heading-font text-lg text-slate-900 dark:text-slate-200">
+          <h3 className="empty-state-title heading-font text-lg text-slate-900 dark:text-slate-200">
             No candidates found
           </h3>
-          <p className="mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
+          <p className="empty-state-desc mt-1 max-w-sm text-xs text-slate-600 dark:text-slate-400">
             There are no active contestants matching the selected division and award filters.
           </p>
           <button
@@ -231,7 +231,7 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
               setSelectedCategoryId("ALL");
               updateUrlFilters("ALL", "ALL");
             }}
-            className="btn-primary mt-4 px-4 py-2 text-xs"
+            className="btn-primary btn-reset-filters mt-4 px-4 py-2 text-xs"
           >
             Reset Filters
           </button>

@@ -80,7 +80,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
       />
 
       {/* Modal Container */}
-      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border border-slate-300 bg-white/95 shadow-2xl backdrop-blur-md dark:border-slate-800 dark:bg-[#0d1424]/90">
+      <div className="contestant-profile-modal-container relative z-10 flex max-h-[92vh] w-full max-w-4xl flex-col overflow-hidden rounded-none border border-slate-300 bg-white/80 shadow-2xl backdrop-blur-2xl dark:border-slate-800 dark:bg-[#0d1424]/75">
         {/* Header Bar */}
         <div className="contestant-modal-header flex shrink-0 items-center justify-between border-b border-slate-200 bg-slate-50/70 px-6 py-4 backdrop-blur-md dark:border-slate-800 dark:bg-slate-900/80">
           <div className="flex items-center gap-3">
@@ -202,7 +202,7 @@ export const ContestantProfileModal: React.FC<ContestantProfileModalProps> = ({
                   {contestant.categories.map((cat) => (
                     <span
                       key={cat.id}
-                      className="rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
+                      className="contestant-modal-category-badge rounded-none border border-slate-300 bg-slate-100 px-2.5 py-1 text-xs font-semibold text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300"
                     >
                       {cat.name}
                     </span>

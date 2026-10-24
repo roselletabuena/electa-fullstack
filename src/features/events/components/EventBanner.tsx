@@ -106,7 +106,7 @@ export function EventBanner({ event, totalVotes }: Readonly<EventBannerProps>): 
           {shouldShowLiveLeaderboard && (
             <Link
               href={`/events/${event.slug}/leaderboard`}
-              className="font-heading inline-flex items-center gap-2 border border-amber-400 bg-amber-500 px-3.5 py-1.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs transition-transform hover:scale-105 hover:bg-amber-400"
+              className="btn-event-leaderboard font-heading inline-flex items-center gap-2 border border-amber-400 bg-amber-500 px-3.5 py-1.5 text-xs font-black tracking-wider text-slate-950 uppercase shadow-xs transition-transform hover:scale-105 hover:bg-amber-400"
             >
               <Trophy className="size-3.5" aria-hidden="true" />
               <span>Live Leaderboard</span>

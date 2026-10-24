@@ -98,6 +98,7 @@ const eslintConfig = defineConfig([
     "prisma/migrations/**",
     "src/generated/**",
     ".agents/**",
+    ".worktrees/**",
   ]),
 ]);
 

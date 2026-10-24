@@ -180,4 +180,166 @@ describe("ContestantFormModal - Dynamic Category & Division Integration (VS-38)"
       }),
     );
   });
+
+  it("navigates between Core Profile and Extended Details tabs and exposes accessible tab roles", () => {
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+        categories={mockCategories}
+        divisions={mockCustomDivisions}
+        initialData={mockInitialData}
+      />,
+    );
+
+    const coreTab = screen.getByRole("tab", { name: /01\. Core Profile/i });
+    const extendedTab = screen.getByRole("tab", { name: /02\. Extended Details/i });
+
+    expect(coreTab).toBeDefined();
+    expect(extendedTab).toBeDefined();
+
+    expect(coreTab.getAttribute("aria-selected")).toBe("true");
+    expect(extendedTab.getAttribute("aria-selected")).toBe("false");
+
+    // Click extended tab
+    fireEvent.click(extendedTab);
+    expect(extendedTab.getAttribute("aria-selected")).toBe("true");
+    expect(coreTab.getAttribute("aria-selected")).toBe("false");
+
+    // Click "Core Profile" back button in footer
+    const backBtn = screen.getByRole("button", { name: /Core Profile/i });
+    fireEvent.click(backBtn);
+    expect(coreTab.getAttribute("aria-selected")).toBe("true");
+
+    // Click "Extended Details" next button in footer
+    const nextBtn = screen.getByRole("button", { name: /Extended Details/i });
+    fireEvent.click(nextBtn);
+    expect(extendedTab.getAttribute("aria-selected")).toBe("true");
+  });
+
+  it("calls onClose when Escape key is pressed", () => {
+    const handleClose = vi.fn();
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={handleClose}
+        onSubmit={vi.fn()}
+        categories={mockCategories}
+      />,
+    );
+
+    fireEvent.keyDown(window, { key: "Escape" });
+    expect(handleClose).toHaveBeenCalledTimes(1);
+  });
+
+  it("associates labels with their respective input elements via htmlFor", () => {
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+        categories={mockCategories}
+      />,
+    );
+
+    expect(screen.getByLabelText(/Candidate #/i)).toBeDefined();
+    expect(screen.getByLabelText(/Full Name/i)).toBeDefined();
+    expect(screen.getByLabelText(/Hometown/i)).toBeDefined();
+    expect(screen.getByLabelText(/Height/i)).toBeDefined();
+    expect(screen.getByLabelText(/Official Advocacy Statement/i)).toBeDefined();
+    expect(screen.getByLabelText(/Biography/i)).toBeDefined();
+  });
+
+  it("indicates required fields with asterisks and optional fields clearly without visual clutter", () => {
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+        categories={mockCategories}
+        divisions={mockCustomDivisions}
+      />,
+    );
+
+    // Verify clean required asterisks exist for candidate number and name
+    const requiredIndicators = screen.getAllByTitle(/Required field/i);
+    expect(requiredIndicators.length).toBeGreaterThanOrEqual(2);
+
+    // Verify optional fields (such as Hometown and Division) are noted cleanly
+    const optionalLabels = screen.getAllByText(/\(optional\)/i);
+    expect(optionalLabels.length).toBeGreaterThanOrEqual(1);
+  });
+
+  it("blocks submission and displays field errors when required fields are missing", async () => {
+    const handleSubmit = vi.fn().mockResolvedValue(undefined);
+
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={handleSubmit}
+        categories={mockCategories}
+      />,
+    );
+
+    // Clear candidate name
+    const nameInput = screen.getByLabelText(/Full Name/i);
+    fireEvent.change(nameInput, { target: { value: "" } });
+
+    // Click submit
+    const submitBtn = screen.getByRole("button", { name: /Register Contestant/i });
+    fireEvent.click(submitBtn);
+
+    // Should NOT call submit
+    expect(handleSubmit).not.toHaveBeenCalled();
+
+    // Should display validation error for name and photos
+    expect(screen.getByText(/Candidate full name is required/i)).toBeDefined();
+    expect(screen.getByText(/Please upload at least one 4:5 portrait photo/i)).toBeDefined();
+  });
+
+  it("passes responsive web design (RWD) structural checks for mobile and desktop viewports", () => {
+    render(
+      <ContestantFormModal
+        isOpen={true}
+        onClose={vi.fn()}
+        onSubmit={vi.fn()}
+        categories={mockCategories}
+        divisions={mockCustomDivisions}
+      />,
+    );
+
+    // 1. Dialog overlay has responsive padding and height constraints (rendered via portal into document.body)
+    const dialog = document.body.querySelector("dialog");
+    expect(dialog?.className).toContain("p-2.5");
+    expect(dialog?.className).toContain("sm:p-6");
+
+    const modalBox = dialog?.querySelector("div.relative");
+    expect(modalBox?.className).toContain("max-h-[96vh]");
+    expect(modalBox?.className).toContain("sm:max-h-[92vh]");
+
+    // 2. Tablist supports horizontal overflow scrolling without breaking layout
+    const tablist = screen.getByRole("tablist");
+    expect(tablist.className).toContain("overflow-x-auto");
+    expect(tablist.className).toContain("px-3");
+    expect(tablist.className).toContain("sm:px-6");
+
+    const coreTab = screen.getByRole("tab", { name: /01\. Core Profile/i });
+    expect(coreTab.className).toContain("whitespace-nowrap");
+    expect(coreTab.className).toContain("shrink-0");
+
+    // 3. Sticky footer stacks or compacts on mobile viewports
+    const footer = document.body.querySelector(".border-t.bg-slate-50\\/90");
+    expect(footer?.className).toContain("flex-col");
+    expect(footer?.className).toContain("sm:flex-row");
+    expect(footer?.className).toContain("px-4");
+    expect(footer?.className).toContain("sm:px-6");
+
+    // 4. Candidate photos gallery grid has responsive column scaling (2 cols on mobile, 4-5 on desktop)
+    const galleryGrid = document.body.querySelector(".grid.grid-cols-2");
+    expect(galleryGrid?.className).toContain("grid-cols-2");
+    expect(galleryGrid?.className).toContain("sm:grid-cols-4");
+    expect(galleryGrid?.className).toContain("md:grid-cols-5");
+  });
 });

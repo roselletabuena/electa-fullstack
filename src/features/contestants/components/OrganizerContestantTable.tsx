@@ -13,25 +13,15 @@ import type {
   DivisionDto,
 } from "../types";
 import { ContestantFormModal } from "./ContestantFormModal";
+import { ContestantStatusSelect } from "./ContestantStatusSelect";
 import { useContestantMutations } from "../hooks/use-contestant-mutations";
 import { useContestants } from "../hooks/use-contestants";
-import { cn } from "@/lib/utils";
 
 interface OrganizerContestantTableProps {
   readonly slug: string;
   readonly contestants: ContestantDto[];
   readonly categories: AwardCategoryDto[];
   readonly divisions?: DivisionDto[] | DynamicDivisionItem[] | undefined;
-}
-
-function getStatusBadgeClass(status: ContestantStatus): string {
-  if (status === "ACTIVE") {
-    return "border-emerald-300 bg-emerald-50 text-emerald-800 dark:border-emerald-800 dark:bg-emerald-950/40 dark:text-emerald-300";
-  }
-  if (status === "HIDDEN") {
-    return "border-slate-300 bg-slate-100 text-slate-700 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300";
-  }
-  return "border-red-300 bg-red-50 text-red-800 dark:border-red-800 dark:bg-red-950/40 dark:text-red-300";
 }
 
 function getModalKey(editingContestant: ContestantDto | null, modalOpen: boolean): string {
@@ -129,7 +119,7 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
               </p>
             </div>
           ) : (
-            <div className="overflow-x-auto">
+            <div className="min-h-[300px] overflow-x-auto">
               <table className="w-full text-left text-xs">
                 <thead className="border-b border-slate-200 bg-slate-50/70 text-[11px] font-bold tracking-wider text-slate-700 uppercase dark:border-slate-800 dark:bg-slate-900/50 dark:text-slate-300">
                   <tr>
@@ -198,20 +188,13 @@ export const OrganizerContestantTable: React.FC<OrganizerContestantTableProps> =
                         </div>
                       </td>
                       <td className="px-5 py-3.5">
-                        <select
-                          value={c.status}
-                          onChange={(e) =>
-                            handleStatusChange(c.id, e.target.value as ContestantStatus)
-                          }
-                          className={cn(
-                            "rounded-none border px-2.5 py-1 text-[11px] font-bold tracking-wider uppercase transition-colors focus:outline-none",
-                            getStatusBadgeClass(c.status),
-                          )}
-                        >
-                          <option value="ACTIVE">ACTIVE</option>
-                          <option value="HIDDEN">HIDDEN</option>
-                          <option value="WITHDRAWN">WITHDRAWN</option>
-                        </select>
+                        <ContestantStatusSelect
+                          status={c.status}
+                          contestantId={c.id}
+                          contestantName={c.name}
+                          onStatusChange={(newStatus) => handleStatusChange(c.id, newStatus)}
+                          disabled={updateStatus.isPending && updateStatus.variables?.id === c.id}
+                        />
                       </td>
                       <td className="px-5 py-3.5 text-right font-mono font-semibold text-slate-800 dark:text-slate-200">
                         {c.voteCount.toLocaleString()}

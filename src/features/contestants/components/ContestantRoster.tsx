@@ -150,18 +150,18 @@ export const ContestantRoster: React.FC<ContestantRosterProps> = ({
   return (
     <section className="w-full py-8">
       {/* Roster Header */}
-      <div className="flex flex-col justify-between gap-4 border-b border-slate-300 pb-4 md:flex-row md:items-end dark:border-slate-800">
+      <div className="roster-section-header flex flex-col justify-between gap-4 border-b border-slate-300 pb-4 md:flex-row md:items-end dark:border-slate-800">
         <div>
-          <div className="flex items-center gap-2 text-xs font-bold tracking-widest text-sky-700 uppercase dark:text-sky-400">
+          <div className="roster-tag flex items-center gap-2 text-xs font-bold tracking-widest text-sky-700 uppercase dark:text-sky-400">
             <Users className="h-4 w-4" />
             <span>Official Candidates</span>
           </div>
-          <h2 className="heading-font mt-1 text-2xl tracking-tight text-slate-900 sm:text-3xl dark:text-white">
+          <h2 className="heading-font roster-title mt-1 text-2xl tracking-tight text-slate-900 sm:text-3xl dark:text-white">
             Meet the Candidates
           </h2>
         </div>
 
-        <div className="text-xs text-slate-600 dark:text-slate-400">
+        <div className="roster-counter text-xs text-slate-600 dark:text-slate-400">
           Showing{" "}
           <span className="font-mono font-bold text-slate-900 dark:text-white">
             {filteredContestants.length}
